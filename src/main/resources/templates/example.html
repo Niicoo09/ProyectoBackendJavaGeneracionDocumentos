@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Documento de Prueba</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 0.8em;
+            text-align: right;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 th:text="${title}">Título por defecto</h1>
+    </div>
+    <div class="content">
+        <p>Hola, <strong><span th:text="${name}">Invitado</span></strong>!</p>
+        <p>Este es un documento generado dinámicamente desde el backend usando <strong>Spring Boot + Thymeleaf + Playwright</strong>.</p>
+        <p>Descripción: <span th:text="${description}">Sin descripción.</span></p>
+    </div>
+    <div class="footer">
+        Generado el: <span th:text="${#calendars.format(#calendars.createNow(), 'dd/MM/yyyy HH:mm')}"></span>
+    </div>
+</body>
+</html>
