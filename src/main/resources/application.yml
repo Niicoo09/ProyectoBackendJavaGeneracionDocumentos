@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: document-api
+  datasource:
+    # 🔌 Configuración para la base de datos de Coolify (Conexión Real)
+    url: jdbc:postgresql://51.91.159.188:5433/postgres
+    username: postgres
+    password: yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      # 'none' para asegurar el acceso de solo lectura
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+server:
+  port: 8080

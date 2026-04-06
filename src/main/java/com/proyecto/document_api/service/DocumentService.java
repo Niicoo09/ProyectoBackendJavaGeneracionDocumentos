@@ -8,6 +8,12 @@ import org.thymeleaf.context.Context;
 
 import java.util.Map;
 
+/**
+ * El cerebro detrás de la generación de PDFs.
+ * Utiliza Thymeleaf para rellenar los datos y Playwright para "imprimir" el documento.
+ * 
+ * @author Nicolas Navarro Contreras
+ */
 @Service
 public class DocumentService {
 
