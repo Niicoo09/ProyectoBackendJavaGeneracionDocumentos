@@ -21,24 +21,38 @@ public class DocumentService {
     private TemplateEngine templateEngine;
 
     /**
-     * Genera un PDF a partir de una plantilla HTML y un mapa de datos.
-     * @param templateName Nombre de la plantilla en /resources/templates/ (sin .html)
-     * @param data Mapa con las variables para Thymeleaf
-     * @return El contenido del PDF en bytes
+     * Genera un PDF a partir de una plantilla HTML y un mapa de datos dinámicos.
+     * 
+     * @param templateName Nombre del archivo HTML en /resources/templates/ (sin .html)
+     * @param data Mapa de datos que contiene la información del cliente para rellenar
+     * @return Arreglo de bytes que representa el archivo PDF final
      */
     public byte[] generatePdf(String templateName, Map<String, Object> data) {
-        // 1. Renderizar el HTML con Thymeleaf
+        
+        // PASO 1: Preparación del contexto para Thymeleaf
+        // El 'Context' es como una maleta donde metemos todos los datos (nombre, NIF, etc.)
+        // que queremos que aparezcan en el documento final.
         Context context = new Context();
         context.setVariables(data);
+        
+        // PASO 2: Renderizado del HTML
+        // El TemplateEngine toma nuestro archivo HTML físico y sustituye las etiquetas 
+        // especiales (th:text) por los datos reales de la base de datos.
         String htmlContent = templateEngine.process(templateName, context);
 
-        // 2. Convertir el HTML a PDF usando Playwright
+        // PASO 3: Conversión de HTML a PDF usando Playwright
+        // Abrimos un "Playwright", que es como un motor de navegador invisible (Headless)
         try (Playwright playwright = Playwright.create()) {
+            
+            // Lanzamos un navegador Chromium (el mismo motor que Google Chrome)
             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
+            
+            // Creamos una nueva página en el navegador
             BrowserContext browserContext = browser.newContext();
             Page page = browserContext.newPage();
             
-            // Establecer el contenido HTML directamente
+            // PASO 4: Carga del contenido
+            // Inyectamos el HTML que generamos en el PASO 2 directamente en la página del navegador
             page.setContent(htmlContent);
             
             // Generar el PDF

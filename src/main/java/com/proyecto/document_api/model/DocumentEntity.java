@@ -20,15 +20,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentEntity {
+    
+    // Este código UUID es la clave única que identifica a cada cliente en el dashboard
     @Id
-    private UUID id; // Cambiado de Long a UUID
+    private UUID id; 
 
+    // Aquí se guarda el nombre completo del cliente
     @Column(name = "nombre")
     private String nombre;
 
+    // Aquí se guarda TODA la información técnica en formato texto (NIF, importes, etc.)
     @Column(name = "formulario")
     private String formulario;
 
+    // Fechas de creación y actualización automática de la base de datos
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
