@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,6 +24,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/v1/documents")
+@Tag(name = "Documentos", description = "Endpoints para la gestión y generación de archivos PDF")
 public class DocumentController {
 
     @Autowired
@@ -34,6 +39,7 @@ public class DocumentController {
      * 
      * URL: http://localhost:8080/api/v1/documents/test-pdf
      */
+    @Operation(summary = "Generar PDF de prueba", description = "Crea un PDF genérico sin consultar la base de datos, útil para pruebas de diseño.")
     @GetMapping("/test-pdf")
     public ResponseEntity<byte[]> generateTestPdf(
             @RequestParam(defaultValue = "Nombre del Documento") String title,
@@ -63,6 +69,7 @@ public class DocumentController {
      * 
      * URL: http://localhost:8080/api/v1/documents/generate/{uuid}
      */
+    @Operation(summary = "Generar PDF por Cliente", description = "Recupera los datos de un cliente de la tabla generacion_docs y genera su PDF dinámico.")
     @GetMapping("/generate/{id}")
     public ResponseEntity<byte[]> generatePdfFromDb(@PathVariable UUID id) {
         
@@ -80,10 +87,11 @@ public class DocumentController {
         // 3. Crear el documento usando la lógica del PASO 2 y 3 del Servicio
         byte[] pdfBytes = documentService.generatePdf("example", data);
 
-        // 4. Configurar la descarga del archivo con un nombre único basado en el ID
+        // 4. Configurar la descarga del archivo con el NOMBRE de la persona (limpiando espacios)
+        String fileName = doc.getNombre().replace(" ", "_") + ".pdf";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.attachment().filename("documento_oficial_" + id + ".pdf").build());
+        headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
@@ -92,6 +100,7 @@ public class DocumentController {
      * Endpoint de CONSULTA: Muestra la lista de todos los registros que hay en Coolify.
      * Sirve para ver qué IDs tenemos disponibles y verificar la conexión.
      */
+    @Operation(summary = "Listar Clientes", description = "Devuelve una lista con todos los registros encontrados en la tabla generacion_docs.")
     @GetMapping
     public List<DocumentEntity> getAllDocuments() {
         // Simplemente le pedimos al repositorio que nos traiga la lista completa
