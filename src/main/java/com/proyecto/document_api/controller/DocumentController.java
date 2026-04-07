@@ -66,33 +66,76 @@ public class DocumentController {
     }
 
     /**
-     * Endpoint REAL: Busca un cliente por su ID en Coolify y genera su PDF oficial.
-     * Este es el que usará el Dashboard de la web.
-     * 
-     * URL: http://localhost:8080/api/v1/documents/generate/{uuid}
+     * CERTIFICADO 1: Adecuación al Real Decreto 1699/2011.
      */
-    @Operation(summary = "Generar PDF por Cliente", description = "Recupera los datos de un cliente de la tabla generacion_docs y genera su PDF dinámico.")
-    @GetMapping("/generate/{id}")
-    public ResponseEntity<byte[]> generatePdfFromDb(@PathVariable UUID id) {
+    @Operation(summary = "Certificado de Adecuación", description = "Genera el certificado de adecuación oficial.")
+    @GetMapping("/adecuacion/{id}")
+    public ResponseEntity<byte[]> generateAdecuacion(@PathVariable UUID id) {
+        return processDocumentResponse(id, "certificado-adecuacion", "Certificado_Adecuacion", null);
+    }
+
+    /**
+     * CERTIFICADO 2: Solidez y Seguridad - Aporticada Teja.
+     * URL: http://localhost:8080/api/v1/documents/aporticada-teja/{uuid}
+     */
+    @Operation(summary = "Certificado Aporticada Teja", description = "Genera el certificado de solidez para cubiertas de teja aporticada.")
+    @GetMapping("/aporticada-teja/{id}")
+    public ResponseEntity<byte[]> generateAporticadaTeja(@PathVariable UUID id) {
+        // Esta plantilla necesita una imagen técnica específica
+        Map<String, String> extraImages = new HashMap<>();
+        extraImages.put("imagenTecnicaBase64", jsonUtils.getResourceAsBase64("static/teja-aporticada.png"));
         
-        // 1. Consultar la base de datos de producción
+        return processDocumentResponse(id, "certificado-aporticada-teja", "Certificado_Solidez_Teja", extraImages);
+    }
+
+    /**
+     * CERTIFICADO 3: Solidez y Seguridad - Chapa Grecada Aporticada.
+     * URL: http://localhost:8080/api/v1/documents/chapas-grecadas/{uuid}
+     */
+    @Operation(summary = "Certificado Chapa Grecada Aporticada", description = "Genera el certificado de solidez para cubiertas de chapa grecada.")
+    @GetMapping("/chapas-grecadas/{id}")
+    public ResponseEntity<byte[]> generateChapasGrecadas(@PathVariable UUID id) {
+        Map<String, String> extraImages = new HashMap<>();
+        extraImages.put("imagenTecnicaBase64", jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
+        
+        return processDocumentResponse(id, "certificado-chapas-grecadas", "Certificado_Solidez_Grecada", extraImages);
+    }
+
+    // =========================================================================
+    // LÓGICA INTERNA COMÚN
+    // =========================================================================
+
+    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Map<String, String> extraImages) {
+        // 1. Consultar la base de datos
         DocumentEntity doc = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
 
-        // 2. Extraer y traducir los datos del JSON a un Mapa
+        // 2. Extraer datos del JSON
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        
+        System.out.println("--- DATOS RECUPERADOS (" + templateName + ") ---");
+        formData.forEach((k, v) -> System.out.println("CAMPO: [" + k + "] -> VALOR: [" + v + "]"));
+        System.out.println("----------------------------------------------");
 
-        // 3. Preparar los datos para la plantilla
+        // 3. Preparar los datos comunes
         Map<String, Object> data = new HashMap<>();
         data.put("form", formData);
         data.put("name", doc.getNombre());
-        data.put("title", "CERTIFICADO DE ADECUACIÓN");
+        
+        // Imágenes corporativas estándar
+        data.put("logoBase64", jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("firmaBase64", jsonUtils.getResourceAsBase64("static/firma-solay.png"));
 
-        // 4. Crear el documento usando la lógica del PASO 2 y 3 del Servicio
-        byte[] pdfBytes = documentService.generatePdf("certificado-adecuacion", data);
+        // Añadir imágenes extras si existen
+        if (extraImages != null) {
+            data.putAll(extraImages);
+        }
 
-        // 5. Configurar la descarga del archivo con el NOMBRE de la persona (limpiando espacios)
-        String fileName = doc.getNombre().replace(" ", "_") + ".pdf";
+        // 4. Generar el PDF
+        byte[] pdfBytes = documentService.generatePdf(templateName, data);
+
+        // 5. Configurar respuesta
+        String fileName = filePrefix + "_" + doc.getNombre().replace(" ", "_") + ".pdf";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
@@ -101,13 +144,11 @@ public class DocumentController {
     }
 
     /**
-     * Endpoint de CONSULTA: Muestra la lista de todos los registros que hay en Coolify.
-     * Sirve para ver qué IDs tenemos disponibles y verificar la conexión.
+     * Endpoint de CONSULTA: Muestra la lista de todos los registros.
      */
-    @Operation(summary = "Listar Clientes", description = "Devuelve una lista con todos los registros encontrados en la tabla generacion_docs.")
+    @Operation(summary = "Listar Clientes", description = "Devuelve una lista con todos los registros encontrados.")
     @GetMapping
     public List<DocumentEntity> getAllDocuments() {
-        // Simplemente le pedimos al repositorio que nos traiga la lista completa
         return documentRepository.findAll();
     }
 }

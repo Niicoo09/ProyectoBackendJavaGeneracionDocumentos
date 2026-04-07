@@ -2,8 +2,11 @@ package com.proyecto.document_api.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +34,20 @@ public class JsonUtils {
         } catch (Exception e) {
             System.err.println("Error al parsear el JSON del formulario: " + e.getMessage());
             return new HashMap<>();
+        }
+    }
+
+    /**
+     * Convierte una imagen de la carpeta resources (ej: static/logo.png) en una cadena Base64.
+     */
+    public String getResourceAsBase64(String path) {
+        try {
+            ClassPathResource imgFile = new ClassPathResource(path);
+            byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (Exception e) {
+            System.err.println("Error al cargar imagen " + path + ": " + e.getMessage());
+            return "";
         }
     }
 }

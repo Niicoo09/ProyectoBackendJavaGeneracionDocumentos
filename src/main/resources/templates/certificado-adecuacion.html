@@ -126,18 +126,18 @@
             <!-- Encabezado con Logo -->
             <div class="encabezado">
                 <h1 class="titulo-principal">CERTIFICADO DE ADECUACIÓN AL REAL DECRETO 1699/2011</h1>
-                <!-- Placeholder para el logo -->
-                <img src="/logo-solay.png" alt="Logo Solay" class="logo" th:src="@{/logo-solay.png}"/>
+                <!-- Logo corporativo en Base64 -->
+                <img th:src="${'data:image/png;base64,' + logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <!-- Contenido Principal -->
             <div class="contenido-principal">
                 <p>
                     SOLAY INGENIEROS, S.L. empresa instaladora habilitada en baja tensión con C.I.F. B-09.848.912,
-                    <b>CERTIFICA</b> que la instalación eléctrica generadora fotovoltaica <b th:text="${form.almacenamiento ?: 'con almacenamiento'}">con almacenamiento</b>, situada en 
-                    <b th:text="${form.direccion ?: ''}">Dirección</b>, en la localidad de <b th:text="${form.localidad ?: ''}">Localidad</b>, de la Provincia de 
-                    <b th:text="${form.provincia ?: ''}">Provincia</b>, y cuyo uso al que se destina es 
-                    <b th:text="${form.uso ?: ''}">Uso</b>, cumple con todos y cada uno de los requisitos y 
+                    <b>CERTIFICA</b> que la instalación eléctrica generadora fotovoltaica <b th:text="${form['almacenamiento'] ?: 'con almacenamiento'}">con almacenamiento</b>, situada en 
+                    <b th:text="${form['emplazamientoCalle'] ?: ''}">Dirección</b>, en la localidad de <b th:text="${form['localidadEmplazamiento'] ?: ''}">Localidad</b>, de la Provincia de 
+                    <b th:text="${form['provinciaEmplazamiento'] ?: ''}">Provincia</b>, y cuyo uso al que se destina es 
+                    <b th:text="${form['usoDestino'] ?: ''}">Uso</b>, cumple con todos y cada uno de los requisitos y 
                     disposiciones reglamentarias en lo que a instalaciones eléctricas en baja tensión se refiere el:
                 </p>
                 <ul>
@@ -145,13 +145,13 @@
                     <li>R.D. 1699/2011 Que regula la conexión a red de instalaciones de producción de energía eléctrica de pequeña potencia.</li>
                 </ul>
                 <p>
-                    Y para que así conste y sirva de justificante, expido el presente certificado en <span th:text="${form.ciudadFirma ?: 'Bollullos de la Mitación'}">Ciudad</span>, 
-                    a <b th:text="${form.dia ?: '01'}">01</b> de <b th:text="${form.mes ?: 'Julio'}">Julio</b> de <b th:text="${form.anio ?: '2024'}">2024</b>.
+                    Y para que así conste y sirva de justificante, expido el presente certificado en <span th:text="${form['localidadEmplazamiento'] ?: 'Bollullos de la Mitación'}">Ciudad</span>, 
+                    a <b th:text="${form['dia'] ?: '01'}">01</b> de <b th:text="${form['mes'] ?: 'Julio'}">Julio</b> de <b th:text="${form['anio'] ?: '2024'}">2024</b>.
                 </p>
                 
                 <div class="logo-footer">
-                    <!-- Placeholder para la firma -->
-                    <img src="/firma-solay.png" alt="Firma Solay" class="logo-solay-footer" th:src="@{/firma-solay.png}"/>
+                    <!-- Firma corporativa en Base64 -->
+                    <img th:src="${'data:image/png;base64,' + firmaBase64}" alt="Firma Solay" class="logo-solay-footer" />
                 </div>
                 <div class="firma">(firma y sello del Instalador Habilitado)</div>
             </div>
