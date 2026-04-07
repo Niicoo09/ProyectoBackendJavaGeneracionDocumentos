@@ -3,14 +3,13 @@ package com.proyecto.document_api.controller;
 import com.proyecto.document_api.model.DocumentEntity;
 import com.proyecto.document_api.repository.DocumentRepository;
 import com.proyecto.document_api.service.DocumentService;
+import com.proyecto.document_api.utils.JsonUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,9 @@ public class DocumentController {
 
     @Autowired
     private DocumentRepository documentRepository;
+
+    @Autowired
+    private JsonUtils jsonUtils;
 
     /**
      * Endpoint de PRUEBA: Genera un PDF rápido sin consultar la base de datos.
@@ -74,20 +76,22 @@ public class DocumentController {
     public ResponseEntity<byte[]> generatePdfFromDb(@PathVariable UUID id) {
         
         // 1. Consultar la base de datos de producción
-        // Si el cliente con ese UUID no existe, lanzamos un error claro
         DocumentEntity doc = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
 
-        // 2. Extraer y organizar los datos reales del cliente
+        // 2. Extraer y traducir los datos del JSON a un Mapa
+        Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+
+        // 3. Preparar los datos para la plantilla
         Map<String, Object> data = new HashMap<>();
-        data.put("title", "Documento Oficial de Generación");
-        data.put("name", doc.getNombre());        // Nombre del cliente
-        data.put("description", doc.getFormulario()); // Contenido JSON completo (por ahora sin parsear)
+        data.put("form", formData);
+        data.put("name", doc.getNombre());
+        data.put("title", "CERTIFICADO DE ADECUACIÓN");
 
-        // 3. Crear el documento usando la lógica del PASO 2 y 3 del Servicio
-        byte[] pdfBytes = documentService.generatePdf("example", data);
+        // 4. Crear el documento usando la lógica del PASO 2 y 3 del Servicio
+        byte[] pdfBytes = documentService.generatePdf("certificado-adecuacion", data);
 
-        // 4. Configurar la descarga del archivo con el NOMBRE de la persona (limpiando espacios)
+        // 5. Configurar la descarga del archivo con el NOMBRE de la persona (limpiando espacios)
         String fileName = doc.getNombre().replace(" ", "_") + ".pdf";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
