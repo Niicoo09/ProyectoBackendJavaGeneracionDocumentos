@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>CERTIFICADO DE ADECUACIÓN AL REAL DECRETO 1699/2011</title>
     <style>
         /* ========== DISEÑO TRADUCIDO DE VUE ========== */
@@ -127,7 +127,7 @@
             <div class="encabezado">
                 <h1 class="titulo-principal">CERTIFICADO DE ADECUACIÓN AL REAL DECRETO 1699/2011</h1>
                 <!-- Logo corporativo en Base64 -->
-                <img th:src="${'data:image/png;base64,' + logoBase64}" alt="Logo Solay" class="logo" />
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <!-- Contenido Principal -->
@@ -151,7 +151,7 @@
                 
                 <div class="logo-footer">
                     <!-- Firma corporativa en Base64 -->
-                    <img th:src="${'data:image/png;base64,' + firmaBase64}" alt="Firma Solay" class="logo-solay-footer" />
+                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-solay-footer" />
                 </div>
                 <div class="firma">(firma y sello del Instalador Habilitado)</div>
             </div>

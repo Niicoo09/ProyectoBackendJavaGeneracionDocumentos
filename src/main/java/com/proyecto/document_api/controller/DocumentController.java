@@ -71,7 +71,7 @@ public class DocumentController {
     @Operation(summary = "Certificado de Adecuación", description = "Genera el certificado de adecuación oficial.")
     @GetMapping("/adecuacion/{id}")
     public ResponseEntity<byte[]> generateAdecuacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "certificado-adecuacion", "Certificado_Adecuacion", null);
+        return processDocumentResponse(id, "CertificadoAdecuacion", "Certificado_Adecuacion", null);
     }
 
     /**
@@ -83,9 +83,10 @@ public class DocumentController {
     public ResponseEntity<byte[]> generateAporticadaTeja(@PathVariable UUID id) {
         // Esta plantilla necesita una imagen técnica específica
         Map<String, String> extraImages = new HashMap<>();
-        extraImages.put("imagenTecnicaBase64", jsonUtils.getResourceAsBase64("static/teja-aporticada.png"));
+        // Pre-concatenamos el prefijo para evitar el límite de SpEL (100k chars)
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-aporticada.png"));
         
-        return processDocumentResponse(id, "certificado-aporticada-teja", "Certificado_Solidez_Teja", extraImages);
+        return processDocumentResponse(id, "CertificadoAporticadaTeja", "Certificado_Solidez_Teja", extraImages);
     }
 
     /**
@@ -96,9 +97,10 @@ public class DocumentController {
     @GetMapping("/chapas-grecadas/{id}")
     public ResponseEntity<byte[]> generateChapasGrecadas(@PathVariable UUID id) {
         Map<String, String> extraImages = new HashMap<>();
-        extraImages.put("imagenTecnicaBase64", jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
+        // Usamos la imagen técnica correspondiente ya concatenada
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
         
-        return processDocumentResponse(id, "certificado-chapas-grecadas", "Certificado_Solidez_Grecada", extraImages);
+        return processDocumentResponse(id, "CertificadoChapasGrecadas", "Certificado_Solidez_Grecada", extraImages);
     }
 
     // =========================================================================
@@ -120,11 +122,11 @@ public class DocumentController {
         // 3. Preparar los datos comunes
         Map<String, Object> data = new HashMap<>();
         data.put("form", formData);
-        data.put("name", doc.getNombre());
+        data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
         
-        // Imágenes corporativas estándar
-        data.put("logoBase64", jsonUtils.getResourceAsBase64("static/logo-solay.png"));
-        data.put("firmaBase64", jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        // Imágenes corporativas estándar CON PREFIJO (para evitar errores de SpEL)
+        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
 
         // Añadir imágenes extras si existen
         if (extraImages != null) {
@@ -134,8 +136,10 @@ public class DocumentController {
         // 4. Generar el PDF
         byte[] pdfBytes = documentService.generatePdf(templateName, data);
 
-        // 5. Configurar respuesta
-        String fileName = filePrefix + "_" + doc.getNombre().replace(" ", "_") + ".pdf";
+        // 5. Configurar respuesta (manejo seguro de nombre de archivo)
+        String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
+        String fileName = filePrefix + "_" + safeName + ".pdf";
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
