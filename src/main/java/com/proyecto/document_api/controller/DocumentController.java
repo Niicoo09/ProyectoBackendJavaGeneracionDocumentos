@@ -103,6 +103,20 @@ public class DocumentController {
         return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "Certificado_Solidez_Grecada", extraImages);
     }
 
+    /**
+     * CERTIFICADO 4: Solidez y Seguridad - Chapa Grecada Coplanaria.
+     * URL: http://localhost:8080/api/v1/documents/chapas-grecadas-coplanaria/{uuid}
+     */
+    @Operation(summary = "Certificado Chapa Grecada Coplanaria", description = "Genera el certificado de solidez para cubiertas de chapa grecada coplanaria.")
+    @GetMapping("/chapas-grecadas-coplanaria/{id}")
+    public ResponseEntity<byte[]> generateChapasGrecadasCoplanaria(@PathVariable UUID id) {
+        Map<String, String> extraImages = new HashMap<>();
+        // Imagen técnica específica para Coplanaria
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/grecada-coplanaria.png"));
+        
+        return processDocumentResponse(id, "CertificadoChapasGrecadasCoplanaria", "Certificado_Solidez_Grecada_Coplanaria", extraImages);
+    }
+
     // =========================================================================
     // LÓGICA INTERNA COMÚN
     // =========================================================================
