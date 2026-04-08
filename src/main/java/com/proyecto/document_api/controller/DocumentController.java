@@ -100,7 +100,7 @@ public class DocumentController {
         // Usamos la imagen técnica correspondiente ya concatenada
         extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
         
-        return processDocumentResponse(id, "CertificadoChapasGrecadas", "Certificado_Solidez_Grecada", extraImages);
+        return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "Certificado_Solidez_Grecada", extraImages);
     }
 
     // =========================================================================
