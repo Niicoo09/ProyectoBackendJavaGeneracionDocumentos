@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Declaración de Habilitación Profesional</title>
+    <style>
+        /* ========== VARIABLES SIMULADAS ========== */
+        :root {
+            --primary-color: #0066cc;
+            --text-color: #333;
+            --font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* ========== CONFIGURACIÓN DE PÁGINA (A4) ========== */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-color: white;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* ========== CONTENEDOR PDF ========== */
+        .contenedor-pdf {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== CONTENEDOR PRINCIPAL ========== */
+        .contenedor-principal {
+            flex: 1;
+            padding: 20mm;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* ========== ENCABEZADO ========== */
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 27px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .titulo-secundario {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-left: 15px;
+        }
+
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .contenido-principal {
+            line-height: 1.8;
+            font-size: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== PÁRRAFOS ========== */
+        .parrafo-intro {
+            margin: 0 0 10px 0;
+            text-align: justify;
+        }
+
+        .parrafo-declara {
+            margin: 10px 0 10px 0;
+            text-align: justify;
+        }
+
+        .parrafo-fecha {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            font-size: 15px;
+        }
+
+        /* ========== TÍTULOS ========== */
+        .titulo-declara {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            text-transform: uppercase;
+        }
+
+        /* ========== TEXTO ========== */
+        .texto-fijo {
+            color: #000;
+            font-weight: normal;
+        }
+
+        /* ========== LOGO FOOTER ========== */
+        .logo-footer {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .logo-footer-img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* ========== DATOS FIRMANTE ========== */
+        .parrafo-firmante {
+            text-align: center;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ========== PIE DE PÁGINA ========== */
+        .pie-pagina {
+            padding: 12px 0;
+            border-top: 1px solid #0066cc;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            width: calc(100% - 40mm);
+            position: absolute;
+            bottom: 20mm;
+            left: 20mm;
+        }
+
+        .texto-pie {
+            margin: 2px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-pdf">
+        <div class="contenedor-principal">
+
+            <!-- ENCABEZADO -->
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">DECLARACIÓN RESPONSABLE</h1>
+                    <h3 class="titulo-secundario">DE HABILITACIÓN PROFESIONAL</h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="contenido-principal">
+                <!-- PÁRRAFO INTRODUCTORIO -->
+                <p class="parrafo-intro">
+                    Por la presente,
+                    <span class="texto-fijo">Eduardo Rivera Cabezas</span>,
+                    con NIF
+                    <span class="texto-fijo">28.818.007-L</span>,
+                    <span class="texto-fijo">Ingeniero Industrial</span>
+                    colegiado número
+                    <span class="texto-fijo">4654</span>
+                    en el
+                    <span class="texto-fijo">Colegio Oficial de Ingenieros Industriales de Andalucía Occidental</span>,
+                    y con domicilio en
+                    <span class="texto-fijo">Calle El Peñón 5</span> -
+                    <span class="texto-fijo">41940</span>,
+                    localidad de
+                    <span class="texto-fijo">Tomares</span>,
+                    provincia de
+                    <span class="texto-fijo">Sevilla</span>
+                </p>
+
+                <!-- DECLARA -->
+                <h2 class="titulo-declara">DECLARA</h2>
+
+                <p class="parrafo-declara">
+                    Poseer la titulación de
+                    <span class="texto-fijo">Ingeniero Industrial</span>,
+                    colegiado en el
+                    <span class="texto-fijo">Colegio Oficial de Ingenieros Industriales de Andalucía Occidental</span>
+                    con número de colegiado
+                    <span class="texto-fijo">4654</span>
+                    y estar habilitado para el ejercicio de la profesión.
+                </p>
+
+                <!-- FECHA Y LUGAR -->
+                <p class="parrafo-fecha">
+                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a 
+                    <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de 
+                    <strong th:text="${form['mes']}">marzo</strong> de 
+                    <strong th:text="${form['anio']}">2026</strong>.
+                </p>
+
+                <!-- FIRMA -->
+                <div class="logo-footer">
+                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-footer-img" />
+                </div>
+
+                <p class="parrafo-firmante">
+                    <strong>Eduardo Rivera Cabezas</strong><br/>
+                    <strong>670308856</strong><br/>
+                    <strong>erivera@solay.es</strong><br/>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                </p>
+            </div>
+
+            <!-- PIE DE PÁGINA -->
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 1</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

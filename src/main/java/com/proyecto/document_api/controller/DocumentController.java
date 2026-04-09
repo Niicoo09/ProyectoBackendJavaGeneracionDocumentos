@@ -117,6 +117,99 @@ public class DocumentController {
         return processDocumentResponse(id, "CertificadoChapasGrecadasCoplanaria", "Certificado_Solidez_Grecada_Coplanaria", extraImages);
     }
 
+    /**
+     * CERTIFICADO 5: Solidez y Seguridad - Coplanar Teja.
+     * URL: http://localhost:8080/api/v1/documents/coplanar-teja/{uuid}
+     */
+    @Operation(summary = "Certificado Coplanar Teja", description = "Genera el certificado de solidez para cubiertas de teja coplanar.")
+    @GetMapping("/coplanar-teja/{id}")
+    public ResponseEntity<byte[]> generateCoplanarTeja(@PathVariable UUID id) {
+        Map<String, String> extraImages = new HashMap<>();
+        // Imagen técnica específica para Teja Coplanar
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-complanaria-1.png"));
+        
+        return processDocumentResponse(id, "CertificadoCoplanarTeja", "Certificado_Solidez_Teja_Coplanar", extraImages);
+    }
+
+    /**
+     * CERTIFICADO 6: Solidez y Seguridad - Cubierta Plana Aporticada.
+     * URL: http://localhost:8080/api/v1/documents/cubierta-plana-aporticada/{uuid}
+     */
+    @Operation(summary = "Certificado Cubierta Plana Aporticada", description = "Genera el certificado de solidez para cubiertas planas aporticadas.")
+    @GetMapping("/cubierta-plana-aporticada/{id}")
+    public ResponseEntity<byte[]> generateCubiertaPlanaAporticada(@PathVariable UUID id) {
+        Map<String, String> extraImages = new HashMap<>();
+        // Imagen técnica específica para Cubierta Plana Aporticada
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
+        
+        return processDocumentResponse(id, "CertificadoCubiertaPlanaAporticada", "Certificado_Solidez_Cubierta_Plana_Aporticada", extraImages);
+    }
+
+    /**
+     * CERTIFICADO 7: Solidez y Seguridad - Paramento Vertical.
+     * URL: http://localhost:8080/api/v1/documents/paramento-vertical/{uuid}
+     */
+    @Operation(summary = "Certificado Paramento Vertical", description = "Genera el certificado de solidez para instalaciones en paramento vertical.")
+    @GetMapping("/paramento-vertical/{id}")
+    public ResponseEntity<byte[]> generateParamentoVertical(@PathVariable UUID id) {
+        Map<String, String> extraImages = new HashMap<>();
+        // Imagen técnica específica para Paramento Vertical
+        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/paramento-vertical.png"));
+        
+        return processDocumentResponse(id, "CertificadoParamentoVertical", "Certificado_Solidez_Paramento_Vertical", extraImages);
+    }
+
+    /**
+     * CERTIFICADO 8: Solidez y Seguridad - Pérgola Aporticada.
+     * URL: http://localhost:8080/api/v1/documents/pergola-aporticada/{uuid}
+     */
+    @Operation(summary = "Certificado Pérgola Aporticada", description = "Genera el certificado de solidez para instalaciones sobre pérgola.")
+    @GetMapping("/pergola-aporticada/{id}")
+    public ResponseEntity<byte[]> generatePergolaAporticada(@PathVariable UUID id) {
+        return processDocumentResponse(id, "CertificadoPergolaAporticada", "Certificado_Solidez_Pergola", null);
+    }
+
+    /**
+     * CERTIFICADO 9: Declaración de Habilitación Profesional.
+     * URL: http://localhost:8080/api/v1/documents/habilitacion-profesional/{uuid}
+     */
+    @Operation(summary = "Declaración de Habilitación Profesional", description = "Genera la declaración responsable de habilitación profesional.")
+    @GetMapping("/habilitacion-profesional/{id}")
+    public ResponseEntity<byte[]> generateHabilitacionProfesional(@PathVariable UUID id) {
+        return processDocumentResponse(id, "DeclaracionHabilitacionProfesional", "Declaracion_Habilitacion_Profesional", null);
+    }
+
+    /**
+     * CERTIFICADO 10: Declaración No Generación de RCDs.
+     * URL: http://localhost:8080/api/v1/documents/no-generacion-rcds/{uuid}
+     */
+    @Operation(summary = "Declaración No Generación RCDs", description = "Genera la declaración responsable de no generación de residuos.")
+    @GetMapping("/no-generacion-rcds/{id}")
+    public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
+        return processDocumentResponse(id, "DeclaracionNoGeneracionRcds", "Declaracion_No_Generacion_RCDs", null);
+    }
+
+    /**
+     * CERTIFICADO 11: Memoria Técnica de Diseño (MTD).
+     * URL: http://localhost:8080/api/v1/documents/memoria-tecnica/{uuid}
+     */
+    @Operation(summary = "Memoria Técnica de Diseño", description = "Genera la memoria técnica de diseño de la instalación.")
+    @GetMapping("/memoria-tecnica/{id}")
+    public ResponseEntity<byte[]> generateMemoriaTecnica(@PathVariable UUID id) {
+        return processDocumentResponse(id, "MemoriaTecnica", "Memoria_Tecnica_Diseno", null);
+    }
+
+    /**
+     * CERTIFICADO 12: Memoria Técnica de Diseño - Punto de Recarga VE.
+     * URL: http://localhost:8080/api/v1/documents/punto-recarga-ve/{uuid}
+     */
+    @Operation(summary = "Memoria Técnica Punto de Recarga VE", description = "Genera la memoria técnica de diseño para puntos de recarga de vehículos eléctricos.")
+    @GetMapping("/punto-recarga-ve/{id}")
+    public ResponseEntity<byte[]> generateMemoriaTecnicaPuntoRecarga(@PathVariable UUID id) {
+        // En este documento, las imágenes técnicas se inyectan dinámicamente desde el JSON del formulario
+        return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", null);
+    }
+
     // =========================================================================
     // LÓGICA INTERNA COMÚN
     // =========================================================================

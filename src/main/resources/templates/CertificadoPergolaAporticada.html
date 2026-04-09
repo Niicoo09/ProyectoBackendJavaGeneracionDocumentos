@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Certificado de Solidez - Pérgola</title>
+    <style>
+        .contenedor-pdf {
+            background-color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            font-size: 17px;
+            width: 210mm;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            padding: 20mm;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            page-break-after: always;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 27px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .titulo-secundario {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .texto-azul {
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+
+        .contenido-principal {
+            line-height: 1.8;
+            font-size: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .parrafo-intro {
+            margin: 0 0 8px 0;
+            text-align: justify;
+        }
+
+        .parrafo-certifico,
+        .parrafo-datos,
+        .parrafo-estructura {
+            margin: 4px 0;
+            text-align: justify;
+        }
+
+        .parrafo-fecha {
+            text-align: center;
+            font-weight: bold;
+            margin: 10px 0 0 0;
+            font-size: 15px;
+        }
+
+        .titulo-declara {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            text-transform: uppercase;
+        }
+
+        .titulo-seccion {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+            margin: 15px 0 5px 0;
+        }
+
+        .texto-fijo {
+            color: #000;
+            font-weight: normal;
+        }
+
+        .texto-editable {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .pie-pagina {
+            border-top: 1px solid #ccc;
+            padding-top: 12px;
+            margin-top: auto;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .texto-pie {
+            margin: 2px 0;
+        }
+
+        .parrafo-firmante {
+            text-align: center;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .logo-footer {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .logo-footer-img {
+            width: 150px;
+            height: auto;
+        }
+
+        @media print {
+            .contenedor-principal:not(:last-child) {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf">
+        <!-- PÁGINA 1 -->
+        <div class="contenedor-principal">
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <div class="contenido-principal">
+                <p class="parrafo-intro">
+                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span class="texto-fijo">28.818.007-L</span>, Ingeniero Industrial colegiado número <span class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en <span class="texto-fijo">Calle El Peñón 5 - 41940</span>, localidad de <span class="texto-fijo">Tomares</span>, provincia de <span class="texto-fijo">Sevilla</span>
+                </p>
+
+                <h2 class="titulo-declara">CERTIFICO</h2>
+
+                <p class="parrafo-certifico">
+                    que el estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pérgola'}">pérgola</span> de la vivienda sita en <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-editable" th:text="${form['numero']}">5</span> – código postal <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41000</span>, localidad de <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de <span class="texto-editable" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con Referencia Catastral <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                </p>
+
+                <p class="parrafo-datos">
+                    El generador fotovoltaico ha sido dimensionado mediante Memoria Técnica de Diseño según requiere la reglamentación, y está compuesto por <span class="texto-editable" th:text="${form['e2_totalModulos']}">10</span> módulos fotovoltaicos de <span class="texto-editable" th:text="${form['e2_potenciaPicoModulo']}">Wp</span> Wp de potencia eléctrica y <span class="texto-editable" th:text="${form['peso'] ?: '28.00'}">28.00</span> kg de peso cada uno, del fabricante y modelo <span class="texto-editable" th:text="${form['e2_marcaModeloModulo']}">Marca</span>.
+                </p>
+
+                <h3 class="titulo-seccion">Estructura Primaria</h3>
+
+                <p class="parrafo-estructura">
+                    Los paneles fotovoltaicos se situarán sobre una estructura primaria consistente en <span class="texto-editable">EN UNA PÉRGOLA DE ACERO GALVANIZADO</span>. Esta estructura tendrá una altura máxima de <span class="texto-editable">1,8 m</span>, una orientación de <span class="texto-editable" th:text="${form['e2_orientacionGenerador']}">SUR</span> y una inclinación de <span class="texto-editable" th:text="${form['e2_inclinacionGenerador'] + 'º'}">20º</span>, posicionándose los paneles formando un plano inclinado.
+                </p>
+
+                <p class="parrafo-estructura">
+                    La estructura primaria o pérgola de acero galvanizado, servirá de base para la estructura secundaria, consistente en una perfilería de aluminio ligero de la empresa SUNFER ESTRUCTURAS, S.L., especializada en soportes para generadores fotovoltaicos con Certificado de Garantía y Marcado CE de sus productos (se adjuntan en la Memoria Técnica de Diseño, así como la Ficha Técnica y Plano de Montaje).
+                </p>
+
+                <h3 class="titulo-seccion">Estructura Secundaria</h3>
+
+                <p class="parrafo-estructura">
+                    La perfilería secundaria de aluminio estará finalmente unida solidariamente a los módulos fotovoltaicos mediante elementos de presión y fijación con tornillo a las distancias y pares de apriete marcados por el fabricante.
+                </p>
+            </div>
+
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 1</p>
+            </div>
+        </div>
+
+        <!-- PÁGINA 2 -->
+        <div class="contenedor-principal">
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <div class="contenido-principal">
+                <h3 class="titulo-seccion">Fijación y lastres</h3>
+
+                <p class="parrafo-estructura">
+                    Para la sujeción de la pérgola, ésta será fijada sobre unos lastres de 22 kg de peso cada uno, mediante varillas roscadas (según procedimiento del fabricante), sólidamente fijadas a la perfilería secundaria de aluminio mediante tornillería de acero inoxidable; todo ello según los procedimientos de instalación establecidos en la ficha técnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la tornillería.
+                </p>
+
+                <p class="parrafo-estructura">
+                    Mediante estos lastres se garantiza que la instalación está protegida contra desprendimientos debido tanto a las fuerzas de tracción como de compresión sobre la propia cubierta.
+                </p>
+
+                <p class="parrafo-estructura">
+                    Se ha comprobado que la actuación a realizar no desvirtúa el carácter arquitectónico de la edificación, garantizando su adecuada integración en la estética del edificio tanto de los paneles y la estructura metálica como de cualquier tubería o canalización perteneciente a dicha instalación, evitando expresamente el trazado visible por las fachadas.
+                </p>
+
+                <p class="parrafo-estructura">
+                    Los paneles fotovoltaicos cumplen la normativa UNE-EN 61215 para módulos de silicio monocristalino, además al ir conectada a la red cuenta con los subsistemas de control y regulación, desconexión e inversión, seguridad e inyección a la red eléctrica destinataria de la electricidad generada. En cualquier caso, certifico que la actuación cumplirá las Ordenanzas reguladoras de las instalaciones de captación solar en <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>.
+                </p>
+
+                <p class="parrafo-estructura">
+                    El estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pérgola'}">pérgola</span> de la edificación es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                </p>
+            </div>
+
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 2</p>
+            </div>
+        </div>
+
+        <!-- PÁGINA 3 -->
+        <div class="contenedor-principal">
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <div class="contenido-principal">
+                <p class="parrafo-estructura">
+                    La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
+                </p>
+                <!-- Fecha -->
+                <p class="parrafo-fecha">
+                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de <strong th:text="${form['mes']}">marzo</strong> de <strong th:text="${form['anio']}">2026</strong>.
+                </p>
+
+                <!-- Logo footer -->
+                <div class="logo-footer">
+                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-footer-img" />
+                </div>
+
+                <!-- Firma y datos -->
+                <p class="parrafo-firmante">
+                    <strong>Eduardo Rivera Cabezas</strong><br>
+                    <strong>670308856</strong><br>
+                    <strong>erivera@solay.es</strong><br>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                </p>
+            </div>
+
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 3</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

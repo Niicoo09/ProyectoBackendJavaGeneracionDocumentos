@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Certificado de Solidez - Cubierta Plana Aporticada</title>
+    <style>
+        .contenedor-pdf {
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .titulo-secundario {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 140px;
+            height: auto;
+            margin-left: 15px;
+        }
+
+        .contenido-principal {
+            flex: 1;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .parrafo-intro, .parrafo-tecnico, .parrafo-estructura {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .titulo-certificado {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-transform: uppercase;
+        }
+
+        .texto-azul { color: #0066cc; font-weight: bold; }
+        .texto-fijo { font-weight: bold; }
+        .texto-rojo { color: #000000; font-weight: bold; }
+
+        .parrafo-fecha {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .logo-footer {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .logo-footer-img {
+            width: 150px;
+            height: auto;
+        }
+
+        .parrafo-firmante {
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 5px;
+        }
+
+        .pie-pagina {
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            margin-top: auto;
+        }
+
+        .contenedor-imagenes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .espacio-imagen {
+            width: 45%;
+            text-align: center;
+        }
+
+        .imagen-pdf {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+        }
+
+        @media print {
+            .contenedor-principal:not(:last-child) {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf">
+        
+        <!-- PÁGINA 1 -->
+        <div class="contenedor-principal">
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE CUBIERTA PLANA, <span class="texto-azul">APORTICADA</span></h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <div class="contenido-principal">
+                <p class="parrafo-intro">
+                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span class="texto-fijo">28.818.007-L</span>, Ingeniero Industrial colegiado número <span class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en Calle El Peñón 5 -41940, localidad de Tomares, provincia de Sevilla.
+                </p>
+
+                <h2 class="titulo-certificado">CERTIFICO</h2>
+
+                <p class="parrafo-tecnico">
+                    que el estado de la cubierta de la vivienda sita en <span class="texto-rojo" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-rojo" th:text="${form['localidadEmplazamiento']}">Localidad</span>, <span class="texto-rojo" th:text="${form['codigoPostalEmplazamiento']}">CP</span>, <span class="texto-rojo" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con referencia catastral <span class="texto-rojo" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para Autoconsumo que se tiene previsto instalar, a la vista de la inspección ocular realizada in situ, de la revisión del proyecto constructivo de la misma, y de la disposición de los módulos fotovoltaicos sobre la cubierta.
+                </p>
+
+                <p class="parrafo-tecnico">
+                    El generador fotovoltaico ha sido dimensionado mediante Memoria Técnica de Diseño según requiera la reglamentación, y está compuesto por <span class="texto-rojo" th:text="${form['e2_totalModulos']}">10</span> módulos fotovoltaicos de <span class="texto-rojo" th:text="${form['e2_potenciaPicoModulo']}">Wp</span> de potencia eléctrica y 28 kg de peso cada uno, del fabricante <span class="texto-rojo" th:text="${form['e2_marcaModeloModulo']}">Marca</span>.
+                </p>
+
+                <p class="parrafo-tecnico">
+                    La estructura de soporte de dichos módulos fotovoltaicos será del tipo <span class="texto-azul">APORTICADA PARA CUBIERTA PLANA</span> mediante perfilería de aluminio ligero del modelo 11V de la empresa <span class="texto-azul">SUNFER ESTRUCTURAS, S.L.</span>, con anclajes y fijaciones adecuados para montaje en este tipo de superficies.
+                </p>
+
+                <div class="contenedor-imagenes">
+                    <div class="espacio-imagen">
+                        <img th:src="${imagenTecnicaBase64}" class="imagen-pdf" alt="Esquema Estructura" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="pie-pagina">
+                <p>www.solay.es | Página 1</p>
+            </div>
+        </div>
+
+        <!-- PÁGINA 2 -->
+        <div class="contenedor-principal">
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h3 class="titulo-secundario">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA<br />AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE CUBIERTA PLANA, <span class="texto-azul">APORTICADA</span></h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <div class="contenido-principal">
+                <p class="parrafo-estructura">
+                  Dicha <span class="texto-azul">ESTRUCTURA APORTICADA</span> será fijada a la cubierta mediante varias varillas roscadas y fijadas mediante taco químico tipo HILTI o similar sobre la superficie técnica del soporte.
+                </p>
+
+                <p class="parrafo-estructura">
+                  Dicha estructura metálica en acero galvanizado será fijada sobre unos lastres de 22 kg de peso cada uno, fabricados por piezas de hormigón para evitar la perforación de la cubierta y asegurar la estanquidad de la misma.
+                </p>
+
+                <p class="parrafo-estructura">
+                  El plano formado por los módulos fotovoltaicos tendrá una disposición de <span class="texto-rojo" th:text="${form['e2_inclinacionGenerador'] + 'º'}">20º</span> con respecto a la superficie de la cubierta plana, con una separación entre filas de módulos calculada para evitar las sombras.
+                </p>
+
+                <p class="parrafo-estructura">
+                  Las varillas/anclajes y las fijaciones a lastres serán fijadas según la naturaleza del soporte, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete marcados por el fabricante.
+                </p>
+
+                <p class="parrafo-estructura">
+                  La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
+                </p>
+
+                <p class="parrafo-fecha">
+                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de <strong th:text="${form['mes']}">marzo</strong> de <strong th:text="${form['anio']}">2026</strong>.
+                </p>
+
+                <div class="logo-footer">
+                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-footer-img" />
+                </div>
+
+                <p class="parrafo-firmante">
+                    <strong>Eduardo Rivera Cabezas</strong><br>
+                    <strong>670308856</strong><br>
+                    <strong>erivera@solay.es</strong><br>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                </p>
+            </div>
+
+            <div class="pie-pagina">
+                <p>www.solay.es | Página 2</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
