@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Planos de Situación, Emplazamiento y Cubierta</title>
+    <style>
+        /* ========== VARIABLES Y RESET ========== */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* ========== CONTENEDOR PDF ========== */
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        /* ========== CONTENEDOR PRINCIPAL (PÁGINAS) ========== */
+        .contenedor-principal {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm 20mm; /* Reducido un poco para evitar desbordes */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Salto de página para impresión */
+        .pagina-1, .pagina-2 {
+            page-break-after: always;
+        }
+
+        /* ========== ENCABEZADO ========== */
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 27px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .titulo-secundario {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ========== TÍTULO DESCRIPTIVO ========== */
+        .titulo-descriptivo {
+            padding: 12px 15px;
+            border-radius: 4px;
+            text-align: center;
+            background-color: #e2e2e2;
+        }
+
+        .texto-descriptivo {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .contenido-principal {
+            line-height: 1.6;
+            font-size: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ========== SECCIONES ========== */
+        .seccion-datos,
+        .seccion-plano {
+            margin-bottom: 0px;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            text-transform: uppercase;
+        }
+
+        /* ========== TABLA DE DATOS ========== */
+        .tabla-datos {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+
+        .tabla-datos tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .tabla-datos td {
+            padding: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .tabla-datos .label {
+            font-weight: bold;
+            width: 25%;
+            background-color: #f5f5f5;
+        }
+
+        .tabla-datos .valor {
+            width: 25%;
+        }
+
+        /* ========== PLANO DE SITUACIÓN ========== */
+        .contenedor-plano-situacion {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin: 8px 0;
+            min-height: 280px;
+        }
+
+        .contenido-pagina-2 .contenedor-plano-situacion,
+        .contenido-pagina-3 .contenedor-plano-situacion {
+            min-height: 320px;
+        }
+
+        .datos-plano {
+            flex: 0 0 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 12px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .dato-bloque {
+            margin-bottom: 5px;
+        }
+
+        .dato-titulo {
+            font-style: italic;
+            margin: 0 0 5px 0;
+            font-size: 12px;
+        }
+
+        .dato-label {
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .dato-item {
+            margin: 3px 0 0 0;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .imagen-plano {
+            flex: 1;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            min-height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .placeholder-imagen {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .imagen-contenido {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        /* ========== LOGOS Y CERTIFICACIONES ========== */
+        .seccion-logos {
+            margin-top: 20px;
+            padding: 15px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contenedor-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .logo-item {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-certificacion {
+            max-width: 100%;
+            height: auto;
+            max-height: 60px;
+            object-fit: contain;
+        }
+
+        /* ========== FIRMA Y FECHA ========== */
+        .seccion-firma-final {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .parrafo-fecha {
+            font-weight: bold;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        .logo-footer {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .logo-footer-img {
+            width: 150px;
+            height: auto;
+        }
+
+        .parrafo-firmante {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* ========== PIE DE PÁGINA ========== */
+        .pie-pagina {
+            padding: 10px 0;
+            border-top: 1px solid #0066cc;
+            margin-top: auto; /* Empuja al final */
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .texto-pie {
+            margin: 1px 0;
+        }
+
+        /* ========== PRINT RULES ========== */
+        @media print {
+            .pagina-1, .pagina-2 {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf">
+
+        <!-- ========== PÁGINA 1: ENCABEZADO, DATOS Y LOGOS ========== -->
+        <div class="contenedor-principal pagina-1">
+            <!-- Encabezado -->
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">PLANOS DE SITUACIÓN,</h1>
+                    <h3 class="titulo-secundario">EMPLAZAMIENTO Y CUBIERTA</h3>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <!-- Título Descriptivo -->
+            <div class="titulo-descriptivo">
+                <p class="texto-descriptivo">
+                    <span th:text="${form['pse_tipo']}"></span>
+                    <span> de </span>
+                    <span th:text="${form['pse_potencia'] + 'kW '}"></span>
+                    <span th:text="${form['pse_descripcion']}"></span>
+                </p>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="contenido-principal">
+                <!-- Sección Datos -->
+                <div class="seccion-datos">
+                    <h2 class="titulo-seccion">DATOS DEL PROYECTO</h2>
+                    <table class="tabla-datos">
+                        <tbody>
+                            <tr>
+                                <td class="label">Titular:</td>
+                                <td class="valor" th:text="${form['promotor']}"></td>
+                                <td class="label">NIF/CIF:</td>
+                                <td class="valor" th:text="${form['nif']}"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Dirección:</td>
+                                <td class="valor" colspan="3" th:text="${form['direccion']}"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Localidad:</td>
+                                <td class="valor" th:text="${form['localidad']}"></td>
+                                <td class="label">Código Postal:</td>
+                                <td class="valor" th:text="${form['codigoPostal']}"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Referencia Catastral:</td>
+                                <td class="valor" colspan="3" th:text="${form['referenciaCatastral']}"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Potencia:</td>
+                                <td class="valor" th:text="${form['pse_potencia'] + ' kW'}"></td>
+                                <td class="label">Tipo Instalación:</td>
+                                <td class="valor" th:text="${form['tipoInstalacion']}"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Autor proyecto:</td>
+                                <td class="valor" colspan="3">Eduardo Rafael Rivera Cabezas - 4654</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Sección Logos Renovables -->
+                <div class="seccion-logos">
+                    <div class="contenedor-logos">
+                        <div class="logo-item"><img th:src="${logoRenovables1Base64}" class="logo-certificacion" /></div>
+                        <div class="logo-item"><img th:src="${logoRenovables2Base64}" class="logo-certificacion" /></div>
+                        <div class="logo-item"><img th:src="${logoRenovables3Base64}" class="logo-certificacion" /></div>
+                        <div class="logo-item"><img th:src="${logoRenovables4Base64}" class="logo-certificacion" /></div>
+                        <div class="logo-item"><img th:src="${logoRenovables5Base64}" class="logo-certificacion" /></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie de página -->
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 1</p>
+            </div>
+        </div>
+
+        <!-- ========== PÁGINA 2: PLANO DE SITUACIÓN Y EMPLAZAMIENTO ========== -->
+        <div class="contenedor-principal pagina-2">
+            <div class="contenido-principal contenido-pagina-2">
+                <!-- Plano de Situación -->
+                <div class="seccion-plano">
+                    <h2 class="titulo-seccion">Plano de Situación</h2>
+                    <div class="contenedor-plano-situacion">
+                        <div class="datos-plano">
+                            <div class="dato-bloque">
+                                <p class="dato-titulo">Plano de situación geográfica de la instalación.</p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Datos Generales:</strong></p>
+                                <p class="dato-item">E2 - Instalación Generadora Fotovoltaica</p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Provincia:</strong></p>
+                                <p class="dato-item" th:text="${form['provincia']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Localidad:</strong></p>
+                                <p class="dato-item" th:text="${form['localidad']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Referencia Catastral</strong></p>
+                                <p class="dato-item" th:text="${form['referenciaCatastral']}"></p>
+                            </div>
+                        </div>
+                        <div class="imagen-plano">
+                            <img th:if="${imagenSituacionBase64 != null}" th:src="${imagenSituacionBase64}" class="imagen-contenido" />
+                            <div th:unless="${imagenSituacionBase64 != null}" class="placeholder-imagen">[MAPA DE SITUACIÓN]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plano de Emplazamiento -->
+                <div class="seccion-plano">
+                    <h2 class="titulo-seccion">Plano de Emplazamiento</h2>
+                    <div class="contenedor-plano-situacion">
+                        <div class="datos-plano">
+                            <div class="dato-bloque">
+                                <p class="dato-titulo">Plano de emplazamiento de la instalación.</p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Dirección:</strong></p>
+                                <p class="dato-item" th:text="${form['direccion']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Número:</strong></p>
+                                <p class="dato-item" th:text="${form['numero']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Código Postal:</strong></p>
+                                <p class="dato-item" th:text="${form['codigoPostal']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Provincia:</strong></p>
+                                <p class="dato-item" th:text="${form['provincia']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Localidad:</strong></p>
+                                <p class="dato-item" th:text="${form['localidad']}"></p>
+                            </div>
+                        </div>
+                        <div class="imagen-plano">
+                            <img th:if="${imagenEmplazamientoBase64 != null}" th:src="${imagenEmplazamientoBase64}" class="imagen-contenido" />
+                            <div th:unless="${imagenEmplazamientoBase64 != null}" class="placeholder-imagen">[FOTO AÉREA/PLANO]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pie de página -->
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 2</p>
+            </div>
+        </div>
+
+        <!-- ========== PÁGINA 3: PLANO DE CUBIERTA ========== -->
+        <div class="contenedor-principal pagina-3">
+            <div class="contenido-principal contenido-pagina-3">
+                <div class="seccion-plano">
+                    <h2 class="titulo-seccion">Plano de Cubierta</h2>
+                    <div class="contenedor-plano-situacion">
+                        <div class="datos-plano">
+                            <div class="dato-bloque">
+                                <p class="dato-titulo">Plano de detalle de la instalación fotovoltaica en cubierta.</p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Total nº de módulos:</strong></p>
+                                <p class="dato-item" th:text="${form['totalModulos']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Potencia de los módulos (Wp):</strong></p>
+                                <p class="dato-item" th:text="${form['potenciaModulos']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Potencia pico del generador (Wp):</strong></p>
+                                <p class="dato-item" th:text="${form['potenciaPicoGenerador']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Disposición de los módulos:</strong></p>
+                                <p class="dato-item" th:text="${form['disposicionModulos']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Inclinación (º):</strong></p>
+                                <p class="dato-item" th:text="${form['e2_inclinacionGenerador']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Orientación:</strong></p>
+                                <p class="dato-item" th:text="${form['e2_orientacionGenerador']}"></p>
+                            </div>
+                            <div class="dato-bloque">
+                                <p class="dato-label"><strong>Ubicación:</strong></p>
+                                <p class="dato-item" th:text="${form['direccion']}"></p>
+                            </div>
+                        </div>
+                        <div class="imagen-plano">
+                            <img th:if="${imagenCubiertaBase64 != null}" th:src="${imagenCubiertaBase64}" class="imagen-contenido" />
+                            <div th:unless="${imagenCubiertaBase64 != null}" class="placeholder-imagen">[FOTO DE CUBIERTA]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firma y Fecha -->
+            <div class="seccion-firma-final">
+                <p class="parrafo-fecha">
+                    En <strong th:text="${form['localidad']}"></strong>, a <strong th:text="${form['pse_dia'] + ' de ' + form['pse_mes'] + ' de ' + form['pse_anio']}"></strong>.
+                </p>
+                <div class="logo-footer">
+                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-footer-img" />
+                </div>
+                <p class="parrafo-firmante">
+                    <strong>Eduardo Rivera Cabezas</strong><br/>
+                    <strong>670308856</strong><br/>
+                    <strong>erivera@solay.es</strong><br/>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                </p>
+            </div>
+
+            <!-- Pie de página -->
+            <div class="pie-pagina">
+                <p class="texto-pie">www.solay.es</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 3</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

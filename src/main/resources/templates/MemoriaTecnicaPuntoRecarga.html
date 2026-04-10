@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Memoria Técnica de Diseño - Punto de Recarga VE</title>
@@ -9,7 +9,7 @@
             --color-orange-main: #FFA02A;
             --color-orange-light: #FFCC99;
             --color-orange-pale: #fff9f7;
-            --border-black: 1px solid #000;
+            --color-orange-medium-strong: #FFA02A;
         }
 
         @page {
@@ -19,51 +19,57 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 10px;
-            line-height: 1.2;
             color: #000;
             margin: 0;
             padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         /* ========== CONTENEDOR PRINCIPAL ========== */
         .contenedor-principal {
             width: 100%;
+            max-width: 21cm;
+            margin: 0 auto;
+            background-color: #fff;
+            overflow-x: hidden;
         }
 
-        /* ========== ENCABEZADO ========== */
-        .encabezado-documento {
+        /* ========== ENCABEZADO DEL DOCUMENTO ========== */
+        .encabezado-documento-principal {
+            padding: 12px 20px;
             text-align: center;
             border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
         }
 
         .titulo-encabezado {
             margin: 0;
             font-size: 16px;
             font-weight: bold;
+            color: #000;
         }
 
         .subtitulo-encabezado {
-            margin: 3px 0 0 0;
+            margin: 5px 0 0 0;
             font-size: 11px;
-            font-weight: bold;
+            color: #000;
         }
 
-        /* ========== EXPEDIENTE ========== */
+        /* ========== CONTENEDOR DE CONTENIDO ========== */
+        .contenedor-contenido {
+            padding: 12px 20px;
+        }
+
+        /* ========== GRID DE EXPEDIENTE Y REGISTRO ========== */
         .grid-expediente {
-            display: table;
-            width: 100%;
-            border: var(--border-black);
-            margin-bottom: 10px;
-            border-collapse: collapse;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid #000;
+            margin-bottom: 5px;
         }
 
         .caja-expediente {
-            display: table-cell;
-            width: 50%;
-            border-right: var(--border-black);
+            border-right: 1px solid #000;
             text-align: center;
         }
 
@@ -72,497 +78,749 @@
         }
 
         .encabezado-caja {
-            background-color: var(--color-orange-main);
+            background-color: var(--color-orange-medium-strong);
             font-weight: bold;
-            font-size: 9px;
-            padding: 3px;
-            border-bottom: var(--border-black);
+            font-size: 10px;
+            padding: 5px;
+
         }
 
         .contenido-caja {
-            padding: 4px;
             font-size: 11px;
-            min-height: 15px;
+            color: #000;
+            min-height: 20px;
         }
 
-        /* ========== SECCIONES ========== */
+        /* ========== SECCIONES PRINCIPALES ========== */
         .seccion {
-            border: var(--border-black);
-            margin-bottom: 8px;
-            page-break-inside: avoid;
+            border-width: 0 1px 1px 1px;
+            border-style: solid;
+            border-color: #000;
         }
 
         .encabezado-seccion {
-            background-color: var(--color-orange-main);
-            padding: 5px;
             font-weight: bold;
+            background-color: var(--color-orange-medium-strong);
+            padding: 5px 5px;
+            border-bottom: 1px solid #000;
+            display: flex;
+            align-items: center;
             font-size: 11px;
-            border-bottom: var(--border-black);
         }
 
-        .subseccion-letra {
-            background-color: #fff;
-            padding: 1px 6px;
-            border-radius: 2px;
+        .subseccion-titulo-span {
+            padding: 2px 6px;
+            border-radius: 3px;
             margin-right: 5px;
+            color: #000;
+            font-weight: bold;
         }
 
-        /* ========== GRIDS Y FILAS ========== */
-        .fila {
-            display: table;
-            width: 100%;
-            border-bottom: var(--border-black);
-            border-collapse: collapse;
+        /* ========== FILAS GRID ========== */
+        .fila-grid {
+            display: grid;
+            border-bottom: 1px solid #000;
         }
 
-        .fila-sin-borde { border-bottom: none; }
+        .fila-2col {
+            grid-template-columns: 1fr 1fr;
+        }
 
+        .fila-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .fila-5col {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .fila-sin-borde {
+            border-bottom: none;
+        }
+
+        /* ========== CELDAS ========== */
         .celda {
-            display: table-cell;
-            padding: 4px;
-            border-right: var(--border-black);
-            vertical-align: top;
+            padding: 1px 0px 0px 4px;
         }
 
-        .celda:last-child { border-right: none; }
+        .celda-izquierda {
+            border-right: 1px solid #000;
+        }
 
+        /* ========== TIPOGRAFÍA Y CONTENIDO ========== */
         .etiqueta {
             font-weight: bold;
-            font-size: 8px;
-            display: block;
-            margin-bottom: 2px;
-            text-transform: uppercase;
-        }
-
-        .valor {
             font-size: 10px;
-            min-height: 12px;
-            display: block;
+            margin-bottom: 1px;
         }
 
-        /* ========== SUBSECCIONES COLOR ========== */
-        .titulo-sub {
-            background-color: var(--color-orange-light);
-            padding: 4px;
-            font-weight: bold;
-            border-bottom: var(--border-black);
-            font-size: 10px;
-        }
-
-        .cuerpo-sub {
-            padding: 0;
-        }
-
-        /* ========== CHECKBOXES CUSTOM ========== */
-        .check-box {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border: 1px solid #000;
-            margin-right: 4px;
-            vertical-align: middle;
-            text-align: center;
-            line-height: 10px;
-            font-weight: bold;
-        }
-
-        .opcion-check {
-            display: inline-block;
-            margin-right: 15px;
-            font-size: 10px;
-        }
-
-        /* ========== TABLAS TÉCNICAS ========== */
-        .tabla-tecnica {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .tabla-tecnica th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            font-size: 8px;
-            padding: 4px;
-            border: var(--border-black);
-        }
-
-        .tabla-tecnica td {
-            padding: 4px;
-            border: var(--border-black);
-            text-align: center;
-        }
-
-        /* ========== PROTECCIONES ========== */
-        .lista-protecciones {
-            padding: 5px 10px 5px 25px;
-            margin: 0;
-        }
-
-        .lista-protecciones li {
-            margin-bottom: 4px;
+        .etiqueta-pequena {
             font-size: 9px;
         }
 
-        /* ========== IMÁGENES / ESQUEMAS ========== */
-        .contenedor-esquema {
-            text-align: center;
-            padding: 10px;
-            min-height: 200px;
-            background-color: var(--color-orange-pale);
+        .etiqueta-grande {
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid #000;
+            padding: 3px;
         }
 
-        .img-esquema {
+        .valor {
+            color: #000;
+            min-height: 17px;
+            font-size: 10px;
+        }
+
+        .valor-pequeno {
+            font-size: 9px;
+        }
+
+        .valor-grande {
+            color: #000;
+            min-height: 17px;
+        }
+
+        /* ========== SUBSECCIONES ========== */
+        .subseccion {
+            border-bottom: 0 solid #000;
+        }
+
+        .subseccion-titulo {
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            padding: 5px 5px;
+            background-color: #FFCC99;
+            color: rgb(0, 0, 0);
+            font-size: 11px;
+        }
+
+        /* ========== ELEMENTOS ESPECIALES ========== */
+        .fila-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid #000;
+            padding: 4px;
+        }
+
+        .opciones-checkbox {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 3px;
+        }
+
+        .opcion-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+        }
+
+        .grid-modalidades {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4px;
+        }
+
+        .modalidad-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+        }
+
+        .cuerpo-seccion {
+            padding: 0px;
+        }
+
+        .cuerpo-seccion-borde {
+            border-bottom: 1px solid #000;
+        }
+
+        .seccion-firma {
+            text-align: center;
+            padding-top: 15px;
+        }
+
+        .fecha-firma {
+            font-weight: bold;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        .imagen-firma {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .nombre-firmante {
+            font-weight: bold;
+            font-size: 10px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+        }
+
+        .nota-legal {
+            padding: 3px;
+            text-align: center;
+            font-size: 9px;
+            color: #000;
+        }
+
+        .nota-legal p {
+            margin: 4px 0;
+        }
+
+        /* ========== TABLA DE CIRCUITOS (Sección F) ========== */
+        .tabla-circuitos {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+        .tabla-circuitos tr {
+            border: 1px solid #000;
+        }
+
+        .tabla-circuitos th,
+        .tabla-circuitos td {
+            border: 1px solid #000;
+            padding: 4px;
+        }
+
+        .tabla-circuitos th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .campo-editable {
+            color: #000;
+            font-size: 10px;
+        }
+
+        /* ========== LISTA DE PROTECCIONES ========== */
+        .texto-protecciones {
+            font-size: 10px;
+            color: #000;
+            margin-bottom: 3px;
+            font-weight: bold;
+            padding: 3px;
+        }
+
+        .lista-protecciones {
+            padding-left: 20px;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #000;
+        }
+
+        .lista-protecciones li {
+            margin-bottom: 3px;
+        }
+
+        /* ========== CONTENEDORES DE ESQUEMAS ========== */
+        .contenedor-esquema {
+            border: 2px dashed #000;
+            text-align: center;
+            background-color: #fff9f7;
+            min-height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .imagen-esquema {
             max-width: 100%;
             max-height: 350px;
             object-fit: contain;
         }
 
-        /* ========== FIRMA ========== */
-        .bloque-firma {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .firma-img {
-            height: 60px;
-            margin: 5px 0;
+        .placeholder-esquema {
+            color: #999;
+            font-size: 12px;
         }
 
         /* ========== PIE DE PÁGINA ========== */
         .pie-pagina {
-            margin-top: 20px;
+            margin-top: 30px;
+            padding: 10px;
+            border-top: 2px solid var(--color-orange-medium-strong);
             text-align: center;
-            font-size: 8px;
-            border-top: 1px solid var(--color-orange-main);
-            padding-top: 10px;
+            font-size: 9px;
+            color: #000;
         }
 
-        .logo-pie { height: 30px; margin-bottom: 5px; }
+        /* ========== ESTILOS DE IMPRESIÓN ========== */
+        @media print {
+            .seccion {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
 
+            .subseccion {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .fila-grid {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .contenedor-esquema {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
     </style>
 </head>
 <body>
+    <div data-pdf-content class="contenedor-principal">
+        <!-- ENCABEZADO -->
+        <div class="encabezado-documento-principal">
+            <h1 class="titulo-encabezado">MEMORIA TÉCNICA DE DISEÑO</h1>
+            <p class="subtitulo-encabezado">INSTALACIONES DE RECARGA DE VEHÍCULOS ELÉCTRICOS</p>
+        </div>
 
-<div class="contenedor-principal">
+        <div class="contenedor-contenido">
+            <!-- NÚMERO DE EXPEDIENTE Y REGISTRO -->
+            <div class="grid-expediente">
+                <div class="caja-expediente">
+                    <div class="encabezado-caja">Nº EXPEDIENTE:</div>
+                    <div class="contenido-caja" th:text="${form['expedienteEco']}"></div>
+                </div>
+                <div class="caja-expediente">
+                    <div class="encabezado-caja">Nº REGISTRO DE LA INSTALACIÓN:</div>
+                    <div class="contenido-caja" th:text="${form['numeroRegistro']}"></div>
+                </div>
+            </div>
 
-    <!-- ENCABEZADO -->
-    <div class="encabezado-documento">
-        <h1 class="titulo-encabezado">MEMORIA TÉCNICA DE DISEÑO</h1>
-        <p class="subtitulo-encabezado">INSTALACIONES DE RECARGA DE VEHÍCULOS ELÉCTRICOS</p>
+            <!-- SECCIÓN A: TITULAR -->
+            <div class="seccion" style="border-top: 1px solid #000;">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">A</span> | TITULAR</div>
+
+                <div class="fila-grid fila-2col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">APELLIDOS Y NOMBRE/RAZÓN SOCIAL:</div>
+                        <div class="valor" th:text="${form['apellidosNombre']}"></div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">NIF/CIF:</div>
+                        <div class="valor" th:text="${form['nifCif']}"></div>
+                    </div>
+                </div>
+
+                <div class="cuerpo-seccion-borde">
+                    <div class="etiqueta" style="margin-left: 4px;">DOMICILIO:</div>
+                    <div class="valor" style="margin-left: 4px;" th:text="${form['direccionCompleta']}"></div>
+                </div>
+
+                <div class="fila-grid fila-3col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">CÓDIGO POSTAL:</div>
+                        <div class="valor" th:text="${form['codigoPostalEmplazamiento']}"></div>
+                    </div>
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">LOCALIDAD:</div>
+                        <div class="valor" th:text="${form['localidadEmplazamiento']}"></div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">PROVINCIA:</div>
+                        <div class="valor" th:text="${form['provinciaEmplazamiento']}"></div>
+                    </div>
+                </div>
+
+                <div class="fila-grid fila-2col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">CORREO ELECTRÓNICO:</div>
+                        <div class="valor valor-pequeno" th:text="${form['correoElectronicoEmplazamiento']}"></div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">TELÉFONO:</div>
+                        <div class="valor" th:text="${form['telefono']}"></div>
+                    </div>
+                </div>
+
+                <div class="fila-grid fila-2col fila-sin-borde">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">REPRESENTANTE:</div>
+                        <div class="valor" th:text="${form['representante']}"></div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">DNI REPRESENTANTE:</div>
+                        <div class="valor" th:text="${form['dniRepresentante']}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN B: EMPLAZAMIENTO -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">B</span> | EMPLAZAMIENTO DE LA INSTALACIÓN Y USO AL QUE SE DESTINA</div>
+
+                <div class="cuerpo-seccion-borde">
+                    <div class="etiqueta" style="margin-left: 4px;">CALLE/AVENIDA:</div>
+                    <div class="valor" style="margin-left: 4px;" th:text="${form['emplazamientoCalle']}"></div>
+                </div>
+
+                <div class="fila-grid fila-5col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta etiqueta-pequena">NÚMERO:</div>
+                        <div class="valor" th:text="${form['numero']}"></div>
+                    </div>
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta etiqueta-pequena">BLOQUE:</div>
+                        <div class="valor" th:text="${form['bloque']}"></div>
+                    </div>
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta etiqueta-pequena">ESCALERA:</div>
+                        <div class="valor" th:text="${form['escalera']}"></div>
+                    </div>
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta etiqueta-pequena">PISO:</div>
+                        <div class="valor" th:text="${(form['planta'] ?: '') + ' ' + (form['puerta'] ?: '')}"></div>
+                    </div>
+                </div>
+
+                <div class="fila-grid fila-2col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">LOCALIDAD:</div>
+                        <div class="valor" th:text="${form['localidadEmplazamiento']}"></div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">PROVINCIA:</div>
+                        <div class="valor" th:text="${form['provinciaEmplazamiento']}"></div>
+                    </div>
+                </div>
+
+                <div class="cuerpo-seccion-borde">
+                    <div class="etiqueta" style="margin-left: 4px;">CORREO ELECTRÓNICO EMPLAZAMIENTO:</div>
+                    <div class="valor valor-pequeno" style="margin-left: 4px;" th:text="${form['correoElectronicoEmplazamiento']}"></div>
+                </div>
+
+                <div class="fila-grid fila-2col">
+                    <div class="celda celda-izquierda">
+                        <div class="etiqueta">TIPO DE INSTALACIÓN:</div>
+                        <div class="valor">Punto de Recarga de Vehículos Eléctricos</div>
+                    </div>
+                    <div class="celda">
+                        <div class="etiqueta">USO A QUE SE DESTINA:</div>
+                        <div class="valor">Carga de Vehículos Eléctricos</div>
+                    </div>
+                </div>
+
+                <div class="cuerpo-seccion">
+                    <div class="etiqueta-grande" style="border-bottom: none">INSTALACIÓN:</div>
+                    <div class="opciones-checkbox" style="margin-left: 4px;">
+                        <div class="opcion-checkbox">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['tipoInstalacionSeleccionada'] == 'Nueva'}" />
+                            <label>Nueva</label>
+                        </div>
+                        <div class="opcion-checkbox">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['tipoInstalacionSeleccionada'] == 'Ampliación'}" />
+                            <label>Ampliación</label>
+                        </div>
+                        <div class="opcion-checkbox">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['tipoInstalacionSeleccionada'] == 'Modificación'}" />
+                            <label>Modificación</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN C: PERSONA QUE FIRMA -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">C</span> | IDENTIFICACIÓN DE LA PERSONA QUE FIRMA LA MTD</div>
+
+                <!-- Técnico Instalador Autorizado -->
+                <div class="subseccion">
+                    <div class="etiqueta-grande">MEMORIA REALIZADA POR INSTALADOR ELÉCTRICO AUTORIZADO:</div>
+
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">NOMBRE:</div>
+                            <div class="valor" th:text="${form['nombreTecnicoInstalador']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">Nº DE CERTIFICADO DE CUALIFICACIÓN INDIVIDUAL:</div>
+                            <div class="valor" th:text="${form['numeroCertificadoInstalador']}"></div>
+                        </div>
+                    </div>
+
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">Nº DE INSTALADOR ELÉCTRICO AUTORIZADO (empresa):</div>
+                            <div class="valor" th:text="${form['numeroInstaladorEmpresa']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">DOMICILIO (calle o plaza):</div>
+                            <div class="valor" th:text="${form['domicilioTecnico']}"></div>
+                        </div>
+                    </div>
+
+                    <div class="fila-grid fila-3col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">NÚMERO:</div>
+                            <div class="valor" th:text="${form['numeroTecnico']}"></div>
+                        </div>
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">LOCALIDAD:</div>
+                            <div class="valor" th:text="${form['localidadTecnico']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">C.P.:</div>
+                            <div class="valor" th:text="${form['codigoPostalTecnico']}"></div>
+                        </div>
+                    </div>
+
+                    <div class="cuerpo-seccion">
+                        <div class="etiqueta" style="margin-left: 4px;">TELÉFONO:</div>
+                        <div class="valor" style="margin-left: 4px;" th:text="${form['telefonoTecnico']}"></div>
+                    </div>
+                </div>
+
+                <!-- Técnico Competente -->
+                <div class="subseccion" style="border-top: 1px solid #000;">
+                    <div class="fila-checkbox">
+                        <input type="checkbox" onclick="return false;" />
+                        <span>MEMORIA REALIZADA POR TÉCNICO COMPETENTE:</span>
+                    </div>
+
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda valor-grande">
+                            <div class="etiqueta">NOMBRE:</div>
+                            <div class="valor valor-grande" th:text="${form['nombreTecnicoCompetente']}"></div>
+                        </div>
+                        <div class="celda valor-grande">
+                            <div class="etiqueta">DOMICILIO (calle o plaza):</div>
+                            <div class="valor valor-grande" th:text="${form['domicilioTecnicoCompetente']}"></div>
+                        </div>
+                    </div>
+
+                    <div class="fila-grid fila-3col">
+                        <div class="celda celda-izquierda valor-grande">
+                            <div class="etiqueta">NÚMERO:</div>
+                            <div class="valor valor-grande" th:text="${form['numeroTecnicoCompetente']}"></div>
+                        </div>
+                        <div class="celda celda-izquierda valor-grande">
+                            <div class="etiqueta">LOCALIDAD:</div>
+                            <div class="valor valor-grande" th:text="${form['localidadTecnicoCompetente']}"></div>
+                        </div>
+                        <div class="celda valor-grande">
+                            <div class="etiqueta">C.P.:</div>
+                            <div class="valor valor-grande" th:text="${form['codigoPostalTecnicoCompetente']}"></div>
+                        </div>
+                    </div>
+
+                    <div class="cuerpo-seccion" style="border-bottom: 1px solid #000;">
+                        <div class="etiqueta" style="margin-left: 4px;">TELÉFONO:</div>
+                        <div class="valor valor-grande" style="margin-left: 4px;" th:text="${form['telefonoTecnicoCompetente']}"></div>
+                    </div>
+                </div>
+
+                <!-- Colegio Oficial -->
+                <div class="subseccion" style="border-bottom: none;">
+                    <div class="fila-grid fila-2col fila-sin-borde">
+                        <div class="celda celda-izquierda valor-grande">
+                            <div class="etiqueta">COLEGIO OFICIAL:</div>
+                            <div class="valor valor-grande" th:text="${form['colegioOficial']}"></div>
+                        </div>
+                        <div class="celda valor-grande">
+                            <div class="etiqueta">Nº DE COLEGIADO:</div>
+                            <div class="valor valor-grande" th:text="${form['numeroColegiado']}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Firma y Fecha -->
+                <div class="seccion-firma">
+                    <div class="fecha-firma">
+                        En Sevilla a <span th:text="${form['diaAceptacion'] ?: '___'}"></span> de <span th:text="${form['mesAceptacion'] ?: '___'}"></span> de 20<span th:text="${form['anioAceptacion'] ?: '___'}"></span>
+                    </div>
+                    <div class="imagen-firma">
+                        <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}" alt="Firma" style="height: 60px; object-fit: contain;" />
+                    </div>
+                    <div style="width: 60%; margin: 0 auto; border-top: 1px solid #000; padding-top: 5px;">
+                        <span class="nombre-firmante" style="border-top: none;">Firma del Instalador Autorizado / Técnico Titulado</span>
+                    </div>
+                </div>
+
+                <div class="nota-legal">
+                    <p>(Cuando la MTD sea firmada por Técnico Titulado vendrá sellada por el Colegio Oficial)</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN D: MODALIDADES -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">D</span> | MODALIDADES DE INSTALACIÓN</div>
+
+                <div class="cuerpo-seccion">
+                    <div class="etiqueta-grande" style="border-bottom: none;">MODALIDADES BÁSICAS:</div>
+                    <div class="grid-modalidades" style="margin-left: 4px; padding-bottom: 5px;">
+                        <div class="modalidad-item">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['modalidadBasicaM1'] == true}" />
+                            <label>M1. Instalaciones de potencia instalada ≤ 10 kW</label>
+                        </div>
+                        <div class="modalidad-item">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['modalidadBasicaM2'] == true}" />
+                            <label>M2. Instalaciones de potencia instalada entre 10 &lt; P ≤ 50 kW</label>
+                        </div>
+                        <div class="modalidad-item">
+                            <input type="checkbox" onclick="return false;" th:checked="${form['modalidadBasicaM3'] == true}" />
+                            <label>M3. Instalaciones de potencia instalada > 50 kW</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN E: INSTALACIÓN PARA LA RECARGA DE VEHÍCULO ELÉCTRICO -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">E</span> | INSTALACIÓN PARA LA RECARGA DE VEHÍCULO ELÉCTRICO</div>
+
+                <!-- E.1 CARGADOR -->
+                <div class="subseccion">
+                    <div class="subseccion-titulo"><span class="subseccion-titulo-span">E.1</span> CARGADOR</div>
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">MARCA:</div>
+                            <div class="valor" th:text="${form['cargadorMarca']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">MODELO:</div>
+                            <div class="valor" th:text="${form['cargadorModelo']}"></div>
+                        </div>
+                    </div>
+                    <div class="fila-grid fila-2col fila-sin-borde">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">NÚMERO/CAPACIDAD DE LA CONEXIÓN:</div>
+                            <div class="valor" th:text="${form['cargadorNumeroCapacidad']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">TIPO DE CABLE:</div>
+                            <div class="valor" th:text="${form['cargadorTipoCable']}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E.2 INFRAESTRUCTURA DE RECARGA -->
+                <div class="subseccion">
+                    <div class="subseccion-titulo" style="border-top: 1px solid #000;"><span class="subseccion-titulo-span">E.2</span> INFRAESTRUCTURA DE RECARGA</div>
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">NÚMERO DE PUNTOS DE CARGA:</div>
+                            <div class="valor" th:text="${form['numeroPuntosRecarga']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">MONOFÁSICA / TRIFÁSICA:</div>
+                            <div class="valor" th:text="${form['trifasica'] == true ? 'TRIFÁSICA' : 'MONOFÁSICA'}"></div>
+                        </div>
+                    </div>
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">POTENCIA INSTALADA TOTAL (kW):</div>
+                            <div class="valor" th:text="${form['potenciaInstalada']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">POTENCIA PREVISTA TOTAL (kW):</div>
+                            <div class="valor" th:text="${form['potenciaPrevisita']}"></div>
+                        </div>
+                    </div>
+                    <div class="fila-grid fila-2col">
+                        <div class="celda celda-izquierda">
+                            <div class="etiqueta">TIPO DE INSTALACIÓN:</div>
+                            <div class="valor" th:text="${form['tipoInstalacionRecarga']}"></div>
+                        </div>
+                        <div class="celda">
+                            <div class="etiqueta">MODO DE CARGA:</div>
+                            <div class="valor" th:text="${form['modoCarga']}"></div>
+                        </div>
+                    </div>
+                    <div class="cuerpo-seccion-borde">
+                        <div class="etiqueta" style="margin-left: 4px;">TIPO DE CONECTOR:</div>
+                        <div class="valor" style="margin-left: 4px;" th:text="${form['tipoConector']}"></div>
+                    </div>
+                </div>
+
+                <!-- E.3 CUADRO DE MANDO Y PROTECCIÓN -->
+                <div class="subseccion">
+                    <div class="subseccion-titulo"><span class="subseccion-titulo-span">E.3</span> CUADRO DE MANDO Y PROTECCIÓN</div>
+                    <p class="texto-protecciones">Protecciones de cabecera en la línea de alimentación del cargador de VE de acuerdo con ITC BT 52:</p>
+                    <ul class="lista-protecciones">
+                        <li><strong>INTERRUPTOR GENERAL MAGNETOTÉRMICO <span th:text="${form['interruptorGeneralAmperaje']}"></span> A:</strong> Con protección contra sobretensiones temporales/permanentes en el mismo dispositivo. Este será situado en cabecera con el fin de proteger la instalación contra sobrecargas y cortocircuitos. El calibre será seleccionado y calculado en base al circuito que proteja. Se instalará uno por línea de curva C.</li>
+                        <li><strong>INTERRUPTOR DIFERENCIAL CLASE A SUPER INMUNIZADO <span th:text="${form['interruptorDiferencialAmperaje']}"></span> A <span th:text="${form['interruptorDiferencialSensibilidad']}"></span> mA:</strong> Irá situado en cabecera con el fin de proteger a la instalación y a las personas de posibles derivaciones directas o indirectas. Se instalará uno por línea de clase A y <span th:text="${form['interruptorDiferencialSensibilidad']}"></span> mA</li>
+                        <li><strong>DESCARGADOR DE SOBRETENSIONES TRANSITORIAS:</strong> Con el fin de proteger a los equipos y la instalación contra sobretensiones transitorias inducidas tipo 1 y tipo 2 por descargas atmosféricas en cabecera (CGMP) y no siendo superior la distancia a los puntos de recarga a 10 m</li>
+                        <li><strong>PUESTA A TIERRA:</strong> <span th:text="${form['puestaATierra']}"></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="page-break-before: always;"></div>
+
+            <!-- SECCIÓN F: CARACTERÍSTICAS DE LAS LÍNEAS Y CIRCUITOS -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">F</span> | CARACTERÍSTICAS DE LAS LÍNEAS Y CIRCUITOS</div>
+
+                <div class="cuerpo-seccion">
+                    <table class="tabla-circuitos">
+                        <thead>
+                            <tr>
+                                <th>PARTE DE LA INSTALACIÓN</th>
+                                <th>POTENCIA PREVISTA (kW)</th>
+                                <th>LONGITUD (m)</th>
+                                <th>MATERIAL CONDUCTOR/SECCIÓN (mm²)</th>
+                                <th>INTENSIDAD ADMISIBLE (A)</th>
+                                <th>CAÍDA DE TENSIÓN (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cuadro Principal - Cargador VE</td>
+                                <td class="campo-editable" th:text="${form['potenciaPrevistaCuadroPrincipal']}"></td>
+                                <td class="campo-editable" th:text="${form['longitudCuadroPrincipal']}"></td>
+                                <td class="campo-editable" th:text="${form['materialConductor']}"></td>
+                                <td class="campo-editable" th:text="${form['intensidadAdmisible']}"></td>
+                                <td class="campo-editable" th:text="${form['caidaTension']}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN G: ESQUEMA UNIFILAR -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">G</span> | ESQUEMA UNIFILAR DE LA INSTALACIÓN (PROTECCIONES INCLUIDAS)</div>
+
+                <div class="contenedor-esquema">
+                    <img th:if="${esquemaUnifilarBase64 != null}" th:src="${esquemaUnifilarBase64}" class="imagen-esquema" />
+                    <div th:unless="${esquemaUnifilarBase64 != null}" class="placeholder-esquema">Esquema eléctrico unifilar de la instalación</div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN H: PLANO DE EMPLAZAMIENTO -->
+            <div class="seccion">
+                <div class="encabezado-seccion"><span class="subseccion-titulo-span" style="background-color: #FFA02A;">H</span> | PLANO DE EMPLAZAMIENTO Y CROQUIS DE ACCESO</div>
+
+                <div class="contenedor-esquema">
+                    <img th:if="${planoEmplazamientoBase64 != null}" th:src="${planoEmplazamientoBase64}" class="imagen-esquema" />
+                    <div th:unless="${planoEmplazamientoBase64 != null}" class="placeholder-esquema">Plano de emplazamiento y acceso a la instalación</div>
+                </div>
+            </div>
+
+            <!-- PIE DE PÁGINA -->
+            <div class="pie-pagina">
+                <div style="margin-bottom: 5px">
+                    <img th:if="${logoBase64 != null}" th:src="${logoBase64}" alt="Solay" style="height: 40px; margin: 0 auto" />
+                </div>
+                <p style="margin: 5px 0">Solay Fotovoltaica</p>
+                <p style="margin: 3px 0; font-size: 8px">
+                    Paseo de Bollullos de la Mitación 18. Pol. El Pibo - 41110 Bollullos de la Mitación (Sevilla)
+                </p>
+            </div>
+        </div>
     </div>
-
-    <!-- EXPEDIENTE -->
-    <div class="grid-expediente">
-        <div class="caja-expediente">
-            <div class="encabezado-caja">Nº EXPEDIENTE:</div>
-            <div class="contenido-caja" th:text="${form['expedienteEco'] ?: '–'}"></div>
-        </div>
-        <div class="caja-expediente">
-            <div class="encabezado-caja">Nº REGISTRO DE LA INSTALACIÓN:</div>
-            <div class="contenido-caja" th:text="${form['numeroRegistro'] ?: '–'}"></div>
-        </div>
-    </div>
-
-    <!-- SECCIÓN A: TITULAR -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">A</span> | TITULAR
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 70%">
-                <span class="etiqueta">APELLIDOS Y NOMBRE/RAZÓN SOCIAL:</span>
-                <span class="valor" th:text="${form['apellidosNombre']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">NIF/CIF:</span>
-                <span class="valor" th:text="${form['nifCif']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda">
-                <span class="etiqueta">DOMICILIO:</span>
-                <span class="valor" th:text="${form['direccionCompleta']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 33%">
-                <span class="etiqueta">CÓDIGO POSTAL:</span>
-                <span class="valor" th:text="${form['codigoPostalEmplazamiento']}"></span>
-            </div>
-            <div class="celda" style="width: 33%">
-                <span class="etiqueta">LOCALIDAD:</span>
-                <span class="valor" th:text="${form['localidadEmplazamiento']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">PROVINCIA:</span>
-                <span class="valor" th:text="${form['provinciaEmplazamiento']}"></span>
-            </div>
-        </div>
-        <div class="fila fila-sin-borde">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">CORREO ELECTRÓNICO:</span>
-                <span class="valor" th:text="${form['correoElectronicoEmplazamiento']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">TELÉFONO:</span>
-                <span class="valor" th:text="${form['telefono']}"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- SECCIÓN B: EMPLAZAMIENTO -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">B</span> | EMPLAZAMIENTO DE LA INSTALACIÓN Y USO AL QUE SE DESTINA
-        </div>
-        <div class="fila">
-            <div class="celda">
-                <span class="etiqueta">CALLE/AVENIDA:</span>
-                <span class="valor" th:text="${form['emplazamientoCalle']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 25%">
-                <span class="etiqueta">NÚMERO:</span>
-                <span class="valor" th:text="${form['numero']}"></span>
-            </div>
-            <div class="celda" style="width: 25%">
-                <span class="etiqueta">BLOQUE:</span>
-                <span class="valor" th:text="${form['bloque']}"></span>
-            </div>
-            <div class="celda" style="width: 25%">
-                <span class="etiqueta">ESCALERA:</span>
-                <span class="valor" th:text="${form['escalera']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">PISO:</span>
-                <span class="valor" th:text="${form['piso']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">LOCALIDAD:</span>
-                <span class="valor" th:text="${form['localidadEmplazamiento']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">PROVINCIA:</span>
-                <span class="valor" th:text="${form['provinciaEmplazamiento']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda">
-                <span class="etiqueta">TIPO DE INSTALACIÓN:</span>
-                <span class="valor">Punto de Recarga de Vehículos Eléctricos</span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">USO A QUE SE DESTINA:</span>
-                <span class="valor">Carga de Vehículos Eléctricos</span>
-            </div>
-        </div>
-        <div class="fila fila-sin-borde" style="padding: 5px;">
-            <span class="etiqueta" style="margin-bottom: 5px">INSTALACIÓN:</span>
-            <div class="opcion-check">
-                <div class="check-box" th:text="${form['tipoInstalacionSeleccionada'] == 'Nueva' ? 'X' : ''}"></div> Nueva
-            </div>
-            <div class="opcion-check">
-                <div class="check-box" th:text="${form['tipoInstalacionSeleccionada'] == 'Ampliación' ? 'X' : ''}"></div> Ampliación
-            </div>
-            <div class="opcion-check">
-                <div class="check-box" th:text="${form['tipoInstalacionSeleccionada'] == 'Modificación' ? 'X' : ''}"></div> Modificación
-            </div>
-        </div>
-    </div>
-
-    <!-- SECCIÓN C: IDENTIFICACIÓN PERSONA QUE FIRMA -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">C</span> | IDENTIFICACIÓN DE LA PERSONA QUE FIRMA LA MTD
-        </div>
-        <div class="titulo-sub">MEMORIA REALIZADA POR INSTALADOR ELÉCTRICO AUTORIZADO:</div>
-        <div class="fila">
-            <div class="celda" style="width: 60%">
-                <span class="etiqueta">NOMBRE:</span>
-                <span class="valor" th:text="${form['nombreTecnicoInstalador'] ?: 'Eduardo Rivera Cabezas'}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">CERTIFICADO CUALIFICACIÓN:</span>
-                <span class="valor" th:text="${form['numeroCertificadoInstalador'] ?: '4654'}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 60%">
-                <span class="etiqueta">EMPRESA INSTALADORA:</span>
-                <span class="valor" th:text="${form['nombreEmpresaInstaladora'] ?: 'SOLAY INGENIEROS S.L.'}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">NIF EMPRESA:</span>
-                <span class="valor">B-42861312</span>
-            </div>
-        </div>
-
-        <div class="bloque-firma">
-            <div class="valor" style="font-weight: bold; margin-bottom: 15px;">
-                En Sevilla a <span th:text="${form['dia']}"></span> de <span th:text="${form['mes']}"></span> de 20<span th:text="${form['anio']}"></span>
-            </div>
-            <img th:src="${firmaBase64}" class="firma-img" alt="Firma">
-            <div style="border-top: 1px solid #000; display: inline-block; padding-top: 5px; width: 60%;">
-                Firma del Instalador Autorizado / Técnico Titulado
-            </div>
-            <p style="font-size: 8px; margin-top: 10px;">(Cuando la MTD sea firmada por Técnico Titulado vendrá sellada por el Colegio Oficial)</p>
-        </div>
-    </div>
-
-    <!-- SECCIÓN D: MODALIDADES -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">D</span> | MODALIDADES DE INSTALACIÓN
-        </div>
-        <div style="padding: 10px;">
-            <div style="margin-bottom: 5px;">
-                <div class="check-box" th:text="${form['modalidadBasicaM1'] == true ? 'X' : ''}"></div>
-                <span style="font-size: 10px;">M1. Instalaciones de potencia instalada ≤ 10 kW</span>
-            </div>
-            <div style="margin-bottom: 5px;">
-                <div class="check-box" th:text="${form['modalidadBasicaM2'] == true ? 'X' : ''}"></div>
-                <span style="font-size: 10px;">M2. Instalaciones de potencia instalada entre 10 &lt; P ≤ 50 kW</span>
-            </div>
-            <div>
-                <div class="check-box" th:text="${form['modalidadBasicaM3'] == true ? 'X' : ''}"></div>
-                <span style="font-size: 10px;">M3. Instalaciones de potencia instalada > 50 kW</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- SECCIÓN E: INSTALACIÓN PARA RECARGA -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">E</span> | INSTALACIÓN PARA LA RECARGA DE VEHÍCULO ELÉCTRICO
-        </div>
-        <div class="titulo-sub">E.1 CARGADOR</div>
-        <div class="fila">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">MARCA:</span>
-                <span class="valor" th:text="${form['cargadorMarca']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">MODELO:</span>
-                <span class="valor" th:text="${form['cargadorModelo']}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">CAPACIDAD CONEXIÓN:</span>
-                <span class="valor" th:text="${form['cargadorNumeroCapacidad']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">TIPO DE CABLE:</span>
-                <span class="valor" th:text="${form['cargadorTipoCable']}"></span>
-            </div>
-        </div>
-
-        <div class="titulo-sub">E.2 INFRAESTRUCTURA DE RECARGA</div>
-        <div class="fila">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">Nº PUNTOS CARGA:</span>
-                <span class="valor" th:text="${form['numeroPuntosRecarga']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">ALIMENTACIÓN:</span>
-                <span class="valor" th:text="${form['trifasica'] == true ? 'TRIFÁSICA' : 'MONOFÁSICA'}"></span>
-            </div>
-        </div>
-        <div class="fila">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">POTENCIA INSTALADA (kW):</span>
-                <span class="valor" th:text="${form['potenciaInstalada']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">POTENCIA PREVISTA (kW):</span>
-                <span class="valor" th:text="${form['potenciaPrevisita']}"></span>
-            </div>
-        </div>
-        <div class="fila fila-sin-borde">
-            <div class="celda" style="width: 50%">
-                <span class="etiqueta">MODO DE CARGA:</span>
-                <span class="valor" th:text="${form['modoCarga']}"></span>
-            </div>
-            <div class="celda">
-                <span class="etiqueta">TIPO CONECTOR:</span>
-                <span class="valor" th:text="${form['tipoConector']}"></span>
-            </div>
-        </div>
-
-        <div class="titulo-sub">E.3 CUADRO DE MANDO Y PROTECCIÓN</div>
-        <p style="padding: 5px; font-weight: bold; font-size: 9px; margin: 0;">Protecciones de cabecera de acuerdo con ITC BT 52:</p>
-        <ul class="lista-protecciones">
-            <li><strong>INTERRUPTOR MAGNETOTÉRMICO <span th:text="${form['interruptorGeneralAmperaje']}"></span>A:</strong> Protección contra sobrecargas y cortocircuitos. Curva C.</li>
-            <li><strong>INTERRUPTOR DIFERENCIAL CLASE A <span th:text="${form['interruptorDiferencialAmperaje']}"></span>A / <span th:text="${form['interruptorDiferencialSensibilidad']}"></span>mA:</strong> Protección contra derivaciones. Superinmunizado.</li>
-            <li><strong>DESCARGADOR DE SOBRETENSIONES:</strong> Protege la instalación contra picos de tensión transitorios tipo 2.</li>
-            <li><strong>PUESTA A TIERRA:</strong> <span th:text="${form['puestaATierra']}"></span></li>
-        </ul>
-    </div>
-
-    <!-- SECCIÓN F: LÍNEAS Y CIRCUITOS -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">F</span> | CARACTERÍSTICAS DE LAS LÍNEAS Y CIRCUITOS
-        </div>
-        <table class="tabla-tecnica">
-            <thead>
-                <tr>
-                    <th>PARTE INSTALACIÓN</th>
-                    <th>POT. PREVISTA (kW)</th>
-                    <th>LONGITUD (m)</th>
-                    <th>SECCIÓN (mm²)</th>
-                    <th>INT. ADMISIBLE (A)</th>
-                    <th>C. TENSIÓN (%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Cuadro Principal - Cargador</td>
-                    <td th:text="${form['potenciaPrevistaCuadroPrincipal']}"></td>
-                    <td th:text="${form['longitudCuadroPrincipal']}"></td>
-                    <td th:text="${form['materialConductor']}"></td>
-                    <td th:text="${form['intensidadAdmisible']}"></td>
-                    <td th:text="${form['caidaTension']}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div style="page-break-before: always;"></div>
-
-    <!-- SECCIÓN G: ESQUEMA UNIFILAR -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">G</span> | ESQUEMA UNIFILAR DE LA INSTALACIÓN
-        </div>
-        <div class="contenedor-esquema">
-            <img th:if="${esquemaUnifilarBase64 != null}" th:src="${esquemaUnifilarBase64}" class="img-esquema" alt="Esquema Unifilar">
-            <div th:unless="${esquemaUnifilarBase64 != null}" style="color: #666; padding-top: 50px;">ESQUEMA ELÉCTRICO UNIFILAR</div>
-        </div>
-    </div>
-
-    <!-- SECCIÓN H: PLANO DE EMPLAZAMIENTO -->
-    <div class="seccion">
-        <div class="encabezado-seccion">
-            <span class="subseccion-letra">H</span> | PLANO DE EMPLAZAMIENTO Y ACCESO
-        </div>
-        <div class="contenedor-esquema">
-            <img th:if="${planoEmplazamientoBase64 != null}" th:src="${planoEmplazamientoBase64}" class="img-esquema" alt="Plano Emplazamiento">
-            <div th:unless="${planoEmplazamientoBase64 != null}" style="color: #666; padding-top: 50px;">PLANO DE EMPLAZAMIENTO</div>
-        </div>
-    </div>
-
-    <!-- PIE DE PÁGINA -->
-    <div class="pie-pagina">
-        <img th:src="${logoBase64}" class="logo-pie" alt="SOLAY">
-        <p>Solay Fotovoltaica | www.solay.es</p>
-        <p>Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-    </div>
-
-</div>
-
 </body>
 </html>

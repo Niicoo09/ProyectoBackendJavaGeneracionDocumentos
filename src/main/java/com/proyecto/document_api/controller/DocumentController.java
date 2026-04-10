@@ -2,6 +2,7 @@ package com.proyecto.document_api.controller;
 
 import com.proyecto.document_api.model.DocumentEntity;
 import com.proyecto.document_api.repository.DocumentRepository;
+import com.proyecto.document_api.service.DocumentConfigService;
 import com.proyecto.document_api.service.DocumentService;
 import com.proyecto.document_api.utils.JsonUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,9 @@ public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
+
+    @Autowired
+    private DocumentConfigService documentConfigService;
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -210,6 +214,60 @@ public class DocumentController {
         return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", null);
     }
 
+    /**
+     * CERTIFICADO 13: Planos de Situación, Emplazamiento y Cubierta.
+     * URL: http://localhost:8080/api/v1/documents/planos/{uuid}
+     */
+    @Operation(summary = "Planos de Situación y Cubierta", description = "Genera el documento de planos de situación, emplazamiento y cubierta.")
+    @GetMapping("/planos/{id}")
+    public ResponseEntity<byte[]> generatePlanos(@PathVariable UUID id) {
+        Map<String, String> images = new HashMap<>();
+        
+        // 1. Cargamos logos de certificación (Renovables)
+        for (int i = 1; i <= 5; i++) {
+            String path = "static/logos/Icono renovables " + i + ".png";
+            String base64 = jsonUtils.getResourceAsBase64(path);
+            if (!base64.isEmpty()) {
+                images.put("logoRenovables" + i + "Base64", "data:image/png;base64," + base64);
+            }
+        }
+
+        // 2. Cargamos imágenes dinámicas del JSON (Planos)
+        documentRepository.findById(id).ifPresent(doc -> {
+            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+            
+            // Situación (Probamos varios nombres comunes)
+            mapDynamicImage(images, formData, "otros_imagenPlanoSituacion", "imagenSituacionBase64");
+            mapDynamicImage(images, formData, "otros_imagenSituacion", "imagenSituacionBase64");
+            mapDynamicImage(images, formData, "otros_foto1", "imagenSituacionBase64");
+            
+            // Emplazamiento
+            mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "imagenEmplazamientoBase64");
+            
+            // Cubierta (Probamos varios nombres comunes)
+            mapDynamicImage(images, formData, "otros_imagenPlanoCubierta", "imagenCubiertaBase64");
+            mapDynamicImage(images, formData, "otros_imagenCubierta", "imagenCubiertaBase64");
+            mapDynamicImage(images, formData, "otros_foto2", "imagenCubiertaBase64");
+        });
+        
+        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "Planos", images);
+    }
+
+    /**
+     * Auxiliar para mapear imágenesBase64 que vienen directamente en el JSON de la BD.
+     */
+    private void mapDynamicImage(Map<String, String> extraImages, Map<String, Object> formData, String jsonKey, String templateKey) {
+        Object img = formData.get(jsonKey);
+        if (img != null && !img.toString().isEmpty()) {
+            String base64 = img.toString();
+            // Aseguramos prefijo data:image si no lo tiene
+            if (!base64.startsWith("data:image")) {
+                base64 = "data:image/png;base64," + base64;
+            }
+            extraImages.put(templateKey, base64);
+        }
+    }
+
     // =========================================================================
     // LÓGICA INTERNA COMÚN
     // =========================================================================
@@ -222,13 +280,12 @@ public class DocumentController {
         // 2. Extraer datos del JSON
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
         
-        System.out.println("--- DATOS RECUPERADOS (" + templateName + ") ---");
-        formData.forEach((k, v) -> System.out.println("CAMPO: [" + k + "] -> VALOR: [" + v + "]"));
-        System.out.println("----------------------------------------------");
+        // 2.5 Enriquecer con defaultData y fieldMapping del documents.js
+        Map<String, Object> enrichedFormData = documentConfigService.enrich(templateName, formData);
 
         // 3. Preparar los datos comunes
         Map<String, Object> data = new HashMap<>();
-        data.put("form", formData);
+        data.put("form", enrichedFormData);
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
         
         // Imágenes corporativas estándar CON PREFIJO (para evitar errores de SpEL)
