@@ -41,13 +41,23 @@ public class JsonUtils {
      * Convierte una imagen de la carpeta resources (ej: static/logo.png) en una cadena Base64.
      */
     public String getResourceAsBase64(String path) {
-        try {
-            ClassPathResource imgFile = new ClassPathResource(path);
-            byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
+        byte[] bytes = getResourceAsBytes(path);
+        if (bytes.length > 0) {
             return Base64.getEncoder().encodeToString(bytes);
+        }
+        return "";
+    }
+
+    /**
+     * Obtiene los bytes de un recurso de la carpeta resources.
+     */
+    public byte[] getResourceAsBytes(String path) {
+        try {
+            ClassPathResource resource = new ClassPathResource(path);
+            return StreamUtils.copyToByteArray(resource.getInputStream());
         } catch (Exception e) {
-            System.err.println("Error al cargar imagen " + path + ": " + e.getMessage());
-            return "";
+            System.err.println("Error al cargar recurso " + path + ": " + e.getMessage());
+            return new byte[0];
         }
     }
 }

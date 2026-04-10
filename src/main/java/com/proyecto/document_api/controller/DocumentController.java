@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -270,6 +271,62 @@ public class DocumentController {
         return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "Planos", images);
     }
 
+    @Operation(summary = "Estudio Básico de Seguridad y Salud", description = "Genera el documento completo fusionando inicio dinámico, núcleo estático y final dinámico.")
+    @GetMapping("/estudio-seguridad/{id}")
+    public ResponseEntity<byte[]> generateEstudioSeguridad(@PathVariable UUID id) {
+        // 1. Consultar la base de datos y preparar datos
+        DocumentEntity doc = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
+        Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        Map<String, Object> enrichedFormData = documentConfigService.enrich("EstudioSeguridadSalud", formData);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("form", enrichedFormData);
+        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        
+        // Logos corporativos (para la portada de inicio)
+        for (int i = 1; i <= 5; i++) {
+            String base64 = jsonUtils.getResourceAsBase64("static/logos/Icono renovables " + i + ".png");
+            if (!base64.isEmpty()) {
+                data.put("logoRenovables" + i + "Base64", "data:image/png;base64," + base64);
+            }
+        }
+
+        // Imágenes dinámicas (opcionales para el inicio)
+        mapDynamicImage(new HashMap<>(), formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
+        mapDynamicImage(new HashMap<>(), formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+
+        // 2. Generar las partes dinámicas
+        byte[] pdfInicio = documentService.generatePdf("EstudioSeguridadSalud_Inicio", data);
+        byte[] pdfFinal = documentService.generatePdf("EstudioSeguridadSalud_Final", data);
+
+        // 3. Cargar el núcleo estático (PDF de ~80 páginas)
+        byte[] pdfNucleo = jsonUtils.getResourceAsBytes("static/pdf/11.- Estudio Básico de SYS Nucleo.pdf");
+
+        // 4. Fusionar los 3 bloques en orden
+        List<byte[]> pdfsToMerge = new ArrayList<>();
+        pdfsToMerge.add(pdfInicio);
+        if (pdfNucleo != null && pdfNucleo.length > 0) {
+            pdfsToMerge.add(pdfNucleo);
+        } else {
+            System.err.println("¡ADVERTENCIA! No se encontró el archivo: static/pdf/11.- Estudio Básico de SYS Nucleo.pdf");
+        }
+        pdfsToMerge.add(pdfFinal);
+
+        byte[] combinedPdf = documentService.mergePdfs(pdfsToMerge);
+
+        // 5. Preparar respuesta
+        String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
+        String fileName = "Estudio_Seguridad_Salud_" + safeName + ".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
+
+        return new ResponseEntity<>(combinedPdf, headers, HttpStatus.OK);
+    }
+
     /**
      * Auxiliar para mapear imágenesBase64 que vienen directamente en el JSON de la BD.
      */
@@ -297,8 +354,20 @@ public class DocumentController {
         // 2. Extraer datos del JSON
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
         
+        System.out.println("--- DATOS RECUPERADOS (" + templateName + ") ---");
+        formData.forEach((k, v) -> System.out.println("CAMPO: [" + k + "] -> VALOR: [" + v + "]"));
+        System.out.println("----------------------------------------------");
+
         // 2.5 Enriquecer con defaultData y fieldMapping del documents.js
         Map<String, Object> enrichedFormData = documentConfigService.enrich(templateName, formData);
+
+        System.out.println("--- DATOS ENRIQUECIDOS (" + templateName + ") ---");
+        enrichedFormData.forEach((k, v) -> {
+            if (!formData.containsKey(k) || !String.valueOf(formData.get(k)).equals(String.valueOf(v))) {
+                System.out.println("  [ENRIQ] " + k + " -> " + v);
+            }
+        });
+        System.out.println("----------------------------------------------");
 
         // 3. Preparar los datos comunes
         Map<String, Object> data = new HashMap<>();

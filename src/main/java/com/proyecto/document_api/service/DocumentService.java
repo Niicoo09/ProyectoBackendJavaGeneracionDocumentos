@@ -1,11 +1,17 @@
 package com.proyecto.document_api.service;
 
 import com.microsoft.playwright.*;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,6 +70,31 @@ public class DocumentService {
             return pdfBytes;
         } catch (Exception e) {
             throw new RuntimeException("Error al generar el PDF con Playwright: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Fusiona varios archivos PDF (en formato byte[]) en un único PDF.
+     * 
+     * @param pdfs Lista de arreglos de bytes de los PDFs a fusionar, en orden.
+     * @return Arreglo de bytes del PDF resultante de la fusión.
+     */
+    public byte[] mergePdfs(List<byte[]> pdfs) {
+        PDFMergerUtility ut = new PDFMergerUtility();
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            // Añadir cada PDF a la utilidad de fusión
+            for (byte[] pdf : pdfs) {
+                if (pdf != null && pdf.length > 0) {
+                    ut.addSource(new RandomAccessReadBuffer(pdf));
+                }
+            }
+            // Definir el destino y realizar la fusión
+            ut.setDestinationStream(out);
+            ut.mergeDocuments(null);
+            
+            return out.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Error al fusionar documentos PDF: " + e.getMessage(), e);
         }
     }
 }

@@ -67,6 +67,9 @@ public class DocumentConfigService {
             case "PlanosSituacionEmplazamientoCubierta":
                 applyPlanosSituacionEmplazamiento(enriched, formData);
                 break;
+            case "EstudioSeguridadSalud":
+                applyEstudioSeguridadSalud(enriched, formData);
+                break;
             default:
                 applyCommonFieldMapping(enriched, formData);
                 break;
@@ -291,6 +294,40 @@ public class DocumentConfigService {
         putIfAbsent(enriched, "pse_dia",  "___");
         putIfAbsent(enriched, "pse_mes",  "___");
         putIfAbsent(enriched, "pse_anio", "___");
+    }
+
+    private void applyEstudioSeguridadSalud(Map<String, Object> enriched, Map<String, Object> form) {
+        // Mapeo de props de Vue a campos de BD
+        applyMapping(enriched, form, "nombre",              "apellidosNombre");
+        applyMapping(enriched, form, "dni",                 "nifCif");
+        applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
+        applyMapping(enriched, form, "localidad",           "localidadEmplazamiento");
+        applyMapping(enriched, form, "provincia",           "provinciaEmplazamiento");
+        applyMapping(enriched, form, "codigoPostal",        "codigoPostalEmplazamiento");
+        applyMapping(enriched, form, "numero",              "numero");
+
+        String direccionFull = buildDireccionCompleta(form);
+        putIfAbsent(enriched, "direccion", direccionFull);
+
+        // Fechas
+        applyMapping(enriched, form, "dia",  "dia");
+        applyMapping(enriched, form, "mes",  "mes");
+        applyMapping(enriched, form, "anio", "anio");
+
+        // Datos técnicos
+        applyMapping(enriched, form, "potenciaModulos", "e2_potenciaPicoGenerador");
+        applyMapping(enriched, form, "potencia",        "e2_potenciaNominalInversores");
+
+        // Si potenciaModulos (Wp) es muy grande, tal vez convenga mostrarlo así
+        putIfAbsent(enriched, "potenciaModulos", "0");
+        putIfAbsent(enriched, "potencia",        "0");
+        
+        // Presupuesto (como no se conoce la clave, lo dejamos para que se pueda completar manual o buscamos 'presupuesto')
+        applyMapping(enriched, form, "presupuesto", "presupuestoTotal");
+        putIfAbsent(enriched, "presupuesto", "___");
+
+        // Ciudad para la firma
+        putIfAbsent(enriched, "ciudad", enriched.get("localidad"));
     }
 
     // =========================================================================
