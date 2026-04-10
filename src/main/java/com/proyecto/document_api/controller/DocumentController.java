@@ -200,7 +200,16 @@ public class DocumentController {
     @Operation(summary = "Memoria Técnica de Diseño", description = "Genera la memoria técnica de diseño de la instalación.")
     @GetMapping("/memoria-tecnica/{id}")
     public ResponseEntity<byte[]> generateMemoriaTecnica(@PathVariable UUID id) {
-        return processDocumentResponse(id, "MemoriaTecnica", "Memoria_Tecnica_Diseno", null);
+        Map<String, String> images = new HashMap<>();
+        
+        // Cargamos imágenes dinámicas del JSON (Memoria Técnica)
+        documentRepository.findById(id).ifPresent(doc -> {
+            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+            mapDynamicImage(images, formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
+            mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+        });
+
+        return processDocumentResponse(id, "MemoriaTecnica", "Memoria_Tecnica_Diseno", images);
     }
 
     /**
@@ -210,8 +219,16 @@ public class DocumentController {
     @Operation(summary = "Memoria Técnica Punto de Recarga VE", description = "Genera la memoria técnica de diseño para puntos de recarga de vehículos eléctricos.")
     @GetMapping("/punto-recarga-ve/{id}")
     public ResponseEntity<byte[]> generateMemoriaTecnicaPuntoRecarga(@PathVariable UUID id) {
-        // En este documento, las imágenes técnicas se inyectan dinámicamente desde el JSON del formulario
-        return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", null);
+        Map<String, String> images = new HashMap<>();
+        
+        // Cargamos imágenes dinámicas del JSON (MTD Recarga)
+        documentRepository.findById(id).ifPresent(doc -> {
+            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+            mapDynamicImage(images, formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
+            mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+        });
+
+        return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", images);
     }
 
     /**

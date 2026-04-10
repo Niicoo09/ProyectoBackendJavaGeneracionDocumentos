@@ -380,7 +380,7 @@
                 <span class="valor">C.O.I.I. Andalucía Occidental / 4654</span>
             </div>
             <div class="seccion-firma">
-                <p th:text="'En Sevilla a ' + ${form['dia'] ?: #strings.substring(form['fecha'],8,10)} + ' de ' + ${form['mes']} + ' de ' + ${form['anio']}">En Sevilla a ...</p>
+                <p th:text="'En Sevilla a ' + ${form['dia'] ?: ''} + ' de ' + ${form['mes'] ?: ''} + ' de ' + ${form['anio'] ?: ''}">En Sevilla a ...</p>
                 <img th:src="${firmaBase64}" alt="Firma" style="height: 60px;"/>
                 <p><strong>Firma del Instalador Autorizado / Técnico Titulado</strong></p>
             </div>
@@ -397,7 +397,11 @@
                 </div>
                 <div class="item-checkbox">
                     <input type="checkbox" th:checked="${form['almacenamiento'] != 'sin almacenamiento'}" disabled/> <span>M3 - Instalaciones con almacenamiento</span>
-                </div        <!-- SECCIÓN E2: MEMORIA DESCRIPTIVA -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN E2: MEMORIA DESCRIPTIVA -->
         <div class="seccion">
             <div class="titulo-subseccion-principal">
                 <span class="subseccion-titulo-span">E2</span>. INSTALACIÓN GENERADORA FOTOVOLTAICA INTERCONECTADA
@@ -497,19 +501,14 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-</span></div>
-            </div>
-        </div>
-
-        <!-- SECCIÓN H: ESQUEMA UNIFILAR (Página separada si es necesario) -->
+        <!-- SECCIÓN H: ESQUEMA UNIFILAR -->
         <div class="seccion">
             <div class="encabezado-seccion">
                 <span class="subseccion-titulo-span">H</span> | ESQUEMA UNIFILAR DE LA INSTALACIÓN
             </div>
             <div class="contenedor-esquema">
-                <img th:if="${form['h_esquemaUnifilar']}" th:src="${form['h_esquemaUnifilar']}" class="imagen-esquema" />
-                <p th:unless="${form['h_esquemaUnifilar']}">No se ha adjuntado el esquema unifilar</p>
+                <img th:if="${esquemaUnifilarBase64 != null}" th:src="${esquemaUnifilarBase64}" class="imagen-esquema" />
+                <p th:unless="${esquemaUnifilarBase64 != null}">No se ha adjuntado el esquema unifilar</p>
             </div>
         </div>
 
@@ -519,8 +518,8 @@
                 <span class="subseccion-titulo-span">I</span> | PLANO DE EMPLAZAMIENTO Y CROQUIS DE ACCESO
             </div>
             <div class="contenedor-esquema">
-                <img th:if="${form['otros_imagenPlanoEmplazamiento']}" th:src="${form['otros_imagenPlanoEmplazamiento']}" class="imagen-esquema" />
-                <p th:unless="${form['otros_imagenPlanoEmplazamiento']}">No se ha adjuntado el plano de emplazamiento</p>
+                <img th:if="${planoEmplazamientoBase64 != null}" th:src="${planoEmplazamientoBase64}" class="imagen-esquema" />
+                <p th:unless="${planoEmplazamientoBase64 != null}">No se ha adjuntado el plano de emplazamiento</p>
             </div>
         </div>
 
