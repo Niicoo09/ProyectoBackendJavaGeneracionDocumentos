@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cartel Publicitario L4</title>
+    <style>
+        @page {
+            size: 210mm 210mm;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            width: 210mm;
+            height: 210mm;
+            overflow: hidden;
+        }
+        .pagina-documento {
+            width: 210mm;
+            height: 210mm;
+            position: relative;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            line-height: 1.2;
+            padding: 0 1mm;
+            background-color: white;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagina-documento" th:style="${fondoStyle}">
+        <!-- costeActuacion -->
+        <div class="overlay-field" 
+             th:text="${form['costeActuacion'] ?: '0,00'}"
+             style="left: 69.6mm; top: 115mm; width: 27mm; height: 7mm; font-size: 14pt; font-weight: bold; text-align: center; white-space: nowrap;">
+        </div>
+
+        <!-- cuantiaSubvencion -->
+        <div class="overlay-field" 
+             th:text="${form['cuantiaSubvencion'] ?: '0,00'}"
+             style="left: 80.6mm; top: 124.5mm; width: 28mm; height: 7mm; font-size: 14pt; font-weight: bold; text-align: left; white-space: nowrap;">
+        </div>
+
+        <!-- entidadUbicacion -->
+        <div class="overlay-field" 
+             th:text="${form['entidadUbicacion'] ?: ''}"
+             style="left: 101mm; top: 134.4mm; width: 102mm; height: 7mm; font-size: 11pt; font-weight: normal; text-align: left; white-space: normal; overflow: hidden;">
+        </div>
+    </div>
+</body>
+</html>

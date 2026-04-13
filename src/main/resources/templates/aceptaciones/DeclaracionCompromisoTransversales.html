@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaración de Compromiso de Principios Transversales</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            margin: 0 auto;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            page-break-after: always;
+            overflow: hidden;
+        }
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagina-documento" th:style="${fondoStyle}">
+        <!-- nombreApellidos -->
+        <span class="overlay-field" 
+              th:text="${form['nombreApellidos'] ?: ''}"
+              style="left: 36mm; top: 80.5mm; width: 60mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- nif -->
+        <span class="overlay-field" 
+              th:text="${form['nif'] ?: ''}"
+              style="left: 163mm; top: 80.5mm; width: 30mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- direccion -->
+        <span class="overlay-field" 
+              th:text="${form['direccion'] ?: ''}"
+              style="left: 36mm; top: 85.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- nombreRepresentante -->
+        <span class="overlay-field" 
+              th:text="${form['nombreRepresentante'] ?: ''}"
+              style="left: 36mm; top: 95.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- dniRepresentante -->
+        <span class="overlay-field" 
+              th:text="${form['dniRepresentante'] ?: ''}"
+              style="left: 163mm; top: 95.5mm; width: 30mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- nombreEntidadRepresentada -->
+        <span class="overlay-field" 
+              th:text="${form['nombreEntidadRepresentada'] ?: ''}"
+              style="left: 91mm; top: 100.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <!-- nifEntidadRepresentada -->
+        <span class="overlay-field" 
+              th:text="${form['nifEntidadRepresentada'] ?: ''}"
+              style="left: 36mm; top: 105.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+
+        <!-- Pie de firma -->
+        <span class="overlay-field" 
+              th:text="${form['ciudad'] ?: ''}"
+              style="left: 47mm; top: 179.5mm; width: 60mm; height: 8mm; font-size: 10px; text-align: left;">
+        </span>
+        <span class="overlay-field" 
+              th:text="${form['dia'] ?: ''}"
+              style="left: 109mm; top: 181mm; width: 20mm; height: 8mm; font-size: 10px; text-align: center;">
+        </span>
+        <span class="overlay-field" 
+              th:text="${form['mes'] ?: ''}"
+              style="left: 130mm; top: 181mm; width: 20mm; height: 8mm; font-size: 10px; text-align: center;">
+        </span>
+        <span class="overlay-field" 
+              th:text="${form['anio'] ?: ''}"
+              style="left: 148mm; top: 181mm; width: 30mm; height: 8mm; font-size: 10px; text-align: center;">
+        </span>
+
+        <!-- Firma -->
+        <div class="overlay-field" style="left: 80mm; top: 193mm; width: 80mm; height: 20mm; text-align: center;">
+            <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+        <!-- Nombre Firma -->
+        <span class="overlay-field" 
+              th:text="${form['nombreFirma'] ?: ''}"
+              style="left: 80mm; top: 210mm; width: 80mm; height: 8mm; font-size: 10px; text-align: center;">
+        </span>
+    </div>
+</body>
+</html>

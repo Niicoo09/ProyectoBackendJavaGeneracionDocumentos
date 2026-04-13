@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Memoria Justificativa (FV + AER)</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Calibri', 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000;
+        }
+        .pagina {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            box-sizing: border-box;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+        .encabezado {
+            border-bottom: 2px solid #000;
+            margin-bottom: 5mm;
+            padding-bottom: 3mm;
+            text-align: center;
+        }
+        .logos-grupo {
+            display: flex;
+            justify-content: center;
+            gap: 10mm;
+        }
+        .logo {
+            height: 12mm;
+            width: auto;
+        }
+        .titulo-principal {
+            font-size: 13pt;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5mm;
+            text-transform: uppercase;
+        }
+        .datos-iniciales {
+            border: 1px solid #000;
+            padding: 3mm 5mm;
+            margin-bottom: 5mm;
+            background-color: #f9f9f9;
+            font-size: 10pt;
+        }
+        .etiqueta { font-weight: bold; margin-right: 3mm; }
+        .seccion { margin-bottom: 5mm; }
+        .numero-seccion { font-weight: bold; margin-right: 2mm; display: inline; }
+        .titulo-seccion { font-weight: bold; text-transform: uppercase; display: inline; }
+        .subseccion { margin-top: 3mm; margin-left: 5mm; }
+        .texto-parrafo { text-align: justify; margin: 2mm 0; }
+        .lista-actividades { margin-left: 10mm; margin-bottom: 3mm; }
+        .lista-actividades li { margin-bottom: 1mm; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 10pt; }
+        th, td { border: 1px solid #000; padding: 2mm; text-align: center; }
+        th { background-color: #f0f0f0; font-weight: bold; }
+        .align-left { text-align: left; }
+        
+        .seccion-firma { margin-top: 10mm; }
+        .imagen-firma { height: 20mm; width: auto; margin-top: 2mm; }
+        .texto-verde { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1 -->
+    <div class="pagina">
+        <div class="encabezado">
+            <div class="logos-grupo">
+                <img th:src="${logoOrganizaciones}" class="logo" />
+                <img th:src="${logoJunta}" class="logo" />
+            </div>
+        </div>
+        <h1 class="titulo-principal">
+            MEMORIA JUSTIFICATIVA DE LA ACTUACIÓN PARA LA MEJORA DE LA EFICIENCIA ENERGÉTICA EN 
+            <span class="texto-verde" th:text="${form['tipoEdificio']}">VIVIENDA</span> EN LA COMUNIDAD AUTÓNOMA DE ANDALUCÍA
+            (<span th:text="${form['l3l4']}">Línea 3</span>)
+        </h1>
+
+        <div class="datos-iniciales">
+            <p><span class="etiqueta">EXPEDIENTE:</span> <span th:text="${form['expedienteEco']}"></span></p>
+            <p><span class="etiqueta">NIF:</span> <span th:text="${form['nif']}"></span></p>
+            <p><span class="etiqueta">AGENTE GESTOR:</span> SOLAY INGENIEROS S.L. (B09848912)</p>
+            <p><span class="etiqueta">DOMICILIO:</span> <span th:text="${form['domicilio']}"></span></p>
+            <p><span class="etiqueta">TÉCNICO:</span> Miguel Ángel Rivas Zapata, Ing. Industrial (Col. 4671)</p>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">1.</div> <div class="titulo-seccion">Introducción.</div>
+            <p class="texto-parrafo">
+                La presente memoria tiene por objeto justificar el cumplimiento de las condiciones impuestas en la concesión de la subvención... (<span th:text="${form['l3l4']}">L3</span>) según la Orden de 9 de junio de 2022.
+            </p>
+            <p class="texto-parrafo">
+                <span th:text="${form['textoOpcional1']}">la mejora de la eficiencia energética</span> mediante la ejecución de una instalación fotovoltaica para autoconsumo.
+                <span th:if="${form['aerotermia']}">
+                    Y montaje y conexionado de una bomba de calor aerotérmica de <span th:text="${form['potenciaBomba']}">--</span> kW con depósito de <span th:text="${form['depositoLitros']}">--</span> litros.
+                </span>
+            </p>
+            <div th:if="${form['aerotermia'] and form['caracteristicasAerotermia']}" 
+                 style="background: #f5f5f5; padding: 3mm; font-size: 10pt;" 
+                 th:text="${form['caracteristicasAerotermia']}"></div>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">2.</div> <div class="titulo-seccion">Fecha de conclusión de las actuaciones.</div>
+            <p class="texto-parrafo">
+                Concluida el día <span th:text="${form['fechaConclusionDia']}">--</span> de <span th:text="${form['fechaConclusionMes']}">--</span> de <span th:text="${form['fechaConclusionAnio']}">--</span>.
+            </p>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">3.</div> <div class="titulo-seccion">Descripción de actividades.</div>
+            <p class="texto-parrafo">Instalación fotovoltaica en cubierta <span class="texto-verde" th:text="${form['tipoSoporte']}">SOPORTE</span>:</p>
+            <ul class="lista-actividades">
+                <li>Anclaje de estructura y paneles fotovoltaicos.</li>
+                <li>Instalación de inversor y sistemas eléctricos.</li>
+                <li>Conexionado y legalización conforme al REBT.</li>
+            </ul>
+            <div th:if="${form['aerotermia']}">
+                <p class="texto-parrafo">Instalación aerotérmica:</p>
+                <ul class="lista-actividades">
+                    <li>Montaje de unidad exterior y depósito ACS.</li>
+                    <li>Conexiones hidráulicas y frigoríficas.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA 2 -->
+    <div class="pagina">
+        <div class="encabezado">
+            <div class="logos-grupo">
+                <img th:src="${logoOrganizaciones}" class="logo" />
+                <img th:src="${logoJunta}" class="logo" />
+            </div>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">4.</div> <div class="titulo-seccion">Coste final de las actuaciones.</div>
+            <p><span th:text="${form['coincidencia']}">SÍ</span> coincide con el coste previsto en el Anexo II.</p>
+            <table class="tabla-costes">
+                <thead>
+                    <tr>
+                        <th class="align-left">CONCEPTO</th>
+                        <th>SIN IVA</th>
+                        <th>CON IVA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-left">REHABILITACIÓN EFICIENCIA</td>
+                        <td th:text="${form['importeActuacionesSinIva'] + '€'}"></td>
+                        <td th:text="${form['importeActuacionesConIva'] + '€'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="align-left">HONORARIOS Y GESTIÓN</td>
+                        <td>0.00€</td>
+                        <td>0.00€</td>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td class="align-left">TOTAL</td>
+                        <td th:text="${form['importeActuacionesSinIva'] + '€'}"></td>
+                        <td th:text="${form['importeActuacionesConIva'] + '€'}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">5.</div> <div class="titulo-seccion">Acreditación energética e importe.</div>
+            <p class="texto-parrafo">
+                Se acredita una reducción del consumo de energía primaria no renovable del 
+                <b th:text="${form['porcentajeMejoraEnergeticaAcreditado'] + '%'}">--%</b> (mínimo 30%).
+            </p>
+            <table style="width: 70%; margin-left: 0;">
+                <thead>
+                    <tr><th colspan="2" class="align-left">IMPORTE SUBVENCIÓN</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-left">PORCENTAJE SUBVENCIONABLE</td>
+                        <td th:text="${form['porcentajeSubvencionable']}">40%</td>
+                    </tr>
+                    <tr>
+                        <td class="align-left"><b>SUBVENCIÓN RESULTANTE</b></td>
+                        <td th:text="${form['importeSubvencionResultante'] + '€'}">--</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">6.</div> <div class="titulo-seccion">Cumplimiento normativo.</div>
+            <div class="subseccion">
+                <b>6.1. REBT:</b> Se anexa Certificado de Instalación Eléctrica (CIE).
+            </div>
+            <div class="subseccion">
+                <b>6.2. Seguridad Estructural:</b> Se certifica la solidez estructural del soporte.
+            </div>
+            <div th:if="${form['aerotermia']}" class="subseccion">
+                <b>6.3. DB HE 2 (RITE):</b> Se certifica cumplimiento de eficiencia en instalaciones térmicas.
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA 3 -->
+    <div class="pagina">
+        <div class="encabezado">
+            <div class="logos-grupo">
+                <img th:src="${logoOrganizaciones}" class="logo" />
+                <img th:src="${logoJunta}" class="logo" />
+            </div>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">7.</div> <div class="titulo-seccion">Principio DNSH.</div>
+            <p class="texto-parrafo">Se cumple el principio de "No causar perjuicio significativo" al medio ambiente (Reg. UE 2020/852).</p>
+        </div>
+
+        <div class="seccion">
+            <div class="numero-seccion">8.</div> <div class="titulo-seccion">Conclusiones.</div>
+            <p class="texto-parrafo">Se acredita la correcta ejecución de las actuaciones subvencionadas.</p>
+            <div class="seccion-firma">
+                <p><b>Fecha:</b> <span th:text="${form['dia']}">--</span> de <span th:text="${form['mes']}">--</span> de <span th:text="${form['anio']}">--</span></p>
+                <p><b>Firma:</b> Miguel Ángel Rivas Zapata</p>
+                <div th:if="${firmaImagen}" style="text-align: center;">
+                    <img th:src="${firmaImagen}" class="imagen-firma" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

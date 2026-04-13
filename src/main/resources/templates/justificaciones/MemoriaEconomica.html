@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Memoria Económica Justificativa</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Calibri', 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000;
+        }
+        .encabezado {
+            border-bottom: 2px solid #333;
+            margin-bottom: 10mm;
+            padding-bottom: 5mm;
+            text-align: center;
+        }
+        .logos-grupo {
+            display: flex;
+            justify-content: center;
+            gap: 15mm;
+            margin-bottom: 5mm;
+        }
+        .logo {
+            height: 15mm;
+            width: auto;
+        }
+        .titulo-principal {
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 2mm 0;
+            text-transform: uppercase;
+        }
+        .titulo-secundario {
+            font-size: 11pt;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .datos-iniciales {
+            border: 1px solid #000;
+            padding: 3mm 5mm;
+            margin-bottom: 5mm;
+        }
+        .dato-linea {
+            margin: 1mm 0;
+            display: flex;
+        }
+        .dato-label {
+            font-weight: bold;
+            width: 50mm;
+        }
+        .dato-valor {
+            font-weight: bold;
+        }
+        .seccion {
+            margin-bottom: 5mm;
+        }
+        .titulo-seccion {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 2mm 0;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            margin: 3mm 0;
+        }
+        .texto-parrafo {
+            text-align: justify;
+            margin-bottom: 3mm;
+        }
+        .tabla-gastos {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 3mm 0;
+            font-size: 9pt;
+        }
+        .tabla-gastos th, .tabla-gastos td {
+            border: 1px solid #000;
+            padding: 1.5mm;
+            text-align: center;
+        }
+        .tabla-gastos th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .col-acreedor { width: 40mm; }
+        .total-justificado {
+            text-align: right;
+            border-top: 2px solid #333;
+            padding-top: 2mm;
+            font-weight: bold;
+            font-size: 12pt;
+        }
+        .contenedor-desviaciones {
+            border: 1px solid #999;
+            padding: 3mm;
+            background: #f9f9f9;
+        }
+        .concepto-desvio {
+            display: flex;
+            justify-content: space-between;
+            margin: 1mm 0;
+        }
+        .contenedor-firmas {
+            margin-top: 10mm;
+            display: flex;
+            align-items: center;
+            gap: 10mm;
+        }
+        .datos-firma {
+            flex: 1;
+        }
+        .imagen-firma {
+            height: 25mm;
+            width: auto;
+            object-fit: contain;
+        }
+        .pie-pagina {
+            position: fixed;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 1px solid #000;
+            padding-top: 2mm;
+            text-align: center;
+            font-size: 9pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="encabezado">
+        <div class="logos-grupo">
+            <img th:src="${logoOrganizaciones}" class="logo" />
+            <img th:src="${logoJunta}" class="logo" />
+        </div>
+        <h1 class="titulo-principal">MEMORIA ECONÓMICA JUSTIFICATIVA</h1>
+        <h3 class="titulo-secundario">
+            CON APORTACIÓN DE JUSTIFICANTES DE GASTO DE SUBVENCIÓN PARA LA REHABILITACIÓN A NIVEL DE 
+            <span th:text="${form['edificioVivienda']}">VIVIENDA</span> EN LA COMUNIDAD AUTÓNOMA DE ANDALUCÍA 
+            (<span th:text="${form['l3l4']}">Línea 3</span>)
+        </h3>
+    </div>
+
+    <div class="datos-iniciales">
+        <div class="dato-linea">
+            <span class="dato-label">EXPEDIENTE:</span>
+            <span class="dato-valor" th:text="${form['expediente']}">---</span>
+        </div>
+        <div class="dato-linea">
+            <span class="dato-label">NIF:</span>
+            <span class="dato-valor" th:text="${form['nif']}">---</span>
+        </div>
+        <div class="dato-linea">
+            <span class="dato-label">AGENTE GESTOR:</span>
+            <span class="dato-valor">SOLAY INGENIEROS S.L.</span>
+        </div>
+        <div class="dato-linea">
+            <span class="dato-label">NIF AGENTE GESTOR:</span>
+            <span class="dato-valor">B09848912</span>
+        </div>
+    </div>
+
+    <div class="seccion">
+        <h2 class="titulo-seccion">Introducción</h2>
+        <p class="texto-parrafo">
+            La presente memoria tiene por objeto justificar la utilización de la subvención otorgada por la Comunidad Autónoma de Andalucía para la rehabilitación a nivel de 
+            <b th:text="${form['edificioVivienda']}">VIVIENDA</b> (<b th:text="${form['l3l4']}">Línea 3</b>), de acuerdo con lo establecido en el apartado 25 del cuadro resumen de las bases reguladoras aprobadas por Orden de 9 de junio de 2022 de la Consejería de Fomento, Articulación del Territorio y Vivienda.
+        </p>
+        <p class="texto-parrafo" th:text="${form['parrafoTexto'] ?: 'Estas ayudas tienen por objeto la financiación de obras o actuaciones en los edificios de uso predominante residencial en las que se obtenga una mejora acreditada de la eficiencia energética...'}"></p>
+    </div>
+
+    <div class="seccion">
+        <h2 class="titulo-seccion">Relación clasificada de gastos y propuestas a justificar</h2>
+        <table class="tabla-gastos">
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Nº FACTURA</th>
+                    <th>FECHA FACTURA</th>
+                    <th>CF</th>
+                    <th class="col-acreedor">ACREEDOR</th>
+                    <th>CONCEPTO</th>
+                    <th>FECHA PAGO</th>
+                    <th>IMPORTE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila 1 -->
+                <tr>
+                    <td>1</td>
+                    <td th:text="${form['numeroFactura1']}"></td>
+                    <td th:text="${form['fechaFactura1']}"></td>
+                    <td th:text="${form['cf1']}"></td>
+                    <td th:text="${form['acreedor1']}"></td>
+                    <td th:text="${form['concepto1']}"></td>
+                    <td th:text="${form['fechaPago1']}"></td>
+                    <td th:text="${(form['importe1'] ?: '0,00') + '€'}"></td>
+                </tr>
+                <!-- Fila 2 -->
+                <tr>
+                    <td>2</td>
+                    <td th:text="${form['numeroFactura2']}"></td>
+                    <td th:text="${form['fechaFactura2']}"></td>
+                    <td th:text="${form['cf2']}"></td>
+                    <td th:text="${form['acreedor2']}"></td>
+                    <td th:text="${form['concepto2']}"></td>
+                    <td th:text="${form['fechaPago2']}"></td>
+                    <td th:text="${(form['importe2'] ?: '0,00') + '€'}"></td>
+                </tr>
+                <!-- Fila 3 -->
+                <tr>
+                    <td>3</td>
+                    <td th:text="${form['numeroFactura3']}"></td>
+                    <td th:text="${form['fechaFactura3']}"></td>
+                    <td th:text="${form['cf3']}"></td>
+                    <td th:text="${form['acreedor3']}"></td>
+                    <td th:text="${form['concepto3']}"></td>
+                    <td th:text="${form['fechaPago3']}"></td>
+                    <td th:text="${(form['importe3'] ?: '0,00') + '€'}"></td>
+                </tr>
+                <!-- Fila 4 -->
+                <tr>
+                    <td>4</td>
+                    <td th:text="${form['numeroFactura4']}"></td>
+                    <td th:text="${form['fechaFactura4']}"></td>
+                    <td th:text="${form['cf4']}"></td>
+                    <td th:text="${form['acreedor4']}"></td>
+                    <td th:text="${form['concepto4']}"></td>
+                    <td th:text="${form['fechaPago4']}"></td>
+                    <td th:text="${(form['importe4'] ?: '0,00') + '€'}"></td>
+                </tr>
+                <!-- Fila 5 -->
+                <tr>
+                    <td>5</td>
+                    <td th:text="${form['numeroFactura5']}"></td>
+                    <td th:text="${form['fechaFactura5']}"></td>
+                    <td th:text="${form['cf5']}"></td>
+                    <td th:text="${form['acreedor5']}"></td>
+                    <td th:text="${form['concepto5']}"></td>
+                    <td th:text="${form['fechaPago5']}"></td>
+                    <td th:text="${(form['importe5'] ?: '0,00') + '€'}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="total-justificado">
+            <span>Total cantidad justificada: </span>
+            <span th:text="${(form['totalCantidadJustificada'] ?: '0,00') + '€'}">0,00€</span>
+        </div>
+    </div>
+
+    <div class="seccion">
+        <h2 class="titulo-seccion">Indicación de posibles desviaciones del presupuesto</h2>
+        <div class="contenedor-desviaciones">
+            <div class="concepto-desvio">
+                <b>Presupuesto inicial</b>
+                <span th:text="${(form['presupuestoInicial'] ?: '0,00') + '€'}"></span>
+            </div>
+            <div class="concepto-desvio">
+                <b>Inversión realizada</b>
+                <span th:text="${(form['inversionRealizada'] ?: '0,00') + '€'}"></span>
+            </div>
+            <div class="concepto-desvio">
+                <b>Desviación (con IVA si es subvencionable)</b>
+                <span th:text="${(form['desviacion'] ?: '0,00') + '€'}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="seccion">
+        <h2 class="titulo-seccion">Declaración y firma</h2>
+        <p class="texto-parrafo">
+            La persona bajo firmante DECLARA, bajo su expresa responsabilidad, que son ciertos cuantos datos figuran en el presente documento... (etc)
+        </p>
+        <div class="contenedor-firmas">
+            <div class="datos-firma">
+                <p><b>Fecha:</b> A <span th:text="${form['diaFirmaJustificacion']}">--</span> de <span th:text="${form['mesFirmaJustificacion']}">--</span> de <span th:text="${form['anioFirmaJustificacion']}">--</span></p>
+                <p><b>Firma:</b> <span th:text="${form['nombreFirma']}">--</span></p>
+            </div>
+            <div th:if="${firmaImagen}" class="imagen-firma-contenedor">
+                <img th:src="${firmaImagen}" class="imagen-firma" />
+            </div>
+        </div>
+    </div>
+
+    <div class="pie-pagina">
+        <p>www.solay.es</p>
+        <p>Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+    </div>
+</body>
+</html>

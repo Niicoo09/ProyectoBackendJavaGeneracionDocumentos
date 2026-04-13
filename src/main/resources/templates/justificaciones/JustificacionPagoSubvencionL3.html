@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Justificación de Pago de Subvención L3</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 10pt;
+        }
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            margin: 0 auto;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            page-break-after: always;
+            overflow: hidden;
+        }
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- PÁGINA 1 -->
+    <div class="pagina-documento" th:style="${fondoStyle1}">
+        <span class="overlay-field" th:text="${form['expediente']}"
+              style="left: 50mm; top: 109mm; width: 80mm; height: 6mm; text-align: left; font-size: 11pt;"></span>
+        
+        <!-- Beneficiario -->
+        <span class="overlay-field" th:text="${form['apellidosNombre']}"
+              style="left: 20mm; top: 130.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['dni']}"
+              style="left: 172mm; top: 130.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['telefono']}"
+              style="left: 20mm; top: 139mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['correoElectronico']}"
+              style="left: 55mm; top: 139mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+
+        <!-- Representante -->
+        <span class="overlay-field" th:text="${form['apellidosNombreRepresentante']}"
+              style="left: 20mm; top: 148mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['dniRepresentante']}"
+              style="left: 172mm; top: 148mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['actuaCalidad']}"
+              style="left: 20mm; top: 157.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['telefonoRepresentante']}"
+              style="left: 20mm; top: 166mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['correoElectronicoRepresentante']}"
+              style="left: 55mm; top: 166mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+    </div>
+
+    <!-- PÁGINA 2 -->
+    <div class="pagina-documento" th:style="${fondoStyle2}">
+        <span class="overlay-field" th:text="${form['provincia']}"
+              style="left: 60mm; top: 259.5mm; width: 40mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <span class="overlay-field" th:text="${form['dia']}"
+              style="left: 107.8mm; top: 259mm; width: 11.1mm; height: 4.5mm; text-align: center; font-size: 10pt; background: #fff;"></span>
+        <span class="overlay-field" th:text="${form['mes']}"
+              style="left: 126mm; top: 259mm; width: 20mm; height: 5mm; text-align: left; font-size: 10pt; background: #fff;"></span>
+        <span class="overlay-field" th:text="${form['anio']}"
+              style="left: 145mm; top: 259mm; width: 20mm; height: 6mm; text-align: center; font-size: 10pt;"></span>
+        
+        <!-- Firma -->
+        <span class="overlay-field" th:text="${form['personaFirma']}"
+              style="left: 75mm; top: 281.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        
+        <div class="overlay-field" style="left: 130mm; top: 260mm; width: 35mm; height: 20mm; text-align: center;">
+            <p style="font-size: 8pt; margin: 0;">Firma del solicitante:</p>
+            <img th:src="${firma}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+
+        <!-- Firma de Solay (Autorizado) - Opcional si el usuario la requiere al final -->
+        <div class="overlay-field" style="left: 20mm; top: 260mm; width: 35mm; height: 20mm; text-align: center;">
+            <p style="font-size: 8pt; margin: 0;">Firma autorizado:</p>
+            <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+    </div>
+</body>
+</html>

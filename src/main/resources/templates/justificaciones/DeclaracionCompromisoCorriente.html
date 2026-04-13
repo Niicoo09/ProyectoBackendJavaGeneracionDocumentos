@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaración de Compromiso de Estar al Corriente</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            font-size: 10pt;
+        }
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            margin: 0 auto;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            page-break-after: always;
+            overflow: hidden;
+        }
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagina-documento" th:style="${fondoStyle}">
+        <!-- PERSONA/ENTIDAD BENEFICIARIA -->
+        <span class="overlay-field" th:text="${form['apellidosNombreBeneficiario']}"
+              style="left: 60mm; top: 90mm; width: 80mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['dniBeneficiario']}"
+              style="left: 30mm; top: 94.5mm; width: 50mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['domicilioBeneficiario']}"
+              style="left: 90mm; top: 94.5mm; width: 90mm; height: 10mm; text-align: left; white-space: normal;"></span>
+
+        <!-- RAZÓN SOCIAL / NIF / DOMICILIO FISCAL -->
+        <span class="overlay-field" th:text="${form['razonSocial']}"
+              style="left: 45mm; top: 103.3mm; width: 80mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['nifEmpresa']}"
+              style="left: 30mm; top: 107.7mm; width: 50mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['domicilioFiscal']}"
+              style="left: 100.5mm; top: 107.7mm; width: 80mm; height: 10mm; text-align: left; white-space: normal;"></span>
+
+        <!-- REPRESENTANTE LEGAL -->
+        <span class="overlay-field" th:text="${form['apellidosNombreRepresentanteLegal']}"
+              style="left: 59mm; top: 116mm; width: 80mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['dniRepresentanteLegal']}"
+              style="left: 28mm; top: 120.6mm; width: 50mm; height: 6mm; text-align: left;"></span>
+
+        <!-- AGENTE O GESTOR DE LA REHABILITACIÓN (SOLAY) -->
+        <span class="overlay-field" th:text="${form['apellidosNombreAgenteGestor']}"
+              style="left: 106mm; top: 133.7mm; width: 80mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['dniNieAgenteGestor']}"
+              style="left: 44mm; top: 138mm; width: 50mm; height: 6mm; text-align: left;"></span>
+
+        <!-- PERSONA REPRESENTANTE -->
+        <span class="overlay-field" th:text="${form['apellidosNombrePersonaRepresentante']}"
+              style="left: 107mm; top: 142.5mm; width: 80mm; height: 6mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['dniNiePersonaRepresentante']}"
+              style="left: 35mm; top: 147.2mm; width: 50mm; height: 6mm; text-align: left;"></span>
+
+        <!-- FECHA -->
+        <span class="overlay-field" th:text="${form['lugar']}"
+              style="left: 60mm; top: 199.8mm; width: 50mm; height: 5mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['dia']}"
+              style="left: 94mm; top: 199.8mm; width: 15mm; height: 5mm; text-align: center;"></span>
+        <span class="overlay-field" th:text="${form['mes']}"
+              style="left: 113mm; top: 199.8mm; width: 40mm; height: 5mm; text-align: left;"></span>
+        <span class="overlay-field" th:text="${form['anio']}"
+              style="left: 135mm; top: 199.8mm; width: 20mm; height: 5mm; text-align: center;"></span>
+
+        <!-- FIRMA -->
+        <div class="overlay-field" style="left: 80mm; top: 220mm; width: 50mm; height: 20mm; text-align: center;">
+            <img th:src="${firma}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+    </div>
+</body>
+</html>

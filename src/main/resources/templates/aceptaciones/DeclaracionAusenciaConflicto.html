@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Declaración de Ausencia de Conflicto de Intereses (DACI)</title>
+    <style th:inline="css">
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .pagina-documento {
+            width: 200mm;
+            height: 287mm;
+            position: relative;
+            margin: 0 auto;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            page-break-after: always;
+        }
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            overflow: hidden;
+            white-space: nowrap;
+            /* Usamos transparent para ver el fondo */
+            background-color: transparent; 
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- PÁGINA 1 -->
+    <div class="pagina-documento" th:style="${fondoStyle1}"></div>
+
+    <!-- PÁGINA 2 -->
+    <div class="pagina-documento" th:style="${fondoStyle2}">
+        <!-- Ciudad -->
+        <span class="overlay-field" 
+              th:text="${form['ciudad'] ?: ''}"
+              style="left: 93mm; top: 77mm; width: 60mm; height: 8mm; font-size: 11px; text-align: left;">
+        </span>
+
+        <!-- Día -->
+        <span class="overlay-field" 
+              th:text="${form['dia'] ?: ''}"
+              style="left: 123mm; top: 77mm; width: 20mm; height: 8mm; font-size: 11px; text-align: center;">
+        </span>
+
+        <!-- Mes -->
+        <span class="overlay-field" 
+              th:text="${form['mes'] ?: ''}"
+              style="left: 145mm; top: 77mm; width: 20mm; height: 8mm; font-size: 11px; text-align: center;">
+        </span>
+
+        <!-- Año -->
+        <span class="overlay-field" 
+              th:text="${form['anio'] ?: ''}"
+              style="left: 162mm; top: 77mm; width: 30mm; height: 8mm; font-size: 11px; text-align: center;">
+        </span>
+
+        <!-- Firma (Imagen) -->
+        <div class="overlay-field" style="left: 65mm; top: 88mm; width: 80mm; height: 19mm; text-align: center;">
+             <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+
+        <!-- Nombre Firma -->
+        <span class="overlay-field" 
+              th:text="${form['nombreFirma'] ?: ''}"
+              style="left: 68mm; top: 104.5mm; width: 80mm; height: 8mm; font-size: 11px; text-align: center;">
+        </span>
+    </div>
+</body>
+</html>
