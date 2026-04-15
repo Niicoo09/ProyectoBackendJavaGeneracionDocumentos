@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Controlador para documentos de la categoría "Legalización", Proyectos y Administrativos.
@@ -71,99 +72,106 @@ public class LegalizacionController {
      * Helper genérico para todas las variantes de MTD.
      */
     private ResponseEntity<byte[]> generateMtdVariant(String mtdId, UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        documentRepository.findById(id).ifPresent(doc -> {
-            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        return processDocumentResponse(id, "MemoriaTecnica", mtdId.toUpperCase(), mtdId, formData -> {
+            Map<String, String> extraImages = new HashMap<>();
             mapDynamicImageWithFallback(extraImages, formData, "esquemaUnifilarBase64", "h_esquemaUnifilar", "esquemaUnifilar");
             mapDynamicImageWithFallback(extraImages, formData, "planoEmplazamientoBase64", "otros_imagenPlanoEmplazamiento", "planoEmplazamiento");
+            return extraImages;
         });
-        return processDocumentResponse(id, "MemoriaTecnica", mtdId.toUpperCase(), extraImages, mtdId);
     }
 
     // --- DOCUMENTOS ADMINISTRATIVOS ---
 
     @GetMapping("/autorizacion-representacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionRepresentacion(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/autorizacion-representacion.jpg");
-        extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-        
-        loadSignature(id, extraImages);
-        
-        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "Autorizacion_Representacion", extraImages, "autorizacion-representacion");
+        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "Autorizacion_Representacion", "autorizacion-representacion", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/autorizacion-representacion.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     @GetMapping("/anexo-iii/{id}")
     public ResponseEntity<byte[]> generateAnexoIii(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Multi-página (3 páginas según Vue)
-        for (int i = 1; i <= 3; i++) {
-            String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".jpg");
-            extraImages.put("fondoStyle" + i, "background-image: url(data:image/jpeg;base64," + b + ");");
-        }
-        
-        loadSignature(id, extraImages);
-        
-        return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", extraImages, "autorizacion-comunicacion");
+        return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", "autorizacion-comunicacion", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            // Multi-página (3 páginas según Vue)
+            for (int i = 1; i <= 3; i++) {
+                String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".jpg");
+                extraImages.put("fondoStyle" + i, "background-image: url(data:image/jpeg;base64," + b + ");");
+            }
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     @GetMapping("/no-generacion-rcds/{id}")
     public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/declaracion-no-generacion-rcds.jpg");
-        extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-        
-        loadSignature(id, extraImages);
-        
-        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion_No_RCDs", extraImages, "declaracion-no-generacion-rcds");
+        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion_No_RCDs", "declaracion-no-generacion-rcds", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/declaracion-no-generacion-rcds.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     // --- CERTIFICADOS TÉCNICOS (Z-*) ---
 
     @GetMapping("/cie/{id}")
     public ResponseEntity<byte[]> generateCie(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie.jpg");
-        extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-        
-        loadSignature(id, extraImages);
-        
-        return processDocumentResponse(id, "legalizacion/Cie", "Certificado_Instalacion_Electrica", extraImages, "z-certificado-br");
+        return processDocumentResponse(id, "legalizacion/Cie", "Certificado_Instalacion_Electrica", "z-certificado-br", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     @GetMapping("/certificado-adecuacion/{id}")
     public ResponseEntity<byte[]> generateCertificadoAdecuacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoAdecuacion", "Certificado_Adecuacion", null, "certificado-adecuacion");
+        return processDocumentResponse(id, "CertificadoAdecuacion", "Certificado_Adecuacion", "certificado-adecuacion", null);
     }
 
     @GetMapping("/doacfv/{id}")
     public ResponseEntity<byte[]> generateDoacfv(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/z-certificado-doacfv.jpg");
-        extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-        
-        loadSignature(id, extraImages);
-        
-        return processDocumentResponse(id, "legalizacion/Doacfv", "Certificado_DOACFV", extraImages, "z-certificado-doacfv");
+        return processDocumentResponse(id, "legalizacion/Doacfv", "Certificado_DOACFV", "z-certificado-doacfv", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/z-certificado-doacfv.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================
 
-    private void loadSignature(UUID id, Map<String, String> extraImages) {
-        documentRepository.findById(id).ifPresent(doc -> {
-            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+    /**
+     * Extrae dinámicamente las firmas a partir de un formData que ya está cargado.
+     */
+    private void loadSignatureIntoExtraImages(Map<String, String> extraImages, Map<String, Object> formData) {
+        if (formData != null) {
             mapDynamicImageWithFallback(extraImages, formData, "firmaBase64", "firma", "firmaImagen", "firmaCliente");
-        });
+        }
     }
 
-    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Map<String, String> extraImages, String configId) {
+    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, String configId, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
         DocumentEntity doc = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("¡Error! No existe el registro con ID: " + id));
 
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
         
+        // Calculamos o inyectamos las imágenes adicionales, ahora que ya hemos parseado formData
+        Map<String, String> extraImages = null;
+        if (extraImagesProvider != null) {
+            extraImages = extraImagesProvider.apply(formData);
+        }
+
         // Enriquecemos usando el ID de configuración (configId) para que el switch de DocumentConfigService acierte
         Map<String, Object> enrichedFormData = documentConfigService.enrich(configId != null ? configId : templateName, formData);
 

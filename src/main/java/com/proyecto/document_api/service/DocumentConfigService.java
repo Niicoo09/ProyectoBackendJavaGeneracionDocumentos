@@ -123,6 +123,11 @@ public class DocumentConfigService {
             case "JustificacionPagoSubvencionL4":
                 applyJustificacionPagoSubvencionL4(enriched, formData);
                 break;
+            case "L3PagoAnticipado50":
+            case "L3PagoRestante50":
+            case "L4PagoAnticipado100":
+                applyJustificacionPagoSubvencionL3(enriched, formData);
+                break;
             case "memoria-economica":
             case "MemoriaEconomica":
                 applyMemoriaEconomica(enriched, formData);
@@ -342,6 +347,21 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "anio", "anio");
         applyMapping(enriched, form, "personaFirma", "apellidosNombre");
 
+        // --- VALORES POR DEFECTO PARA EVITAR ERRORES SPEL ---
+        putIfAbsent(enriched, "expediente", "___");
+        putIfAbsent(enriched, "apellidosNombre", "");
+        putIfAbsent(enriched, "dni", "");
+        putIfAbsent(enriched, "telefono", "");
+        putIfAbsent(enriched, "correoElectronico", "");
+        putIfAbsent(enriched, "apellidosNombreRepresentante", "");
+        putIfAbsent(enriched, "dniRepresentante", "");
+        putIfAbsent(enriched, "telefonoRepresentante", "");
+        putIfAbsent(enriched, "correoElectronicoRepresentante", "");
+        putIfAbsent(enriched, "provincia", "");
+        putIfAbsent(enriched, "dia", "");
+        putIfAbsent(enriched, "mes", "");
+        putIfAbsent(enriched, "anio", "");
+        putIfAbsent(enriched, "personaFirma", "");
         putIfAbsent(enriched, "actuaCalidad", "REPRESENTANTE / ADMINISTRADOR");
     }
 

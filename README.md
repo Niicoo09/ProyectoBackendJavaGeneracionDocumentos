@@ -1,95 +1,33 @@
-# Document API - Generador de Documentos PDF
+# Solay Fotovoltaica - API de Generación de Documentos
 
-Este proyecto es una API REST construida con **Spring Boot 3.x** diseñada para generar documentos PDF profesionales a partir de plantillas HTML y CSS dinámicas. Utiliza **Playwright** para garantizar un renderizado idéntico al de un navegador moderno ("Efecto Ctrl+P").
+Backend robusto desarrollado en **Spring Boot** para la generación automatizada de certificados técnicos, memorias y documentos administrativos.
+
+## 🚀 Estado Actual del Proyecto
+El proyecto se encuentra en una fase avanzada de migración, habiendo consolidado toda la lógica de generación de documentos del ecosistema Vue original e integrado mejoras críticas de seguridad y normalización de datos.
+
+### Funcionalidades Clave
+- **Generación Multinúcleo**: Soporte para MTDs (Monofásicas, Trifásicas, Aisladas), Aceptaciones (Cesiones, Compromisos) y Justificaciones de obra.
+- **Motor Playwright**: Conversión de precisión de HTML a PDF utilizando Chromium Headless para un renderizado perfecto de tablas y gráficos.
+- **Sanitización Global de IDs**: Algoritmo preventivo que garantiza la limpieza de formatos (sin puntos ni guiones) en DNI, NIF y CIF de forma automática.
+- **Arquitectura de Mapeo Dinámico**: Servicio centralizado que traduce los datos del formulario original al formato requerido por las plantillas legales.
 
 ## 🛠️ Stack Tecnológico
+- **Lenguaje**: Java 17+
+- **Framework**: Spring Boot 3.x
+- **Plantillas**: Thymeleaf 3.0
+- **PDF Engine**: Playwright
+- **Persistencia**: Spring Data JPA / PostgreSQL
 
-- **Lenguaje:** Java 21
-- **Framework:** Spring Boot 3.4.4
-- **Persistencia:** Spring Data JPA + PostgreSQL
-- **Motor de Plantillas:** Thymeleaf (para inyección de datos en HTML)
-- **Motor de PDF:** Playwright Java (Chromium Headless)
-- **Herramientas:** Maven, Lombok, Docker
+## 📂 Estructura de Documentación
+Para facilitar el handover y el desarrollo continuo, hemos habilitado una documentación detallada interna:
+- [Estado del Proyecto (Walkthrough)](file:///C:/Users/Solay/.gemini/antigravity/brain/e4ab4eb4-6399-455e-b932-73c96a290e4a/walkthrough.md)
+- [Plan de Implementación: Formulario Maestro](file:///C:/Users/Solay/.gemini/antigravity/brain/e4ab4eb4-6399-455e-b932-73c96a290e4a/implementation_plan.md)
+- [Seguimiento de Tareas](file:///C:/Users/Solay/.gemini/antigravity/brain/e4ab4eb4-6399-455e-b932-73c96a290e4a/task.md)
 
-## 📁 Estructura del Proyecto
+## 🗺️ Próximos Pasos (Roadmap)
+- [ ] **Persistencia del Formulario Maestro**: Implementación de endpoints CRUD para guardar los ~500 campos dinámicos definidos en `masterFormFields.js`.
+- [ ] **Gestión de Binarios**: Lógica de almacenamiento para firmas y fotos de planos.
+- [ ] **Dashboard de Control**: Integración total con `ProyectoFrontEndVue`.
 
-```text
-src/main/java/com/proyecto/document_api/
-├── controller/      # Endpoints REST
-├── model/           # Entidades JPA (PostgreSQL)
-├── repository/      # Interfaces de acceso a datos 
-└── service/         # Lógica de negocio (Generación PDF)
-src/main/resources/
-├── templates/       # Plantillas HTML/CSS (Thymeleaf)
-└── application.yml  # Configuración del entorno
-```
-
-## 🚀 Guía de Inicio Rápido
-
-### Prerrequisitos
-- JDK 21
-- Maven 3.9+
-- PostgreSQL en ejecución
-
-### Configuración
-Ajusta las credenciales de tu base de datos en `src/main/resources/application.yml`:
-```yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/documentos_db
-    username: tu_usuario
-    password: tu_password
-```
-
-### Ejecución Local
-```bash
-./mvnw spring-boot:run
-```
-
-## 📡 Referencia de la API
-
-### 1. Generar PDF de Prueba
-**GET** `/api/v1/documents/test-pdf`
-
-Genera un documento PDF dinámico basado en parámetros de consulta.
-
-**Parámetros:**
-- `title` (opcional): Título del documento.
-- `name` (opcional): Nombre a mostrar en el saludo.
-- `description` (opcional): Texto descriptivo.
-
-**Ejemplo:**
-`http://localhost:8080/api/v1/documents/test-pdf?name=Nico&title=Factura%20001`
-
-### 2. Guardar Datos de Documento
-**POST** `/api/v1/documents`
-
-Guarda un registro de documento en la base de datos PostgreSQL.
-
-**Body (JSON):**
-```json
-{
-  "name": "Reporte Mensual",
-  "description": "Datos de ventas de Marzo"
-}
-```
-
-### 3. Listar Documentos
-**GET** `/api/v1/documents`
-
-Retorna todos los registros de documentos guardados en la BD.
-
-## 🐳 Despliegue en Coolify
-
-El proyecto incluye un `Dockerfile` optimizado para entornos de producción.
-
-1. **Repisitorio Git:** Sube el código a GitHub o GitLab.
-2. **Coolify:** Crea un nuevo recurso "Public Repository".
-3. **Configuración:** Coolify detectará el `Dockerfile` automáticamente.
-4. **Variables de Entorno:** Asegúrate de configurar en Coolify las variables:
-   - `SPRING_DATASOURCE_URL` (Ej: `jdbc:postgresql://db:5432/documentos_db`)
-   - `SPRING_DATASOURCE_USERNAME`
-   - `SPRING_DATASOURCE_PASSWORD`
-
-> [!NOTE]
-> La imagen Docker utiliza `mcr.microsoft.com/playwright/java`, la cual ya contiene todas las dependencias necesarias para ejecutar Chromium en Linux sin errores.
+---
+© 2026 Solay Fotovoltaica - Ingeniería y Automatización.

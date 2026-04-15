@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+            page-break-after: always;
+            font-family: Arial, sans-serif;
+            font-size: 7.1pt;
+        }
+
+        .overlay-field {
+            position: absolute;
+            color: #000 !important;
+            white-space: nowrap;
+            display: inline-block;
+            line-height: 1;
+            padding: 0 1mm;
+            box-sizing: border-box;
+            overflow: visible;
+            font-family: Arial, sans-serif;
+            direction: ltr;
+        }
+
+        .firma-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- PÁGINA 1 -->
+    <div class="pagina-documento" th:style="${fondoStyle1}">
+        <div class="overlay-field"
+            style="left: 47mm; top: 113.5mm; min-width: 80mm; height: 6mm; font-size: 11pt; text-align: left;"
+            th:text="${form.expediente}"></div>
+
+        <div class="overlay-field"
+            style="left: 20mm; top: 135.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.apellidosNombre}"></div>
+        <div class="overlay-field"
+            style="left: 172mm; top: 135.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.dni}"></div>
+        <div class="overlay-field"
+            style="left: 20mm; top: 144.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.telefono}"></div>
+        <div class="overlay-field"
+            style="left: 55mm; top: 144.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.correoElectronico}"></div>
+
+        <div class="overlay-field"
+            style="left: 20mm; top: 153.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.apellidosNombreRepresentante}"></div>
+        <div class="overlay-field"
+            style="left: 172mm; top: 153.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.dniRepresentante}"></div>
+        <div class="overlay-field"
+            style="left: 20mm; top: 161.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.actuaCalidad}"></div>
+        <div class="overlay-field"
+            style="left: 20mm; top: 170.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.telefonoRepresentante}"></div>
+        <div class="overlay-field"
+            style="left: 55mm; top: 170.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.correoElectronicoRepresentante}"></div>
+    </div>
+
+    <!-- PÁGINA 2 -->
+    <div class="pagina-documento" th:style="${fondoStyle2}">
+        <!-- Checkboxes hardcoded (como en tu array Vue) -->
+        <div class="overlay-field"
+            style="left: 23mm; top: 60mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+        <div class="overlay-field"
+            style="left: 23mm; top: 68mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+        <div class="overlay-field"
+            style="left: 23mm; top: 148.5mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+        <div class="overlay-field"
+            style="left: 23mm; top: 167.5mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+        <div class="overlay-field"
+            style="left: 23mm; top: 198mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+        <div class="overlay-field"
+            style="left: 23mm; top: 211mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>
+
+        <!-- Campos con máscara blanca (#fff) -->
+        <div class="overlay-field"
+            style="left: 60mm; top: 254mm; min-width: 40mm; height: 3.5mm; font-size: 10pt; text-align: left; background: #fff;"
+            th:text="${form.provincia}"></div>
+        <div class="overlay-field"
+            style="left: 107.8mm; top: 254mm; min-width: 11.1mm; height: 3.5mm; font-size: 10pt; text-align: center; background: #fff;"
+            th:text="${form.dia}"></div>
+        <div class="overlay-field"
+            style="left: 126mm; top: 254mm; min-width: 20mm; height: 3.5mm; font-size: 10pt; text-align: left; background: #fff;"
+            th:text="${form.mes}"></div>
+        <div class="overlay-field"
+            style="left: 153mm; top: 254mm; min-width: 11.1mm; height: 3.5mm; font-size: 10pt; text-align: center; background: #fff;"
+            th:text="${form.anio}"></div>
+
+        <div class="overlay-field"
+            style="left: 75mm; top: 280.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+            th:text="${form.personaFirma}"></div>
+
+        <!-- Firma -->
+        <div class="overlay-field" style="left: 125mm; top: 265mm; width: 30mm; height: 15mm;">
+            <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}" class="firma-img" />
+        </div>
+    </div>
+</body>
+
+</html>

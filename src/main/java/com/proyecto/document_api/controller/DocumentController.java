@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Punto de entrada de la API.
@@ -53,16 +54,13 @@ public class DocumentController {
             @RequestParam(defaultValue = "Usuario") String name,
             @RequestParam(defaultValue = "Contenido de Formulario") String description
     ) {
-        // Creamos un mapa temporal con datos ficticios
         Map<String, Object> data = new HashMap<>();
         data.put("title", title);
         data.put("name", name);
         data.put("description", description);
 
-        // Llamamos al servicio para que haga la magia de convertir a PDF
         byte[] pdfBytes = documentService.generatePdf("example", data);
 
-        // Preparamos la respuesta para que el navegador sepa que es un archivo descargable
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment().filename("prueba_tecnica.pdf").build());
@@ -86,12 +84,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Aporticada Teja", description = "Genera el certificado de solidez para cubiertas de teja aporticada.")
     @GetMapping("/aporticada-teja/{id}")
     public ResponseEntity<byte[]> generateAporticadaTeja(@PathVariable UUID id) {
-        // Esta plantilla necesita una imagen técnica específica
-        Map<String, String> extraImages = new HashMap<>();
-        // Pre-concatenamos el prefijo para evitar el límite de SpEL (100k chars)
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-aporticada.png"));
-        
-        return processDocumentResponse(id, "CertificadoAporticadaTeja", "Certificado_Solidez_Teja", extraImages);
+        return processDocumentResponse(id, "CertificadoAporticadaTeja", "Certificado_Solidez_Teja", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-aporticada.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -101,11 +98,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Chapa Grecada Aporticada", description = "Genera el certificado de solidez para cubiertas de chapa grecada.")
     @GetMapping("/chapas-grecadas/{id}")
     public ResponseEntity<byte[]> generateChapasGrecadas(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Usamos la imagen técnica correspondiente ya concatenada
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
-        
-        return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "Certificado_Solidez_Grecada", extraImages);
+        return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "Certificado_Solidez_Grecada", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -115,11 +112,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Chapa Grecada Coplanaria", description = "Genera el certificado de solidez para cubiertas de chapa grecada coplanaria.")
     @GetMapping("/chapas-grecadas-coplanaria/{id}")
     public ResponseEntity<byte[]> generateChapasGrecadasCoplanaria(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Imagen técnica específica para Coplanaria
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/grecada-coplanaria.png"));
-        
-        return processDocumentResponse(id, "CertificadoChapasGrecadasCoplanaria", "Certificado_Solidez_Grecada_Coplanaria", extraImages);
+        return processDocumentResponse(id, "CertificadoChapasGrecadasCoplanaria", "Certificado_Solidez_Grecada_Coplanaria", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/grecada-coplanaria.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -129,11 +126,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Coplanar Teja", description = "Genera el certificado de solidez para cubiertas de teja coplanar.")
     @GetMapping("/coplanar-teja/{id}")
     public ResponseEntity<byte[]> generateCoplanarTeja(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Imagen técnica específica para Teja Coplanar
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-complanaria-1.png"));
-        
-        return processDocumentResponse(id, "CertificadoCoplanarTeja", "Certificado_Solidez_Teja_Coplanar", extraImages);
+        return processDocumentResponse(id, "CertificadoCoplanarTeja", "Certificado_Solidez_Teja_Coplanar", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/teja-complanaria-1.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -143,11 +140,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Cubierta Plana Aporticada", description = "Genera el certificado de solidez para cubiertas planas aporticadas.")
     @GetMapping("/cubierta-plana-aporticada/{id}")
     public ResponseEntity<byte[]> generateCubiertaPlanaAporticada(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Imagen técnica específica para Cubierta Plana Aporticada
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
-        
-        return processDocumentResponse(id, "CertificadoCubiertaPlanaAporticada", "Certificado_Solidez_Cubierta_Plana_Aporticada", extraImages);
+        return processDocumentResponse(id, "CertificadoCubiertaPlanaAporticada", "Certificado_Solidez_Cubierta_Plana_Aporticada", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -157,11 +154,11 @@ public class DocumentController {
     @Operation(summary = "Certificado Paramento Vertical", description = "Genera el certificado de solidez para instalaciones en paramento vertical.")
     @GetMapping("/paramento-vertical/{id}")
     public ResponseEntity<byte[]> generateParamentoVertical(@PathVariable UUID id) {
-        Map<String, String> extraImages = new HashMap<>();
-        // Imagen técnica específica para Paramento Vertical
-        extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/paramento-vertical.png"));
-        
-        return processDocumentResponse(id, "CertificadoParamentoVertical", "Certificado_Solidez_Paramento_Vertical", extraImages);
+        return processDocumentResponse(id, "CertificadoParamentoVertical", "Certificado_Solidez_Paramento_Vertical", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("imagenTecnicaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/paramento-vertical.png"));
+            return extraImages;
+        });
     }
 
     /**
@@ -201,16 +198,12 @@ public class DocumentController {
     @Operation(summary = "Memoria Técnica de Diseño", description = "Genera la memoria técnica de diseño de la instalación.")
     @GetMapping("/memoria-tecnica/{id}")
     public ResponseEntity<byte[]> generateMemoriaTecnica(@PathVariable UUID id) {
-        Map<String, String> images = new HashMap<>();
-        
-        // Cargamos imágenes dinámicas del JSON (Memoria Técnica)
-        documentRepository.findById(id).ifPresent(doc -> {
-            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        return processDocumentResponse(id, "MemoriaTecnica", "Memoria_Tecnica_Diseno", formData -> {
+            Map<String, String> images = new HashMap<>();
             mapDynamicImage(images, formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
             mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+            return images;
         });
-
-        return processDocumentResponse(id, "MemoriaTecnica", "Memoria_Tecnica_Diseno", images);
     }
 
     /**
@@ -220,16 +213,12 @@ public class DocumentController {
     @Operation(summary = "Memoria Técnica Punto de Recarga VE", description = "Genera la memoria técnica de diseño para puntos de recarga de vehículos eléctricos.")
     @GetMapping("/punto-recarga-ve/{id}")
     public ResponseEntity<byte[]> generateMemoriaTecnicaPuntoRecarga(@PathVariable UUID id) {
-        Map<String, String> images = new HashMap<>();
-        
-        // Cargamos imágenes dinámicas del JSON (MTD Recarga)
-        documentRepository.findById(id).ifPresent(doc -> {
-            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", formData -> {
+            Map<String, String> images = new HashMap<>();
             mapDynamicImage(images, formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
             mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+            return images;
         });
-
-        return processDocumentResponse(id, "MemoriaTecnicaPuntoRecarga", "MTD_Punto_Recarga", images);
     }
 
     /**
@@ -239,42 +228,34 @@ public class DocumentController {
     @Operation(summary = "Planos de Situación y Cubierta", description = "Genera el documento de planos de situación, emplazamiento y cubierta.")
     @GetMapping("/planos/{id}")
     public ResponseEntity<byte[]> generatePlanos(@PathVariable UUID id) {
-        Map<String, String> images = new HashMap<>();
-        
-        // 1. Cargamos logos de certificación (Renovables)
-        for (int i = 1; i <= 5; i++) {
-            String path = "static/logos/Icono renovables " + i + ".png";
-            String base64 = jsonUtils.getResourceAsBase64(path);
-            if (!base64.isEmpty()) {
-                images.put("logoRenovables" + i + "Base64", "data:image/png;base64," + base64);
-            }
-        }
+        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "Planos", formData -> {
+            Map<String, String> images = new HashMap<>();
 
-        // 2. Cargamos imágenes dinámicas del JSON (Planos)
-        documentRepository.findById(id).ifPresent(doc -> {
-            Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
-            
-            // Situación (Probamos varios nombres comunes)
-            mapDynamicImage(images, formData, "otros_imagenPlanoSituacion", "imagenSituacionBase64");
-            mapDynamicImage(images, formData, "otros_imagenSituacion", "imagenSituacionBase64");
-            mapDynamicImage(images, formData, "otros_foto1", "imagenSituacionBase64");
-            
-            // Emplazamiento
+            // Logos de certificación (Renovables)
+            for (int i = 1; i <= 5; i++) {
+                String base64 = jsonUtils.getResourceAsBase64("static/logos/Icono renovables " + i + ".png");
+                if (!base64.isEmpty()) {
+                    images.put("logoRenovables" + i + "Base64", "data:image/png;base64," + base64);
+                }
+            }
+
+            // Imágenes dinámicas del JSON
+            mapDynamicImage(images, formData, "otros_imagenPlanoSituacion",    "imagenSituacionBase64");
+            mapDynamicImage(images, formData, "otros_imagenSituacion",          "imagenSituacionBase64");
+            mapDynamicImage(images, formData, "otros_foto1",                    "imagenSituacionBase64");
             mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "imagenEmplazamientoBase64");
-            
-            // Cubierta (Probamos varios nombres comunes)
-            mapDynamicImage(images, formData, "otros_imagenPlanoCubierta", "imagenCubiertaBase64");
-            mapDynamicImage(images, formData, "otros_imagenCubierta", "imagenCubiertaBase64");
-            mapDynamicImage(images, formData, "otros_foto2", "imagenCubiertaBase64");
+            mapDynamicImage(images, formData, "otros_imagenPlanoCubierta",      "imagenCubiertaBase64");
+            mapDynamicImage(images, formData, "otros_imagenCubierta",           "imagenCubiertaBase64");
+            mapDynamicImage(images, formData, "otros_foto2",                    "imagenCubiertaBase64");
+
+            return images;
         });
-        
-        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "Planos", images);
     }
 
     @Operation(summary = "Estudio Básico de Seguridad y Salud", description = "Genera el documento completo fusionando inicio dinámico, núcleo estático y final dinámico.")
     @GetMapping("/estudio-seguridad/{id}")
     public ResponseEntity<byte[]> generateEstudioSeguridad(@PathVariable UUID id) {
-        // 1. Consultar la base de datos y preparar datos
+        // 1. Consultar la base de datos y preparar datos (una única vez)
         DocumentEntity doc = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
@@ -284,7 +265,7 @@ public class DocumentController {
         data.put("form", enrichedFormData);
         data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
         data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
-        
+
         // Logos corporativos (para la portada de inicio)
         for (int i = 1; i <= 5; i++) {
             String base64 = jsonUtils.getResourceAsBase64("static/logos/Icono renovables " + i + ".png");
@@ -293,13 +274,13 @@ public class DocumentController {
             }
         }
 
-        // Imágenes dinámicas (opcionales para el inicio)
-        mapDynamicImage(new HashMap<>(), formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
-        mapDynamicImage(new HashMap<>(), formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
+        // Imágenes dinámicas (opcionales para el inicio) — corregido: se mapean en 'data' directamente
+        mapDynamicImage(data, formData, "h_esquemaUnifilar",             "esquemaUnifilarBase64");
+        mapDynamicImage(data, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
 
         // 2. Generar las partes dinámicas
         byte[] pdfInicio = documentService.generatePdf("EstudioSeguridadSalud_Inicio", data);
-        byte[] pdfFinal = documentService.generatePdf("EstudioSeguridadSalud_Final", data);
+        byte[] pdfFinal  = documentService.generatePdf("EstudioSeguridadSalud_Final",  data);
 
         // 3. Cargar el núcleo estático (PDF de ~80 páginas)
         byte[] pdfNucleo = jsonUtils.getResourceAsBytes("static/pdf/11.- Estudio Básico de SYS Nucleo.pdf");
@@ -329,16 +310,17 @@ public class DocumentController {
 
     /**
      * Auxiliar para mapear imágenesBase64 que vienen directamente en el JSON de la BD.
+     * Funciona tanto con Map<String, String> como con Map<String, Object>.
      */
-    private void mapDynamicImage(Map<String, String> extraImages, Map<String, Object> formData, String jsonKey, String templateKey) {
+    @SuppressWarnings("unchecked")
+    private <T> void mapDynamicImage(Map<String, T> target, Map<String, Object> formData, String jsonKey, String templateKey) {
         Object img = formData.get(jsonKey);
         if (img != null && !img.toString().isEmpty()) {
             String base64 = img.toString();
-            // Aseguramos prefijo data:image si no lo tiene
             if (!base64.startsWith("data:image")) {
                 base64 = "data:image/png;base64," + base64;
             }
-            extraImages.put(templateKey, base64);
+            target.put(templateKey, (T) base64);
         }
     }
 
@@ -346,63 +328,47 @@ public class DocumentController {
     // LÓGICA INTERNA COMÚN
     // =========================================================================
 
-    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Map<String, String> extraImages) {
-        // 1. Consultar la base de datos
+    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
+        // 1. Consultar la base de datos (una única vez)
         DocumentEntity doc = documentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
 
-        // 2. Extraer datos del JSON
+        // 2. Extraer y parsear datos del JSON (una única vez)
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
-        
-        System.out.println("--- DATOS RECUPERADOS (" + templateName + ") ---");
-        formData.forEach((k, v) -> System.out.println("CAMPO: [" + k + "] -> VALOR: [" + v + "]"));
-        System.out.println("----------------------------------------------");
 
-        // 2.5 Enriquecer con defaultData y fieldMapping del documents.js
+        // 3. Calcular imágenes adicionales con el formData ya disponible
+        Map<String, String> extraImages = null;
+        if (extraImagesProvider != null) {
+            extraImages = extraImagesProvider.apply(formData);
+        }
+
+        // 4. Enriquecer con defaultData y fieldMapping
         Map<String, Object> enrichedFormData = documentConfigService.enrich(templateName, formData);
 
-        System.out.println("--- DATOS ENRIQUECIDOS (" + templateName + ") ---");
-        enrichedFormData.forEach((k, v) -> {
-            if (!formData.containsKey(k) || !String.valueOf(formData.get(k)).equals(String.valueOf(v))) {
-                System.out.println("  [ENRIQ] " + k + " -> " + v);
-            }
-        });
-        System.out.println("----------------------------------------------");
-
-        // 3. Preparar los datos comunes
+        // 5. Preparar los datos comunes
         Map<String, Object> data = new HashMap<>();
         data.put("form", enrichedFormData);
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
-        
-        // Imágenes corporativas estándar CON PREFIJO (para evitar errores de SpEL)
-        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+
+        // Imágenes corporativas estándar con prefijo (para evitar errores de SpEL)
+        data.put("logoBase64",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
         data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
 
-        // Añadir imágenes extras si existen
         if (extraImages != null) {
             data.putAll(extraImages);
         }
 
-        // 4. Generar el PDF
+        // 6. Generar el PDF
         byte[] pdfBytes = documentService.generatePdf(templateName, data);
 
-        // 5. Configurar respuesta (manejo seguro de nombre de archivo)
+        // 7. Configurar respuesta
         String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
         String fileName = filePrefix + "_" + safeName + ".pdf";
-        
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-    }
-
-    /**
-     * Endpoint de CONSULTA: Muestra la lista de todos los registros.
-     */
-    @Operation(summary = "Listar Clientes", description = "Devuelve una lista con todos los registros encontrados.")
-    @GetMapping
-    public List<DocumentEntity> getAllDocuments() {
-        return documentRepository.findAll();
     }
 }

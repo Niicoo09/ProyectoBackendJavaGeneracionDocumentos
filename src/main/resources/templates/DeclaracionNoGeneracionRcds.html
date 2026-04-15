@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <title>Declaración No Generación RCDs</title>
@@ -24,6 +25,7 @@
             color: var(--text-color);
             background-color: white;
             -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         /* ========== CONTENEDOR PDF ========== */
@@ -40,7 +42,7 @@
         /* ========== CONTENEDOR PRINCIPAL ========== */
         .contenedor-principal {
             flex: 1;
-            padding: 20mm;
+            padding: 15mm 20mm 35mm 20mm; /* Reducido superior, aumentado inferior para el footer */
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
@@ -77,24 +79,24 @@
 
         /* ========== CONTENIDO PRINCIPAL ========== */
         .contenido-principal {
-            line-height: 1.8;
-            font-size: 16px;
+            line-height: 1.6; /* Reducido de 1.8 */
+            font-size: 15px; /* Reducido de 16px */
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .parrafo-intro {
-            margin: 0 0 20px 0;
+            margin: 0 0 10px 0; /* Reducido de 20px */
             text-align: justify;
         }
 
         .titulo-declara {
             text-align: center;
-            font-size: 25px;
+            font-size: 20px; /* Reducido de 25px */
             font-weight: bold;
             color: #333;
-            margin: 20px 0;
+            margin: 10px 0; /* Reducido de 20px */
             text-transform: uppercase;
         }
 
@@ -124,7 +126,7 @@
         .parrafo-fecha {
             text-align: center;
             font-weight: bold;
-            margin: 20px 0 10px 0;
+            margin: 15px 0 5px 0; /* Reducido */
             font-size: 15px;
         }
 
@@ -148,14 +150,16 @@
             line-height: 1.6;
         }
 
-        /* ========== PIE DE PÁGINA ========== */
         .pie-pagina {
-            padding: 12px 0;
-            border-top: 1px solid #0066cc;
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            border-top: 1.5px solid #0066cc;
+            padding-top: 10px;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px;
             color: #666;
-            margin-top: 20px;
         }
 
         .texto-pie {
@@ -163,6 +167,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="contenedor-pdf">
@@ -188,32 +193,37 @@
                 <h2 class="titulo-declara">DECLARA QUE</h2>
 
                 <p class="parrafo-declaracion">
-                    La instalación fotovoltaica a realizar en 
-                    <strong th:text="${form['emplazamientoCalle']}">Calle Ejemplo</strong>, 
+                    La instalación fotovoltaica a realizar en
+                    <strong th:text="${form['emplazamientoCalle']}">Calle Ejemplo</strong>,
                     <strong th:text="${form['numero'] ?: '–'}">Nº</strong>
-                    – código postal <strong th:text="${form['codigoPostalEmplazamiento']}">00000</strong>, 
-                    con Referencia Catastral <strong th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</strong>, 
-                    en el término municipal de <strong th:text="${form['localidadEmplazamiento']}">Municipio</strong>, 
+                    – código postal <strong th:text="${form['codigoPostalEmplazamiento']}">00000</strong>,
+                    con Referencia Catastral <strong
+                        th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</strong>,
+                    en el término municipal de <strong th:text="${form['localidadEmplazamiento']}">Municipio</strong>,
                     provincia de <strong th:text="${form['provinciaEmplazamiento']}">Provincia</strong>:
                 </p>
 
                 <div class="lista-declaracion">
                     <div class="item-declaracion">
                         <span class="numero-item">1.</span>
-                        <span>Debido a su escasa entidad, no generará residuos de la construcción que, por volumen y naturaleza deban ser entregados a un gestor autorizado o al concesionario de la Mancomunidad.</span>
+                        <span>Debido a su escasa entidad, no generará residuos de la construcción que, por volumen y
+                            naturaleza deban ser entregados a un gestor autorizado o al concesionario de la
+                            Mancomunidad.</span>
                     </div>
 
                     <div class="item-declaracion">
                         <span class="numero-item">2.</span>
-                        <span>Que los residuos que se produzcan serán depositados en Puntos Limpios en aras de conseguir una alta protección del medio ambiente y una adecuada preservación de la naturaleza y el paisaje.</span>
+                        <span>Que los residuos que se produzcan serán depositados en Puntos Limpios en aras de conseguir
+                            una alta protección del medio ambiente y una adecuada preservación de la naturaleza y el
+                            paisaje.</span>
                     </div>
                 </div>
 
                 <!-- FECHA -->
                 <p class="parrafo-fecha">
-                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a 
-                    <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de 
-                    <strong th:text="${form['mes']}">marzo</strong> de 
+                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a
+                    <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de
+                    <strong th:text="${form['mes']}">marzo</strong> de
                     <strong th:text="${form['anio']}">2026</strong>.
                 </p>
 
@@ -223,9 +233,9 @@
                 </div>
 
                 <p class="parrafo-firmante">
-                    <strong>Eduardo Rivera Cabezas</strong><br/>
-                    <strong>670308856</strong><br/>
-                    <strong>erivera@solay.es</strong><br/>
+                    <strong>Eduardo Rivera Cabezas</strong><br />
+                    <strong>670308856</strong><br />
+                    <strong>erivera@solay.es</strong><br />
                     <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
                 </p>
 
@@ -240,4 +250,5 @@
     </div>
 
 </body>
+
 </html>

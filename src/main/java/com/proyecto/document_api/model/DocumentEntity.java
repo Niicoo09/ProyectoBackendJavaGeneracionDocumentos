@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 /**
  * Representa la tabla de generación de documentos en la base de datos de
@@ -30,7 +32,8 @@ public class DocumentEntity {
     private String nombre;
 
     // Aquí se guarda TODA la información técnica en formato texto (NIF, importes, etc.)
-    @Column(name = "formulario")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "formulario", columnDefinition = "jsonb")
     private String formulario;
 
     // Fechas de creación y actualización automática de la base de datos
