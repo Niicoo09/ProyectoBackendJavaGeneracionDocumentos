@@ -1,27 +1,24 @@
-# Stage 1: Build
-FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
+# STAGE 1: Build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
+RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime
+# STAGE 2: Runtime
+# Usamos la imagen oficial de Playwright para Java porque ya trae
+# todos los navegadores y librerías de sistema necesarias.
 FROM mcr.microsoft.com/playwright/java:v1.42.0-jammy
 WORKDIR /app
 
-# Instalar Java 21 en la imagen de Playwright (que viene con Java 17 por defecto)
-# O bien, usar directamente la imagen de Playwright Java que ya trae lo necesario.
-# La imagen mcr.microsoft.com/playwright/java:v1.42.0-jammy ya trae Java y Playwright preinstalado.
-
+# Copiamos el JAR generado en la etapa anterior
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponer el puerto 8080
-EXPOSE 8080
+# Variables de entorno por defecto (Coolify las sobreescribirá)
+ENV SERVER_PORT=3000
 
-# Definir variables de entorno para DB (Coolify las inyectará)
-ENV SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/documentos_db
-ENV SPRING_DATASOURCE_USERNAME=postgres
-ENV SPRING_DATASOURCE_PASSWORD=password
+EXPOSE 3000
 
-# Ejecutar la aplicación
+# Ejecutamos la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

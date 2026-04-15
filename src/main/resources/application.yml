@@ -2,10 +2,10 @@ spring:
   application:
     name: document-api
   datasource:
-    # 🔌 Configuración para la base de datos de Coolify (Conexión Real)
-    url: jdbc:postgresql://51.91.159.188:5433/postgres
-    username: postgres
-    password: yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG
+    # 🔌 Configuración para la base de datos (Inyectada por Coolify en Producción)
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://51.91.159.188:5433/postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -21,4 +21,4 @@ spring:
     cache: false
 
 server:
-  port: 8080
+  port: 3000
