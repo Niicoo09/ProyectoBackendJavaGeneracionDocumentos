@@ -29,10 +29,15 @@
         }
 
         .contenedor-principal {
-            flex: 1;
+            width: 210mm;
             display: flex;
             flex-direction: column;
-            padding: 20mm;
+            padding: 10mm 15mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+            min-height: 295mm;
+            background-color: white;
+            page-break-after: always;
         }
 
         /* ENCABEZADO */
@@ -42,7 +47,7 @@
             align-items: flex-start;
             padding: 18px 0;
             border-bottom: 2px solid #0066cc;
-            margin-bottom: 27px;
+            margin-bottom: 20px;
         }
 
         .titulo-principal {
@@ -71,6 +76,14 @@
             text-align: justify;
         }
 
+        .parrafo-tecnico {
+            margin: 10px 0;
+            text-align: justify;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
         ul {
             margin: 15px 0 15px 30px;
             font-size: 16px;
@@ -96,12 +109,13 @@
 
         /* PIE DE PÁGINA */
         .pie-pagina {
-            padding: 12px 0;
+            padding: 8px 0;
             border-top: 1px solid #0066cc;
-            margin-top: 20px;
+            margin-top: auto;
             text-align: center;
             font-size: 12px;
             color: #000;
+            page-break-inside: avoid;
         }
 
         .texto-pie {

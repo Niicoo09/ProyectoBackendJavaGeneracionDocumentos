@@ -21,7 +21,7 @@ public class DocumentConfigService {
     // VALORES FIJOS DEL TÉCNICO (Eduardo Rivera Cabezas)
     // =========================================================================
     private static final String TECNICO_NOMBRE = "Eduardo Rivera Cabezas";
-    private static final String TECNICO_NIF = "28.818.007-L";
+    private static final String TECNICO_NIF = "28818007L";
     private static final String TECNICO_NUMERO_COLEGIADO = "4654";
     private static final String TECNICO_COLEGIO = "Colegio Oficial de Ingenieros Industriales de Andalucía Occidental";
     private static final String TECNICO_COLEGIO_CORTO = "4654 COIIAOC";
@@ -167,6 +167,8 @@ public class DocumentConfigService {
             case "declaracion-no-generacion-rcds":
                 applyDeclaracionNoGeneracionRcds(enriched, formData);
                 break;
+            case "AnexoIii":
+            case "AnexoIII":
             case "autorizacion-comunicacion":
                 applyAutorizacionComunicacion(enriched, formData);
                 break;
@@ -527,6 +529,56 @@ public class DocumentConfigService {
 
         applyMapping(enriched, form, "expediente", "expedienteEco");
 
+        // Sección 2: Lugar y medio de notificación (mapeo ultra-robusto)
+        String rawCalle = getString(form, "emplazamientoCalle");
+        if (rawCalle.isEmpty()) rawCalle = getString(form, "direccion");
+        
+        String tipoVia = getString(form, "emplazamientoTipoVia");
+        if (tipoVia.isEmpty()) tipoVia = getString(form, "tipo_via");
+        
+        String nombreVia = rawCalle;
+
+        // Lógica inteligente: Si el tipo está vacío pero la calle empieza por "Calle", "Avda", etc.
+        if (tipoVia.isEmpty() && !rawCalle.isEmpty()) {
+            String[] partes = rawCalle.split(" ", 2);
+            String primeraPalabra = partes[0].toLowerCase();
+            if (primeraPalabra.equals("calle") || primeraPalabra.equals("avda") || 
+                primeraPalabra.equals("avenida") || primeraPalabra.equals("plaza") ||
+                primeraPalabra.equals("pso") || primeraPalabra.equals("paseo")) {
+                tipoVia = partes[0];
+                if (partes.length > 1) nombreVia = partes[1];
+            }
+        }
+
+        enriched.put("tipoVia", tipoVia);
+        enriched.put("nombreVia", nombreVia);
+
+        applyMappingWithFallback(enriched, form, "numero", "numero", "emplazamientoNumero", "num");
+        applyMappingWithFallback(enriched, form, "letra", "letra", "emplazamientoLetra");
+        applyMapping(enriched, form, "km", "km");
+        applyMapping(enriched, form, "bloque", "bloque");
+        applyMapping(enriched, form, "portal", "portal");
+        applyMapping(enriched, form, "escalera", "escalera");
+        applyMapping(enriched, form, "planta", "planta");
+        applyMapping(enriched, form, "puerta", "puerta");
+        applyMapping(enriched, form, "entidad", "entidad");
+        
+        applyMappingWithFallback(enriched, form, "municipio", "municipio", "localidad", "localidadEmplazamiento", "ciudad");
+        applyMappingWithFallback(enriched, form, "provincia", "provincia", "provinciaEmplazamiento");
+        applyMappingWithFallback(enriched, form, "codigoPostal", "codigoPostal", "codigoPostalEmplazamiento", "cp");
+        putIfAbsent(enriched, "pais", "ESPAÑA");
+
+        // Contacto (solo móvil)
+        // El móvil suele venir en 'telefono' o 'telefonos' en tu base de datos
+        
+        // El móvil suele venir en 'telefono' o 'telefonos' en tu base de datos
+        applyMappingWithFallback(enriched, form, "telefonoMovil", "telefono", "telefonos", "telefono_movil", "movil", "telefonoRepresentante");
+        
+        // Si el móvil sigue vacío, probamos con el fijo como último recurso (opcional, lo quito si prefieres)
+        // putIfAbsent(enriched, "telefonoMovil", enriched.get("telefonoFijo"));
+        
+        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "email", "emailEmplazamiento", "correo", "emailRepresentante", "mail");
+
         applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "mes", "mesAceptacion");
         applyMapping(enriched, form, "anio", "anioAceptacion");
@@ -541,7 +593,15 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "titular", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
+        // Domicilio del titular (se nutre del emplazamiento según requerimiento)
+        enriched.put("domicilio", buildDireccionCompleta(form));
+        applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
+        applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
+        applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
+
+        // Emplazamiento de la instalación
         enriched.put("emplazamiento", buildDireccionCompleta(form));
+        
         applyMapping(enriched, form, "potencia", "e2_potenciaNominalInversores");
     }
 

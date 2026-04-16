@@ -1,18 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8" />
-    <title>DeclaraciÃ³n No GeneraciÃ³n RCDs</title>
+    <title>Declaración No Generación RCDs</title>
     <style>
-        /* ========== VARIABLES SIMULADAS ========== */
         :root {
             --primary-color: #0066cc;
             --text-color: #333;
             --font-family: 'Segoe UI', Arial, sans-serif;
         }
 
-        /* ========== CONFIGURACIÃ“N DE PÃGINA (A4) ========== */
         @page {
             size: A4;
             margin: 0;
@@ -28,7 +26,6 @@
             print-color-adjust: exact;
         }
 
-        /* ========== CONTENEDOR PDF ========== */
         .contenedor-pdf {
             width: 210mm;
             height: 297mm;
@@ -39,10 +36,9 @@
             flex-direction: column;
         }
 
-        /* ========== CONTENEDOR PRINCIPAL ========== */
         .contenedor-principal {
             flex: 1;
-            padding: 15mm 20mm 35mm 20mm; /* Reducido superior, aumentado inferior para el footer */
+            padding: 15mm 20mm 35mm 20mm;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
@@ -79,24 +75,24 @@
 
         /* ========== CONTENIDO PRINCIPAL ========== */
         .contenido-principal {
-            line-height: 1.6; /* Reducido de 1.8 */
-            font-size: 15px; /* Reducido de 16px */
+            line-height: 1.6;
+            font-size: 15px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .parrafo-intro {
-            margin: 0 0 10px 0; /* Reducido de 20px */
+            margin: 0 0 10px 0;
             text-align: justify;
         }
 
         .titulo-declara {
             text-align: center;
-            font-size: 20px; /* Reducido de 25px */
+            font-size: 20px;
             font-weight: bold;
             color: #333;
-            margin: 10px 0; /* Reducido de 20px */
+            margin: 10px 0;
             text-transform: uppercase;
         }
 
@@ -105,7 +101,7 @@
             text-align: justify;
         }
 
-        /* ========== LISTA DECLARACIÃ“N ========== */
+        /* ========== LISTA DECLARACIÓN ========== */
         .lista-declaracion {
             margin: 10px 0;
         }
@@ -126,7 +122,7 @@
         .parrafo-fecha {
             text-align: center;
             font-weight: bold;
-            margin: 15px 0 5px 0; /* Reducido */
+            margin: 15px 0 5px 0;
             font-size: 15px;
         }
 
@@ -169,14 +165,13 @@
 </head>
 
 <body>
-
     <div class="contenedor-pdf">
         <div class="contenedor-principal">
 
             <!-- ENCABEZADO -->
             <div class="encabezado">
                 <div class="encabezado-contenido">
-                    <h1 class="titulo-principal">DECLARACIÃ“N RESPONSABLE DE NO GENERACIÃ“N DE RCDs</h1>
+                    <h1 class="titulo-principal">DECLARACIÓN RESPONSABLE DE NO GENERACIÓN DE RCDs</h1>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
@@ -185,46 +180,50 @@
             <div class="contenido-principal">
                 <p class="parrafo-intro">
                     Por la presente, Eduardo Rivera Cabezas, con NIF 28818007L, Ingeniero
-                    Industrial colegiado nÃºmero 4654 en el Colegio Oficial de Ingenieros Industriales de
-                    AndalucÃ­a Occidental, y con domicilio en Calle El PeÃ±Ã³n 5 - 41940, localidad
+                    Industrial colegiado número 4654 en el Colegio Oficial de Ingenieros Industriales de
+                    Andalucía Occidental, y con domicilio en Calle El Peñón 5 - 41940, localidad
                     de Tomares, provincia de Sevilla
                 </p>
 
                 <h2 class="titulo-declara">DECLARA QUE</h2>
 
                 <p class="parrafo-declaracion">
-                    La instalaciÃ³n fotovoltaica a realizar en
-                    <strong th:text="${form['emplazamientoCalle']}">Calle Ejemplo</strong>,
-                    <strong th:text="${form['numero'] ?: 'â€“'}">NÂº</strong>
-                    â€“ cÃ³digo postal <strong th:text="${form['codigoPostalEmplazamiento']}">00000</strong>,
-                    con Referencia Catastral <strong
-                        th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</strong>,
-                    en el tÃ©rmino municipal de <strong th:text="${form['localidadEmplazamiento']}">Municipio</strong>,
-                    provincia de <strong th:text="${form['provinciaEmplazamiento']}">Provincia</strong>:
+                    La instalación fotovoltaica a realizar en
+                    <strong th:text="${form['direccion'] ?: form['emplazamientoCalle'] ?: ''}">Calle Ejemplo</strong>,
+                    <strong th:text="${form['otrosDatos'] ?: (form['numero'] ?: '')}">Nº</strong>
+                    – código postal <strong th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}">00000</strong>,
+                    con Referencia Catastral
+                    <strong th:text="${form['referenciaCatastral'] ?: form['cups'] ?: ''}">Referencia</strong>,
+                    en el término municipal de
+                    <strong th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}">Municipio</strong>,
+                    provincia de
+                    <strong th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}">Provincia</strong>:
                 </p>
 
                 <div class="lista-declaracion">
                     <div class="item-declaracion">
                         <span class="numero-item">1.</span>
-                        <span>Debido a su escasa entidad, no generarÃ¡ residuos de la construcciÃ³n que, por volumen y
+                        <span>Debido a su escasa entidad, no generará residuos de la construcción que, por volumen y
                             naturaleza deban ser entregados a un gestor autorizado o al concesionario de la
                             Mancomunidad.</span>
                     </div>
 
                     <div class="item-declaracion">
                         <span class="numero-item">2.</span>
-                        <span>Que los residuos que se produzcan serÃ¡n depositados en Puntos Limpios en aras de conseguir
-                            una alta protecciÃ³n del medio ambiente y una adecuada preservaciÃ³n de la naturaleza y el
+                        <span>Que los residuos que se produzcan serán depositados en Puntos Limpios en aras de conseguir
+                            una alta protección del medio ambiente y una adecuada preservación de la naturaleza y el
                             paisaje.</span>
                     </div>
                 </div>
 
                 <!-- FECHA -->
                 <p class="parrafo-fecha">
-                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a
-                    <strong th:text="${form['dia'] ?: #strings.substring(form['fecha'],8,10)}">13</strong> de
-                    <strong th:text="${form['mes']}">marzo</strong> de
-                    <strong th:text="${form['anio']}">2026</strong>.
+                    En <strong th:text="${form['ciudadFirma'] ?: form['localidadEmplazamiento'] ?: ''}">Ciudad</strong>,
+                    a <strong>
+                        <span th:text="${form['dia'] ?: ''}">DD</span>
+                        de <span th:text="${form['mes'] ?: ''}">mes</span>
+                        de <span th:text="${form['anio'] ?: ''}">AAAA</span>
+                    </strong>.
                 </p>
 
                 <!-- FIRMA -->
@@ -236,19 +235,18 @@
                     <strong>Eduardo Rivera Cabezas</strong><br />
                     <strong>670308856</strong><br />
                     <strong>erivera@solay.es</strong><br />
-                    <strong>Calle El PeÃ±Ã³n 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
                 </p>
-
             </div>
 
             <!-- PIE DE PÃGINA -->
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
+

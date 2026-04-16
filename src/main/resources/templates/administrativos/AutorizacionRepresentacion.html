@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Autorización de Representación</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            background-color: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .contenedor-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20mm;
+            box-sizing: border-box;
+        }
+
+        /* ========== ENCABEZADO ========== */
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 27px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #000000;
+            text-align: center;
+        }
+
+        .subtitulo {
+            margin: 2px 0 0 0;
+            font-size: 15px;
+            color: #666;
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .contenido-principal {
+            line-height: 1.8;
+            font-size: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .parrafo-intro {
+            margin: 0 0 15px 0;
+            text-align: justify;
+        }
+
+        .titulo-autorizo {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0066cc;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .parrafo-autorizacion {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        /* ========== CAJA VALIDEZ ========== */
+        .caja-validez {
+            background-color: #ffe5b4;
+            border-left: 4px solid #ff9900;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+
+        .texto-validez {
+            margin: 0;
+        }
+
+        /* ========== FECHA ========== */
+        .parrafo-fecha {
+            text-align: center;
+            font-weight: bold;
+            margin: 30px 0 40px 0;
+            font-size: 14px;
+        }
+
+        /* ========== FIRMAS ========== */
+        .contenedor-firmas {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: auto;
+        }
+
+        .firma-bloque {
+            flex: 1;
+            text-align: center;
+        }
+
+        .linea-firma {
+            border-bottom: 1px solid #000;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .linea-firma-imagen {
+            border-bottom: 1px solid #000;
+            height: 60px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .imagen-firma {
+            height: 80px;
+            object-fit: contain;
+            margin-top: -30px;
+        }
+
+        .etiqueta-firma {
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .nombre-firma {
+            margin: 2px 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* ========== PIE DE PÁGINA ========== */
+        .pie-pagina {
+            padding: 10px 0;
+            border-top: 1px solid #0066cc;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .texto-pie {
+            margin: 2px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor-pdf">
+        <div class="contenedor-principal">
+
+            <!-- ENCABEZADO -->
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">AUTORIZACIÓN DE REPRESENTACIÓN</h1>
+                    <p class="subtitulo">Documento válido para trámites administrativos</p>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="contenido-principal">
+                <p class="parrafo-intro">
+                    Yo, <strong th:text="${form['autorizante'] ?: form['apellidosNombre'] ?: ''}">Nombre Autorizante</strong>,
+                    con DNI/NIF <strong th:text="${form['dniAutorizante'] ?: form['nifCif'] ?: ''}">NIF</strong>,
+                    y con domicilio en
+                    <strong th:text="${form['domicilioAutorizante'] ?: (form['emplazamientoCalle'] + ' ' + (form['numero'] ?: ''))}">Domicilio</strong>,
+                    localidad <strong th:text="${form['localidad'] ?: form['localidadEmplazamiento'] ?: ''}">Localidad</strong>,
+                    provincia de <strong th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}">Provincia</strong>,
+                    actuando en nombre propio,
+                </p>
+
+                <h2 class="titulo-autorizo">AUTORIZO A</h2>
+
+                <p class="parrafo-autorizacion">
+                    <strong th:text="${form['representante'] ?: 'Solay Ingenieros, S.L.'}">Representante</strong>,
+                    con DNI/NIF <strong th:text="${form['dniRepresentante'] ?: 'B09848912'}">NIF Rep.</strong>,
+                    y con domicilio en
+                    <strong th:text="${form['domicilioRepresentante'] ?: 'Calle Ebro, 35 – 41012, Sevilla, Sevilla'}">Domicilio Rep.</strong>,
+                    localidad Sevilla, provincia de Sevilla, ante el ayuntamiento
+                    de <strong th:text="${form['organismo'] ?: form['localidadEmplazamiento'] ?: ''}">Localidad</strong>,
+                    para realizar en mi nombre las gestiones de
+                    <strong th:text="${form['gestiones'] ?: 'SOLICITUD DE LICENCIA DE OBRA MENOR CON DECLARACIÓN RESPONSABLE O AUTORIZACIÓN URBANÍSTICA'}">Gestiones</strong>.
+                </p>
+
+                <div class="caja-validez">
+                    <p class="texto-validez">
+                        <strong>VALIDEZ:</strong> Esta autorización es válida desde su firma hasta que sea revocada expresamente.
+                    </p>
+                </div>
+
+                <p class="parrafo-fecha">
+                    En <span th:text="${form['localidad'] ?: form['localidadEmplazamiento'] ?: ''}">Ciudad</span>
+                    a <span th:text="${form['dia'] ?: ''}">DD</span>
+                    de <span th:text="${form['mes'] ?: ''}">mes</span>
+                    de <span th:text="${form['anio'] ?: ''}">AAAA</span>
+                </p>
+
+                <!-- FIRMAS -->
+                <div class="contenedor-firmas">
+                    <div class="firma-bloque">
+                        <div class="linea-firma"></div>
+                        <p class="etiqueta-firma">FIRMA DEL AUTORIZANTE</p>
+                        <p class="nombre-firma" th:text="${form['autorizante'] ?: form['apellidosNombre'] ?: ''}">Nombre</p>
+                    </div>
+                    <div class="firma-bloque">
+                        <div class="linea-firma-imagen">
+                            <img th:src="${firmaBase64}" alt="Firma" class="imagen-firma" />
+                        </div>
+                        <p class="etiqueta-firma">FIRMA DEL REPRESENTANTE</p>
+                        <p class="nombre-firma" th:text="${form['representante'] ?: 'Solay Ingenieros, S.L.'}">Representante</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PIE DE PÁGINA -->
+            <div class="pie-pagina">
+                <p class="texto-pie">Validez legal sujeta a regulaciones vigentes</p>
+                <p class="texto-pie">www.solay.es | Paseo de Bollullos de la Mitación 18. Sevilla.</p>
+                <p class="texto-pie">Página 1</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>CIE - Certificado de Instalación Eléctrica</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Página con imagen de fondo oficial y texto superpuesto */
+        .print-wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagina-br {
+            width: 200mm;
+            height: 287mm;
+            position: relative;
+            box-sizing: border-box;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 110% 100%;
+            margin: 0 auto;
+            color: #111;
+            font-family: Arial, sans-serif;
+            font-size: 7.1pt;
+            line-height: 1.15;
+            page-break-inside: avoid;
+            page-break-after: avoid;
+        }
+
+        /* Campo de texto superpuesto: position absolute en mm */
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: visible;
+            padding: 0 1mm;
+            vertical-align: middle;
+            direction: ltr;
+            text-align: left;
+            color: #000;
+        }
+
+        /* Marcador X para checkboxes */
+        .overlay-marker {
+            position: absolute;
+            font-size: 10pt;
+            font-weight: bold;
+            color: #000;
+            font-family: Arial, sans-serif;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-wrapper">
+        <div class="pagina-br" th:style="${fondoStyle} + ' background-color: white;'">
+
+            <!-- === NÚMERO DE REGISTRO y TERMINACIÓN === -->
+        <span class="overlay-field" style="left:84.3mm; top:31.5mm; font-size:11pt;"
+              th:text="${form['registro_instalacion'] ?: form['numeroRegistro'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:131mm; top:31mm; font-size:13pt;"
+              th:text="${form['terminacioAnual'] ?: form['anio'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:13mm; top:31mm; font-size:7.5pt;"
+              th:text="${form['registro'] ?: form['numeroExpediente'] ?: ''}"></span>
+
+        <!-- === DATOS DEL TITULAR === -->
+        <span class="overlay-field" style="left:13mm; top:64mm; font-size:7.5pt;"
+              th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:140mm; top:64mm; font-size:7.5pt;"
+              th:text="${form['nifCif'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:13mm; top:71mm; font-size:7.5pt;"
+              th:text="${form['domicilio'] ?: form['emplazamientoCalle'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:139mm; top:71mm; font-size:7.5pt;"
+              th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:13mm; top:78mm; font-size:7.5pt;"
+              th:text="${form['localidad'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:83mm; top:78mm; font-size:7.5pt; background-color: white; width: 16mm; line-height: 8pt; display: inline-block;"
+              th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:102mm; top:78mm; font-size:7.5pt;"
+              th:text="${form['correoElectronico'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:153mm; top:78mm; font-size:7.5pt;"
+              th:text="${form['telefono'] ?: ''}"></span>
+
+        <!-- === DATOS DEL EMPLAZAMIENTO === -->
+        <span class="overlay-field" style="left:13mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['emplazamientoCalle'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:117mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['numero'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:130mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['bloque'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:142mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['portal'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:154mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['escalera'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:167mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['piso'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:179mm; top:89mm; font-size:7.5pt;"
+              th:text="${form['puerta'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:13mm; top:95mm; font-size:7.5pt;"
+              th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:95mm; top:95mm; font-size:7.5pt; background-color: white; width: 16mm; line-height: 8pt; display: inline-block;"
+              th:text="${form['provinciaEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:155mm; top:95mm; font-size:7.5pt;"
+              th:text="${form['codigoPostalEmplazamiento'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:91mm; top:101mm; font-size:7.5pt;"
+              th:text="${form['usoDestino'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:179mm; top:101mm; font-size:7.5pt;"
+              th:text="${form['superficie'] ?: ''}"></span>
+
+        <!-- === CUPS === -->
+        <span class="overlay-field" style="left:109mm; top:106mm; font-size:7.5pt;"
+              th:text="${form['cups'] ?: ''}"></span>
+
+        <!-- === TIPO INSTALACIÓN (Marcadores X) === -->
+        <!-- Nueva instalación -->
+        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'nueva'}"
+              style="left:36.55mm; top:107.7mm;">X</span>
+        <!-- Ampliación -->
+        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'ampliacion'}"
+              style="left:60.3mm; top:107.7mm;">X</span>
+        <!-- Modificación -->
+        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'modificacion' or (form['tipoInstalacion'] == null)}"
+              style="left:86.5mm; top:107.7mm;">X</span>
+
+        <!-- === CARACTERÍSTICAS === -->
+        <span class="overlay-field" style="left:60mm; top:143mm; font-size:7.5pt;"
+              th:text="${form['potenciaContratada'] ?: form['e2_potenciaPicoGenerador'] ?: ''}"></span>
+
+        <!-- Fase (marcadores) -->
+        <span class="overlay-marker" th:if="${form['fase'] == 'Monofásica' or form['tipoConexionRed'] == 'Monofásica'}"
+              style="left:39.7mm; top:152.6mm;">X</span>
+        <span class="overlay-marker" th:if="${form['fase'] == 'Trifásica' or form['tipoConexionRed'] == 'Trifásica'}"
+              style="left:60mm; top:152.6mm;">X</span>
+
+        <span class="overlay-field" style="left:75mm; top:155mm; font-size:7.5pt;"
+              th:text="${form['tensionSuministro'] ?: '220/380'}"></span>
+
+        <span class="overlay-field" style="left:155.5mm; top:156mm; font-size:7.5pt;"
+              th:text="${form['seccionFase'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:35mm; top:161mm; font-size:7.5pt;"
+              th:text="${form['empresaDistribuidora'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:11mm; top:172mm; font-size:7.5pt;"
+              th:text="${form['intensidadNominal'] ?: form['intensidadInterruptorGeneral'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:50mm; top:172mm; font-size:7.5pt;"
+              th:text="${form['sensibilidadDiferencial'] ?: '30'}"></span>
+
+        <span class="overlay-field" style="left:40mm; top:179mm; font-size:7.5pt;"
+              th:text="${form['resistenciaTierra'] ?: ''}"></span>
+
+        <!-- === TÉCNICO DIRECTOR === -->
+        <span class="overlay-field" style="left:11mm; top:190mm; font-size:7.5pt;"
+              th:text="${form['directorDeObra'] ?: 'Eduardo Rivera Cabezas'}"></span>
+
+        <span class="overlay-field" style="left:101mm; top:190mm; font-size:7.5pt;"
+              th:text="${form['titulacion'] ?: 'Ingeniero Industrial'}"></span>
+
+        <span class="overlay-field" style="left:138mm; top:190mm; font-size:7.5pt;"
+              th:text="${form['colegioOficial'] ?: 'COIIAOC'}"></span>
+
+        <span class="overlay-field" style="left:174mm; top:190mm; font-size:7.5pt;"
+              th:text="${form['numeroColegiado'] ?: '4654'}"></span>
+
+        <!-- === ORGANISMO DE CONTROL === -->
+        <span class="overlay-field" style="left:11mm; top:197mm; font-size:7.5pt;"
+              th:text="${form['organismoControl'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:89mm; top:197mm; font-size:7.5pt;"
+              th:text="${form['numeroNotificacion'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:126mm; top:197mm; font-size:7.5pt;"
+              th:text="${form['referenciaFechaInspeccion'] ?: ''}"></span>
+
+        <!-- === OBSERVACIONES === -->
+        <span class="overlay-field" style="left:11mm; top:220mm; font-size:7.5pt; white-space:normal; width:180mm;"
+              th:text="${form['observaciones'] ?: ''}"></span>
+
+        <!-- === FECHA FIRMA === -->
+        <span class="overlay-field" style="left:100mm; top:232mm; font-size:7.5pt;"
+              th:text="${form['dia'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:120mm; top:232mm; font-size:7.5pt;"
+              th:text="${form['mes'] ?: ''}"></span>
+
+        <span class="overlay-field" style="left:160mm; top:232mm; font-size:7.5pt;"
+              th:text="${form['anio'] ?: ''}"></span>
+
+    </div>
+</body>
+
+</html>

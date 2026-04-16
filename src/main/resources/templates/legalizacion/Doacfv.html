@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>DOACFV - Certificado Dirección de Obra</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            background-color: white;
+            font-size: 15px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .contenedor-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15mm;
+            box-sizing: border-box;
+        }
+
+        /* ========== ENCABEZADO ========== */
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .encabezado-contenido {
+            flex: 1;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff9900;
+            text-align: center;
+        }
+
+        .subtitulo {
+            margin: 2px 0 0 0;
+            font-size: 15px;
+            color: #666;
+            text-align: center;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+
+        /* ========== CONTENIDO PRINCIPAL ========== */
+        .contenido-principal {
+            line-height: 1.5;
+            font-size: 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .parrafo-intro {
+            margin: 0 0 15px 0;
+            text-align: justify;
+        }
+
+        .titulo-certifica {
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            color: #0066cc;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        ol {
+            padding-left: 20px;
+            text-align: justify;
+            line-height: 1.5;
+        }
+
+        ol li {
+            margin-bottom: 5px;
+        }
+
+        /* ========== FIRMA ========== */
+        .firma-bloque {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .imagen-firma {
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .etiqueta-firma {
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .texto-pie-fecha {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        /* ========== PIE DE PÃGINA ========== */
+        .pie-pagina {
+            padding: 10px 0;
+            border-top: 1px solid #0066cc;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .footer-logo img {
+            width: 120px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor-pdf">
+        <div class="contenedor-principal">
+
+            <!-- ENCABEZADO -->
+            <div class="encabezado">
+                <div class="encabezado-contenido">
+                    <h1 class="titulo-principal">CERTIFICADO DE DIRECCIÓN DE OBRA DE INSTALACIÓN DE EQUIPOS</h1>
+                    <p class="subtitulo">-CONTRATO DE VENTA E INSTALACIÓN DE EQUIPOS / ANEXO II-</p>
+                </div>
+                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+            </div>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="contenido-principal">
+                <p class="parrafo-intro">
+                    Eduardo Rafael Rivera Cabezas, con N.I.F. 28818007L, Ingeniero Industrial, inscrito en el
+                    Colegio Oficial de Ingenieros Industriales de Andalucía Occidental con el nº 4654
+                </p>
+
+                <p class="titulo-certifica">CERTIFICA QUE:</p>
+
+                <ol>
+                    <li>
+                        Ha redactado y firmado el Proyecto de Ejecución titulado: Instalación solar fotovoltaica de
+                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        para Autoconsumo en
+                        <strong th:text="${form['usoDestino'] ?: form['tipoInstalacion'] ?: '–'}">vivienda</strong>
+                        (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
+                    </li>
+                    <li>
+                        Ha ejercido la Dirección Técnica de Obra en la ejecución de la instalación asociada al Proyecto:<br />
+                        Titular/Promotor: <strong th:text="${form['apellidosNombre']}">Nombre Titular</strong>
+                        &nbsp;&nbsp; NIF: <strong th:text="${form['nifCif']}">NIF</strong><br />
+                        Localización: <strong th:text="${form['emplazamientoCalle'] + ' ' + (form['numero'] ?: '')}">Dirección</strong>
+                        &nbsp;&nbsp; C.P.: <strong th:text="${form['codigoPostalEmplazamiento']}">00000</strong><br />
+                        Localidad: <strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>
+                        &nbsp;&nbsp; Provincia: <strong th:text="${form['provinciaEmplazamiento']}">Provincia</strong><br />
+                        Título del Proyecto de Ejecución: Instalación solar fotovoltaica de
+                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        para autoconsumo en
+                        <strong th:text="${form['usoDestino'] ?: '–'}">vivienda</strong>
+                        (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
+                    </li>
+                    <li>
+                        La empresa instaladora habilitada con Nº de Registro 41045500 – SOLAY INGENIEROS, S.L. ha
+                        ejecutado la instalación de autoconsumo fotovoltaico de
+                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        descrita en el Proyecto de Ejecución, sin ninguna modificación bajo la supervisión y
+                        dirección técnica del que suscribe.
+                    </li>
+                    <li>
+                        Se han observado y cumplido todas las condiciones y/o requisitos técnicos y de seguridad
+                        según la legislación vigente en el desarrollo de los trabajos (R.E.B.T. e I.T.C. según
+                        instalación determinada en Condiciones Particulares del Contrato) y se han realizado todas
+                        las verificaciones previstas en los reglamentos vigentes que afectan a la instalación que
+                        el Proyecto comprende, con el resultado de FAVORABLE.
+                    </li>
+                </ol>
+
+                <!-- FIRMA -->
+                <div class="firma-bloque">
+                    <img th:src="${firmaBase64}" alt="Firma" class="imagen-firma" />
+                    <p class="etiqueta-firma">FIRMA DEL REPRESENTANTE</p>
+                    <p class="texto-pie-fecha">
+                        <strong>LUGAR Y FECHA:</strong>
+                        <span th:text="${form['localidadEmplazamiento']}">Localidad</span>, a
+                        <span th:text="${form['dia']}">DD</span> de
+                        <span th:text="${form['mes']}">mes</span> de
+                        <span th:text="${form['anio']}">AAAA</span>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- PIE DE PÃGINA -->
+            <div class="pie-pagina">
+                <div class="footer-logo">
+                    <img th:src="${logoBase64}" alt="Logo Solay" />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+

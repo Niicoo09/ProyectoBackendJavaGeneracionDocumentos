@@ -97,10 +97,10 @@ public class LegalizacionController {
     public ResponseEntity<byte[]> generateAnexoIii(@PathVariable UUID id) {
         return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", "autorizacion-comunicacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            // Multi-página (3 páginas según Vue)
+            // Multi-página (3 páginas - imágenes PNG)
             for (int i = 1; i <= 3; i++) {
-                String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".jpg");
-                extraImages.put("fondoStyle" + i, "background-image: url(data:image/jpeg;base64," + b + ");");
+                String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".png");
+                extraImages.put("fondoStyle" + i, "background-image: url(data:image/png;base64," + b + ");");
             }
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;

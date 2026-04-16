@@ -78,14 +78,13 @@
         <span class="overlay-field" th:text="${form['personaFirma']}"
               style="left: 75mm; top: 281.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
         
-        <div class="overlay-field" style="left: 130mm; top: 260mm; width: 35mm; height: 20mm; text-align: center;">
-            <p style="font-size: 8pt; margin: 0;">Firma del solicitante:</p>
+        <!-- Firma del solicitante (centrada sobre el nombre) -->
+        <div class="overlay-field" style="left: 82.5mm; top: 272mm; width: 45mm; height: 12mm; text-align: center;">
             <img th:src="${firma}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
         </div>
 
-        <!-- Firma de Solay (Autorizado) - Opcional si el usuario la requiere al final -->
-        <div class="overlay-field" style="left: 20mm; top: 260mm; width: 35mm; height: 20mm; text-align: center;">
-            <p style="font-size: 8pt; margin: 0;">Firma autorizado:</p>
+        <!-- Firma de Solay (Autorizado) -->
+        <div class="overlay-field" style="left: 20mm; top: 270mm; width: 35mm; height: 12mm; text-align: center;">
             <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
         </div>
     </div>

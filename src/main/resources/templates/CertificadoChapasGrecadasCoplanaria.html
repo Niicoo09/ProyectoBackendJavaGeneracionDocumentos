@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <title>Certificado de Solidez - Chapa Grecada Coplanaria</title>
@@ -18,14 +19,14 @@
         }
 
         .contenedor-principal {
-            width: 100%;
-            max-width: 210mm;
+            width: 210mm;
             display: flex;
             flex-direction: column;
-            padding: 20mm;
+            padding: 10mm 15mm;
             margin: 0 auto;
             box-sizing: border-box;
-            min-height: 297mm;
+            min-height: 295mm;
+            background-color: white;
             page-break-after: always;
         }
 
@@ -33,9 +34,9 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 18px 0;
+            padding: 10px 0;
             border-bottom: 2px solid #0066cc;
-            margin-bottom: 17px;
+            margin-bottom: 10px;
         }
 
         .encabezado-contenido {
@@ -70,23 +71,25 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            line-height: 1.6;
+            line-height: 1.5;
             font-size: 16px;
             width: 100%;
         }
 
         .parrafo-tecnico {
-            margin: 10px 0;
+            margin: 6px 0;
             text-align: justify;
             font-size: 16px;
             line-height: 1.5;
+            letter-spacing: 0.5px;
         }
 
         .parrafo-estructura {
-            margin: 10px 0;
+            margin: 6px 0;
             text-align: justify;
             font-size: 16px;
             line-height: 1.5;
+            letter-spacing: 0.5px;
         }
 
         .titulo-certificado {
@@ -94,34 +97,42 @@
             font-size: 25px;
             font-weight: bold;
             color: #333;
-            margin: 20px 0;
+            margin: 10px 0;
             text-transform: uppercase;
         }
 
-        .texto-azul { color: #000000; font-weight: bold; }
-        .texto-rojo { color: #000000; font-weight: bold; }
+        .texto-azul {
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .texto-rojo {
+            color: #000000;
+            font-weight: bold;
+        }
 
         .contenedor-imagen-grande {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
-            min-height: 300px;
+            margin: 10px 0;
         }
 
         .imagen-pdf-grande {
-            width: 80%;
+            width: 75%;
+            max-height: 185px;
             height: auto;
             object-fit: contain;
         }
 
         .pie-pagina {
             border-top: 1px solid #ccc;
-            padding-top: 12px;
-            margin-top: 20px;
+            padding-top: 8px;
+            margin-top: auto;
             text-align: center;
             font-size: 11px;
             color: #666;
+            page-break-inside: avoid;
         }
 
         .parrafo-fecha {
@@ -156,62 +167,65 @@
         }
     </style>
 </head>
+
 <body>
     <div class="contenedor-pdf">
-        
-        <!-- PÁGINA 1: CERTIFICO -->
+
+        <!-- PÃGINA 1: CERTIFICO -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h3 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h3>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE CHAPA GRECADA, COPLANARIA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE CHAPA GRECADA,
+                        COPLANARIA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-tecnico">
-                    Por la presente, Eduardo Rivera Cabezas, con NIF 28.818.007-I,
-                    Ingeniero Industrial colegiado número 4654 en el Colegio Oficial de
-                    Ingenieros Industriales de Andalucía Occidental, y con domicilio en
-                    Calle El Peñón 5 -41940, localidad de Tomares, provincia de Sevilla
+                    Por la presente, Eduardo Rivera Cabezas, con NIF 28818007L,
+                    Ingeniero Industrial colegiado nÃºmero 4654 en el Colegio Oficial de
+                    Ingenieros Industriales de AndalucÃ­a Occidental, y con domicilio en
+                    Calle El PeÃ±Ã³n 5 -41940, localidad de Tomares, provincia de Sevilla
                 </p>
 
                 <h2 class="titulo-certificado">CERTIFICO</h2>
 
                 <p class="parrafo-tecnico">
-                    que el estado de la cubierta sita en 
+                    que el estado de la cubierta sita en
                     <span class="texto-rojo">
-                        <span th:text="${form['emplazamientoCalle']}">Dirección</span>, 
-                        (<span th:text="${form['localidadEmplazamiento']}">Localidad</span>) – código postal 
-                        <span th:text="${form['codigoPostalEmplazamiento']}">CP</span>, localidad de 
-                        <span th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de 
-                        <span th:text="${form['provinciaEmplazamiento']}">Provincia</span>, referencia Catastral 
+                        <span th:text="${form['emplazamientoCalle']}">DirecciÃ³n</span>,
+                        (<span th:text="${form['localidadEmplazamiento']}">Localidad</span>) â€“ cÃ³digo postal
+                        <span th:text="${form['codigoPostalEmplazamiento']}">CP</span>, localidad de
+                        <span th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de
+                        <span th:text="${form['provinciaEmplazamiento']}">Provincia</span>, referencia Catastral
                         <span th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>
-                    </span>, es el adecuado para soportar de forma sólida y segura el generador
+                    </span>, es el adecuado para soportar de forma sÃ³lida y segura el generador
                     fotovoltaico para Autoconsumo que se tiene previsto instalar, a la
-                    vista de la inspección ocular realizada in situ, de la revisión del
-                    proyecto constructivo de la misma, y de la disposición sobre la
-                    cubierta de los módulos fotovoltaicos.
+                    vista de la inspecciÃ³n ocular realizada in situ, de la revisiÃ³n del
+                    proyecto constructivo de la misma, y de la disposiciÃ³n sobre la
+                    cubierta de los mÃ³dulos fotovoltaicos.
                 </p>
 
                 <p class="parrafo-tecnico">
                     El generador fotovoltaico ha sido dimensionado mediante Memoria
-                    Técnica de Diseño según requiera la reglamentación, y está compuesto
-                    por 
+                    TÃ©cnica de DiseÃ±o segÃºn requiera la reglamentaciÃ³n, y estÃ¡ compuesto
+                    por
                     <span class="texto-rojo">
-                        <span th:text="${form['e2_totalModulos']}">10</span> módulos fotovoltaicos de 
-                        <span th:text="${form['e2_potenciaPicoModulo']}">605</span> Wp de potencia eléctrica y 28.00 kg de peso cada uno
-                    </span>, del fabricante 
+                        <span th:text="${form['e2_totalModulos']}">10</span> mÃ³dulos fotovoltaicos de
+                        <span th:text="${form['e2_potenciaPicoModulo']}">605</span> Wp de potencia elÃ©ctrica y 28.00 kg
+                        de peso cada uno
+                    </span>, del fabricante
                     <span class="texto-rojo" th:text="${form['e2_marcaModeloModulo']}">Marca</span>.
                 </p>
 
                 <p class="parrafo-tecnico">
-                    La estructura de soporte de dichos módulos fotovoltaicos es de 
-                    <span class="texto-rojo">perfilería de aluminio ligero del modelo TIV de la empresa SUNFER
-                    ESTRUCTURAS, S.L.</span>, especializada en soportes para generadores fotovoltaicos con
-                    Certificado de Garantía y Marcado CE de sus productos (se ajustan en
-                    la Memoria Técnica de Diseño, así como la Ficha Técnica y Plano de
+                    La estructura de soporte de dichos mÃ³dulos fotovoltaicos es de
+                    <span class="texto-rojo">perfilerÃ­a de aluminio ligero del modelo TIV de la empresa SUNFER
+                        ESTRUCTURAS, S.L.</span>, especializada en soportes para generadores fotovoltaicos con
+                    Certificado de GarantÃ­a y Marcado CE de sus productos (se ajustan en
+                    la Memoria TÃ©cnica de DiseÃ±o, asÃ­ como la Ficha TÃ©cnica y Plano de
                     Montaje).
                 </p>
 
@@ -222,65 +236,70 @@
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">Página 1</p>
+                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">PÃ¡gina 1</p>
             </div>
         </div>
 
-        <!-- PÁGINA 2: ESTRUCTURA -->
+        <!-- PÃGINA 2: ESTRUCTURA -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h3 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h3>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE CHAPA GRECADA, COPLANARIA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE CHAPA GRECADA,
+                        COPLANARIA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-estructura">
-                  Dicha <span class="texto-azul">ESTRUCTURA SOPORTE PARA CHAPA GRECADA COPLANAR</span>
-                  será anclada a la cubierta según procedimiento del fabricante, sólidamente fijadas a la
-                  <span class="texto-azul">perfilería</span> de aluminio mediante
-                  <span class="texto-azul">tornillería</span> de acero inoxidable; todo
-                  ello según los procedimientos de instalación establecidos en la ficha
-                  técnica del producto, guardando las distancias previstas entre las
-                  perforaciones y respetando los pares de apriete de la
-                  <span class="texto-azul">tornillería</span>.
+                    Dicha <span class="texto-azul">ESTRUCTURA SOPORTE PARA CHAPA GRECADA COPLANAR</span>
+                    serÃ¡ anclada a la cubierta segÃºn procedimiento del fabricante, sÃ³lidamente fijadas a la
+                    <span class="texto-azul">perfilerÃ­a</span> de aluminio mediante
+                    <span class="texto-azul">tornillerÃ­a</span> de acero inoxidable; todo
+                    ello segÃºn los procedimientos de instalaciÃ³n establecidos en la ficha
+                    tÃ©cnica del producto, guardando las distancias previstas entre las
+                    perforaciones y respetando los pares de apriete de la
+                    <span class="texto-azul">tornillerÃ­a</span>.
                 </p>
 
                 <p class="parrafo-estructura">
-                  La <span class="texto-azul">perfilería</span> de aluminio será unida
-                  sólidamente a los módulos fotovoltaicos mediante elementos de presión
-                  y fijación con <span class="texto-azul">tornillo</span> a las
-                  distancias y pares de apriete marcados por el fabricante.
+                    La <span class="texto-azul">perfilerÃ­a</span> de aluminio serÃ¡ unida
+                    sÃ³lidamente a los mÃ³dulos fotovoltaicos mediante elementos de presiÃ³n
+                    y fijaciÃ³n con <span class="texto-azul">tornillo</span> a las
+                    distancias y pares de apriete marcados por el fabricante.
                 </p>
 
                 <p class="parrafo-estructura">
-                  El estado de la cubierta es el adecuado para soportar de forma sólida
-                  y segura el generador fotovoltaico para
-                  <span class="texto-azul">Autoconsumo</span> que se tiene previsto
-                  instalar, conforme a lo previsto en el presente certificado, con
-                  acuerdo a vista de la inspección ocular realizada
-                  <span class="texto-azul">in situ</span>, de la revisión del proyecto
-                  constructivo de la misma, y de la disposición sobre la cubierta de los
-                  módulos fotovoltaicos.
+                    El estado de la cubierta es el adecuado para soportar de forma sÃ³lida
+                    y segura el generador fotovoltaico para
+                    <span class="texto-azul">Autoconsumo</span> que se tiene previsto
+                    instalar, conforme a lo previsto en el presente certificado, con
+                    acuerdo a vista de la inspecciÃ³n ocular realizada
+                    <span class="texto-azul">in situ</span>, de la revisiÃ³n del proyecto
+                    constructivo de la misma, y de la disposiciÃ³n sobre la cubierta de los
+                    mÃ³dulos fotovoltaicos.
                 </p>
 
                 <p class="parrafo-estructura">
-                  El estado de la cubierta es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para
-                  Autoconsumo que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección
-                  ocular realizada in situ, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la
-                  cubierta de los módulos fotovoltaicos.
+                    El estado de la cubierta es el adecuado para soportar de forma sÃ³lida y segura el generador
+                    fotovoltaico para
+                    Autoconsumo que se tiene previsto instalar, con ausencia de afecciÃ³n estructural, a la vista de la
+                    inspecciÃ³n
+                    ocular realizada in situ, de la revisiÃ³n del proyecto constructivo de la misma, y de la disposiciÃ³n
+                    sobre la
+                    cubierta de los mÃ³dulos fotovoltaicos.
                 </p>
 
                 <p class="parrafo-estructura">
-                  La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
+                    La mencionada Memoria TÃ©cnica de DiseÃ±o ha sido redactada por mÃ­ como tÃ©cnico competente.
                 </p>
 
                 <p class="parrafo-fecha">
-                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a 
-                    <strong th:text="${form['dia']}">16</strong> de <strong th:text="${form['mes']}">marzo</strong> de <strong th:text="${form['anio']}">2026</strong>.
+                    En <strong th:text="${form['localidadEmplazamiento']}">Ciudad</strong>, a
+                    <strong th:text="${form['dia']}">16</strong> de <strong th:text="${form['mes']}">marzo</strong> de
+                    <strong th:text="${form['anio']}">2026</strong>.
                 </p>
 
                 <div class="logo-footer">
@@ -291,16 +310,17 @@
                     <strong>Eduardo Rivera Cabezas</strong><br>
                     <strong>670308856</strong><br>
                     <strong>erivera@solay.es</strong><br>
-                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                    <strong>Calle El PeÃ±Ã³n 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">Página 2</p>
+                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">PÃ¡gina 2</p>
             </div>
         </div>
     </div>
 </body>
+
 </html>

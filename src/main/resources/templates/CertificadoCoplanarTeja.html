@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <title>Certificado de Solidez - Coplanar Teja</title>
@@ -16,14 +17,14 @@
 
         .contenedor-principal {
             width: 210mm;
-            min-height: 297mm;
-            padding: 20mm;
-            margin: 0 auto;
-            box-sizing: border-box;
-            background-color: white;
-            page-break-after: always;
             display: flex;
             flex-direction: column;
+            padding: 10mm 15mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+            min-height: 295mm;
+            background-color: white;
+            page-break-after: always;
         }
 
         .encabezado {
@@ -32,7 +33,7 @@
             align-items: flex-start;
             padding: 18px 0;
             border-bottom: 2px solid #0066cc;
-            margin-bottom: 17px;
+            margin-bottom: 15px;
         }
 
         .encabezado-contenido {
@@ -68,21 +69,39 @@
             font-size: 16px;
         }
 
-        .parrafo-intro, .parrafo-certifico, .parrafo-datos, .parrafo-estructura {
+        .parrafo-intro,
+        .parrafo-certifico,
+        .parrafo-datos,
+        .parrafo-estructura {
             margin: 10px 0;
             text-align: justify;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
         }
 
-        .titulo-declara {
+        .titulo-certificado {
             text-align: center;
             font-size: 25px;
             font-weight: bold;
-            margin: 20px 0;
+            color: #333;
+            margin: 12px 0;
+            text-transform: uppercase;
         }
 
-        .texto-azul { color: #000; font-weight: bold; }
-        .texto-fijo { color: #000; font-weight: normal; }
-        .texto-editable { color: #000; font-weight: bold; }
+        .texto-azul {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .texto-fijo {
+            color: #000;
+            font-weight: normal;
+        }
+
+        .texto-editable {
+            color: #000;
+            font-weight: bold;
+        }
 
         .contenedor-dos-imagenes {
             display: flex;
@@ -123,11 +142,13 @@
         }
 
         .pie-pagina {
-            padding-top: 10px;
+            padding-top: 8px;
             border-top: 1px solid #0066cc;
             text-align: center;
             font-size: 11px;
             color: #666;
+            margin-top: auto;
+            page-break-inside: avoid;
         }
 
         @media print {
@@ -137,114 +158,156 @@
         }
     </style>
 </head>
+
 <body>
     <div class="contenedor-pdf">
-        
-        <!-- PÁGINA 1 -->
+
+        <!-- PÃGINA 1 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE TEJA, <span class="texto-azul">COPLANARIA</span></h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE TEJA, <span
+                            class="texto-azul">COPLANARIA</span></h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-intro">
-                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span class="texto-fijo">28.818.007-L</span>, Ingeniero Industrial colegiado número <span class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en <span class="texto-fijo">Calle El Peñón 5 - 41940</span>, localidad de <span class="texto-fijo">Tomares</span>, provincia de <span class="texto-fijo">Sevilla</span>.
+                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span
+                        class="texto-fijo">28818007L</span>, Ingeniero Industrial colegiado nÃºmero <span
+                        class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de AndalucÃ­a
+                    Occidental, y con domicilio en <span class="texto-fijo">Calle El PeÃ±Ã³n 5 - 41940</span>, localidad
+                    de <span class="texto-fijo">Tomares</span>, provincia de <span class="texto-fijo">Sevilla</span>.
                 </p>
 
-                <h2 class="titulo-declara">CERTIFICO</h2>
+                <h2 class="titulo-certificado">CERTIFICO</h2>
 
                 <p class="parrafo-certifico">
-                    que el estado de la cubierta de teja de la vivienda sita en 
-                    <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, 
-                    <span class="texto-editable" th:text="${form['numero']}">5</span> – código postal 
-                    <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41930</span>, localidad de 
-                    <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Bormujos</span>, provincia de 
-                    <span th:text="${form['provinciaEmplazamiento']}">Sevilla</span>, con Referencia Catastral 
-                    <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Ref. Catastral</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                    que el estado de la cubierta de teja de la vivienda sita en
+                    <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>,
+                    <span class="texto-editable" th:text="${form['numero']}">5</span> â€“ cÃ³digo postal
+                    <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41930</span>, localidad
+                    de
+                    <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Bormujos</span>, provincia
+                    de
+                    <span th:text="${form['provinciaEmplazamiento']}">Sevilla</span>, con Referencia Catastral
+                    <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Ref.
+                        Catastral</span>, es el adecuado para soportar de forma sÃ³lida y segura el generador
+                    fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la
+                    vista de la inspecciÃ³n ocular realizada <span class="texto-azul">in situ</span>, de la revisiÃ³n del
+                    proyecto constructivo de la misma, y de la disposiciÃ³n sobre la cubierta de los mÃ³dulos
+                    fotovoltaicos.
                 </p>
 
                 <p class="parrafo-datos">
-                    El generador fotovoltaico ha sido dimensionado mediante Memoria Técnica de Diseño según requiere la reglamentación, y está compuesto por 
-                    <span class="texto-editable" th:text="${form['e2_totalModulos']}">10</span> módulos fotovoltaicos de 
-                    <span class="texto-editable" th:text="${form['e2_potenciaPicoModulo']}">605</span> Wp de potencia eléctrica y 
-                    <span class="texto-editable">28.00 kg</span> de peso cada uno, del fabricante y modelo 
-                    <span class="texto-editable" th:text="${form['e2_marcaModeloModulo']}">Marca/Modelo</span> con Certificado de Garantía y Marcado CE de sus productos.
+                    El generador fotovoltaico ha sido dimensionado mediante Memoria TÃ©cnica de DiseÃ±o segÃºn requiere la
+                    reglamentaciÃ³n, y estÃ¡ compuesto por
+                    <span class="texto-editable" th:text="${form['e2_totalModulos']}">10</span> mÃ³dulos fotovoltaicos de
+                    <span class="texto-editable" th:text="${form['e2_potenciaPicoModulo']}">605</span> Wp de potencia
+                    elÃ©ctrica y
+                    <span class="texto-editable">28.00 kg</span> de peso cada uno, del fabricante y modelo
+                    <span class="texto-editable" th:text="${form['e2_marcaModeloModulo']}">Marca/Modelo</span> con
+                    Certificado de GarantÃ­a y Marcado CE de sus productos.
                 </p>
 
                 <p class="parrafo-estructura">
-                  La estructura de soporte de dichos módulos fotovoltaicos es de <span class="texto-azul">perfilería</span> de aluminio ligero del modelo KH915 VR de la empresa <span class="texto-azul">SUNFER ESTRUCTURAS, S.L.</span>, especializada en soportes para generadores fotovoltaicos con Certificado de Garantía y Marcado CE de sus productos.
+                    La estructura de soporte de dichos mÃ³dulos fotovoltaicos es de <span
+                        class="texto-azul">perfilerÃ­a</span> de aluminio ligero del modelo KH915 VR de la empresa <span
+                        class="texto-azul">SUNFER ESTRUCTURAS, S.L.</span>, especializada en soportes para generadores
+                    fotovoltaicos con Certificado de GarantÃ­a y Marcado CE de sus productos.
                 </p>
-                <p class="parrafo-imagen">En la siguiente imagen podemos visualizar el sistema de <span class="texto-azul">perfilería</span> empleado:</p>
+                <p class="parrafo-imagen">En la siguiente imagen podemos visualizar el sistema de <span
+                        class="texto-azul">perfilerÃ­a</span> empleado:</p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">Página 1</p>
+                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">PÃ¡gina 1</p>
             </div>
         </div>
 
-        <!-- PÁGINA 2 -->
+        <!-- PÃGINA 2 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE TEJA, <span class="texto-azul">COPLANARIA</span></h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE TEJA, <span
+                            class="texto-azul">COPLANARIA</span></h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
-                <!-- Espacio para imagen técnica -->
+                <!-- Espacio para imagen tÃ©cnica -->
                 <div class="contenedor-dos-imagenes">
-                    <img th:src="${imagenTecnicaBase64}" class="imagen-pdf-lado" alt="Imagen Técnica Sunfer" />
+                    <img th:src="${imagenTecnicaBase64}" class="imagen-pdf-lado" alt="Imagen TÃ©cnica Sunfer" />
                 </div>
 
                 <p class="parrafo-estructura">
-                  Dicha <span class="texto-azul">ESTRUCTURA COPLANARIA</span> será fijada a la cubierta inclinada de teja mediante varias varillas roscadas (según procedimiento del fabricante), sólidamente fijadas a la <span class="texto-azul">perfilería</span> de aluminio mediante <span class="texto-azul">tornillería</span> de acero inoxidable.
+                    Dicha <span class="texto-azul">ESTRUCTURA COPLANARIA</span> serÃ¡ fijada a la cubierta inclinada de
+                    teja mediante varias varillas roscadas (segÃºn procedimiento del fabricante), sÃ³lidamente fijadas a
+                    la <span class="texto-azul">perfilerÃ­a</span> de aluminio mediante <span
+                        class="texto-azul">tornillerÃ­a</span> de acero inoxidable.
                 </p>
                 <p class="parrafo-estructura">
-                  Dichas varillas son fijadas al tablero de <span class="texto-azul">rasillones</span> existente, mediante taco químico, después de perforar la <span class="texto-azul">limatesa</span> de la teja y el mortero de compresión que se encuentra debajo; todo ello según los procedimientos de instalación establecidos en la ficha técnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la <span class="texto-azul">tornillería</span>.
+                    Dichas varillas son fijadas al tablero de <span class="texto-azul">rasillones</span> existente,
+                    mediante taco quÃ­mico, despuÃ©s de perforar la <span class="texto-azul">limatesa</span> de la teja y
+                    el mortero de compresiÃ³n que se encuentra debajo; todo ello segÃºn los procedimientos de instalaciÃ³n
+                    establecidos en la ficha tÃ©cnica del producto, guardando las distancias previstas entre las
+                    perforaciones y respetando los pares de apriete de la <span class="texto-azul">tornillerÃ­a</span>.
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">Página 2</p>
+                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">PÃ¡gina 2</p>
             </div>
         </div>
 
-        <!-- PÁGINA 3 -->
+        <!-- PÃGINA 3 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE TEJA, <span class="texto-azul">COPLANARIA</span></h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE TEJA, <span
+                            class="texto-azul">COPLANARIA</span></h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-estructura">
-                    La <span class="texto-azul">perfilería</span> de aluminio está unida solidariamente a los módulos fotovoltaicos mediante elementos de presión y fijación con tornillo a las distancias y pares de apriete marcados por el fabricante.
+                    La <span class="texto-azul">perfilerÃ­a</span> de aluminio estÃ¡ unida solidariamente a los mÃ³dulos
+                    fotovoltaicos mediante elementos de presiÃ³n y fijaciÃ³n con tornillo a las distancias y pares de
+                    apriete marcados por el fabricante.
                 </p>
                 <p class="parrafo-estructura">
-                    El plano formado por los módulos fotovoltaicos tendrá una disposición <span class="texto-azul">COPLANAR A LA SUPERFICIE</span> de la cubierta de teja de la vivienda, de tal forma, que se evitan tanto fuerzas de tracción como de compresión sobre la propia cubierta. Dicho efecto se consigue al no producirse embolsamientos de aire en el espacio existente entre los módulos fotovoltaicos y la cubierta de teja, ya que el viento se encontrará con una misma superficie de entrada y de salida a dicho espacio.
+                    El plano formado por los mÃ³dulos fotovoltaicos tendrÃ¡ una disposiciÃ³n <span
+                        class="texto-azul">COPLANAR A LA SUPERFICIE</span> de la cubierta de teja de la vivienda, de tal
+                    forma, que se evitan tanto fuerzas de tracciÃ³n como de compresiÃ³n sobre la propia cubierta. Dicho
+                    efecto se consigue al no producirse embolsamientos de aire en el espacio existente entre los mÃ³dulos
+                    fotovoltaicos y la cubierta de teja, ya que el viento se encontrarÃ¡ con una misma superficie de
+                    entrada y de salida a dicho espacio.
                 </p>
                 <p class="parrafo-estructura">
-                  El estado de la cubierta de teja de la vivienda es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                    El estado de la cubierta de teja de la vivienda es el adecuado para soportar de forma sÃ³lida y
+                    segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene
+                    previsto instalar, con ausencia de afecciÃ³n estructural, a la vista de la inspecciÃ³n ocular
+                    realizada <span class="texto-azul">in situ</span>, de la revisiÃ³n del proyecto constructivo de la
+                    misma, y de la disposiciÃ³n sobre la cubierta de los mÃ³dulos fotovoltaicos.
                 </p>
                 <p class="parrafo-estructura">
-                    La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
+                    La mencionada Memoria TÃ©cnica de DiseÃ±o ha sido redactada por mÃ­ como tÃ©cnico competente.
                 </p>
 
                 <p class="parrafo-fecha">
-                    En <strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>, a <strong th:text="${form['dia']}">13</strong> de <strong th:text="${form['mes']}">marzo</strong> de <strong th:text="${form['anio']}">2026</strong>.
+                    En <strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>, a <strong
+                        th:text="${form['dia']}">13</strong> de <strong th:text="${form['mes']}">marzo</strong> de
+                    <strong th:text="${form['anio']}">2026</strong>.
                 </p>
 
                 <div class="logo-footer">
@@ -255,16 +318,17 @@
                     <strong>Eduardo Rivera Cabezas</strong><br>
                     <strong>670308856</strong><br>
                     <strong>erivera@solay.es</strong><br>
-                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
+                    <strong>Calle El PeÃ±Ã³n 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">Página 3</p>
+                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">PÃ¡gina 3</p>
             </div>
         </div>
     </div>
 </body>
+
 </html>
