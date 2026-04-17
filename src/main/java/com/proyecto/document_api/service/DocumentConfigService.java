@@ -145,6 +145,7 @@ public class DocumentConfigService {
                 applyDeclaracionCompromisoCorriente(enriched, formData);
                 break;
             case "certificado-pedidos-contratos":
+            case "CertificadoPedidos":
                 applyCertificadoPedidosContratos(enriched, formData);
                 break;
 
@@ -476,7 +477,8 @@ public class DocumentConfigService {
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
         enriched.put("direccion", buildDireccionCompleta(form));
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
-        applyMapping(enriched, form, "expediente", "expedienteEco");
+        applyMappingWithFallback(enriched, form, "expediente", "expedienteEco", "expediente", "numeroExpediente");
+        putIfAbsent(enriched, "expediente", "___");
 
         applyMapping(enriched, form, "diaFirma", "diaFirmaJustificacion");
         applyMapping(enriched, form, "mesFirma", "mesFirmaJustificacion");
@@ -715,8 +717,16 @@ public class DocumentConfigService {
 
         // --- fieldMapping: Sección G Circuitos ---
         applyMapping(enriched, form, "potenciaBateriaInversor", "g_bateriaDiRectaInversorPotencia");
+        applyMapping(enriched, form, "longitudBateriaInversor", "g_bateriaDiRectaInversorLongitud");
+        applyMapping(enriched, form, "materialBateriaInversor", "g_bateriaDiRectaInversorSeccion");
+        
         applyMapping(enriched, form, "potenciaGeneradorInversorDirecto", "g_generadorDirectoInversorPotencia");
+        applyMapping(enriched, form, "longitudGeneradorInversorDirecto", "g_generadorDirectoInversorLongitud");
+        applyMapping(enriched, form, "materialGeneradorInversorDirecto", "g_generadorDirectoInversorSeccion");
+        
         applyMapping(enriched, form, "potenciaSalidaInversorRed", "g_inversorRedPotencia");
+        applyMapping(enriched, form, "longitudSalidaInversorRed", "g_inversorRedLongitud");
+        applyMapping(enriched, form, "materialSalidaInversorRed", "g_inversorRedSeccion");
 
         // --- fieldMapping: Sección H y I ---
         applyMapping(enriched, form, "esquemaUnifilar", "h_esquemaUnifilar");

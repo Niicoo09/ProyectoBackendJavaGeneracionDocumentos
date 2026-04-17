@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Relación Certificada de Pedidos</title>
+    <style>
+        /* ========== ESTILOS BASE PDF (A4) ========== */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: white;
+            line-height: 1.4;
+        }
+
+        .contenedor-principal {
+            padding: 20mm;
+            min-height: 257mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== ENCABEZADO ========== */
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #0066cc;
+            margin-bottom: 20px;
+        }
+
+        .encabezado-texto {
+            flex: 1;
+            text-align: center;
+        }
+
+        .titulo-principal {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .subtitulo {
+            margin: 4px 0 0 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-left: 15px;
+        }
+
+        /* ========== DATOS PRINCIPALES (Caja Gris) ========== */
+        .datos-principales {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            padding: 10px;
+        }
+
+        .fila-datos {
+            display: flex;
+            margin-bottom: 4px;
+        }
+
+        .campo {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .campo label {
+            font-weight: bold;
+            margin-right: 5px;
+            display: inline-block;
+            min-width: 140px;
+        }
+
+        /* ========== PÁRRAFO CERTIFICADOR (Caja Amarilla) ========== */
+        .parrafo-certificador {
+            margin: 15px 0;
+            padding: 12px;
+            background-color: #fffacd;
+            border-left: 4px solid #ffcc00;
+            font-size: 12.5px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* ========== TABLA DE PEDIDOS (Verde) ========== */
+        .tabla-pedidos {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+            margin: 15px 0;
+            border: 2px solid #009900;
+        }
+
+        .tabla-pedidos thead {
+            background-color: #00cc00;
+            color: white;
+        }
+
+        .header-grupo th {
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #009900;
+            font-size: 11px;
+        }
+
+        .tabla-pedidos th {
+            padding: 6px 4px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #009900;
+            text-transform: uppercase;
+        }
+
+        .tabla-pedidos td {
+            padding: 4px;
+            border: 1px solid #009900;
+            vertical-align: middle;
+            height: 20px;
+        }
+
+        .tabla-pedidos tbody tr:nth-child(even) {
+            background-color: #e8f5e9;
+        }
+
+        .numero {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* ========== FIRMA Y FECHA ========== */
+        .pie-documento {
+            margin-top: auto;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .lugar-fecha {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .firma-seccion {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .firma-bloque {
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+        }
+
+        .linea-firma {
+            border-bottom: 1px solid #333;
+            height: 60px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .imagen-firma {
+            max-height: 55px;
+            width: auto;
+        }
+
+        .etiqueta-firma {
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-principal">
+        
+        <!-- Encabezado -->
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1 class="titulo-principal">RELACIÓN CERTIFICADA DE PEDIDOS Y/O CONTRATOS</h1>
+                <p class="subtitulo">Relativas a las actuaciones realizadas</p>
+            </div>
+            <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+        </div>
+
+        <!-- Datos principales -->
+        <div class="datos-principales">
+            <div class="fila-datos">
+                <div class="campo">
+                    <label>Persona beneficiaria:</label>
+                    <span th:text="${form.get('personaBeneficiaria')}">--</span>
+                </div>
+            </div>
+            <div class="fila-datos">
+                <div class="campo">
+                    <label>NIF:</label>
+                    <span th:text="${form.get('nif')}">--</span>
+                </div>
+            </div>
+            <div class="fila-datos">
+                <div class="campo">
+                    <label>Dirección:</label>
+                    <span th:text="${form.get('direccion')}">--</span>
+                </div>
+            </div>
+            <div class="fila-datos">
+                <div class="campo">
+                    <label>Nº Expediente:</label>
+                    <span th:text="${form.get('expediente')}">--</span>
+                </div>
+            </div>
+            <div class="fila-datos">
+                <div class="campo">
+                    <label>Provincia:</label>
+                    <span th:text="${form.get('provincia')}">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Párrafo certificador -->
+        <div class="parrafo-certificador">
+            <p><strong>CERTIFICA</strong> que la siguiente relación de pedidos y/o contratos, relativos a las actuaciones realizadas con cargo a las ayudas de la Orden de 9 de junio de 2022, por la que se aprueban las bases reguladoras para la concesión de subvenciones, en régimen de concurrencia no competitiva, para la rehabilitación a nivel de edificio, la mejora de la eficiencia energética en viviendas, la elaboración del libro del edificio existente para la rehabilitación y la redacción de proyectos de rehabilitación, en el marco del Plan de Recuperación, Transformación y Resiliencia, en la Comunidad Autónoma de Andalucía, conforme al apartado 23.b.3.i del cuadro resumen.</p>
+        </div>
+
+        <!-- Tabla de pedidos -->
+        <table class="tabla-pedidos">
+            <thead>
+                <tr class="header-grupo">
+                    <th colspan="2"></th>
+                    <th colspan="3" style="background-color: #00cc00; border-right: 3px solid #009900;">OFERTAS</th>
+                    <th colspan="3" style="background-color: #00cc00;">PEDIDOS</th>
+                </tr>
+                <tr>
+                    <th style="width: 15%;">Concepto</th>
+                    <th style="width: 25%;">Proveedor</th>
+                    <th style="width: 10%;">Id. Oferta</th>
+                    <th style="width: 10%;">Fecha</th>
+                    <th style="width: 10%; border-right: 3px solid #009900;">Importe (€)</th>
+                    <th style="width: 10%;">Id. Pedido</th>
+                    <th style="width: 10%;">Fecha</th>
+                    <th style="width: 10%;">Importe (€)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iteramos sobre los 5 posibles pedidos definidos en el config -->
+                <tr th:each="i : ${#numbers.sequence(1, 5)}" 
+                    th:with="concepto=${form.get('pedido' + i + 'Concepto')}"
+                    th:if="${concepto != null and concepto != ''}">
+                    <td th:text="${concepto}"></td>
+                    <td th:text="${form.get('pedido' + i + 'Proveedor')}"></td>
+                    <td th:text="${form.get('pedido' + i + 'IdOferta')}"></td>
+                    <td th:text="${form.get('pedido' + i + 'FechaOferta')}"></td>
+                    <td class="numero" th:text="${form.get('pedido' + i + 'ImporteOferta') + ' €'}"></td>
+                    <td th:text="${form.get('pedido' + i + 'IdPedido')}"></td>
+                    <td th:text="${form.get('pedido' + i + 'FechaPedido')}"></td>
+                    <td class="numero" th:text="${form.get('pedido' + i + 'ImportePedido') + ' €'}"></td>
+                </tr>
+                <!-- Rellenar filas vacías si no hay datos (estética) -->
+                <tr th:if="${form.get('pedido1Concepto') == null or form.get('pedido1Concepto') == ''}">
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="numero">0,00 €</td><td>&nbsp;</td><td>&nbsp;</td><td class="numero">0,00 €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Pie de página -->
+        <div class="pie-documento">
+            <p class="lugar-fecha">
+                En <span th:text="${form.get('provincia')}">Sevilla</span>, a 
+                <span th:text="${form.get('diaFirma')}">--</span> de 
+                <span th:text="${form.get('mesFirma')}">--</span> de 
+                <span th:text="${form.get('anioFirma')}">--</span>
+            </p>
+            
+            <div class="firma-seccion">
+                <div class="firma-bloque">
+                    <div class="linea-firma">
+                        <img th:if="${firmaImagen}" th:src="${firmaImagen}" class="imagen-firma" />
+                    </div>
+                    <p class="etiqueta-firma">Firmado</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

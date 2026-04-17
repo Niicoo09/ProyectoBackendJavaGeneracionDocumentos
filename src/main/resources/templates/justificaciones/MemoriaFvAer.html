@@ -13,13 +13,13 @@
             padding: 0;
             font-family: 'Calibri', 'Arial', sans-serif;
             font-size: 11pt;
-            line-height: 1.4;
+            line-height: 1.3;
             color: #000;
         }
         .pagina {
             width: 210mm;
             min-height: 297mm;
-            padding: 20mm;
+            padding: 18mm;
             box-sizing: border-box;
             page-break-after: always;
             display: flex;
@@ -27,7 +27,7 @@
         }
         .encabezado {
             border-bottom: 2px solid #000;
-            margin-bottom: 5mm;
+            margin-bottom: 4mm;
             padding-bottom: 3mm;
             text-align: center;
         }
@@ -37,11 +37,11 @@
             gap: 10mm;
         }
         .logo {
-            height: 12mm;
+            height: 11mm;
             width: auto;
         }
         .titulo-principal {
-            font-size: 13pt;
+            font-size: 12.5pt;
             font-weight: bold;
             text-align: center;
             margin-bottom: 5mm;
@@ -54,22 +54,23 @@
             background-color: #f9f9f9;
             font-size: 10pt;
         }
+        .datos-iniciales p { margin: 1mm 0; }
         .etiqueta { font-weight: bold; margin-right: 3mm; }
-        .seccion { margin-bottom: 5mm; }
+        .seccion { margin-bottom: 4mm; }
         .numero-seccion { font-weight: bold; margin-right: 2mm; display: inline; }
         .titulo-seccion { font-weight: bold; text-transform: uppercase; display: inline; }
-        .subseccion { margin-top: 3mm; margin-left: 5mm; }
+        .subseccion { margin-top: 2mm; margin-left: 5mm; }
         .texto-parrafo { text-align: justify; margin: 2mm 0; }
         .lista-actividades { margin-left: 10mm; margin-bottom: 3mm; }
         .lista-actividades li { margin-bottom: 1mm; }
         
-        table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 10pt; }
-        th, td { border: 1px solid #000; padding: 2mm; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 2mm 0; font-size: 9.5pt; }
+        th, td { border: 1px solid #000; padding: 1.5mm; text-align: center; }
         th { background-color: #f0f0f0; font-weight: bold; }
         .align-left { text-align: left; }
         
-        .seccion-firma { margin-top: 10mm; }
-        .imagen-firma { height: 20mm; width: auto; margin-top: 2mm; }
+        .seccion-firma { margin-top: 5mm; }
+        .imagen-firma { height: 18mm; width: auto; margin-top: 1mm; }
         .texto-verde { font-weight: bold; }
     </style>
 </head>
@@ -109,7 +110,7 @@
                 </span>
             </p>
             <div th:if="${form['aerotermia'] and form['caracteristicasAerotermia']}" 
-                 style="background: #f5f5f5; padding: 3mm; font-size: 10pt;" 
+                 style="background: #f5f5f5; padding: 2mm; font-size: 9.5pt;" 
                  th:text="${form['caracteristicasAerotermia']}"></div>
         </div>
 
@@ -213,16 +214,6 @@
                 <b>6.3. DB HE 2 (RITE):</b> Se certifica cumplimiento de eficiencia en instalaciones térmicas.
             </div>
         </div>
-    </div>
-
-    <!-- PÁGINA 3 -->
-    <div class="pagina">
-        <div class="encabezado">
-            <div class="logos-grupo">
-                <img th:src="${logoOrganizaciones}" class="logo" />
-                <img th:src="${logoJunta}" class="logo" />
-            </div>
-        </div>
 
         <div class="seccion">
             <div class="numero-seccion">7.</div> <div class="titulo-seccion">Principio DNSH.</div>
@@ -241,6 +232,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>

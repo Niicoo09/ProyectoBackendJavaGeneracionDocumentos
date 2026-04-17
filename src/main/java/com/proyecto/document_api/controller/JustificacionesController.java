@@ -130,6 +130,17 @@ public class JustificacionesController {
         });
     }
 
+    @GetMapping("/certificado-pedidos/{id}")
+    public ResponseEntity<byte[]> generateCertificadoPedidos(@PathVariable UUID id) {
+        return processDocumentResponse(id, "justificaciones/CertificadoPedidos", "Certificado_Pedidos", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/iconos-organizaciones.png"));
+            extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/icono-junta-andalucia.png"));
+            mapDynamicImageWithFallback(extraImages, formData, "firmaImagen", "firma", "firmaImagen", "firmaCliente");
+            return extraImages;
+        });
+    }
+
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================

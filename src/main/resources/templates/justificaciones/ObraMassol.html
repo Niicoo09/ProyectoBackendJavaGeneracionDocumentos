@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>DeclaraciÃ³n Responsable de Inicio de InstalaciÃ³n</title>
+    <title>Declaración Responsable de Inicio de Instalación</title>
     <style>
         @page {
             size: A4;
@@ -115,27 +115,27 @@
 <body>
     <div class="encabezado">
         <div class="encabezado-contenido">
-            <h1 class="titulo-principal">DeclaraciÃ³n responsable de</h1>
-            <p class="subtitulo">Inicio de InstalaciÃ³n.</p>
+            <h1 class="titulo-principal">Declaración responsable de</h1>
+            <p class="subtitulo">Inicio de Instalación.</p>
         </div>
         <img th:src="${logoSolay}" class="logo" />
     </div>
 
     <div class="contenido-principal">
         <p>
-            Por la presente, D. Eduardo Rafael Rivera Cabeza, con NIF 28818007L, Ingeniero Industrial colegiado nÃºmero 4654 en el Colegio Oficial de Ingenieros Industriales de AndalucÃ­a Occidental, y con domicilio en la Calle Ebro, 35 â€“ 41.012 Sevilla.
+            Por la presente, D. Eduardo Rafael Rivera Cabeza, con NIF 28818007L, Ingeniero Industrial colegiado número 4654 en el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en la Calle Ebro, 35 – 41.012 Sevilla.
         </p>
 
         <h2 class="titulo-declara">Declara que:</h2>
 
         <div class="caja-declaracion">
             <p>
-                La instalaciÃ³n fotovoltaica de <span class="texto-rojo" th:text="${form['potenciaInstalacion'] + 'kW'}">--kW</span> para autoconsumo individual con excedida a compensaciÃ³n 
-                <span th:if="${form['aerotermia']}">y sustituciÃ³n del equipo de ACS por aerotermia</span> 
+                La instalación fotovoltaica de <span class="texto-rojo" th:text="${form['potenciaInstalacion'] + 'kW'}">--kW</span> para autoconsumo individual con excedida a compensación 
+                <span th:if="${form['aerotermia']}">y sustitución del equipo de ACS por aerotermia</span> 
                 que se ejecuta en la vivienda situada en <span class="texto-rojo" th:text="${form['direccionCompleta']}">--</span>, cuya referencia catastral es: <span class="texto-rojo" th:text="${form['referenciaCatastral']}">--</span>.
             </p>
             <p style="text-decoration: underline;">
-                Se iniciÃ³ y finalizÃ³ el dÃ­a <span class="texto-rojo" th:text="${form['diaInicio'] + ' de ' + form['mesInicio'] + ' de ' + form['anioInicio']}">--</span>.
+                Se inició y finalizó el día <span class="texto-rojo" th:text="${form['diaInicio'] + ' de ' + form['mesInicio'] + ' de ' + form['anioInicio']}">--</span>.
             </p>
         </div>
 
@@ -160,8 +160,7 @@
     </div>
 
     <div class="pie-pagina">
-        <p>Solay Ingenieros S.L. - Paseo de Bollullos de la MitaciÃ³n 18, Parque PIBO, 41110 Sevilla.</p>
+        <p>Solay Ingenieros S.L. - Paseo de Bollullos de la Mitación 18, Parque PIBO, 41110 Sevilla.</p>
     </div>
 </body>
 </html>
-
