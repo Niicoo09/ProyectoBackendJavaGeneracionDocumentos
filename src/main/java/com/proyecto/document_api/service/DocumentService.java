@@ -3,6 +3,8 @@ package com.proyecto.document_api.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyecto.document_api.dto.DocumentCreateDTO;
+import com.proyecto.document_api.dto.DocumentResponseDTO;
 import com.proyecto.document_api.model.DocumentEntity;
 import com.proyecto.document_api.repository.DocumentRepository;
 import com.microsoft.playwright.Browser;
@@ -114,6 +116,28 @@ public class DocumentService {
     }
 
     /**
+     * Recupera un documento por ID y lo devuelve como DocumentResponseDTO.
+     * Incluye los metadatos del registro + el JSON del formulario parseado.
+     */
+    public DocumentResponseDTO getDocumentResponse(UUID id) {
+        DocumentEntity entity = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
+        try {
+            Map<String, Object> formMap = objectMapper.readValue(
+                    entity.getFormulario(), new TypeReference<Map<String, Object>>() {});
+            return DocumentResponseDTO.builder()
+                    .id(entity.getId())
+                    .nombre(entity.getNombre())
+                    .data(formMap)
+                    .createdAt(entity.getCreatedAt())
+                    .updatedAt(entity.getUpdatedAt())
+                    .build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error al parsear el JSON del cliente: " + e.getMessage());
+        }
+    }
+
+    /**
      * Recupera un documento por ID y parsea su JSON interno a un Mapa.
      * Útil para rellenar el MasterForm en modo edición.
      */
@@ -126,6 +150,13 @@ public class DocumentService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error al parsear el JSON del cliente: " + e.getMessage());
         }
+    }
+
+    /**
+     * Guarda o actualiza un cliente a partir de un DocumentCreateDTO validado.
+     */
+    public DocumentEntity saveDocumentFromDTO(UUID id, DocumentCreateDTO dto) {
+        return saveDocument(id, dto.getFormulario());
     }
 
     /**

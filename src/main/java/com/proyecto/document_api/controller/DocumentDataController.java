@@ -1,16 +1,19 @@
 package com.proyecto.document_api.controller;
 
+import com.proyecto.document_api.dto.DocumentCreateDTO;
+import com.proyecto.document_api.dto.DocumentResponseDTO;
+import com.proyecto.document_api.dto.DocumentSummaryDTO;
 import com.proyecto.document_api.model.DocumentEntity;
 import com.proyecto.document_api.service.DocumentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import com.proyecto.document_api.repository.DocumentRepository;
 
@@ -30,43 +33,50 @@ public class DocumentDataController {
     private DocumentRepository documentRepository;
 
     /**
-     * Obtiene la lista completa de clientes para el Dashboard.
+     * Obtiene la lista completa de clientes para el Dashboard (OPTIMIZADO).
      */
-    @Operation(summary = "Listar Clientes", description = "Devuelve todos los registros para mostrar en el panel principal.")
+    @Operation(summary = "Listar Clientes", description = "Devuelve solo los datos básicos para el panel principal.")
     @GetMapping
-    public List<DocumentEntity> getAll() {
-        return documentRepository.findAll();
+    public List<DocumentSummaryDTO> getAll() {
+        return documentRepository.findAllSummaries();
     }
 
     /**
-     * Obtiene el JSON crudo de un cliente para rellenar el MasterForm en Vue.
+     * Obtiene los datos completos de un cliente envueltos en el DocumentResponseDTO.
+     * Incluye metadatos (id, nombre, fechas) + el JSON del formulario.
      */
-    @Operation(summary = "Obtener Datos de Formulario", description = "Recupera el objeto JSON completo del cliente para edición.")
+    @Operation(summary = "Obtener Datos de Formulario", description = "Recupera el objeto JSON completo del cliente para edición, junto con sus metadatos.")
     @GetMapping("/data/{id}")
-    public ResponseEntity<Map<String, Object>> getFormData(@PathVariable UUID id) {
-        return ResponseEntity.ok(documentService.getDocumentForm(id));
+    public ResponseEntity<DocumentResponseDTO> getFormData(@PathVariable UUID id) {
+        return ResponseEntity.ok(documentService.getDocumentResponse(id));
     }
 
     /**
      * Crea un nuevo cliente con un UUID generado.
+     * @Valid activa las validaciones del DocumentCreateDTO (nombre obligatorio, etc.)
      */
     @Operation(summary = "Crear Nuevo Cliente", description = "Registra un nuevo expediente en la base de datos.")
     @PostMapping
-    public ResponseEntity<DocumentEntity> createDocument(@RequestBody Map<String, Object> formData) {
-        // Si no viene ID en el Map, generamos uno nuevo
+    public ResponseEntity<DocumentSummaryDTO> createDocument(@Valid @RequestBody DocumentCreateDTO dto) {
         UUID newId = UUID.randomUUID();
-        DocumentEntity saved = documentService.saveDocument(newId, formData);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        DocumentEntity saved = documentService.saveDocumentFromDTO(newId, dto);
+        DocumentSummaryDTO summary = new DocumentSummaryDTO(
+                saved.getId(), saved.getNombre(), saved.getCreatedAt(), saved.getUpdatedAt());
+        return new ResponseEntity<>(summary, HttpStatus.CREATED);
     }
 
     /**
      * Actualiza los datos de un cliente existente.
+     * @Valid activa las validaciones del DocumentCreateDTO.
      */
     @Operation(summary = "Actualizar Cliente", description = "Modifica los datos técnicos de un expediente existente.")
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentEntity> updateDocument(
-            @PathVariable UUID id, 
-            @RequestBody Map<String, Object> formData) {
-        return ResponseEntity.ok(documentService.saveDocument(id, formData));
+    public ResponseEntity<DocumentSummaryDTO> updateDocument(
+            @PathVariable UUID id,
+            @Valid @RequestBody DocumentCreateDTO dto) {
+        DocumentEntity saved = documentService.saveDocumentFromDTO(id, dto);
+        DocumentSummaryDTO summary = new DocumentSummaryDTO(
+                saved.getId(), saved.getNombre(), saved.getCreatedAt(), saved.getUpdatedAt());
+        return ResponseEntity.ok(summary);
     }
 }
