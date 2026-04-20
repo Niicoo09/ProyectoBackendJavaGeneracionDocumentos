@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>3.a- Declaración Responsable DO</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+        }
+        .pagina-ddo {
+            width: 200mm;
+            height: 287mm;
+            position: relative;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-position: top left;
+            color: #111;
+            font-family: Arial, sans-serif;
+        }
+        .overlay-field {
+            position: absolute;
+            color: #0a2668;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: visible;
+            display: block;
+            text-shadow: 0 0 0.35px rgba(10, 38, 104, 0.45);
+            padding: 0 1mm;
+            box-sizing: border-box;
+        }
+        .firma-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagina-ddo" th:style="'background-image: url(' + ${fondoUrl} + ');'">
+        
+        <!-- 1. IDENTIFICACIÓN DEL TÉCNICO -->
+        <div class="overlay-field" style="left: 25mm; top: 64mm; width: 60mm; height: 8mm; font-size: 10pt; text-align: left;"
+             th:text="${form['nombreApellidosEduardoFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 156mm; top: 64mm; width: 30mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['nifEduardoFijo'] ?: ''}"></div>
+
+        <div class="overlay-field" style="left: 25mm; top: 75.5mm; width: 30mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['tipoViaFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 59mm; top: 75.5mm; width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['nombreViaFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 50mm; top: 83mm; width: 20mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['numeroViaFijo'] ?: ''}"></div>
+
+        <div class="overlay-field" style="left: 25mm; top: 91mm; width: 30mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['paisFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 59mm; top: 91mm; width: 45mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['provinciaFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 110mm; top: 91mm; width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['municipioFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 177.5mm; top: 91mm; width: 30mm; height: 6mm; font-size: 11pt; letter-spacing: 2.5px; text-align: left;"
+             th:text="${form['codigoPostalFijo'] ?: ''}"></div>
+
+        <div class="overlay-field" style="left: 25mm; top: 100mm; width: 100mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['titulacionFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 129mm; top: 100mm; width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['especialidadFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 25mm; top: 108mm; width: 100mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['universidadFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 25mm; top: 116mm; width: 130mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['colegioFijo'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 160mm; top: 116mm; width: 30mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['numeroColegiadoFijo'] ?: ''}"></div>
+
+        <!-- 2. DATOS DEL TRABAJO PROFESIONAL -->
+        <div class="overlay-field" style="left: 50mm; top: 109.5mm; width: 130mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['razonSocial'] ?: ''}"></div>
+
+        <div class="overlay-field" style="left: 60mm; top: 135mm; width: 120mm; height: 8mm; font-size: 9pt; text-align: left;"
+             th:text="${form['fraseFija1'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 126.5mm; top: 135mm; width: 30mm; height: 6mm; font-size: 9pt; text-align: left;"
+             th:text="${form['potenciaFrase1'] ?: ''}"></div>
+
+        <div class="overlay-field" style="left: 60mm; top: 148mm; width: 120mm; height: 8mm; font-size: 9pt; text-align: left;"
+             th:text="${form['fraseFija2'] ?: ''}"></div>
+
+        <!-- Cabecera Superior -->
+        <div class="overlay-field" style="left: 140mm; top: 20.5mm; width: 45mm; height: 6mm; font-size: 10pt; background: white; text-align: center;"
+             th:text="${form['provinciaSelect1'] ?: ''}"></div>
+
+        <!-- Fecha y Lugar Inferior -->
+        <div class="overlay-field" style="left: 58mm; top: 199mm; width: 40mm; height: 6mm; font-size: 10pt; text-align: center;"
+             th:text="${form['provincia'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 103mm; top: 199mm; width: 12mm; height: 6mm; font-size: 10pt; text-align: center;"
+             th:text="${form['dia'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 118mm; top: 199mm; width: 25mm; height: 6mm; font-size: 10pt; text-align: center;"
+             th:text="${form['mes'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 145mm; top: 199mm; width: 20mm; height: 6mm; font-size: 10pt; text-align: center;"
+             th:text="${form['anio'] ?: ''}"></div>
+
+        <!-- Firma -->
+        <div class="overlay-field" style="left: 80mm; top: 208mm; width: 100mm; height: 15mm;">
+            <img class="firma-img" th:if="${firmaBase64 != null and !firmaBase64.isEmpty()}" th:src="${firmaBase64}" />
+        </div>
+        
+        <div class="overlay-field" style="left: 80mm; top: 224mm; width: 65mm; height: 15mm; font-size: 10pt; text-align: center;"
+             th:text="${form['nombreFirma'] ?: ''}"></div>
+        
+        <div class="overlay-field" style="left: 171mm; top: 232mm; width: 25mm; height: 6mm; font-size: 10pt; background: white; text-align: center;"
+             th:text="${form['provinciaSelect2'] ?: ''}"></div>
+
+    </div>
+</body>
+</html>

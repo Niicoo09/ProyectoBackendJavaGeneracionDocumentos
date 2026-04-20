@@ -182,9 +182,12 @@ public class DocumentConfigService {
             case "z-certificado-doacfv":
                 applyCertificadoDireccionObra(enriched, formData);
                 break;
+            case "declaracion-responsable-do":
+            case "certificado-direccion-obra":
             case "z-declaracion-direccion-obra":
                 applyDeclaracionDireccionObra(enriched, formData);
                 break;
+            case "dr-tecnico-competente":
             case "z-declaracion-tecnico-competente":
                 applyDeclaracionTecnicoCompetente(enriched, formData);
                 break;
@@ -592,36 +595,117 @@ public class DocumentConfigService {
     }
 
     private void applyCie(Map<String, Object> enriched, Map<String, Object> form) {
-        applyMapping(enriched, form, "titular", "apellidosNombre");
-        enriched.put("nif", cleanDni(getString(form, "nifCif")));
-
-        // Domicilio del titular (se nutre del emplazamiento según requerimiento)
-        enriched.put("domicilio", buildDireccionCompleta(form));
+        // Datos del Titular
+        applyMapping(enriched, form, "apellidosNombre", "apellidosNombre");
+        enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
+        applyMapping(enriched, form, "domicilio", "emplazamientoCalle");
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
-
-        // Emplazamiento de la instalación
-        enriched.put("emplazamiento", buildDireccionCompleta(form));
+        applyMapping(enriched, form, "telefono", "telefono");
+        applyMapping(enriched, form, "correoElectronico", "email");
         
-        applyMapping(enriched, form, "potencia", "e2_potenciaNominalInversores");
+        // Emplazamiento
+        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        applyMapping(enriched, form, "numero", "numero");
+        applyMapping(enriched, form, "bloque", "bloque");
+        applyMapping(enriched, form, "portal", "portal");
+        applyMapping(enriched, form, "escalera", "escalera");
+        applyMapping(enriched, form, "piso", "planta");
+        applyMapping(enriched, form, "puerta", "puerta");
+        applyMapping(enriched, form, "codigoPostalEmplazamiento", "codigoPostalEmplazamiento");
+        applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
+        applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaEmplazamiento");
+
+        // Datos Técnicos
+        applyMapping(enriched, form, "potenciaContratada", "potenciaInstalacion");
+        applyMapping(enriched, form, "cups", "cups");
+        
+        // Datos del Director de Obra (Eduardo Rivera por defecto)
+        putIfAbsent(enriched, "directorDeObra", "Eduardo Rivera Cabezas");
+        putIfAbsent(enriched, "titulacion", "Ingeniero Industrial");
+        putIfAbsent(enriched, "colegioOficial", "COIIAOC");
+        putIfAbsent(enriched, "numeroColegiado", "4654");
+
+        // Fecha
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
     }
 
     private void applyCertificadoDireccionObra(Map<String, Object> enriched, Map<String, Object> form) {
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
+        enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
 
         enriched.put("emplazamiento", buildDireccionCompleta(form));
     }
 
     private void applyDeclaracionDireccionObra(Map<String, Object> enriched, Map<String, Object> form) {
-        applyMapping(enriched, form, "promotor", "apellidosNombre");
-        enriched.put("nif", cleanDni(getString(form, "nifCif")));
+        // Datos del Técnico (Fijos para Eduardo Rivera)
+        putIfAbsent(enriched, "nombreApellidosEduardoFijo", "Eduardo Rivera Cabezas");
+        putIfAbsent(enriched, "nifEduardoFijo", cleanDni("28.818.007-L"));
+        putIfAbsent(enriched, "tipoViaFijo", "Calle");
+        putIfAbsent(enriched, "nombreViaFijo", "El Peñon");
+        putIfAbsent(enriched, "numeroViaFijo", "5");
+        putIfAbsent(enriched, "paisFijo", "España");
+        putIfAbsent(enriched, "provinciaFijo", "Sevilla");
+        putIfAbsent(enriched, "municipioFijo", "Tomares");
+        putIfAbsent(enriched, "codigoPostalFijo", "41940");
+        putIfAbsent(enriched, "titulacionFijo", "Ingeniero Industrial");
+        putIfAbsent(enriched, "especialidadFijo", "Mecánica");
+        putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
+        putIfAbsent(enriched, "colegioFijo", "COIIAOC");
+        putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
+        putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Certificado de direccion de obra de instalacion de equipos");
+        putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
+
+        // Mapeos Dinámicos
+        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
+        applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "razonSocial", "nombreCubierta");
+        applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
+        
+        // Mapeos adicionales por si acaso
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
     }
 
     private void applyDeclaracionTecnicoCompetente(Map<String, Object> enriched, Map<String, Object> form) {
-        putIfAbsent(enriched, "tecnico", TECNICO_NOMBRE);
-        putIfAbsent(enriched, "nifTecnico", TECNICO_NIF);
+        // Datos del Técnico (Fijos para Eduardo Rivera)
+        putIfAbsent(enriched, "nombreApellidosEduardoFijo", "Eduardo Rivera Cabezas");
+        putIfAbsent(enriched, "nifEduardoFijo", cleanDni("28.818.007-L"));
+        putIfAbsent(enriched, "tipoViaFijo", "Calle");
+        putIfAbsent(enriched, "nombreViaFijo", "El Peñon");
+        putIfAbsent(enriched, "numeroViaFijo", "5");
+        putIfAbsent(enriched, "paisFijo", "España");
+        putIfAbsent(enriched, "provinciaFijo", "Sevilla");
+        putIfAbsent(enriched, "municipioFijo", "Tomares");
+        putIfAbsent(enriched, "codigoPostalFijo", "41940");
+        putIfAbsent(enriched, "titulacionFijo", "Ingeniero Industrial");
+        putIfAbsent(enriched, "especialidadFijo", "Mecánica");
+        putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
+        putIfAbsent(enriched, "colegioFijo", "COIIAOC");
+        putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
+        putIfAbsent(enriched, "fraseFija1", "Elaboracion de proyecto electrico de instalacion solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecuccion de instalacion solar fotovoltaica de ");
+        putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
+
+        // Mapeos Dinámicos
+        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
+        applyMapping(enriched, form, "potenciaFrase2", "potenciaProyecto");
+        applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "razonSocial", "nombreCubierta");
+        applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
+
+        // Mapeos de fecha
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
     }
 
     private void applyDocumentoUltimaPagina(Map<String, Object> enriched, Map<String, Object> form) {

@@ -147,6 +147,34 @@ public class LegalizacionController {
         });
     }
 
+    @GetMapping("/declaracion-responsable-do/{id}")
+    public ResponseEntity<byte[]> generateDeclaracionResponsableDo(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "DR_Responsable_DO", "declaracion-responsable-do", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-direccion-obra.jpg");
+            extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
+    @GetMapping("/dr-tecnico-competente/{id}")
+    public ResponseEntity<byte[]> generateDrTecnicoCompetente(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/DrTecnicoCompetente", "DR_Tecnico_Competente", "dr-tecnico-competente", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-tecnico-competente.jpg");
+            extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
+    @GetMapping("/certificado-direccion-obra/{id}")
+    public ResponseEntity<byte[]> generateCertificadoDireccionObra(@PathVariable UUID id) {
+        // Usamos la misma lógica que Declaración Responsable DO ya que comparten fondo y datos
+        return generateDeclaracionResponsableDo(id);
+    }
+
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================
