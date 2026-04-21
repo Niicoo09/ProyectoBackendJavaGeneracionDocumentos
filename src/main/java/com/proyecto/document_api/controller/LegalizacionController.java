@@ -93,11 +93,11 @@ public class LegalizacionController {
         });
     }
 
-    @GetMapping("/anexo-iii/{id}")
+    @Operation(summary = "Anexo III - Comunicación oficial")
+    @GetMapping({"/anexo-iii/{id}", "/autorizacion-comunicacion/{id}"})
     public ResponseEntity<byte[]> generateAnexoIii(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", "autorizacion-comunicacion", formData -> {
+        return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", "anexo-iii", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            // Multi-página (3 páginas - imágenes PNG)
             for (int i = 1; i <= 3; i++) {
                 String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".png");
                 extraImages.put("fondoStyle" + i, "background-image: url(data:image/png;base64," + b + ");");
@@ -107,22 +107,10 @@ public class LegalizacionController {
         });
     }
 
-    @GetMapping("/no-generacion-rcds/{id}")
-    public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion_No_RCDs", "declaracion-no-generacion-rcds", formData -> {
-            Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/declaracion-no-generacion-rcds.jpg");
-            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-            loadSignatureIntoExtraImages(extraImages, formData);
-            return extraImages;
-        });
-    }
-
-    // --- CERTIFICADOS TÉCNICOS (Z-*) ---
-
-    @GetMapping("/cie/{id}")
+    @Operation(summary = "Certificado de Instalación Eléctrica (CIE)")
+    @GetMapping({"/cie/{id}", "/boletin/{id}"})
     public ResponseEntity<byte[]> generateCie(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/Cie", "Certificado_Instalacion_Electrica", "z-certificado-br", formData -> {
+        return processDocumentResponse(id, "legalizacion/Cie", "CIE", "cie", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -131,14 +119,16 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "Certificado de Adecuación")
     @GetMapping("/certificado-adecuacion/{id}")
     public ResponseEntity<byte[]> generateCertificadoAdecuacion(@PathVariable UUID id) {
         return processDocumentResponse(id, "CertificadoAdecuacion", "Certificado_Adecuacion", "certificado-adecuacion", null);
     }
 
+    @Operation(summary = "DOACFV")
     @GetMapping("/doacfv/{id}")
     public ResponseEntity<byte[]> generateDoacfv(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/Doacfv", "Certificado_DOACFV", "z-certificado-doacfv", formData -> {
+        return processDocumentResponse(id, "legalizacion/Doacfv", "DOACFV", "doacfv", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/z-certificado-doacfv.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -147,9 +137,10 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "Declaración Responsable Dirección de Obra")
     @GetMapping("/declaracion-responsable-do/{id}")
     public ResponseEntity<byte[]> generateDeclaracionResponsableDo(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "DR_Responsable_DO", "declaracion-responsable-do", formData -> {
+        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "DR_DO", "declaracion-responsable-do", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-direccion-obra.jpg");
             extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
@@ -158,9 +149,10 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "DR Técnico Competente")
     @GetMapping("/dr-tecnico-competente/{id}")
     public ResponseEntity<byte[]> generateDrTecnicoCompetente(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/DrTecnicoCompetente", "DR_Tecnico_Competente", "dr-tecnico-competente", formData -> {
+        return processDocumentResponse(id, "legalizacion/DrTecnicoCompetente", "DR_Tecnico", "dr-tecnico-competente", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-tecnico-competente.jpg");
             extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
@@ -169,10 +161,16 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "Certificado de Dirección de Obra")
     @GetMapping("/certificado-direccion-obra/{id}")
     public ResponseEntity<byte[]> generateCertificadoDireccionObra(@PathVariable UUID id) {
-        // Usamos la misma lógica que Declaración Responsable DO ya que comparten fondo y datos
-        return generateDeclaracionResponsableDo(id);
+        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "CDO", "certificado-direccion-obra", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-direccion-obra.jpg");
+            extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
     }
 
     // =========================================================================

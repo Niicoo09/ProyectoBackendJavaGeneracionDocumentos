@@ -40,10 +40,10 @@ public class AceptacionesController {
      * ACEPTACIÓN 1: Aceptación de Subvención.
      * URL: http://localhost:8080/api/v1/aceptaciones/aceptacion-subvencion/{uuid}
      */
-    @Operation(summary = "Aceptación de Subvención", description = "Genera el documento de aceptación de subvención con posicionamiento absoluto.")
+    @Operation(summary = "Aceptación de Subvención")
     @GetMapping("/aceptacion-subvencion/{id}")
     public ResponseEntity<byte[]> generateAceptacionSubvencion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/AceptacionSubvencion", "Aceptacion_Subvencion", formData -> {
+        return processDocumentResponse(id, "aceptaciones/AceptacionSubvencion", "Aceptacion_Subvencion", "aceptacion-subvencion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/aceptacion-subvencion.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -52,9 +52,10 @@ public class AceptacionesController {
         });
     }
 
+    @Operation(summary = "Cesión de Tratamiento de Datos")
     @GetMapping("/declaracion-cesion-tratamiento/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCesionTratamiento(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCesionTratamiento", "AnexoA_Cesion_Tratamiento", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCesionTratamiento", "AnexoA_Cesion_Tratamiento", "declaracion-cesion-tratamiento", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaracio-cesion-tratamiento-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaracio-cesion-tratamiento-2.jpg");
@@ -65,9 +66,10 @@ public class AceptacionesController {
         });
     }
 
+    @Operation(summary = "Compromiso de Derechos")
     @GetMapping("/declaracion-compromiso-derechos/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoDerechos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoDerechos", "Compromiso_Derechos_Sociales", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoDerechos", "Compromiso_Derechos_Sociales", "declaracion-compromiso-derechos", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaración-de-compromiso.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -76,9 +78,10 @@ public class AceptacionesController {
         });
     }
 
+    @Operation(summary = "Compromiso Principios Transversales")
     @GetMapping("/declaracion-compromiso-transversales/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoTransversales(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoTransversales", "Compromiso_Principios_Transversales", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoTransversales", "Compromiso_Principios_Transversales", "declaracion-compromiso-transversales", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/compromiso-cumplimiento-principios-transv.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -87,9 +90,10 @@ public class AceptacionesController {
         });
     }
 
+    @Operation(summary = "DACI")
     @GetMapping("/declaracion-ausencia-conflicto/{id}")
     public ResponseEntity<byte[]> generateDeclaracionAusenciaConflicto(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionAusenciaConflicto", "DACI_Conflicto_Intereses", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionAusenciaConflicto", "DACI_Conflicto_Intereses", "declaracion-ausencia-conflicto", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/DACI1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/DACI2.jpg");
@@ -104,33 +108,22 @@ public class AceptacionesController {
     // LÓGICA INTERNA COMÚN
     // =========================================================================
 
-    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
-        DocumentEntity doc = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
-
+    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, String configId, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
+        DocumentEntity doc = documentRepository.findById(id).orElseThrow(() -> new RuntimeException("No existe el ID: " + id));
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
-
-        // Calculamos las imágenes adicionales y la firma con el formData ya disponible
-        Map<String, String> extraImages = null;
-        if (extraImagesProvider != null) {
-            extraImages = extraImagesProvider.apply(formData);
-        }
-
-        Map<String, Object> enrichedFormData = documentConfigService.enrich(templateName, formData);
+        
+        Map<String, String> extraImages = (extraImagesProvider != null) ? extraImagesProvider.apply(formData) : null;
+        Map<String, Object> enrichedFormData = documentConfigService.enrich(configId != null ? configId : templateName, formData);
 
         Map<String, Object> data = new HashMap<>();
         data.put("form", enrichedFormData);
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
-
-        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("logoBase64",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
         data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
 
-        if (extraImages != null) {
-            data.putAll(extraImages);
-        }
+        if (extraImages != null) data.putAll(extraImages);
 
         byte[] pdfBytes = documentService.generatePdf(templateName, data);
-
         String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
         String fileName = filePrefix + "_" + safeName + ".pdf";
 

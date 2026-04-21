@@ -8,9 +8,9 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
 
     # 💻 OPCIÓN B: LOCAL - Descomenta estas 3 líneas para pruebas en tu PC
-    #url: jdbc:postgresql://51.91.159.188:5433/postgres
-    #username: postgres
-    #password: yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG
+    # url: jdbc:postgresql://51.91.159.188:5433/postgres
+    # username: postgres
+    # password: yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG
     
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -25,6 +25,14 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
+    encoding: UTF-8
+    mode: HTML
+
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 
 server:
   port: 3000

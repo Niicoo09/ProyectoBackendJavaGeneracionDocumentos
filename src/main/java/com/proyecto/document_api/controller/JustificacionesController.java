@@ -39,10 +39,10 @@ public class JustificacionesController {
     /**
      * JUSTIFICACIÓN 1: Cartel Publicitario L3.
      */
-    @Operation(summary = "Cartel Publicitario L3", description = "Genera el cartel L3 (formato 210x210mm) para justificación.")
+    @Operation(summary = "Cartel Publicitario L3")
     @GetMapping("/cartel-l3/{id}")
     public ResponseEntity<byte[]> generateCartelL3(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CartelL3", "Cartel_L3", formData -> {
+        return processDocumentResponse(id, "justificaciones/CartelL3", "Cartel_L3", "cartel-l3", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/justificaciones/cartel-l3.png");
             extraImages.put("fondoStyle", "background-image: url(data:image/png;base64," + base64 + ");");
@@ -50,9 +50,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Cartel Publicitario L4")
     @GetMapping("/cartel-l4/{id}")
     public ResponseEntity<byte[]> generateCartelL4(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CartelL4", "Cartel_L4", formData -> {
+        return processDocumentResponse(id, "justificaciones/CartelL4", "Cartel_L4", "cartel-l4", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/justificaciones/cartel-l4.png");
             extraImages.put("fondoStyle", "background-image: url(data:image/png;base64," + base64 + ");");
@@ -60,9 +61,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Declaración de Compromiso Corriente")
     @GetMapping("/declaracion-compromiso-corriente/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoCorriente(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/DeclaracionCompromisoCorriente", "Compromiso_Al_Corriente", formData -> {
+        return processDocumentResponse(id, "justificaciones/DeclaracionCompromisoCorriente", "Compromiso_Al_Corriente", "declaracion-compromiso-corriente", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/justificaciones/declaracion-compromiso-corriente.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -71,9 +73,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Justificación Pago Subvención L3")
     @GetMapping("/justificacion-pago-subvencion-l3/{id}")
     public ResponseEntity<byte[]> generateJustificacionPagoSubvencionL3(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL3", "Justificacion_Pago_L3", formData -> {
+        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL3", "Justificacion_Pago_L3", "justificacion-pago-subvencion-l3", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/justificaciones/formato-pago-justificacion-linea3-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/justificaciones/formato-pago-justificacion-linea3-2.jpg");
@@ -84,9 +87,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Justificación Pago Subvención L4")
     @GetMapping("/justificacion-pago-subvencion-l4/{id}")
     public ResponseEntity<byte[]> generateJustificacionPagoSubvencionL4(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL4", "Justificacion_Pago_L4", formData -> {
+        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL4", "Justificacion_Pago_L4", "justificacion-pago-subvencion-l4", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/justificaciones/formato-pago-justificacion-linea4-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/justificaciones/formato-pago-justificacion-linea4-2.jpg");
@@ -97,9 +101,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Memoria Económica")
     @GetMapping("/memoria-economica/{id}")
     public ResponseEntity<byte[]> generateMemoriaEconomica(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/MemoriaEconomica", "Memoria_Economica", formData -> {
+        return processDocumentResponse(id, "justificaciones/MemoriaEconomica", "Memoria_Economica", "memoria-economica", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/icono-junta-andalucia.png"));
@@ -108,9 +113,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Memoria FV AER")
     @GetMapping("/memoria-fv-aer/{id}")
     public ResponseEntity<byte[]> generateMemoriaFvAer(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/MemoriaFvAer", "Memoria_FV_AER", formData -> {
+        return processDocumentResponse(id, "justificaciones/MemoriaFvAer", "Memoria_FV_AER", "memoria-fv-aer", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/icono-junta-andalucia.png"));
@@ -119,9 +125,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Declaración Inicio de Obras Massol")
     @GetMapping("/obra-massol/{id}")
     public ResponseEntity<byte[]> generateObraMassol(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/ObraMassol", "Declaracion_Inicio_Obra", formData -> {
+        return processDocumentResponse(id, "justificaciones/ObraMassol", "Declaracion_Inicio_Obra", "obra-massol", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoSolay",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
             extraImages.put("firmaSolay", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
@@ -130,9 +137,10 @@ public class JustificacionesController {
         });
     }
 
+    @Operation(summary = "Certificado de Pedidos")
     @GetMapping("/certificado-pedidos/{id}")
     public ResponseEntity<byte[]> generateCertificadoPedidos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CertificadoPedidos", "Certificado_Pedidos", formData -> {
+        return processDocumentResponse(id, "justificaciones/CertificadoPedidos", "Certificado_Pedidos", "certificado-pedidos", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logos/icono-junta-andalucia.png"));
@@ -145,34 +153,22 @@ public class JustificacionesController {
     // LÓGICA INTERNA
     // =========================================================================
 
-    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
-        DocumentEntity doc = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("¡Error! No existe ningún cliente con el ID: " + id));
-
+    private ResponseEntity<byte[]> processDocumentResponse(UUID id, String templateName, String filePrefix, String configId, Function<Map<String, Object>, Map<String, String>> extraImagesProvider) {
+        DocumentEntity doc = documentRepository.findById(id).orElseThrow(() -> new RuntimeException("No existe el ID: " + id));
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
-
-        // Calculamos las imágenes adicionales con el formData ya disponible
-        Map<String, String> extraImages = null;
-        if (extraImagesProvider != null) {
-            extraImages = extraImagesProvider.apply(formData);
-        }
-
-        Map<String, Object> enrichedFormData = documentConfigService.enrich(templateName, formData);
+        
+        Map<String, String> extraImages = (extraImagesProvider != null) ? extraImagesProvider.apply(formData) : null;
+        Map<String, Object> enrichedFormData = documentConfigService.enrich(configId != null ? configId : templateName, formData);
 
         Map<String, Object> data = new HashMap<>();
         data.put("form", enrichedFormData);
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
-
-        if (extraImages != null) {
-            data.putAll(extraImages);
-        }
-
-        // Imágenes corporativas estándar (Solay)
-        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("logoBase64",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
         data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
 
-        byte[] pdfBytes = documentService.generatePdf(templateName, data);
+        if (extraImages != null) data.putAll(extraImages);
 
+        byte[] pdfBytes = documentService.generatePdf(templateName, data);
         String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
         String fileName = filePrefix + "_" + safeName + ".pdf";
 

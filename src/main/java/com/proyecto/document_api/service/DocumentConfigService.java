@@ -66,6 +66,11 @@ public class DocumentConfigService {
             case "mtd-instalacion-autoconsumo-trifasica-con-bateria":
             case "mtd-instalacion-autoconsumo-sin-bateria":
             case "mtd-instalacion-puntos-recarga":
+            case "mtd-monofasica-con-bateria":
+            case "mtd-aislada-con-bateria":
+            case "mtd-trifasica-con-bateria":
+            case "mtd-sin-bateria":
+            case "mtd-punto-recarga":
             case "MemoriaTecnica":
             case "MemoriaTecnicaSinBateria":
             case "MemoriaTecnicaTrifasica":
@@ -77,11 +82,16 @@ public class DocumentConfigService {
             // --- CERTIFICADOS DE SOLIDEZ ---
             case "certificado-coplanar-teja":
             case "certificado-aporticada-teja":
+            case "aporticado-teja":
             case "certificado-cubierta-plan-aaporticada":
             case "certificado-chapas-grecadas-aporticada":
+            case "chapas-grecadas":
             case "certificado-chapas-grecadas-coplanaria":
+            case "chapas-grecadas-coplanaria":
             case "certificado-paramento-vertical":
+            case "paramento-vertical":
             case "certificado-pergola-aporticada":
+            case "pergola-aporticada":
             case "CertificadoCoplanarTeja":
             case "CertificadoAporticadaTeja":
             case "CertificadoCubiertaPlanaAporticada":
@@ -97,22 +107,6 @@ public class DocumentConfigService {
             case "AceptacionSubvencion":
                 applyAceptacionSubvencion(enriched, formData);
                 break;
-            case "aceptacion-cesion-tratamiento":
-            case "DeclaracionCesionTratamiento":
-                applyDeclaracionCesionTratamiento(enriched, formData);
-                break;
-            case "aceptacion-compromiso-derechos":
-            case "DeclaracionCompromisoDerechos":
-                applyDeclaracionCompromisoDerechos(enriched, formData);
-                break;
-            case "aceptacion-compromiso-transversales":
-            case "DeclaracionCompromisoTransversales":
-                applyDeclaracionCompromisoTransversales(enriched, formData);
-                break;
-            case "aceptacion-ausencia-conflicto-intereses":
-            case "DeclaracionAusenciaConflicto":
-                applyDeclaracionAusenciaConflicto(enriched, formData);
-                break;
 
             // --- JUSTIFICACIONES ---
             case "justificacion-pago-subvencion-l3":
@@ -122,11 +116,6 @@ public class DocumentConfigService {
             case "justificacion-pago-subvencion-l4":
             case "JustificacionPagoSubvencionL4":
                 applyJustificacionPagoSubvencionL4(enriched, formData);
-                break;
-            case "L3PagoAnticipado50":
-            case "L3PagoRestante50":
-            case "L4PagoAnticipado100":
-                applyJustificacionPagoSubvencionL3(enriched, formData);
                 break;
             case "memoria-economica":
             case "MemoriaEconomica":
@@ -144,6 +133,7 @@ public class DocumentConfigService {
             case "DeclaracionCompromisoCorriente":
                 applyDeclaracionCompromisoCorriente(enriched, formData);
                 break;
+            case "certificado-pedidos":
             case "certificado-pedidos-contratos":
             case "CertificadoPedidos":
                 applyCertificadoPedidosContratos(enriched, formData);
@@ -154,32 +144,42 @@ public class DocumentConfigService {
                 applyAutorizacionRepresentacion(enriched, formData);
                 break;
             case "declaracion-habilitacion-profesional":
+            case "habilitacion-profesional":
             case "DeclaracionHabilitacionProfesional":
                 applyDeclaracionHabilitacion(enriched, formData);
                 break;
+            case "planos":
             case "planos-situacion-emplazamiento-cubierta":
             case "PlanosSituacionEmplazamientoCubierta":
                 applyPlanosSituacionEmplazamiento(enriched, formData);
                 break;
             case "documento-80-paginas":
+            case "estudio-seguridad":
             case "EstudioSeguridadSalud":
                 applyEstudioSeguridadSalud(enriched, formData);
                 break;
+            case "no-generacion-rcds":
+            case "no-generacion-residuos":
             case "declaracion-no-generacion-rcds":
                 applyDeclaracionNoGeneracionRcds(enriched, formData);
                 break;
             case "AnexoIii":
             case "AnexoIII":
+            case "anexo-iii":
             case "autorizacion-comunicacion":
                 applyAutorizacionComunicacion(enriched, formData);
                 break;
+            case "adecuacion":
             case "certificado-adecuacion":
+            case "CertificadoAdecuacion":
                 applyCertificadoAdecuacion(enriched, formData);
                 break;
+            case "cie":
             case "z-certificado-br":
                 applyCie(enriched, formData);
                 break;
             case "z-certificado-doacfv":
+            case "doacfv":
                 applyCertificadoDireccionObra(enriched, formData);
                 break;
             case "declaracion-responsable-do":
@@ -195,9 +195,11 @@ public class DocumentConfigService {
                 applyDocumentoUltimaPagina(enriched, formData);
                 break;
             case "CartelL3":
+            case "cartel-l3":
                 applyCartelL3(enriched, formData);
                 break;
             case "CartelL4":
+            case "cartel-l4":
                 applyCartelL4(enriched, formData);
                 break;
 
@@ -206,7 +208,9 @@ public class DocumentConfigService {
                 break;
         }
 
-        return enriched;
+        // --- SANITIZACIÓN FINAL ---
+        // Limpiamos caracteres especiales corruptos en todo el mapa antes de devolverlo
+        return sanitizeMap(enriched);
     }
 
     // =========================================================================
@@ -1090,6 +1094,49 @@ public class DocumentConfigService {
                 sb.append(" ");
             sb.append(value);
         }
+    }
+
+    /**
+     * Limpia y sanitiza recursivamente un mapa de datos para corregir caracteres especiales corruptos.
+     */
+    private Map<String, Object> sanitizeMap(Map<String, Object> map) {
+        if (map == null) return null;
+        Map<String, Object> sanitized = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            if (value instanceof String) {
+                sanitized.put(entry.getKey(), sanitizeText((String) value));
+            } else if (value instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> nestedMap = (Map<String, Object>) value;
+                sanitized.put(entry.getKey(), sanitizeMap(nestedMap));
+            } else {
+                sanitized.put(entry.getKey(), value);
+            }
+        }
+        return sanitized;
+    }
+
+    /**
+     * Corrige caracteres especiales corruptos comunes causados por problemas de codificación.
+     */
+    private String sanitizeText(String text) {
+        if (text == null) return null;
+        return text.replace("Ã¡", "á")
+                   .replace("Ã©", "é")
+                   .replace("Ã­", "í")
+                   .replace("Ã³", "ó")
+                   .replace("Ãº", "ú")
+                   .replace("Ã±", "ñ")
+                   .replace("Ã\u0081", "Á")
+                   .replace("Ã\u0089", "É")
+                   .replace("Ã\u008D", "Í")
+                   .replace("Ã\u0093", "Ó")
+                   .replace("Ã\u009A", "Ú")
+                   .replace("Ã\u0091", "Ñ")
+                   .replace("Âº", "º")
+                   .replace("Âª", "ª")
+                   .trim();
     }
 
     private double parseDouble(String value) {
