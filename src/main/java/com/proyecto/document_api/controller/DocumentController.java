@@ -392,6 +392,11 @@ public class DocumentController {
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment().filename(fileName).build());
 
+        // --- EVITAR CACHÉ DEL NAVEGADOR ---
+        headers.setCacheControl(CacheControl.noCache().mustRevalidate());
+        headers.setPragma("no-cache");
+        headers.setExpires(0);
+
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
