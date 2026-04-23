@@ -518,105 +518,224 @@
             </div>
         </div>
 
-        <!-- SECCIÓN E2: MEMORIA DESCRIPTIVA -->
+        <!-- SECCIÓN E: MEMORIA DESCRIPTIVA -->
         <div class="seccion">
+            <div class="encabezado-seccion">
+                <span class="subseccion-titulo-span">E</span> | MEMORIA DESCRIPTIVA
+            </div>
             <div class="titulo-subseccion-principal">
-                <span class="subseccion-titulo-span">E2</span>. INSTALACIÓN GENERADORA FOTOVOLTAICA INTERCONECTADA
+                E2 . INSTALACIÓN GENERADORA FOTOVOLTAICA INTERCONECTADA CON ALMACENAMIENTO
             </div>
 
-            <!-- E2.1 CONEXIÓN -->
+            <!-- E2.1 CONEXIÓN A LA RED -->
             <div class="subseccion-titulo">E2.1 CONEXIÓN A LA RED</div>
             <div class="fila-grid">
                 <div class="celda border-right">
-                    <span class="etiqueta">POTENCIA NOMINAL TOTAL INVERSORES (kW):</span>
-                    <span class="valor" th:text="${form['potenciaNominalInversores']}">0</span>
+                    <span class="etiqueta">POTENCIA NOMINAL TOTAL EN INVERSORES (kW):</span>
+                    <span class="valor" th:text="${form['potenciaNominalInversores']}">6</span>
                 </div>
                 <div class="celda">
-                    <span class="etiqueta">TIPO DE CONEXIÓN:</span>
+                    <span class="etiqueta">TIPO:</span>
                     <span class="valor" th:text="${form['tipoConexionRed'] ?: 'Monofásica'}">Monofásica</span>
                 </div>
             </div>
 
-            <!-- E2.2 MÓDULO -->
+            <!-- E2.2 MÓDULO FOTOVOLTAICO -->
             <div class="subseccion-titulo">E2.2 MÓDULO FOTOVOLTAICO</div>
             <div class="fila-grid">
                 <div class="celda border-right">
-                    <span class="etiqueta">MARCA Y MODELO / TECNOLOGÍA:</span>
-                    <span class="valor" th:text="${form['marcaModeloModulo']}">Módulo</span>
+                    <span class="etiqueta">TECNOLOGÍA DE LA CÉLULA:</span>
+                    <span class="valor" th:text="${form['tecnologiaCelular'] ?: 'Monocristalino -PERC- doble célula'}">Monocristalino -PERC- doble célula</span>
                 </div>
                 <div class="celda">
-                    <span class="etiqueta">POTENCIA PICO (Wp):</span>
-                    <span class="valor" th:text="${form['potenciaPicoModulo']}">0</span>
+                    <span class="etiqueta">MARCA Y MODELO:</span>
+                    <span class="valor" th:text="${form['marcaModeloModulo']}">JHPV JH-M10DB120C 500Wp</span>
+                </div>
+            </div>
+            <div class="fila-grid">
+                <div class="celda border-right">
+                    <span class="etiqueta">POTENCIA PICO (Wp) del módulo:</span>
+                    <span class="valor" th:text="${form['potenciaPicoModulo']}">500</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">TONC (ºC):</span>
+                    <span class="valor" th:text="${form['toncModulo'] ?: '45ºC'}">45ºC</span>
                 </div>
             </div>
 
-            <!-- E2.3 GENERADOR -->
+            <!-- E2.3 GENERADOR FOTOVOLTAICO -->
             <div class="subseccion-titulo">E2.3 GENERADOR FOTOVOLTAICO</div>
             <div class="fila-grid">
-                <div class="celda border-right"><span class="etiqueta">POTENCIA TOTAL (Wp):</span><span class="valor"
-                        th:text="${form['potenciaPicoGenerador']}">0</span></div>
-                <div class="celda border-right"><span class="etiqueta">TENSIÓN Vpmp (V):</span><span class="valor"
-                        th:text="${form['tensionVpmpGenerador']}">0</span></div>
-                <div class="celda"><span class="etiqueta">INTENSIDAD Ipmp (A):</span><span class="valor"
-                        th:text="${form['intensidadIpmpGenerador']}">0</span></div>
+                <div class="celda border-right">
+                    <span class="etiqueta">POTENCIA PICO (Wp) del generador:</span>
+                    <span class="valor" th:text="${form['potenciaPicoGenerador']}">4000</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">TENSIÓN MÁXIMA POTENCIA, Vpmp (V):</span>
+                    <span class="valor" th:text="${form['tensionVpmpGenerador']}">372,4</span>
+                </div>
             </div>
             <div class="fila-grid">
-                <div class="celda border-right"><span class="etiqueta">ORIENTACIÓN:</span><span class="valor"
-                        th:text="${form['orientacionGenerador']}">0</span></div>
-                <div class="celda border-right"><span class="etiqueta">INCLINACIÓN:</span><span class="valor"
-                        th:text="${form['inclinacionGenerador']} + 'º'">0</span></div>
-                <div class="celda"><span class="etiqueta">TOTAL MÓDULOS:</span><span class="valor"
-                        th:text="${form['totalModulos']}">0</span></div>
+                <div class="celda border-right">
+                    <span class="etiqueta">INTENSIDAD MÁXIMA POTENCIA, Ipmp (A):</span>
+                    <span class="valor" th:text="${form['intensidadIpmpGenerador']}">10,84</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">ORIENTACIÓN (º):</span>
+                    <span class="valor" th:text="${form['orientacionGenerador'] ?: '0º (S)'}">0º (S)</span>
+                </div>
             </div>
-            <div class="fila-grid fila-sin-borde">
-                <div class="celda border-right"><span class="etiqueta">MÓDULOS EN SERIE:</span><span class="valor"
-                        th:text="${form['modulosEnSerie']}">0</span></div>
-                <div class="celda"><span class="etiqueta">RAMAS EN PARALELO:</span><span class="valor"
-                        th:text="${form['ramasEnParalelo'] ?: '1'}">1</span></div>
+            <div class="fila-grid">
+                <div class="celda border-right">
+                    <span class="etiqueta">INCLINACIÓN RESPECTO A HORIZONTAL (º):</span>
+                    <span class="valor" th:text="${form['inclinacionGenerador']}">20</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">Nº TOTAL DE MÓDULOS:</span>
+                    <span class="valor" th:text="${form['totalModulos']}">8</span>
+                </div>
+            </div>
+            <div class="fila-grid">
+                <div class="celda border-right">
+                    <span class="etiqueta">Nº DE MÓDULOS EN SERIE POR RAMA:</span>
+                    <span class="valor" th:text="${form['modulosEnSerie']}">8</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">Nº DE RAMAS EN PARALELO:</span>
+                    <span class="valor" th:text="${form['ramasEnParalelo'] ?: '1'}">1</span>
+                </div>
             </div>
 
             <!-- E2.4 INVERSOR/ES -->
             <div class="subseccion-titulo">E2.4 INVERSOR/ES</div>
             <div class="fila-grid">
-                <div class="celda border-right"><span class="etiqueta">MARCA Y MODELO:</span><span class="valor"
-                        th:text="${form['marcaModeloInversor']}">-</span></div>
-                <div class="celda"><span class="etiqueta">POTENCIA AC NOMINAL (kW):</span><span class="valor"
-                        th:text="${form['potenciaACInversor']}">0</span></div>
+                <div class="celda border-right">
+                    <span class="etiqueta">MARCA Y MODELO:</span>
+                    <span class="valor" th:text="${form['marcaModeloInversor']}">-</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">POTENCIA AC NOMINAL (Kw):</span>
+                    <span class="valor" th:text="${form['potenciaACInversor']}">0</span>
+                </div>
             </div>
-            <div class="fila-grid fila-sin-borde">
-                <div class="celda border-right"><span class="etiqueta">TENSIÓN NOMINAL AC / Vn:</span><span
-                        class="valor" th:text="${form['tensionNominalInversor'] ?: '230 V'}">230 V</span></div>
-                <div class="celda"><span class="etiqueta">FRECUENCIA:</span><span class="valor"
-                        th:text="${form['frecuenciaNominalInversor'] ?: '50 Hz'}">50 Hz</span></div>
+            <div class="fila-grid">
+                <div class="celda border-right">
+                    <span class="etiqueta">TENSIÓN NOMINAL AC, Vn (V):</span>
+                    <span class="valor" th:text="${form['tensionNominalInversor'] ?: '230'}">230</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">Vcc MÁXIMA (V):</span>
+                    <span class="valor" th:text="${form['vccMaximaInversor'] ?: '425'}">425</span>
+                </div>
+            </div>
+            <div class="fila-grid">
+                <div class="celda border-right">
+                    <span class="etiqueta">Vcc MÍNIMA (V):</span>
+                    <span class="valor" th:text="${form['vccMinimaInversor'] ?: '150'}">150</span>
+                </div>
+                <div class="celda">
+                    <span class="etiqueta">CONEXIÓN:</span>
+                    <span class="valor" th:text="${form['tipoConexionRed'] ?: 'Monofásica'}">Monofásica</span>
+                </div>
+            </div>
+            <!-- Bloque Segundo Inversor (Opcional) -->
+            <div th:if="${form['marcaModeloInversor2'] != null}" style="border-top: 1px solid #000; margin-top: 2px;">
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">MARCA Y MODELO:</span>
+                        <span class="valor" th:text="${form['marcaModeloInversor2']}">-</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">POTENCIA AC NOMINAL (Kw):</span>
+                        <span class="valor" th:text="${form['potenciaACInversor2']}">0</span>
+                    </div>
+                </div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">TENSIÓN NOMINAL AC, Vn (V):</span>
+                        <span class="valor" th:text="${form['tensionNominalInversor2'] ?: '230'}">230</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">Vcc MÁXIMA (V):</span>
+                        <span class="valor" th:text="${form['vccMaximaInversor2'] ?: ''}"></span>
+                    </div>
+                </div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">Vcc MÍNIMA (V):</span>
+                        <span class="valor" th:text="${form['vccMinimaInversor2'] ?: ''}"></span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">CONEXIÓN:</span>
+                        <span class="valor" th:text="${form['tipoConexionRed2'] ?: ''}"></span>
+                    </div>
+                </div>
             </div>
 
             <!-- E2.5 BATERÍAS -->
-            <div th:if="${form['marcaModeloBateria'] != null}" class="subseccion-titulo">E2.5 SISTEMA DE ALMACENAMIENTO
-                (BATERÍAS)</div>
-            <div th:if="${form['marcaModeloBateria'] != null}" class="fila-grid">
-                <div class="celda border-right"><span class="etiqueta">MARCA Y MODELO:</span><span class="valor"
-                        th:text="${form['marcaModeloBateria']}">-</span></div>
-                <div class="celda"><span class="etiqueta">TIPO DE BATERÍA:</span><span class="valor"
-                        th:text="${form['tipoBateria']}">Litio</span></div>
-            </div>
-            <div th:if="${form['marcaModeloBateria'] != null}" class="fila-grid fila-sin-borde">
-                <div class="celda border-right"><span class="etiqueta">ENERGÍA TOTAL (kWh):</span><span class="valor"
-                        th:text="${form['energiaTotalBateria']}">0</span></div>
-                <div class="celda"><span class="etiqueta">POTENCIA MÁX. SALIDA (kW):</span><span class="valor"
-                        th:text="${form['potenciaMaximaSalidaBateria']}">0</span></div>
+            <div th:if="${form['marcaModeloBateria'] != null}">
+                <div class="subseccion-titulo">E2.5 SISTEMA DE ALMACENAMIENTO (BATERÍAS)</div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">MARCA Y MODELO:</span>
+                        <span class="valor" th:text="${form['marcaModeloBateria']}">-</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">TIPO DE BATERÍA:</span>
+                        <span class="valor" th:text="${form['tipoBateria'] ?: 'Litio-Hierro Fosfato (LiFePO4)'}">Litio-Hierro Fosfato (LiFePO4)</span>
+                    </div>
+                </div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">TENSIÓN NOMINAL (V):</span>
+                        <span class="valor" th:text="${form['tensionNominalBateria'] ?: '51,2'}">51,2</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">PROFUNDIDAD DE DESCARGA (%):</span>
+                        <span class="valor" th:text="${form['profundidadDescargaBateria'] ?: '100%'}">100%</span>
+                    </div>
+                </div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">TENSIÓN MÁXIMA (V):</span>
+                        <span class="valor" th:text="${form['tensionMaximaBateria'] ?: '57,7'}">57,7</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">TENSIÓN MÍNIMA (V):</span>
+                        <span class="valor" th:text="${form['tensionMinimaBateria'] ?: '44,8'}">44,8</span>
+                    </div>
+                </div>
+                <div class="fila-grid">
+                    <div class="celda border-right">
+                        <span class="etiqueta">ENERGÍA TOTAL (kWh):</span>
+                        <span class="valor" th:text="${form['energiaTotalBateria']}">10,24</span>
+                    </div>
+                    <div class="celda">
+                        <span class="etiqueta">POTENCIA MÁXIMA SALIDA (kW):</span>
+                        <span class="valor" th:text="${form['potenciaMaximaSalidaBateria']}">10,24</span>
+                    </div>
+                </div>
+                <div class="cuerpo-seccion-borde">
+                    <span class="etiqueta">MÁXIMO PICO DE POTENCIA:</span>
+                    <span class="valor" th:text="${form['maximoPicoPotenciaBateria'] ?: '15,36'}">15,36</span>
+                </div>
             </div>
 
             <!-- E2.6 PROTECCIONES EXTERNAS -->
             <div class="subseccion-titulo">E2.6 PROTECCIONES EXTERNAS</div>
-            <div class="fila-grid fila-sin-borde">
+            <div class="fila-grid">
                 <div class="celda border-right">
-                    <span class="etiqueta">INTENSIDAD NOMINAL INTERRUPTOR GENERAL (A):</span>
-                    <span class="valor" th:text="${form['intensidadInterruptorGeneral']}">25</span>
+                    <span class="etiqueta">INTERRUPTOR GENERAL: INTENSIDAD NOMINAL DEL INTERRUPTOR GENERAL, In (A):</span>
+                    <span class="valor" th:text="${form['intensidadInterruptorGeneral'] ?: '32'}">32</span>
                 </div>
                 <div class="celda">
-                    <span class="etiqueta">PODER DE CORTE I.G. (kA):</span>
-                    <span class="valor" th:text="${form['poderCorteInterruptor']}">6</span>
+                    <span class="etiqueta">PODER DE CORTE DEL INTERRUPTOR GENERAL (kA):</span>
+                    <span class="valor" th:text="${form['poderCorteInterruptor'] ?: '6'}">6</span>
                 </div>
+            </div>
+            <div class="cuerpo-seccion-borde" style="border-bottom: none">
+                <span class="etiqueta">PROTECCIÓN DE MÁXIMA Y MÍNIMA FRECUENCIA (51 Y 49 Hz) Y DE MÁXIMA Y MÍNIMA TENSIÓN (1,1 Y 0,85 Um) (SI/NO) (*):</span>
+                <span class="valor" th:text="${form['proteccionFrecuenciaTension'] ?: 'SI'}">SI</span>
             </div>
         </div>
 
@@ -628,7 +747,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>RIESGO / PROTECCIÓN</th>
+                        <th>MEDIDAS DE PROTECCIÓN EMPLEADAS CONTRA:</th>
                         <th>TIPO DE MEDIDA</th>
                         <th>PARTE DE LA INSTALACIÓN</th>
                     </tr>
@@ -636,24 +755,37 @@
                 <tbody>
                     <tr>
                         <td>CONTACTOS DIRECTOS</td>
-                        <td th:text="${form['medidaContactosDirectos'] ?: 'Aislamiento / Barreras'}">Aislamiento /
-                            Barreras</td>
-                        <td>Instalación Completa</td>
+                        <td th:text="${form['medidaContactosDirectos'] ?: 'Conductores aislados y canaletas'}">Conductores aislados y canaletas</td>
+                        <td th:text="${form['parteInstalacionDirectos'] ?: ''}"></td>
                     </tr>
                     <tr>
                         <td>CONTACTOS INDIRECTOS</td>
-                        <td th:text="${form['medidaContactosIndirectos'] ?: 'Corte automático'}">Corte automático</td>
+                        <td th:text="${form['medidaContactosIndirectos'] ?: 'Interruptor diferencial'}">Interruptor diferencial</td>
                         <td th:text="${form['parteInstalacionIndirectos'] ?: 'CGMP'}">CGMP</td>
                     </tr>
                     <tr>
+                        <td>EFECTO DEL PUNTO CALIENTE</td>
+                        <td th:text="${form['medidaPuntoCaliente'] ?: '3 Diodos bypass'}">3 Diodos bypass</td>
+                        <td th:text="${form['parteInstalacionPuntoCaliente'] ?: 'Módulo FV'}">Módulo FV</td>
+                    </tr>
+                    <tr>
                         <td>SOBRETENSIONES</td>
-                        <td th:text="${form['medidaSobretensiones'] ?: 'Descargadores'}">Descargadores</td>
+                        <td th:text="${form['medidaSobretensiones'] ?: 'Descargador'}">Descargador</td>
                         <td th:text="${form['parteInstalacionSobretensiones'] ?: 'CGMP'}">CGMP</td>
                     </tr>
                     <tr>
-                        <td>PUNTO CALIENTE</td>
-                        <td th:text="${form['medidaPuntoCaliente'] ?: 'Diodos bypass'}">Diodos bypass</td>
-                        <td th:text="${form['parteInstalacionPuntoCaliente'] ?: 'Módulos'}">Módulos</td>
+                        <td>RIESGO DE EXPLOSIÓN (en instalaciones fotovoltaicas aisladas con baterías)</td>
+                        <td th:text="${form['medidaExplosion'] ?: ''}"></td>
+                        <td th:text="${form['parteInstalacionExplosion'] ?: ''}"></td>
+                    </tr>
+                    <tr>
+                        <td>RIESGO DE CORROSIÓN (en instalaciones fotovoltaicas aisladas con baterías)</td>
+                        <td th:text="${form['medidaCorrosion'] ?: ''}"></td>
+                        <td th:text="${form['parteInstalacionCorrosion'] ?: ''}"></td>
+                    </tr>
+                    <tr>
+                        <td>OTRAS (indicar cuales)</td>
+                        <td colspan="2" th:text="${form['otrasMedidas'] ?: ''}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -668,25 +800,67 @@
                 <thead>
                     <tr>
                         <th>PARTE DE LA INSTALACIÓN</th>
-                        <th>POTENCIA (kW)</th>
-                        <th>MATERIAL / SECCIÓN (mm²)</th>
+                        <th>POTENCIA PREVISTA (kW)</th>
+                        <th>LONGITUD (m)</th>
+                        <th>MATERIAL CONDUCTOR/SECCIÓN (mm²)</th>
+                        <th>INTENSIDAD ADMISIBLE (A)</th>
+                        <th>CAÍDA DE TENSIÓN (%)</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Fila 1: Generador - Regulador (Opcional) -->
                     <tr>
-                        <td>Generador FV - Inversor</td>
-                        <td th:text="${form['potenciaPicoGenerador'] ?: '-'}">-</td>
-                        <td th:text="${form['materialGeneradorInversorDirecto'] ?: 'Solar 6 mm²'}">Solar 6 mm²</td>
+                        <td>Generador Fotovoltaico - Entrada al Regulador</td>
+                        <td th:text="${form['potencia_g1'] ?: ''}"></td>
+                        <td th:text="${form['longitud_g1'] ?: ''}"></td>
+                        <td th:text="${form['material_g1'] ?: ''}"></td>
+                        <td th:text="${form['intensidad_g1'] ?: ''}"></td>
+                        <td th:text="${form['caida_g1'] ?: ''}"></td>
                     </tr>
+                    <!-- Fila 2: Bornas Regulador - Batería (Opcional) -->
+                    <tr>
+                        <td>Bornas del Regulador - Terminales de la Batería</td>
+                        <td th:text="${form['potencia_g2'] ?: ''}"></td>
+                        <td th:text="${form['longitud_g2'] ?: ''}"></td>
+                        <td th:text="${form['material_g2'] ?: ''}"></td>
+                        <td th:text="${form['intensidad_g2'] ?: ''}"></td>
+                        <td th:text="${form['caida_g2'] ?: ''}"></td>
+                    </tr>
+                    <!-- Fila 3: Salida Regulador - Inversor (Opcional) -->
+                    <tr>
+                        <td>Salida del Regulador - Terminales del Inversor</td>
+                        <td th:text="${form['potencia_g3'] ?: ''}"></td>
+                        <td th:text="${form['longitud_g3'] ?: ''}"></td>
+                        <td th:text="${form['material_g3'] ?: ''}"></td>
+                        <td th:text="${form['intensidad_g3'] ?: ''}"></td>
+                        <td th:text="${form['caida_g3'] ?: ''}"></td>
+                    </tr>
+                    <!-- Fila 4: Batería - Inversor -->
                     <tr th:if="${form['marcaModeloBateria'] != null}">
-                        <td>Batería - Inversor</td>
-                        <td th:text="${form['potenciaBateriaInversor'] ?: '-'}">-</td>
-                        <td th:text="${form['materialBateriaInversor'] ?: 'Cobre 16 mm²'}">Cobre 16 mm²</td>
+                        <td>Terminales de la Batería - Terminales del Inversor (cuando van directamente conectados)</td>
+                        <td th:text="${form['energiaTotalBateria'] ?: '10,24'}">10,24</td>
+                        <td th:text="${form['longitud_bateria_inversor'] ?: '5'}">5</td>
+                        <td th:text="${form['seccion_bateria_inversor'] ?: '6'}">6</td>
+                        <td th:text="${form['intensidad_bateria_inversor'] ?: '49'}">49</td>
+                        <td th:text="${form['caida_bateria_inversor'] ?: '< 1,5 %'}">&lt; 1,5 %</td>
                     </tr>
+                    <!-- Fila 5: Generador - Inversor -->
                     <tr>
-                        <td>Salida Inversor - Red Eléctrica</td>
-                        <td th:text="${form['potenciaACInversor'] ?: '-'}">-</td>
-                        <td th:text="${form['materialSalidaInversorRed'] ?: 'Cobre 6 mm²'}">Cobre 6 mm²</td>
+                        <td>Generador Fotovoltaico - Terminales del Inversor (cuando van directamente conectados)</td>
+                        <td th:text="${form['potenciaPicoGeneradorKW'] ?: '4,0'}">4,0</td>
+                        <td th:text="${form['longitud_generador_inversor'] ?: '10'}">10</td>
+                        <td th:text="${form['seccion_generador_inversor'] ?: '6'}">6</td>
+                        <td th:text="${form['intensidad_generador_inversor'] ?: '49'}">49</td>
+                        <td th:text="${form['caida_generador_inversor'] ?: '< 1,5 %'}">&lt; 1,5 %</td>
+                    </tr>
+                    <!-- Fila 6: Inversor - Red -->
+                    <tr>
+                        <td>Salida del Inversor - Red Eléctrica (en instalaciones interconectadas)</td>
+                        <td th:text="${form['potenciaACInversor'] ?: '6,0'}">6,0</td>
+                        <td th:text="${form['longitud_inversor_red'] ?: '5'}">5</td>
+                        <td th:text="${form['seccion_inversor_red'] ?: '6'}">6</td>
+                        <td th:text="${form['intensidad_inversor_red'] ?: '44'}">44</td>
+                        <td th:text="${form['caida_inversor_red'] ?: '< 1,5 %'}">&lt; 1,5 %</td>
                     </tr>
                 </tbody>
             </table>

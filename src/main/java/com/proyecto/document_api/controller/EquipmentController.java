@@ -43,6 +43,9 @@ public class EquipmentController {
     @Operation(summary = "Crear nuevo equipo")
     @PostMapping("/{tipo}")
     public ResponseEntity<EquipmentEntity> create(@PathVariable String tipo, @RequestBody Map<String, Object> payload) {
+        System.out.println("[Backend] Recibida petición POST para tipo: " + tipo);
+        System.out.println("[Backend] Payload: " + payload);
+        
         EquipmentEntity equipment = new EquipmentEntity();
         equipment.setTipo(tipo);
         

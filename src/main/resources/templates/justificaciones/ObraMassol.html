@@ -130,9 +130,9 @@
 
         <div class="caja-declaracion">
             <p>
-                La instalación fotovoltaica de <span class="texto-rojo" th:text="${form['potenciaInstalacion'] + 'kW'}">--kW</span> para autoconsumo individual con excedida a compensación 
+                La instalación fotovoltaica de <span class="texto-rojo" th:text="${form['e2_potenciaNominalInversores'] + 'kW'}">--kW</span> para autoconsumo individual con excedida a compensación 
                 <span th:if="${form['aerotermia']}">y sustitución del equipo de ACS por aerotermia</span> 
-                que se ejecuta en la vivienda situada en <span class="texto-rojo" th:text="${form['direccionCompleta']}">--</span>, cuya referencia catastral es: <span class="texto-rojo" th:text="${form['referenciaCatastral']}">--</span>.
+                que se ejecuta en la vivienda situada en <span class="texto-rojo" th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}">--</span>, cuya referencia catastral es: <span class="texto-rojo" th:text="${form['referenciaCatastral']}">--</span>.
             </p>
             <p style="text-decoration: underline;">
                 Se inició y finalizó el día <span class="texto-rojo" th:text="${form['diaInicio'] + ' de ' + form['mesInicio'] + ' de ' + form['anioInicio']}">--</span>.
@@ -140,7 +140,7 @@
         </div>
 
         <p class="parrafo-lugar-fecha">
-            En Sevilla, a <span class="texto-rojo" th:text="${form['diaFirma'] + ' de ' + form['mesFirma'] + ' de ' + form['anioFirma']}">--</span>.
+            En Sevilla, a <span class="texto-rojo" th:text="${form['diaFirmaJustificacion'] + ' de ' + form['mesFirmaJustificacion'] + ' de ' + form['anioFirmaJustificacion']}">--</span>.
         </p>
 
         <div class="contenedor-firmas">

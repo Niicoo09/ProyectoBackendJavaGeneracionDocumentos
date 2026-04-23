@@ -205,31 +205,25 @@
             <div class="fila-datos">
                 <div class="campo">
                     <label>Persona beneficiaria:</label>
-                    <span th:text="${form.get('personaBeneficiaria')}">--</span>
+                    <span th:text="${form['apellidosNombre']}">--</span>
                 </div>
             </div>
             <div class="fila-datos">
                 <div class="campo">
                     <label>NIF:</label>
-                    <span th:text="${form.get('nif')}">--</span>
+                    <span th:text="${form['nifCif']}">--</span>
                 </div>
             </div>
             <div class="fila-datos">
                 <div class="campo">
                     <label>Dirección:</label>
-                    <span th:text="${form.get('direccion')}">--</span>
-                </div>
-            </div>
-            <div class="fila-datos">
-                <div class="campo">
-                    <label>Nº Expediente:</label>
-                    <span th:text="${form.get('expediente')}">--</span>
+                    <span th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}">--</span>
                 </div>
             </div>
             <div class="fila-datos">
                 <div class="campo">
                     <label>Provincia:</label>
-                    <span th:text="${form.get('provincia')}">--</span>
+                    <span th:text="${form['provinciaEmplazamiento']}">--</span>
                 </div>
             </div>
         </div>
@@ -282,10 +276,10 @@
         <!-- Pie de página -->
         <div class="pie-documento">
             <p class="lugar-fecha">
-                En <span th:text="${form.get('provincia')}">Sevilla</span>, a 
-                <span th:text="${form.get('diaFirma')}">--</span> de 
-                <span th:text="${form.get('mesFirma')}">--</span> de 
-                <span th:text="${form.get('anioFirma')}">--</span>
+                En <span th:text="${form['provinciaEmplazamiento']}">Sevilla</span>, a 
+                <span th:text="${form['diaFirmaJustificacion']}">--</span> de 
+                <span th:text="${form['mesFirmaJustificacion']}">--</span> de 
+                <span th:text="${form['anioFirmaJustificacion']}">--</span>
             </p>
             
             <div class="firma-seccion">

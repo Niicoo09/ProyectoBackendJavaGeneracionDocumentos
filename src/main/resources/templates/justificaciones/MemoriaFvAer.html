@@ -89,12 +89,10 @@
             <span class="texto-verde" th:text="${form['tipoEdificio']}">VIVIENDA</span> EN LA COMUNIDAD AUTÓNOMA DE ANDALUCÍA
             (<span th:text="${form['l3l4']}">Línea 3</span>)
         </h1>
-
         <div class="datos-iniciales">
-            <p><span class="etiqueta">EXPEDIENTE:</span> <span th:text="${form['expedienteEco']}"></span></p>
-            <p><span class="etiqueta">NIF:</span> <span th:text="${form['nif']}"></span></p>
+            <p><span class="etiqueta">NIF:</span> <span th:text="${form['nifCif']}"></span></p>
             <p><span class="etiqueta">AGENTE GESTOR:</span> SOLAY INGENIEROS S.L. (B09848912)</p>
-            <p><span class="etiqueta">DOMICILIO:</span> <span th:text="${form['domicilio']}"></span></p>
+            <p><span class="etiqueta">DOMICILIO:</span> <span th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}"></span></p>
             <p><span class="etiqueta">TÉCNICO:</span> Miguel Ángel Rivas Zapata, Ing. Industrial (Col. 4671)</p>
         </div>
 
@@ -162,8 +160,8 @@
                 <tbody>
                     <tr>
                         <td class="align-left">REHABILITACIÓN EFICIENCIA</td>
-                        <td th:text="${form['importeActuacionesSinIva'] + '€'}"></td>
-                        <td th:text="${form['importeActuacionesConIva'] + '€'}"></td>
+                        <td th:text="${(form['importeActuacionesSinIva'] ?: '0,00') + '€'}"></td>
+                        <td th:text="${(form['importeActuacionesConIva'] ?: '0,00') + '€'}"></td>
                     </tr>
                     <tr>
                         <td class="align-left">HONORARIOS Y GESTIÓN</td>
@@ -172,8 +170,8 @@
                     </tr>
                     <tr style="font-weight: bold;">
                         <td class="align-left">TOTAL</td>
-                        <td th:text="${form['importeActuacionesSinIva'] + '€'}"></td>
-                        <td th:text="${form['importeActuacionesConIva'] + '€'}"></td>
+                        <td th:text="${(form['importeActuacionesSinIva'] ?: '0,00') + '€'}"></td>
+                        <td th:text="${(form['importeActuacionesConIva'] ?: '0,00') + '€'}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -224,7 +222,7 @@
             <div class="numero-seccion">8.</div> <div class="titulo-seccion">Conclusiones.</div>
             <p class="texto-parrafo">Se acredita la correcta ejecución de las actuaciones subvencionadas.</p>
             <div class="seccion-firma">
-                <p><b>Fecha:</b> <span th:text="${form['dia']}">--</span> de <span th:text="${form['mes']}">--</span> de <span th:text="${form['anio']}">--</span></p>
+                <p><b>Fecha:</b> <span th:text="${form['diaFirmaJustificacion']}">--</span> de <span th:text="${form['mesFirmaJustificacion']}">--</span> de <span th:text="${form['anioFirmaJustificacion']}">--</span></p>
                 <p><b>Firma:</b> Miguel Ángel Rivas Zapata</p>
                 <div th:if="${firmaImagen}" style="text-align: center;">
                     <img th:src="${firmaImagen}" class="imagen-firma" />

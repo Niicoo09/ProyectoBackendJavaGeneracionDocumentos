@@ -34,7 +34,7 @@
             display: inline-block;
             box-sizing: border-box;
             line-height: 1.2;
-            padding: 3mm 24mm 3mm 2mm;
+            padding: 3mm 13mm 3mm 2mm;
             background-color: white;
             color: #000;
         }
@@ -44,17 +44,18 @@
 <body>
     <div class="pagina-documento" th:style="${fondoStyle}">
         <!-- costeActuacion -->
-        <div class="overlay-field" th:text="${form['costeActuacion'] ?: '0,00'}"
-            style="left: 98mm; top: 116mm; font-size: 19pt; font-weight: bold; text-align: left; white-space: nowrap;">
+        <div class="overlay-field" th:text="${form['presupuestoInicial'] ?: '0,00'}"
+            style="left: 97mm; top: 116mm; font-size: 19pt; font-weight: bold; text-align: left; white-space: nowrap;">
         </div>
 
         <!-- cuantiaSubvencion -->
-        <div class="overlay-field" th:text="${form['cuantiaSubvencion'] ?: '0,00'}"
+        <div class="overlay-field" th:text="${form['importeSubvencionResultante'] ?: '0,00'}"
             style="left: 113mm; top: 128.5mm; font-size: 19pt; font-weight: bold; text-align: left; white-space: nowrap;">
         </div>
 
         <!-- entidadUbicacion -->
-        <div class="overlay-field" th:text="${form['entidadUbicacion'] ?: ''}"
+        <div class="overlay-field"
+            th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}"
             style="left: 143mm; top: 142.5mm; width: 130mm; font-size: 15pt; font-weight: normal; text-align: left; white-space: normal;">
         </div>
     </div>

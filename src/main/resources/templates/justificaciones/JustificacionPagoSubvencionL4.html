@@ -40,44 +40,47 @@
         <!-- Beneficiario -->
         <span class="overlay-field" th:text="${form['apellidosNombre']}"
               style="left: 20mm; top: 126.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['dni']}"
+        <span class="overlay-field" th:text="${form['nifCif']}"
               style="left: 172mm; top: 126.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
         <span class="overlay-field" th:text="${form['telefono']}"
               style="left: 20mm; top: 135.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['correoElectronico']}"
+        <span class="overlay-field" th:text="${form['correoElectronicoEmplazamiento']}"
               style="left: 55mm; top: 135.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
 
-        <!-- Representante -->
-        <span class="overlay-field" th:text="${form['apellidosNombreRepresentante']}"
-              style="left: 20mm; top: 144.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['dniRepresentante']}"
-              style="left: 172mm; top: 144.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['actuaCalidad']}"
-              style="left: 20mm; top: 153.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['telefonoRepresentante']}"
-              style="left: 20mm; top: 162.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['correoElectronicoRepresentante']}"
-              style="left: 55mm; top: 162.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        <!-- Representante (Solo si existe) -->
+        <th:block th:if="${form['nombreRepresentanteEntidad'] != null && form['nombreRepresentanteEntidad'] != ''}">
+            <span class="overlay-field" th:text="${form['nombreRepresentanteEntidad']}"
+                  style="left: 20mm; top: 144.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+            <span class="overlay-field" th:text="${form['dniRepresentanteEntidad']}"
+                  style="left: 172mm; top: 144.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+            <span class="overlay-field" th:text="${form['tipoActuacion']}"
+                  style="left: 20mm; top: 153.5mm; width: 80mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+            <span class="overlay-field" th:text="${form['telefonoRepresentanteEntidad']}"
+                  style="left: 20mm; top: 162.5mm; width: 30mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+            <span class="overlay-field" th:text="${form['correoElectronicoRepresentanteEntidad']}"
+                  style="left: 55mm; top: 162.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
+        </th:block>
     </div>
 
     <!-- PÁGINA 2 -->
     <div class="pagina-documento" th:style="${fondoStyle2}">
-        <span class="overlay-field" th:text="${form['provincia']}"
+        <span class="overlay-field" th:text="${form['provinciaEmplazamiento']}"
               style="left: 60mm; top: 246mm; width: 40mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        <span class="overlay-field" th:text="${form['dia']}"
+        <span class="overlay-field" th:text="${form['diaFirmaJustificacion']}"
               style="left: 107.8mm; top: 245.6mm; width: 11.1mm; height: 4.8mm; text-align: center; font-size: 10pt; background: #fff;"></span>
-        <span class="overlay-field" th:text="${form['mes']}"
+        <span class="overlay-field" th:text="${form['mesFirmaJustificacion']}"
               style="left: 126mm; top: 245.6mm; width: 20mm; height: 4.8mm; text-align: left; font-size: 10pt; background: #fff;"></span>
-        <span class="overlay-field" th:text="${form['anio']}"
+        <span class="overlay-field" th:text="${form['anioFirmaJustificacion']}"
               style="left: 153mm; top: 245mm; width: 11.1mm; height: 4.9mm; text-align: center; font-size: 10pt; background: #fff;"></span>
         
-        <!-- Firma -->
-        <span class="overlay-field" th:text="${form['personaFirma']}"
-              style="left: 75mm; top: 273.5mm; width: 60mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
-        
+        <!-- Firma del solicitante (Rúbrica) -->
         <div class="overlay-field" style="left: 125mm; top: 258mm; width: 30mm; height: 15mm; text-align: center;">
             <img th:src="${firma}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
         </div>
+
+        <!-- Nombre del firmante (Fdo:) -->
+        <span class="overlay-field" th:text="${form['apellidosNombre']}"
+              style="left: 75mm; top: 273.5mm; width: 100mm; height: 6mm; text-align: left; font-size: 10pt;"></span>
     </div>
 </body>
 </html>

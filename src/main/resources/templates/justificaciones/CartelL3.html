@@ -44,17 +44,18 @@
 <body>
     <div class="pagina-documento" th:style="${fondoStyle}">
         <!-- costeActuacion -->
-        <div class="overlay-field" th:text="${form['costeActuacion'] ?: '0,00'}"
-            style="left: 110mm; top: 119.5mm; font-size: 15pt; font-weight: bold; text-align: left; white-space: nowrap;">
+        <div class="overlay-field" th:text="${form['presupuestoInicial'] ?: '0,00'}"
+            style="left: 105mm; top: 119.5mm; font-size: 15pt; font-weight: bold; text-align: left; white-space: nowrap;">
         </div>
 
         <!-- cuantiaSubvencion -->
-        <div class="overlay-field" th:text="${form['cuantiaSubvencion'] ?: '0,00'}"
-            style="left: 125mm; top: 133mm; font-size: 15pt; font-weight: bold; text-align: left; white-space: nowrap;">
+        <div class="overlay-field" th:text="${form['importeSubvencionResultante'] ?: '0,00'}"
+            style="left: 122mm; top: 133mm; font-size: 15pt; font-weight: bold; text-align: left; white-space: nowrap;">
         </div>
 
         <!-- entidadUbicacion -->
-        <div class="overlay-field" th:text="${form['entidadUbicacion'] ?: ''}"
+        <div class="overlay-field"
+            th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}"
             style="left: 148mm; top: 146mm; width: 130mm; font-size: 15pt; font-weight: normal; text-align: left; white-space: normal;">
         </div>
     </div>

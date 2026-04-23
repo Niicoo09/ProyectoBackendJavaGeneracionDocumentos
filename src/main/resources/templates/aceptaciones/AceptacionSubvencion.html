@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <title>Aceptación de Subvención</title>
@@ -34,7 +35,8 @@
             box-sizing: border-box;
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: 110% 100%; /* Ajustado para coincidir con Vue */
+            background-size: 110% 100%;
+            /* Ajustado para coincidir con Vue */
             overflow: hidden;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -50,8 +52,8 @@
             box-sizing: border-box;
             white-space: nowrap;
             overflow: visible;
-            color: #0a2668;
-            font-weight: 600;
+            color: #000;
+            font-weight: 500;
         }
 
         .firma-container {
@@ -68,81 +70,78 @@
         }
     </style>
 </head>
+
 <body>
     <div class="print-wrapper">
         <!-- Usamos la imagen de fondo pasada desde el controlador -->
         <article class="pagina-aceptacion" th:style="${fondoStyle}">
-            
+
             <!-- CAMPOS DINÁMICOS CON POSICIONES DE VUE -->
-            
+
             <!-- codigoEni -->
-            <span class="overlay-field" 
-                  style="left:48mm; top:40mm; min-width:80mm; height:6mm; font-size:11pt;" 
-                  th:text="${form['codigoEni']}"></span>
-            
+            <span class="overlay-field" style="left:48mm; top:40mm; min-width:80mm; height:6mm; font-size:11pt;"
+                th:text="${form['codigoEni'] ?: 'XXX'}"></span>
+
             <!-- provincia -->
-            <span class="overlay-field" 
-                  style="left:150mm; top:29.5mm; min-width:40mm; height:6mm; font-size:9pt; background:#fff;" 
-                  th:text="${form['provincia']}"></span>
-            
+            <span class="overlay-field"
+                style="left:150mm; top:29.5mm; min-width:40mm; height:6mm; font-size:9pt; background:#fff;"
+                th:text="${form['provincia'] ?: 'XXX'}"></span>
+
             <!-- edificioVivienda -->
-            <span class="overlay-field" 
-                  style="left:35.5mm; top:104.8mm; min-width:40mm; height:3mm; font-size:9pt; background:#fff;" 
-                  th:text="${form['edificioVivienda']}"></span>
-            
+            <span class="overlay-field"
+                style="left:84mm; top:104.8mm; min-width:10mm; height:3mm; font-size:9pt; background:#fff;"
+                th:text="${form['edificioVivienda'] ?: 'XXX'}"></span>
+
             <!-- importeSubvencion -->
-            <span class="overlay-field" 
-                  style="left:172mm; top:123mm; min-width:80mm; height:6mm; font-size:9pt;" 
-                  th:text="${form['importeSubvencion']}"></span>
-            
+            <span class="overlay-field" style="left:162mm; top:123mm; min-width:15mm; height:6mm; font-size:9pt;"
+                th:text="${form['importeSubvencion'] ?: 'XXX'}"></span>
+
             <!-- razonSocial -->
-            <span class="overlay-field" 
-                  style="left:40mm; top:76.5mm; min-width:80mm; height:6mm; font-size:9pt;" 
-                  th:text="${form['razonSocial']}"></span>
-            
+            <span class="overlay-field" style="left:40mm; top:76.5mm; min-width:80mm; height:6mm; font-size:9pt;"
+                th:text="${form['razonSocial'] ?: 'XXX'}"></span>
+
             <!-- dni -->
-            <span class="overlay-field" 
-                  style="left:38mm; top:81.5mm; min-width:80mm; height:6mm; font-size:9pt;" 
-                  th:text="${form['dni']}"></span>
-            
+            <span class="overlay-field" style="left:38mm; top:81.5mm; min-width:80mm; height:6mm; font-size:9pt;"
+                th:text="${form['dni'] ?: 'XXX'}"></span>
+
             <!-- expedienteEco -->
-            <span class="overlay-field" 
-                  style="left:120mm; top:81.5mm; min-width:80mm; height:6mm; font-size:9pt;" 
-                  th:text="${form['expedienteEco']}"></span>
-            
+            <span class="overlay-field" style="left:120mm; top:81.5mm; min-width:80mm; height:6mm; font-size:9pt;"
+                th:text="${form['expedienteEco'] ?: 'XXX'}"></span>
+
             <!-- PIE DE FIRMA -->
-            
+
             <!-- ciudad -->
-            <span class="overlay-field" 
-                  style="left:40mm; top:214mm; min-width:80mm; height:6mm; font-size:9pt; text-align:center;" 
-                  th:text="${form['ciudad']}"></span>
-            
+            <span class="overlay-field"
+                style="left:30mm; top:214mm; min-width:80mm; height:6mm; font-size:9pt; text-align:center;"
+                th:text="${form['ciudad'] ?: 'XXX'}"></span>
+
             <!-- dia -->
-            <span class="overlay-field" 
-                  style="left:110mm; top:213.5mm; min-width:15mm; height:6mm; font-size:9pt; text-align:center;" 
-                  th:text="${form['dia']}"></span>
-            
+            <span class="overlay-field"
+                style="left:107mm; top:213.5mm; min-width:15mm; height:6mm; font-size:9pt; text-align:center;"
+                th:text="${form['dia'] ?: 'XXX'}"></span>
+
             <!-- mes -->
-            <span class="overlay-field" 
-                  style="left:125mm; top:213.5mm; min-width:20mm; height:6mm; font-size:9pt; text-align:center;" 
-                  th:text="${form['mes']}"></span>
-            
+            <span class="overlay-field"
+                style="left:125mm; top:213.5mm; min-width:20mm; height:6mm; font-size:9pt; text-align:center;"
+                th:text="${form['mes'] ?: 'XXX'}"></span>
+
             <!-- anio -->
-            <span class="overlay-field" 
-                  style="left:155mm; top:213.5mm; min-width:20mm; height:3mm; font-size:9pt; text-align:center; background:#fff;" 
-                  th:text="${form['anio']}"></span>
-            
+            <span class="overlay-field"
+                style="left:155mm; top:213.5mm; min-width:20mm; height:3mm; font-size:9pt; text-align:center; background:#fff;"
+                th:text="${form['anio'] ?: 'XXX'}"></span>
+
             <!-- Firma -->
             <div class="firma-container" style="left:80mm; top:219mm; width:65mm; height:15mm;">
                 <img th:src="${firmaBase64}" class="firma-img" alt="Firma" />
             </div>
-            
+
             <!-- nombreFirma -->
-            <span class="overlay-field" 
-                  style="left:75mm; top:232mm; min-width:20mm; height:3mm; font-size:9pt; text-align:center;" 
-                  th:text="${form['nombreFirma']}"></span>
+            <span class="overlay-field"
+                style="left:75mm; top:232mm; min-width:20mm; height:3mm; font-size:9pt; text-align:center;"
+                th:text="${form['nombreFirma'] ?: 'XXX'}"></span>
 
         </article>
     </div>
 </body>
+
 </html>

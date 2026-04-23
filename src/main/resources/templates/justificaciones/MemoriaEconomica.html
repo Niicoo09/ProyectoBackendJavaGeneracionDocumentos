@@ -152,11 +152,11 @@
     <div class="datos-iniciales">
         <div class="dato-linea">
             <span class="dato-label">EXPEDIENTE:</span>
-            <span class="dato-valor" th:text="${form['expediente']}">---</span>
+            <span class="dato-valor" th:text="${form['expedienteEco']}">---</span>
         </div>
         <div class="dato-linea">
             <span class="dato-label">NIF:</span>
-            <span class="dato-valor" th:text="${form['nif']}">---</span>
+            <span class="dato-valor" th:text="${form['nifCif']}">---</span>
         </div>
         <div class="dato-linea">
             <span class="dato-label">AGENTE GESTOR:</span>
@@ -282,7 +282,7 @@
         <div class="contenedor-firmas">
             <div class="datos-firma">
                 <p><b>Fecha:</b> A <span th:text="${form['diaFirmaJustificacion']}">--</span> de <span th:text="${form['mesFirmaJustificacion']}">--</span> de <span th:text="${form['anioFirmaJustificacion']}">--</span></p>
-                <p><b>Firma:</b> <span th:text="${form['nombreFirma']}">--</span></p>
+                <p><b>Firma:</b> <span th:text="${form['apellidosNombre']}">--</span></p>
             </div>
             <div th:if="${firmaImagen}" class="imagen-firma-contenedor">
                 <img th:src="${firmaImagen}" class="imagen-firma" />

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Autorización Facturación</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            font-family: Arial, sans-serif;
+            color: #111;
+        }
+
+        .print-wrapper {
+            width: 210mm;
+            background: #fff;
+        }
+
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            box-sizing: border-box;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+            overflow: hidden;
+            page-break-after: always;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .overlay-field {
+            position: absolute;
+            background: #fff;
+            /* Fondo blanco para tapar lo de atrás */
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            padding: 0 0.5mm;
+            /* Padding mínimo para que el blanco no sobre mucho */
+            box-sizing: border-box;
+            white-space: nowrap;
+            overflow: visible;
+            color: #000;
+            font-size: 9pt;
+            font-weight: 500;
+        }
+
+        .check-field {
+            position: absolute;
+            font-size: 8pt;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .firma-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-wrapper">
+
+        <!-- PÁGINA 1 -->
+        <article class="pagina-documento" th:style="${fondoStyle1}">
+            <!-- 1. IDENTIFICACIÓN DEL SOLICITANTE (PROMOTOR) -->
+            <!-- D./Dª -->
+            <span class="overlay-field" style="left:50mm; top:36.5mm;"
+                th:text="${form['apellidosNombre'] ?: 'XXX'}"></span>
+            <!-- NIF -->
+            <span class="overlay-field" style="left:38mm; top:43mm;" th:text="${form['nifCif'] ?: 'XXX'}"></span>
+
+            <!-- Municipio -->
+            <span class="overlay-field" style="left:98mm; top:43mm;" th:text="${form['localidad'] ?: 'XXX'}"></span>
+            <!-- Vía Pública -->
+            <span class="overlay-field" style="left:38mm; top:49mm;"
+                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+
+            <!-- E-mail -->
+            <span class="overlay-field" style="left:38mm; top:55.5mm;"
+                th:text="${form['correoElectronicoEmplazamiento'] ?: 'XXX'}"></span>
+
+            <!-- Teléfono -->
+            <span class="overlay-field" style="left:130mm; top:55.5mm;" th:text="${form['telefono'] ?: 'XXX'}"></span>
+
+            <!-- Opción A Check -->
+            <span class="check-field" style="left:36mm; top:63.5mm;">X</span>
+
+
+        </article>
+
+        <!-- PÁGINA 2 -->
+        <article class="pagina-documento" th:style="${fondoStyle2}">
+            <!-- 3. UBICACIÓN DEL SUMINISTRO -->
+            <span class="overlay-field" style="left:109mm; top:176mm;"
+                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:52mm; top:189.5mm;"
+                th:text="${form['localidadEmplazamiento'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:150mm; top:189.5mm;"
+                th:text="${form['provinciaEmplazamiento'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:58mm; top:195.5mm;"
+                th:text="${form['potencia_instalacion'] ?: 'XXX'}"></span>
+
+            <!-- 4. FIRMA Y FECHA -->
+            <!-- Lugar -->
+            <span class="overlay-field" style="left:98mm; top:222mm; padding-right:30mm;" th:text="${form['ciudadFirma'] ?: 'XXX'}"></span>
+            <!-- Día -->
+            <span class="overlay-field" style="left:143.1mm; top:222mm;" th:text="${form['dia'] ?: 'XXX'}"></span>
+            <!-- Mes -->
+            <span class="overlay-field" style="left:155mm; top:222mm;" th:text="${form['mes'] ?: 'XXX'}"></span>
+            <!-- Año -->
+            <span class="overlay-field" style="left:189.5mm; top:222mm;"
+                th:text="${form['anio'] != null and form['anio'].toString().length() > 2 ? form['anio'].toString().substring(form['anio'].toString().length() - 2) : (form['anio'] ?: 'XX')}"></span>
+
+            <!-- Firma Imagen -->
+            <div class="firma-container" style="left:160mm; top:280mm; width:60mm; height:30mm;">
+                <img th:src="${firmaBase64}" class="firma-img" th:if="${firmaBase64 != null}" />
+            </div>
+        </article>
+
+    </div>
+</body>
+
+</html>

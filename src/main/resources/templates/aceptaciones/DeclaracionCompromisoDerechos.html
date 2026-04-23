@@ -29,7 +29,8 @@
             box-sizing: border-box;
             overflow: hidden;
             white-space: nowrap;
-            color: #222;
+            color: #000;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -37,55 +38,55 @@
     <div class="pagina-documento" th:style="${fondoStyle}">
         <!-- nombreApellidos -->
         <span class="overlay-field" 
-              th:text="${form['nombreApellidos'] ?: ''}"
+              th:text="${form['apellidosNombre'] ?: ''}"
               style="left: 36mm; top: 80.5mm; width: 60mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
         <!-- nif -->
         <span class="overlay-field" 
-              th:text="${form['nif'] ?: ''}"
+              th:text="${form['nifCif'] ?: ''}"
               style="left: 163mm; top: 80.5mm; width: 30mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
-        <!-- direccion -->
+        <!-- domicilio completo -->
         <span class="overlay-field" 
-              th:text="${form['direccion'] ?: ''}"
-              style="left: 36mm; top: 85.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
+              th:text="${(form['direccionCompleta'] ?: '') + ' - ' + (form['codigoPostalEmplazamiento'] ?: '') + ' - ' + (form['localidadEmplazamiento'] ?: '') + ' - ' + (form['provinciaEmplazamiento'] ?: '')}"
+              style="left: 36mm; top: 85.5mm; width: 160mm; height: 8mm; font-size: 9px; text-align: left;">
         </span>
         <!-- nombreRepresentante -->
         <span class="overlay-field" 
-              th:text="${form['nombreRepresentante'] ?: ''}"
+              th:text="${form['nombreRepresentanteEntidad'] ?: ''}"
               style="left: 36mm; top: 95.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
         <!-- dniRepresentante -->
         <span class="overlay-field" 
-              th:text="${form['dniRepresentante'] ?: ''}"
+              th:text="${form['dniRepresentanteEntidad'] ?: ''}"
               style="left: 163mm; top: 95.5mm; width: 30mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
         <!-- nombreEntidadRepresentada -->
         <span class="overlay-field" 
-              th:text="${form['nombreEntidadRepresentada'] ?: ''}"
+              th:text="${form['denominacionEstablecimiento'] ?: ''}"
               style="left: 91mm; top: 100.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
         <!-- nifEntidadRepresentada -->
         <span class="overlay-field" 
-              th:text="${form['nifEntidadRepresentada'] ?: ''}"
+              th:text="${form['nifEstablecimiento'] ?: ''}"
               style="left: 36mm; top: 105.5mm; width: 160mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
 
         <!-- Pie de firma -->
         <span class="overlay-field" 
-              th:text="${form['ciudad'] ?: ''}"
+              th:text="${form['localidadEmplazamiento'] ?: ''}"
               style="left: 47mm; top: 159.5mm; width: 60mm; height: 8mm; font-size: 10px; text-align: left;">
         </span>
         <span class="overlay-field" 
-              th:text="${form['dia'] ?: ''}"
+              th:text="${form['diaAceptacion'] ?: ''}"
               style="left: 107mm; top: 159.5mm; width: 20mm; height: 8mm; font-size: 10px; text-align: center;">
         </span>
         <span class="overlay-field" 
-              th:text="${form['mes'] ?: ''}"
+              th:text="${form['mesAceptacion'] ?: ''}"
               style="left: 123mm; top: 159.5mm; width: 20mm; height: 8mm; font-size: 10px; text-align: center;">
         </span>
         <span class="overlay-field" 
-              th:text="${form['anio'] ?: ''}"
+              th:text="${form['anioAceptacion'] ?: ''}"
               style="left: 148mm; top: 159.5mm; width: 30mm; height: 8mm; font-size: 10px; text-align: center;">
         </span>
 
@@ -95,8 +96,8 @@
         </div>
         <!-- Nombre Firma -->
         <span class="overlay-field" 
-              th:text="${form['nombreFirma'] ?: ''}"
-              style="left: 80mm; top: 190mm; width: 80mm; height: 8mm; font-size: 10px; text-align: center;">
+              th:text="${form['apellidosNombre'] ?: ''}"
+              style="left: 60mm; top: 190mm; width: 120mm; height: 8mm; font-size: 10px; text-align: center;">
         </span>
     </div>
 </body>

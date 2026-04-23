@@ -1,185 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8" />
-    <title>Declaración No Generación RCDs</title>
+    <title>8.- DR No Generación de Residuos</title>
     <style>
-        :root {
-            --primary-color: #0066cc;
-            --text-color: #333;
-            --font-family: 'Segoe UI', Arial, sans-serif;
-        }
+        @page { size: A4; margin: 0; }
+        body { margin: 0; padding: 0; background-color: white; font-family: 'Segoe UI', Arial, sans-serif; color: #333; font-size: 16px; }
+        .contenedor-pdf { width: 210mm; height: 297mm; margin: 0 auto; position: relative; box-sizing: border-box; overflow: hidden; }
+        .contenedor-principal { height: 100%; display: flex; flex-direction: column; padding: 15mm 20mm; box-sizing: border-box; }
+        
+        .encabezado { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 2px solid #0066cc; margin-bottom: 20px; }
+        .titulo-principal { margin: 0; font-size: 20px; font-weight: bold; color: #000; text-align: center; flex: 1; }
+        .logo { width: 140px; height: auto; }
 
-        @page {
-            size: A4;
-            margin: 0;
-        }
+        .contenido-principal { line-height: 1.6; text-align: justify; }
+        .titulo-declara { text-align: center; font-size: 22px; font-weight: bold; margin: 20px 0; }
+        .lista-declaracion { margin: 15px 0; }
+        .item-declaracion { display: flex; margin-bottom: 10px; }
+        .numero-item { font-weight: bold; margin-right: 10px; min-width: 20px; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-family);
-            color: var(--text-color);
-            background-color: white;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
+        .parrafo-fecha { text-align: center; font-weight: bold; margin: 20px 0; }
+        
+        /* Contenedor de firma fijado abajo pero antes del pie */
+        .seccion-firma { margin-top: auto; text-align: center; padding-bottom: 40mm; }
+        .logo-footer-img { width: 150px; height: auto; }
+        .parrafo-firmante { font-size: 14px; line-height: 1.4; margin-top: 5px; }
 
-        .contenedor-pdf {
-            width: 210mm;
-            height: 297mm;
-            margin: 0 auto;
-            position: relative;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .contenedor-principal {
-            flex: 1;
-            padding: 15mm 20mm 35mm 20mm;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-        }
-
-        /* ========== ENCABEZADO ========== */
-        .encabezado {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 18px 0;
-            border-bottom: 2px solid #0066cc;
-            margin-bottom: 27px;
-        }
-
-        .encabezado-contenido {
-            flex: 1;
-        }
-
-        .titulo-principal {
-            margin: 0;
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        .logo {
-            width: 150px;
-            height: auto;
-            margin-left: 15px;
-        }
-
-        /* ========== CONTENIDO PRINCIPAL ========== */
-        .contenido-principal {
-            line-height: 1.6;
-            font-size: 15px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .parrafo-intro {
-            margin: 0 0 10px 0;
-            text-align: justify;
-        }
-
-        .titulo-declara {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin: 10px 0;
-            text-transform: uppercase;
-        }
-
-        .parrafo-declaracion {
-            margin: 15px 0 10px 0;
-            text-align: justify;
-        }
-
-        /* ========== LISTA DECLARACIÓN ========== */
-        .lista-declaracion {
-            margin: 10px 0;
-        }
-
-        .item-declaracion {
-            display: flex;
-            margin: 5px 0;
-            text-align: justify;
-        }
-
-        .numero-item {
-            font-weight: bold;
-            margin-right: 15px;
-            min-width: 25px;
-        }
-
-        /* ========== FECHA ========== */
-        .parrafo-fecha {
-            text-align: center;
-            font-weight: bold;
-            margin: 15px 0 5px 0;
-            font-size: 15px;
-        }
-
-        /* ========== LOGO FOOTER ========== */
-        .logo-footer {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0 0 0;
-        }
-
-        .logo-footer-img {
-            width: 150px;
-            height: auto;
-        }
-
-        /* ========== DATOS FIRMANTE ========== */
-        .parrafo-firmante {
-            text-align: center;
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .pie-pagina {
-            position: absolute;
-            bottom: 15mm;
-            left: 20mm;
-            right: 20mm;
-            border-top: 1.5px solid #0066cc;
-            padding-top: 10px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .texto-pie {
-            margin: 2px 0;
+        /* Pie de página absoluto al final del A4 */
+        .pie-pagina { 
+            position: absolute; 
+            bottom: 10mm; 
+            left: 20mm; 
+            right: 20mm; 
+            border-top: 1px solid #0066cc; 
+            padding-top: 8px; 
+            text-align: center; 
+            font-size: 11px; 
+            color: #666; 
         }
     </style>
 </head>
-
 <body>
     <div class="contenedor-pdf">
         <div class="contenedor-principal">
-
-            <!-- ENCABEZADO -->
             <div class="encabezado">
-                <div class="encabezado-contenido">
-                    <h1 class="titulo-principal">DECLARACIÓN RESPONSABLE DE NO GENERACIÓN DE RCDs</h1>
-                </div>
-                <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
+                <h1 class="titulo-principal">DECLARACIÓN RESPONSABLE DE NO GENERACIÓN DE RCDs</h1>
+                <img th:src="${logoBase64}" class="logo" />
             </div>
 
-            <!-- CONTENIDO PRINCIPAL -->
             <div class="contenido-principal">
-                <p class="parrafo-intro">
-                    Por la presente, Eduardo Rivera Cabezas, con NIF 28818007L, Ingeniero
+                <p>
+                    Por la presente, Eduardo Rivera Cabezas, con NIF 28.818.007-L, Ingeniero
                     Industrial colegiado número 4654 en el Colegio Oficial de Ingenieros Industriales de
                     Andalucía Occidental, y con domicilio en Calle El Peñón 5 - 41940, localidad
                     de Tomares, provincia de Sevilla
@@ -187,17 +58,14 @@
 
                 <h2 class="titulo-declara">DECLARA QUE</h2>
 
-                <p class="parrafo-declaracion">
-                    La instalación fotovoltaica a realizar en
-                    <strong th:text="${form['direccion'] ?: form['emplazamientoCalle'] ?: ''}">Calle Ejemplo</strong>,
+                <p>
+                    La instalación fotovoltaica a realizar en 
+                    <strong th:text="${form['direccion'] ?: form['emplazamientoCalle'] ?: ''}">Calle Ejemplo</strong>, 
                     <strong th:text="${form['otrosDatos'] ?: (form['numero'] ?: '')}">Nº</strong>
-                    – código postal <strong th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}">00000</strong>,
-                    con Referencia Catastral
-                    <strong th:text="${form['referenciaCatastral'] ?: form['cups'] ?: ''}">Referencia</strong>,
-                    en el término municipal de
-                    <strong th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}">Municipio</strong>,
-                    provincia de
-                    <strong th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}">Provincia</strong>:
+                    – código postal <strong th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}">41015</strong>, 
+                    con Referencia Catastral <strong th:text="${form['referenciaCatastral'] ?: form['cups'] ?: ''}">7259005TG3475N0007WD</strong>, 
+                    en el término municipal de <strong th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}">Sevilla</strong>, 
+                    provincia de <strong th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}">Sevilla</strong>:
                 </p>
 
                 <div class="lista-declaracion">
@@ -207,7 +75,6 @@
                             naturaleza deban ser entregados a un gestor autorizado o al concesionario de la
                             Mancomunidad.</span>
                     </div>
-
                     <div class="item-declaracion">
                         <span class="numero-item">2.</span>
                         <span>Que los residuos que se produzcan serán depositados en Puntos Limpios en aras de conseguir
@@ -216,37 +83,31 @@
                     </div>
                 </div>
 
-                <!-- FECHA -->
                 <p class="parrafo-fecha">
-                    En <strong th:text="${form['ciudadFirma'] ?: form['localidadEmplazamiento'] ?: ''}">Ciudad</strong>,
-                    a <strong>
-                        <span th:text="${form['dia'] ?: ''}">DD</span>
-                        de <span th:text="${form['mes'] ?: ''}">mes</span>
-                        de <span th:text="${form['anio'] ?: ''}">AAAA</span>
-                    </strong>.
+                    En <span th:text="${form['ciudadFirma'] ?: form['localidadEmplazamiento'] ?: ''}">Sevilla</span>,
+                    a <span th:text="${form['dia'] ?: ''}">23</span>
+                    de <span th:text="${form['mes'] ?: ''}">abril</span>
+                    de <span th:text="${form['anio'] ?: ''}">2026</span>.
                 </p>
+            </div>
 
-                <!-- FIRMA -->
-                <div class="logo-footer">
-                    <img th:src="${firmaBase64}" alt="Firma Solay" class="logo-footer-img" />
-                </div>
-
-                <p class="parrafo-firmante">
+            <!-- Firma fijada antes del pie -->
+            <div class="seccion-firma">
+                <img th:src="${firmaBase64}" class="logo-footer-img" />
+                <div class="parrafo-firmante">
                     <strong>Eduardo Rivera Cabezas</strong><br />
                     <strong>670308856</strong><br />
                     <strong>erivera@solay.es</strong><br />
                     <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
-                </p>
+                </div>
             </div>
 
-            <!-- PIE DE PÃGINA -->
+            <!-- Pie de página absoluto -->
             <div class="pie-pagina">
-                <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <div style="margin-bottom: 2px;">www.solay.es</div>
+                <div>Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</div>
             </div>
         </div>
     </div>
 </body>
-
 </html>
-

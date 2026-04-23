@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Declaración del Propietario</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            font-family: Arial, sans-serif;
+            color: #111;
+        }
+
+        .print-wrapper {
+            width: 210mm;
+            min-height: 297mm;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: #fff;
+        }
+
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+            overflow: hidden;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .overlay-field {
+            position: absolute;
+            background: transparent;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: left;
+            padding: 0 1mm;
+            box-sizing: border-box;
+            white-space: nowrap;
+            overflow: visible;
+            color: #111;
+            font-size: 10pt;
+            font-weight: 500;
+        }
+
+        .check-field {
+            position: absolute;
+            font-size: 8pt;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .firma-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-wrapper">
+        <article class="pagina-documento" th:style="${fondoStyle}">
+
+            <!-- 1. PROPIETARIO (Bloque Superior) -->
+            <!-- D./Dª -->
+            <span class="overlay-field" style="left:70mm; top:40mm; min-width:130mm;"
+                th:text="${form['apellidosNombre'] ?: 'XXX'}"></span>
+            <!-- NIF -->
+            <span class="overlay-field" style="left:49mm; top:45.5mm; min-width:35mm;"
+                th:text="${form['nifCif'] ?: 'XXX'}"></span>
+            <!-- Municipio -->
+            <span class="overlay-field" style="left:120mm; top:45.5mm; min-width:70mm;"
+                th:text="${form['localidad'] ?: 'XXX'}"></span>
+            <!-- Vía Pública -->
+            <span class="overlay-field" style="left:70mm; top:51mm; min-width:120mm;"
+                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+            <!-- E-mail -->
+            <span class="overlay-field" style="left:30mm; top:56mm; min-width:40mm;"
+                th:text="${form['correoElectronicoEmplazamiento'] ?: 'XXX'}"></span>
+            <!-- Teléfono -->
+            <span class="overlay-field" style="left:140mm; top:56mm; min-width:40mm;"
+                th:text="${form['telefono'] ?: 'XXX'}"></span>
+
+            <!-- Ubicación Inmueble -->
+            <span class="overlay-field" style="left:90mm; top:62mm; min-width:100mm;"
+                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+            <!-- Municipio Ubicación -->
+            <span class="overlay-field" style="left:35mm; top:67.1mm; min-width:80mm;"
+                th:text="${form['localidadEmplazamiento'] ?: 'XXX'}"></span>
+            <!-- Ref Catastral -->
+            <span class="overlay-field" style="left:120mm; top:67.1mm; min-width:70mm;"
+                th:text="${form['referenciaCatastral'] ?: 'XXX'}"></span>
+
+            <!-- Check Por Cuenta Propia -->
+            <span class="check-field" style="left:36.4mm; top:72.7mm;">X</span>
+
+            <!-- 2. SOLICITANTE (Bloque Medio) -->
+            <!-- D./Dª -->
+            <span class="overlay-field" style="left:70mm; top:113.5mm; min-width:130mm;"
+                th:text="${form['per_aut_nombre'] + ' ' + (form['per_aut_apellido1'] ?: '')}"></span>
+            <!-- NIF -->
+            <span class="overlay-field" style="left:49mm; top:118.8mm; min-width:35mm;"
+                th:text="${form['per_aut_nif'] ?: 'XXX'}"></span>
+            <!-- Municipio -->
+            <span class="overlay-field" style="left:120mm; top:118.8mm; min-width:70mm;"
+                th:text="${form['municipio_presentador'] ?: 'XXX'}"></span>
+            <!-- Vía Pública -->
+            <span class="overlay-field" style="left:70mm; top:124mm; min-width:120mm;"
+                th:text="${form['nombre_via_presentador'] ?: 'XXX'}"></span>
+            <!-- E-mail -->
+            <span class="overlay-field" style="left:30mm; top:129mm; min-width:40mm;"
+                th:text="${form['email_presentador'] ?: 'XXX'}"></span>
+            <!-- Teléfono -->
+            <span class="overlay-field" style="left:140mm; top:129mm; min-width:40mm;"
+                th:text="${form['telefono_presentador'] ?: 'XXX'}"></span>
+
+            <!-- 3. DATOS DE LA CENTRAL (Bloque Inferior) -->
+            <!-- Tipo Generación -->
+            <span class="overlay-field" style="left:62mm; top:155mm; min-width:140mm;"
+                th:text="${form['tipoInstalacion'] ?: 'Fotovoltaica conectada a red interior'}"></span>
+            <!-- Potencia -->
+            <span class="overlay-field" style="left:49mm; top:163mm; min-width:20mm;"
+                th:text="${form['potencia_instalacion'] ?: 'XXX'}"></span>
+
+            <!-- 4. FIRMA Y FECHA (Pie) -->
+            <!-- Lugar -->
+            <span class="overlay-field" style="left:58mm; top:195.3mm; min-width:50mm;"
+                th:text="${form['ciudadFirma'] ?: 'XXX'}"></span>
+            <!-- Día -->
+            <span class="overlay-field" style="left:109.1mm; top:195.3mm; min-width:10mm;"
+                th:text="${form['dia'] ?: 'XXX'}"></span>
+            <!-- Mes -->
+            <span class="overlay-field" style="left:124mm; top:195.3mm; min-width:40mm;"
+                th:text="${form['mes'] ?: 'XXX'}"></span>
+            <!-- Año -->
+            <span class="overlay-field" style="left:160mm; top:195.3mm; min-width:15mm;"
+                th:text="${form['anio'] != null and form['anio'].toString().length() > 2 ? form['anio'].toString().substring(form['anio'].toString().length() - 2) : (form['anio'] ?: 'XX')}"></span>
+
+            <!-- Firma Imagen -->
+            <div class="firma-container" style="left:110mm; top:182mm; width:60mm; height:30mm;">
+                <img th:src="${firmaBase64}" class="firma-img" th:if="${firmaBase64 != null}" />
+            </div>
+
+        </article>
+    </div>
+</body>
+
+</html>

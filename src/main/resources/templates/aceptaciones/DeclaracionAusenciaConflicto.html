@@ -30,7 +30,8 @@
             white-space: nowrap;
             /* Usamos transparent para ver el fondo */
             background-color: transparent; 
-            color: #333;
+            color: #000;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -42,36 +43,32 @@
     <div class="pagina-documento" th:style="${fondoStyle2}">
         <!-- Ciudad -->
         <span class="overlay-field" 
-              th:text="${form['ciudad'] ?: ''}"
+              th:text="${form['localidadEmplazamiento'] ?: ''}"
               style="left: 93mm; top: 77mm; width: 60mm; height: 8mm; font-size: 11px; text-align: left;">
         </span>
-
         <!-- Día -->
         <span class="overlay-field" 
-              th:text="${form['dia'] ?: ''}"
+              th:text="${form['diaAceptacion'] ?: ''}"
               style="left: 123mm; top: 77mm; width: 20mm; height: 8mm; font-size: 11px; text-align: center;">
         </span>
-
         <!-- Mes -->
         <span class="overlay-field" 
-              th:text="${form['mes'] ?: ''}"
+              th:text="${form['mesAceptacion'] ?: ''}"
               style="left: 145mm; top: 77mm; width: 20mm; height: 8mm; font-size: 11px; text-align: center;">
         </span>
-
         <!-- Año -->
         <span class="overlay-field" 
-              th:text="${form['anio'] ?: ''}"
+              th:text="${form['anioAceptacion'] ?: ''}"
               style="left: 162mm; top: 77mm; width: 30mm; height: 8mm; font-size: 11px; text-align: center;">
         </span>
 
-        <!-- Firma (Imagen) -->
+        <!-- Firma -->
         <div class="overlay-field" style="left: 65mm; top: 88mm; width: 80mm; height: 19mm; text-align: center;">
-             <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+            <img th:src="${firmaBase64}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
         </div>
-
         <!-- Nombre Firma -->
         <span class="overlay-field" 
-              th:text="${form['nombreFirma'] ?: ''}"
+              th:text="${form['apellidosNombre'] ?: ''}"
               style="left: 68mm; top: 104.5mm; width: 80mm; height: 8mm; font-size: 11px; text-align: center;">
         </span>
     </div>
