@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Certificado de Solidez - PÃ©rgola</title>
+    <title>Certificado de Solidez - Pérgola</title>
     <style>
         .contenedor-pdf {
             background-color: white;
@@ -174,47 +174,47 @@
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÃ‰RGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-intro">
-                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span class="texto-fijo">28818007L</span>, Ingeniero Industrial colegiado nÃºmero <span class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de AndalucÃ­a Occidental, y con domicilio en <span class="texto-fijo">Calle El PeÃ±Ã³n 5 - 41940</span>, localidad de <span class="texto-fijo">Tomares</span>, provincia de <span class="texto-fijo">Sevilla</span>
+                    Por la presente, <span class="texto-fijo">Eduardo Rivera Cabezas</span>, con NIF <span class="texto-fijo">28818007L</span>, Ingeniero Industrial colegiado número <span class="texto-fijo">4654</span> en el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en <span class="texto-fijo">Calle El Peñón 5 - 41940</span>, localidad de <span class="texto-fijo">Tomares</span>, provincia de <span class="texto-fijo">Sevilla</span>
                 </p>
 
                 <h2 class="titulo-declara">CERTIFICO</h2>
 
                 <p class="parrafo-certifico">
-                    que el estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pÃ©rgola'}">pÃ©rgola</span> de la vivienda sita en <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-editable" th:text="${form['numero']}">5</span> â€“ cÃ³digo postal <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41000</span>, localidad de <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de <span class="texto-editable" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con Referencia Catastral <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sÃ³lida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspecciÃ³n ocular realizada <span class="texto-azul">in situ</span>, de la revisiÃ³n del proyecto constructivo de la misma, y de la disposiciÃ³n sobre la cubierta de los mÃ³dulos fotovoltaicos.
+                    que el estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'Pérgola'}">Pérgola</span> de la vivienda sita en <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-editable" th:text="${form['numero']}">5</span> â€“ cÃ³digo postal <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41000</span>, localidad de <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de <span class="texto-editable" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con Referencia Catastral <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
                 </p>
 
                 <p class="parrafo-datos">
-                    El generador fotovoltaico ha sido dimensionado mediante Memoria TÃ©cnica de DiseÃ±o segÃºn requiere la reglamentaciÃ³n, y estÃ¡ compuesto por <span class="texto-editable" th:text="${form['e2_totalModulos']}">10</span> mÃ³dulos fotovoltaicos de <span class="texto-editable" th:text="${form['e2_potenciaPicoModulo']}">Wp</span> Wp de potencia elÃ©ctrica y <span class="texto-editable" th:text="${form['peso'] ?: '28.00'}">28.00</span> kg de peso cada uno, del fabricante y modelo <span class="texto-editable" th:text="${form['e2_marcaModeloModulo']}">Marca</span>.
+                    El generador fotovoltaico ha sido dimensionado mediante Memoria Técnica de Diseño según requiere la reglamentación, y está compuesto por <span class="texto-editable" th:text="${form['e2_totalModulos']}">10</span> módulos fotovoltaicos de <span class="texto-editable" th:text="${form['e2_potenciaPicoModulo']}">Wp</span> Wp de potencia eléctrica y <span class="texto-editable" th:text="${form['peso'] ?: '28.00'}">28.00</span> kg de peso cada uno, del fabricante y modelo <span class="texto-editable" th:text="${form['e2_marcaModeloModulo']}">Marca</span>.
                 </p>
 
                 <h3 class="titulo-seccion">Estructura Primaria</h3>
 
                 <p class="parrafo-estructura">
-                    Los paneles fotovoltaicos se situarÃ¡n sobre una estructura primaria consistente en <span class="texto-editable">EN UNA PÃ‰RGOLA DE ACERO GALVANIZADO</span>. Esta estructura tendrÃ¡ una altura mÃ¡xima de <span class="texto-editable">1,8 m</span>, una orientaciÃ³n de <span class="texto-editable" th:text="${form['e2_orientacionGenerador']}">SUR</span> y una inclinaciÃ³n de <span class="texto-editable" th:text="${form['e2_inclinacionGenerador'] + 'Âº'}">20Âº</span>, posicionÃ¡ndose los paneles formando un plano inclinado.
+                    Los paneles fotovoltaicos se situarÃ¡n sobre una estructura primaria consistente en <span class="texto-editable">EN UNA PÉRGOLA DE ACERO GALVANIZADO</span>. Esta estructura tendrÃ¡ una altura máxima de <span class="texto-editable">1,8 m</span>, una orientación de <span class="texto-editable" th:text="${form['e2_orientacionGenerador']}">SUR</span> y una inclinación de <span class="texto-editable" th:text="${form['e2_inclinacionGenerador'] + 'º'}">20º</span>, posicionándose los paneles formando un plano inclinado.
                 </p>
 
                 <p class="parrafo-estructura">
-                    La estructura primaria o pÃ©rgola de acero galvanizado, servirÃ¡ de base para la estructura secundaria, consistente en una perfilerÃ­a de aluminio ligero de la empresa SUNFER ESTRUCTURAS, S.L., especializada en soportes para generadores fotovoltaicos con Certificado de GarantÃ­a y Marcado CE de sus productos (se adjuntan en la Memoria TÃ©cnica de DiseÃ±o, asÃ­ como la Ficha TÃ©cnica y Plano de Montaje).
+                    La estructura primaria o Pérgola de acero galvanizado, servirÃ¡ de base para la estructura secundaria, consistente en una perfilería de aluminio ligero de la empresa SUNFER ESTRUCTURAS, S.L., especializada en soportes para generadores fotovoltaicos con Certificado de Garantía y Marcado CE de sus productos (se adjuntan en la Memoria Técnica de Diseño, así como la Ficha Técnica y Plano de Montaje).
                 </p>
 
                 <h3 class="titulo-seccion">Estructura Secundaria</h3>
 
                 <p class="parrafo-estructura">
-                    La perfilerÃ­a secundaria de aluminio estarÃ¡ finalmente unida solidariamente a los mÃ³dulos fotovoltaicos mediante elementos de presiÃ³n y fijaciÃ³n con tornillo a las distancias y pares de apriete marcados por el fabricante.
+                    La perfilería secundaria de aluminio estará finalmente unida solidariamente a los módulos fotovoltaicos mediante elementos de presiÃ³n y fijación con tornillo a las distancias y pares de apriete marcados por el fabricante.
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">PÃ¡gina 1</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 1</p>
             </div>
         </div>
 
@@ -223,39 +223,39 @@
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÃ‰RGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
-                <h3 class="titulo-seccion">FijaciÃ³n y lastres</h3>
+                <h3 class="titulo-seccion">fijación y lastres</h3>
 
                 <p class="parrafo-estructura">
-                    Para la sujeciÃ³n de la pÃ©rgola, Ã©sta serÃ¡ fijada sobre unos lastres de 22 kg de peso cada uno, mediante varillas roscadas (segÃºn procedimiento del fabricante), sÃ³lidamente fijadas a la perfilerÃ­a secundaria de aluminio mediante tornillerÃ­a de acero inoxidable; todo ello segÃºn los procedimientos de instalaciÃ³n establecidos en la ficha tÃ©cnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la tornillerÃ­a.
+                    Para la sujeción de la Pérgola, Ã©sta será fijada sobre unos lastres de 22 kg de peso cada uno, mediante varillas roscadas (según procedimiento del fabricante), sólidamente fijadas a la perfilería secundaria de aluminio mediante tornillería de acero inoxidable; todo ello según los procedimientos de instalación establecidos en la ficha Técnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la tornillería.
                 </p>
 
                 <p class="parrafo-estructura">
-                    Mediante estos lastres se garantiza que la instalaciÃ³n estÃ¡ protegida contra desprendimientos debido tanto a las fuerzas de tracciÃ³n como de compresiÃ³n sobre la propia cubierta.
+                    Mediante estos lastres se garantiza que la instalación está protegida contra desprendimientos debido tanto a las fuerzas de tracción como de compresión sobre la propia cubierta.
                 </p>
 
                 <p class="parrafo-estructura">
-                    Se ha comprobado que la actuaciÃ³n a realizar no desvirtÃºa el carÃ¡cter arquitectÃ³nico de la edificaciÃ³n, garantizando su adecuada integraciÃ³n en la estÃ©tica del edificio tanto de los paneles y la estructura metÃ¡lica como de cualquier tuberÃ­a o canalizaciÃ³n perteneciente a dicha instalaciÃ³n, evitando expresamente el trazado visible por las fachadas.
+                    Se ha comprobado que la actuación a realizar no desvirtúa el carácter arquitectónico de la edificación, garantizando su adecuada integraciÃ³n en la estética del edificio tanto de los paneles y la estructura metÃ¡lica como de cualquier tubería o canalización perteneciente a dicha instalación, evitando expresamente el trazado visible por las fachadas.
                 </p>
 
                 <p class="parrafo-estructura">
-                    Los paneles fotovoltaicos cumplen la normativa UNE-EN 61215 para mÃ³dulos de silicio monocristalino, ademÃ¡s al ir conectada a la red cuenta con los subsistemas de control y regulaciÃ³n, desconexiÃ³n e inversiÃ³n, seguridad e inyecciÃ³n a la red elÃ©ctrica destinataria de la electricidad generada. En cualquier caso, certifico que la actuaciÃ³n cumplirÃ¡ las Ordenanzas reguladoras de las instalaciones de captaciÃ³n solar en <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>.
+                    Los paneles fotovoltaicos cumplen la normativa UNE-EN 61215 para módulos de silicio monocristalino, además al ir conectada a la red cuenta con los subsistemas de control y regulación, desconexiÃ³n e inversión, seguridad e inyecciÃ³n a la red eléctrica destinataria de la electricidad generada. En cualquier caso, certifico que la actuación cumplirá las Ordenanzas reguladoras de las instalaciones de captación solar en <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>.
                 </p>
 
                 <p class="parrafo-estructura">
-                    El estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pÃ©rgola'}">pÃ©rgola</span> de la edificaciÃ³n es el adecuado para soportar de forma sÃ³lida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afecciÃ³n estructural, a la vista de la inspecciÃ³n ocular realizada <span class="texto-azul">in situ</span>, de la revisiÃ³n del proyecto constructivo de la misma, y de la disposiciÃ³n sobre la cubierta de los mÃ³dulos fotovoltaicos.
+                    El estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'Pérgola'}">Pérgola</span> de la edificación es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">PÃ¡gina 2</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 2</p>
             </div>
         </div>
 
@@ -264,14 +264,14 @@
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÃ‰RGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-estructura">
-                    La mencionada Memoria TÃ©cnica de DiseÃ±o ha sido redactada por mÃ­ como tÃ©cnico competente.
+                    La mencionada Memoria Técnica de Diseño ha sido redactada por mí como tÃ©cnico competente.
                 </p>
                 <!-- Fecha -->
                 <p class="parrafo-fecha">
@@ -288,17 +288,18 @@
                     <strong>Eduardo Rivera Cabezas</strong><br>
                     <strong>670308856</strong><br>
                     <strong>erivera@solay.es</strong><br>
-                    <strong>Calle El PeÃ±Ã³n 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
+                    <strong>Calle El Peñón 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
                 </p>
             </div>
 
             <div class="pie-pagina">
                 <p class="texto-pie">www.solay.es</p>
-                <p class="texto-pie">Paseo de Bollullos de la MitaciÃ³n 18. Parque Industrial PIBO. 41110 Sevilla.</p>
-                <p class="texto-pie">PÃ¡gina 3</p>
+                <p class="texto-pie">Paseo de Bollullos de la Mitación 18. Parque Industrial PIBO. 41110 Sevilla.</p>
+                <p class="texto-pie">Página 3</p>
             </div>
         </div>
     </div>
 </body>
 </html>
+
 
