@@ -1,10 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>Certificado de Solidez - Aporticada Teja</title>
     <style>
-        /* Reutilizamos exactamente tu CSS de Vue */
         .contenedor-pdf {
             width: 100%;
             max-width: 210mm;
@@ -25,7 +24,7 @@
             padding: 10mm 15mm;
             margin: 0 auto;
             box-sizing: border-box;
-            min-height: 295mm; /* Asegura tamaño A4 */
+            min-height: 295mm;
             background-color: white;
             page-break-after: always;
         }
@@ -161,15 +160,14 @@
 <body>
     <div class="contenedor-pdf">
         
-        <!-- PÃGINA 1: CERTIFICO -->
+        <!-- PÁGINA 1: CERTIFICO -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h3 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h3>
                     <br />
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE TEJA, <span class="texto-azul">APORTICADA</span></h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE TEJA, <span class="texto-azul">APORTICADA</span></h3>
                 </div>
-                <!-- Logo corporativo -->
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
@@ -177,7 +175,7 @@
                 <p class="parrafo-tecnico">
                     Por la presente, Eduardo Rivera Cabezas, con NIF 28818007L, Ingeniero Industrial colegiado número 4654 en
                     el Colegio Oficial de Ingenieros Industriales de Andalucía Occidental, y con domicilio en Calle El Peñón 5
-                    -41940, localidad de Tomares, provincia de Sevilla
+                    - 41940, localidad de Tomares, provincia de Sevilla
                 </p>
 
                 <h2 class="titulo-certificado">CERTIFICO</h2>
@@ -207,7 +205,6 @@
 
                 <div class="contenedor-dos-imagenes">
                     <div class="espacio-imagen-lado">
-                        <!-- Imagen Técnica Base64 -->
                         <img th:src="${imagenTecnicaBase64}" class="imagen-pdf-lado" />
                     </div>
                 </div>
@@ -220,11 +217,11 @@
             </div>
         </div>
 
-        <!-- PÃGINA 2: ESTRUCTURA -->
+        <!-- PÁGINA 2: ESTRUCTURA -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
-                    <h3 class="titulo-secundario">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA<br />AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE TEJA, <span class="texto-azul">APORTICADA</span></h3>
+                    <h3 class="titulo-secundario">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA<br />AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE TEJA, <span class="texto-azul">APORTICADA</span></h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
@@ -241,13 +238,13 @@
                   Dichas <span class="texto-azul">varillas</span> son fijadas al tablero de rasillones existente, mediante <span
                     class="texto-azul">taco químico</span>, después de perforar la <span class="texto-azul">limatesa</span> de
                   la teja y el mortero de compresión que se encuentra debajo; todo ello según los procedimientos de instalación
-                  establecidos en la ficha Técnica del producto, guardando las distancias previstas entre las perforaciones y
+                  establecidos en la ficha técnica del producto, guardando las distancias previstas entre las perforaciones y
                   respetando los pares de apriete de la <span class="texto-azul">tornillería</span>.
                 </p>
 
                 <p class="parrafo-estructura">
                   La <span class="texto-azul">perfilería</span> de aluminio será unida <span
-                    class="texto-azul">soldadamente</span> a los módulos fotovoltaicos mediante elementos de presión y fijación
+                    class="texto-azul">solidariamente</span> a los módulos fotovoltaicos mediante elementos de presión y fijación
                   con <span class="texto-azul">tornillo</span> a las distancias y pares de apriete marcados por el fabricante.
                 </p>
 
@@ -260,7 +257,7 @@
                 </p>
 
                 <p class="parrafo-estructura">
-                  La mencionada Memoria Técnica de Diseño ha sido redactada por mí como tÃ©cnico competente.
+                  La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
                 </p>
 
                 <p class="parrafo-fecha">
@@ -276,7 +273,7 @@
                     <strong>Eduardo Rivera Cabezas</strong><br/>
                     <strong>670308856</strong><br/>
                     <strong>erivera@solay.es</strong><br/>
-                    <strong>Calle El Peñón 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
                 </p>
             </div>
 
@@ -289,5 +286,3 @@
     </div>
 </body>
 </html>
-
-

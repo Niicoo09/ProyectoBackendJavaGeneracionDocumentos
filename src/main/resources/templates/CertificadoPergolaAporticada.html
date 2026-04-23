@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
@@ -169,12 +169,12 @@
 </head>
 <body>
     <div class="contenedor-pdf">
-        <!-- PÃGINA 1 -->
+        <!-- PÁGINA 1 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
@@ -187,7 +187,7 @@
                 <h2 class="titulo-declara">CERTIFICO</h2>
 
                 <p class="parrafo-certifico">
-                    que el estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'Pérgola'}">Pérgola</span> de la vivienda sita en <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-editable" th:text="${form['numero']}">5</span> â€“ cÃ³digo postal <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41000</span>, localidad de <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de <span class="texto-editable" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con Referencia Catastral <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                    que el estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pérgola'}">pérgola</span> de la vivienda sita en <span class="texto-editable" th:text="${form['emplazamientoCalle']}">Calle</span>, <span class="texto-editable" th:text="${form['numero']}">5</span> – código postal <span class="texto-editable" th:text="${form['codigoPostalEmplazamiento']}">41000</span>, localidad de <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>, provincia de <span class="texto-editable" th:text="${form['provinciaEmplazamiento']}">Provincia</span>, con Referencia Catastral <span class="texto-editable" th:text="${form['referenciaCatastral'] ?: form['cups']}">Referencia</span>, es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
                 </p>
 
                 <p class="parrafo-datos">
@@ -197,17 +197,17 @@
                 <h3 class="titulo-seccion">Estructura Primaria</h3>
 
                 <p class="parrafo-estructura">
-                    Los paneles fotovoltaicos se situarÃ¡n sobre una estructura primaria consistente en <span class="texto-editable">EN UNA PÉRGOLA DE ACERO GALVANIZADO</span>. Esta estructura tendrÃ¡ una altura máxima de <span class="texto-editable">1,8 m</span>, una orientación de <span class="texto-editable" th:text="${form['e2_orientacionGenerador']}">SUR</span> y una inclinación de <span class="texto-editable" th:text="${form['e2_inclinacionGenerador'] + 'º'}">20º</span>, posicionándose los paneles formando un plano inclinado.
+                    Los paneles fotovoltaicos se situarán sobre una estructura primaria consistente en <span class="texto-editable">EN UNA PÉRGOLA DE ACERO GALVANIZADO</span>. Esta estructura tendrá una altura máxima de <span class="texto-editable">1,8 m</span>, una orientación de <span class="texto-editable" th:text="${form['e2_orientacionGenerador']}">SUR</span> y una inclinación de <span class="texto-editable" th:text="${form['e2_inclinacionGenerador'] + 'º'}">20º</span>, posicionándose los paneles formando un plano inclinado.
                 </p>
 
                 <p class="parrafo-estructura">
-                    La estructura primaria o Pérgola de acero galvanizado, servirÃ¡ de base para la estructura secundaria, consistente en una perfilería de aluminio ligero de la empresa SUNFER ESTRUCTURAS, S.L., especializada en soportes para generadores fotovoltaicos con Certificado de Garantía y Marcado CE de sus productos (se adjuntan en la Memoria Técnica de Diseño, así como la Ficha Técnica y Plano de Montaje).
+                    La estructura primaria o pérgola de acero galvanizado, servirá de base para la estructura secundaria, consistente en una perfilería de aluminio ligero de la empresa SUNFER ESTRUCTURAS, S.L., especializada en soportes para generadores fotovoltaicos con Certificado de Garantía y Marcado CE de sus productos (se adjuntan en la Memoria Técnica de Diseño, así como la Ficha Técnica y Plano de Montaje).
                 </p>
 
                 <h3 class="titulo-seccion">Estructura Secundaria</h3>
 
                 <p class="parrafo-estructura">
-                    La perfilería secundaria de aluminio estará finalmente unida solidariamente a los módulos fotovoltaicos mediante elementos de presiÃ³n y fijación con tornillo a las distancias y pares de apriete marcados por el fabricante.
+                    La perfilería secundaria de aluminio estará finalmente unida solidariamente a los módulos fotovoltaicos mediante elementos de presión y fijación con tornillo a las distancias y pares de apriete marcados por el fabricante.
                 </p>
             </div>
 
@@ -218,21 +218,21 @@
             </div>
         </div>
 
-        <!-- PÃGINA 2 -->
+        <!-- PÁGINA 2 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
-                <h3 class="titulo-seccion">fijación y lastres</h3>
+                <h3 class="titulo-seccion">Fijación y lastres</h3>
 
                 <p class="parrafo-estructura">
-                    Para la sujeción de la Pérgola, Ã©sta será fijada sobre unos lastres de 22 kg de peso cada uno, mediante varillas roscadas (según procedimiento del fabricante), sólidamente fijadas a la perfilería secundaria de aluminio mediante tornillería de acero inoxidable; todo ello según los procedimientos de instalación establecidos en la ficha Técnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la tornillería.
+                    Para la sujeción de la pérgola, ésta será fijada sobre unos lastres de 22 kg de peso cada uno, mediante varillas roscadas (según procedimiento del fabricante), sólidamente fijadas a la perfilería secundaria de aluminio mediante tornillería de acero inoxidable; todo ello según los procedimientos de instalación establecidos en la ficha técnica del producto, guardando las distancias previstas entre las perforaciones y respetando los pares de apriete de la tornillería.
                 </p>
 
                 <p class="parrafo-estructura">
@@ -240,15 +240,15 @@
                 </p>
 
                 <p class="parrafo-estructura">
-                    Se ha comprobado que la actuación a realizar no desvirtúa el carácter arquitectónico de la edificación, garantizando su adecuada integraciÃ³n en la estética del edificio tanto de los paneles y la estructura metÃ¡lica como de cualquier tubería o canalización perteneciente a dicha instalación, evitando expresamente el trazado visible por las fachadas.
+                    Se ha comprobado que la actuación a realizar no desvirtúa el carácter arquitectónico de la edificación, garantizando su adecuada integración en la estética del edificio tanto de los paneles y la estructura metálica como de cualquier tubería o canalización perteneciente a dicha instalación, evitando expresamente el trazado visible por las fachadas.
                 </p>
 
                 <p class="parrafo-estructura">
-                    Los paneles fotovoltaicos cumplen la normativa UNE-EN 61215 para módulos de silicio monocristalino, además al ir conectada a la red cuenta con los subsistemas de control y regulación, desconexiÃ³n e inversión, seguridad e inyecciÃ³n a la red eléctrica destinataria de la electricidad generada. En cualquier caso, certifico que la actuación cumplirá las Ordenanzas reguladoras de las instalaciones de captación solar en <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>.
+                    Los paneles fotovoltaicos cumplen la normativa UNE-EN 61215 para módulos de silicio monocristalino, además al ir conectada a la red cuenta con los subsistemas de control y regulación, desconexión e inversión, seguridad e inyección a la red eléctrica destinataria de la electricidad generada. En cualquier caso, certifico que la actuación cumplirá las Ordenanzas reguladoras de las instalaciones de captación solar en <span class="texto-editable" th:text="${form['localidadEmplazamiento']}">Localidad</span>.
                 </p>
 
                 <p class="parrafo-estructura">
-                    El estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'Pérgola'}">Pérgola</span> de la edificación es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
+                    El estado de la <span class="texto-editable" th:text="${form['cubiertaTipo'] ?: 'pérgola'}">pérgola</span> de la edificación es el adecuado para soportar de forma sólida y segura el generador fotovoltaico para <span class="texto-azul">Autoconsumo</span> que se tiene previsto instalar, con ausencia de afección estructural, a la vista de la inspección ocular realizada <span class="texto-azul">in situ</span>, de la revisión del proyecto constructivo de la misma, y de la disposición sobre la cubierta de los módulos fotovoltaicos.
                 </p>
             </div>
 
@@ -259,19 +259,19 @@
             </div>
         </div>
 
-        <!-- PÃGINA 3 -->
+        <!-- PÁGINA 3 -->
         <div class="contenedor-principal">
             <div class="encabezado">
                 <div class="encabezado-contenido">
                     <h1 class="titulo-principal">CERTIFICADO DE SOLIDEZ Y SEGURIDAD DE LA CUBIERTA</h1>
-                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÃ“N SOBRE PÉRGOLA</h3>
+                    <h3 class="titulo-secundario">AUTOCONSUMO FOTOVOLTAICO<br />INSTALACIÓN SOBRE PÉRGOLA</h3>
                 </div>
                 <img th:src="${logoBase64}" alt="Logo Solay" class="logo" />
             </div>
 
             <div class="contenido-principal">
                 <p class="parrafo-estructura">
-                    La mencionada Memoria Técnica de Diseño ha sido redactada por mí como tÃ©cnico competente.
+                    La mencionada Memoria Técnica de Diseño ha sido redactada por mí como técnico competente.
                 </p>
                 <!-- Fecha -->
                 <p class="parrafo-fecha">
@@ -288,7 +288,7 @@
                     <strong>Eduardo Rivera Cabezas</strong><br>
                     <strong>670308856</strong><br>
                     <strong>erivera@solay.es</strong><br>
-                    <strong>Calle El Peñón 5 â€“ 41940 â€“ Tomares â€“ Sevilla</strong>
+                    <strong>Calle El Peñón 5 – 41940 – Tomares – Sevilla</strong>
                 </p>
             </div>
 
@@ -301,5 +301,3 @@
     </div>
 </body>
 </html>
-
-
