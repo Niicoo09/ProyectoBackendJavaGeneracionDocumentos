@@ -39,7 +39,7 @@ public class Justificaciones50Controller {
     @GetMapping("/pago-anticipado-50-l3/{id}")
     public ResponseEntity<byte[]> generatePagoAnticipado50L3(@PathVariable UUID id) {
         Map<String, String> extraImages = new HashMap<>();
-        String basePath = "static/images/justificaciones/justificaciones_50/pago-anticipado-50-l3/";
+        String basePath = "/static/images/justificaciones/justificaciones50/pago-anticipado-50-l3/";
 
         extraImages.put("fondoStyle1", "background-image: url(data:image/jpeg;base64," +
                 jsonUtils.getResourceAsBase64(basePath + "p1.jpg") + ");");
@@ -58,7 +58,7 @@ public class Justificaciones50Controller {
     @GetMapping("/pago-restante-50-l3/{id}")
     public ResponseEntity<byte[]> generatePagoRestante50L3(@PathVariable UUID id) {
         Map<String, String> extraImages = new HashMap<>();
-        String basePath = "static/images/justificaciones/justificaciones_50/pago-restante-50-l3/";
+        String basePath = "/static/images/justificaciones/justificaciones50/pago-restante-50-l3/";
 
         extraImages.put("fondoStyle1", "background-image: url(data:image/jpeg;base64," +
                 jsonUtils.getResourceAsBase64(basePath + "p1.jpg") + ");");
@@ -75,7 +75,7 @@ public class Justificaciones50Controller {
     @GetMapping("/pago-anticipado-100-l4/{id}")
     public ResponseEntity<byte[]> generatePagoAnticipado100L4(@PathVariable UUID id) {
         Map<String, String> extraImages = new HashMap<>();
-        String basePath = "static/images/justificaciones/justificaciones_50/pago-anticipado-100-l4/";
+        String basePath = "/static/images/justificaciones/justificaciones50/pago-anticipado-100-l4/";
 
         extraImages.put("fondoStyle1", "background-image: url(data:image/jpeg;base64," +
                 jsonUtils.getResourceAsBase64(basePath + "p1.jpg") + ");");
@@ -128,10 +128,10 @@ public class Justificaciones50Controller {
         data.put("form", enrichedFormData);
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
 
-        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logo-solay.png"));
         // Aquí pasamos la firma del técnico de Solay como 'firmaSolay' para no
         // confundirla con la del cliente
-        data.put("firmaSolay", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        data.put("firmaSolay", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/firma-solay.png"));
 
         if (extraImages != null) {
             data.putAll(extraImages);
