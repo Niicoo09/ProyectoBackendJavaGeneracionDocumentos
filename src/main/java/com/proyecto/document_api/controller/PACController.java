@@ -38,8 +38,8 @@ public class PACController {
     public ResponseEntity<byte[]> generateDeclaracionPropietario(@PathVariable UUID id) {
         return processPacResponse(id, "pac/DeclaracionPropietario", "Declaracion_Propietario", "declaracion-propietario", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/pac/Modelodeclaracionpropietario20180515_pages-to-jpg-0001.jpg");
-            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            String base64 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_declaracion.jpg");
+            extraImages.put("fondoStyle", "background-image: url('data:image/jpeg;base64," + base64 + "');");
             return extraImages;
         });
     }
@@ -49,10 +49,10 @@ public class PACController {
     public ResponseEntity<byte[]> generateAutorizacionFacturacion(@PathVariable UUID id) {
         return processPacResponse(id, "pac/AutorizacionFacturacion", "Autorizacion_Facturacion", "autorizacion-facturacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64Fondo1 = jsonUtils.getResourceAsBase64("static/images/pac/Autorizacion_representante_receptor_factura_es_v2_page-0001.jpg");
-            String base64Fondo2 = jsonUtils.getResourceAsBase64("static/images/pac/Autorizacion_representante_receptor_factura_es_v2_page-0002.jpg");
-            extraImages.put("fondoStyle1", "background-image: url(data:image/jpeg;base64," + base64Fondo1 + ");");
-            extraImages.put("fondoStyle2", "background-image: url(data:image/jpeg;base64," + base64Fondo2 + ");");
+            String base64Fondo1 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_facturacion_1.jpg");
+            String base64Fondo2 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_facturacion_2.jpg");
+            extraImages.put("fondoStyle1", "background-image: url('data:image/jpeg;base64," + base64Fondo1 + "');");
+            extraImages.put("fondoStyle2", "background-image: url('data:image/jpeg;base64," + base64Fondo2 + "');");
             return extraImages;
         });
     }
