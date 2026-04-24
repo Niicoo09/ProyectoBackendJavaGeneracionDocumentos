@@ -323,7 +323,8 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "planta", "planta");
         applyMapping(enriched, form, "puerta", "puerta");
         
-        applyMapping(enriched, form, "correoElectronicoEmplazamiento", "email");
+        applyEmailMapping(enriched, form, "correoElectronico");
+        applyEmailMapping(enriched, form, "correoElectronicoEmplazamiento"); // Por compatibilidad con PAC
         applyMapping(enriched, form, "telefono", "telefono");
         applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
         applyMapping(enriched, form, "tipoInstalacion", "tipoInstalacion");
@@ -380,8 +381,7 @@ public class DocumentConfigService {
         applyMappingWithFallback(enriched, form, "telefono", "telefonos", "telefonos1", "telefono");
 
         // Correo con fallback
-        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico",
-                "correoElectronicoEmplazamiento", "email");
+        applyEmailMapping(enriched, form, "correoElectronico");
 
         // Representante
         applyMapping(enriched, form, "apellidosNombreRepresentante", "representante");
@@ -643,7 +643,7 @@ public class DocumentConfigService {
         
         // Contacto y Email con refuerzo máximo
         applyMappingWithFallback(enriched, form, "telefonoMovil", "telefono", "telefonos", "telefono_movil", "movil", "telefonoRepresentante", "telefono_contacto");
-        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "email", "emailEmplazamiento", "email_emplazamiento", "correo", "emailRepresentante", "mail", "e_mail", "e-mail", "email_contacto", "emailInstalacion");
+        applyEmailMapping(enriched, form, "correoElectronico");
 
         applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "mes", "mesAceptacion");
@@ -664,7 +664,7 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "telefono", "telefono");
-        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "correoElectronicoEmplazamiento", "email", "emailEmplazamiento", "email_emplazamiento", "correo", "emailRepresentante", "mail", "e_mail", "e-mail", "email_contacto", "emailInstalacion");
+        applyEmailMapping(enriched, form, "correoElectronico");
         
         // Emplazamiento
         applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
@@ -1062,6 +1062,18 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
+        applyEmailMapping(enriched, form, "correoElectronico");
+    }
+
+    /**
+     * Mapeo de email ultra-robusto con todos los fallbacks detectados en la BD.
+     */
+    private void applyEmailMapping(Map<String, Object> enriched, Map<String, Object> form, String targetKey) {
+        applyMappingWithFallback(enriched, form, targetKey, 
+            "correoElectronico", "email", "emailEmplazamiento", "email_emplazamiento", 
+            "correoElectronicoEmplazamiento", "email_titular", "e_mail", "e-mail", 
+            "mail", "correo", "email_contacto", "emailInstalacion", "emailRepresentante"
+        );
     }
 
     // =========================================================================

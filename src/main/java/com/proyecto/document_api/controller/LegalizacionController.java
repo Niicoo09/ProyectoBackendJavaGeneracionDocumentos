@@ -84,7 +84,7 @@ public class LegalizacionController {
 
     @GetMapping("/autorizacion-representacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionRepresentacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "Autorizacion_Representacion", "autorizacion-representacion", formData -> {
+        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "autorizacion_representacion", "autorizacion-representacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/administrativos/autorizacion-representacion.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -96,7 +96,7 @@ public class LegalizacionController {
     @Operation(summary = "Anexo III - Comunicación oficial")
     @GetMapping({"/anexo-iii/{id}", "/autorizacion-comunicacion/{id}"})
     public ResponseEntity<byte[]> generateAnexoIii(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AnexoIii", "Anexo_III", "anexo-iii", formData -> {
+        return processDocumentResponse(id, "administrativos/AnexoIii", "anexo_iii", "anexo-iii", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             for (int i = 1; i <= 3; i++) {
                 String b = jsonUtils.getResourceAsBase64("static/images/administrativos/anexo-iii-" + i + ".png");

@@ -84,7 +84,7 @@ public class DocumentController {
     @Operation(summary = "Autorización de Representación")
     @GetMapping("/autorizacion-representacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionRepresentacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "Autorizacion_Representacion",
+        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "autorizacion_representacion",
                 "autorizacion-representacion", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     String base64 = jsonUtils

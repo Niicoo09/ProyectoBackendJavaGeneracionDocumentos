@@ -2,198 +2,200 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>Anexo III - Autorización Comunicación</title>
-    <style>
-        @page {
-            size: A4;
-            margin: 0;
-        }
+      <meta charset="UTF-8" />
+      <title>Anexo III - Autorización Comunicación</title>
+      <style>
+            @page {
+                  size: A4;
+                  margin: 0;
+            }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+            }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: white;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
+            body {
+                  margin: 0;
+                  padding: 0;
+                  background: white;
+                  -webkit-print-color-adjust: exact;
+                  print-color-adjust: exact;
+            }
 
-        /* Cada artículo = una página A4 con imagen de fondo oficial */
-        .pagina-documento {
-            width: 210mm;
-            height: 297mm;
-            position: relative;
-            background-color: #fff;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: 100% 100%;
-            font-family: Arial, sans-serif;
-            font-size: 9pt;
-            color: #000;
-            page-break-after: always;
-        }
+            /* Cada artículo = una página A4 con imagen de fondo oficial */
+            .pagina-documento {
+                  width: 210mm;
+                  height: 297mm;
+                  position: relative;
+                  background-color: #fff;
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                  background-size: 100% 100%;
+                  font-family: Arial, sans-serif;
+                  font-size: 9pt;
+                  color: #000;
+                  page-break-after: always;
+            }
 
-        .pagina-documento:last-child {
-            page-break-after: auto;
-        }
+            .pagina-documento:last-child {
+                  page-break-after: auto;
+            }
 
-        /* Campo de texto superpuesto */
-        .overlay-field {
-            position: absolute;
-            display: inline-block;
-            white-space: nowrap;
-            overflow: visible;
-            padding: 0 0.5mm;
-            direction: ltr;
-            text-align: left;
-            color: #000;
-            font-size: 9pt;
-        }
+            /* Campo de texto superpuesto */
+            .overlay-field {
+                  position: absolute;
+                  display: inline-block;
+                  white-space: nowrap;
+                  overflow: visible;
+                  padding: 0 0.5mm;
+                  direction: ltr;
+                  text-align: left;
+                  color: #000;
+                  font-size: 9pt;
+            }
 
-        /* Marcador X para checkboxes */
-        .overlay-marker {
-            position: absolute;
-            font-size: 12pt;
-            font-weight: bold;
-            color: #000;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+            /* Marcador X para checkboxes */
+            .overlay-marker {
+                  position: absolute;
+                  font-size: 12pt;
+                  font-weight: bold;
+                  color: #000;
+                  font-family: Arial, sans-serif;
+            }
+      </style>
 </head>
 
 <body>
 
-    <!-- ===================== PÁGINA 1 ===================== -->
-    <article class="pagina-documento" th:style="${fondoStyle1} + ' background-color: white;'">
+      <!-- ===================== PÁGINA 1 ===================== -->
+      <article class="pagina-documento" th:style="${fondoStyle1} + ' background-color: white;'">
 
-        <!-- SECCIÓN 1: DATOS IDENTIFICATIVOS DEL SOLICITANTE -->
-        <span class="overlay-field" style="left:20mm; top:102mm;"
-              th:text="${form['apellidosNombre'] ?: ''}"></span>
+            <!-- SECCIÓN 1: DATOS IDENTIFICATIVOS DEL SOLICITANTE -->
+            <span class="overlay-field" style="left:20mm; top:102mm;" th:text="${form['apellidosNombre'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:175mm; top:102mm;"
-              th:text="${form['nifCif'] ?: ''}"></span>
+            <span class="overlay-field" style="left:175mm; top:102mm;" th:text="${form['nifCif'] ?: ''}"></span>
 
-        <!-- Bloque Representante (solo si existe nombreRepresentante) -->
-        <th:block th:if="${form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty()}">
-            <span class="overlay-field" style="left:20mm; top:111mm;"
-                  th:text="${form['nombreRepresentante']}"></span>
+            <!-- Bloque Representante (solo si existe nombreRepresentante) -->
+            <th:block th:if="${form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty()}">
+                  <span class="overlay-field" style="left:20mm; top:111mm;"
+                        th:text="${form['nombreRepresentante']}"></span>
 
-            <span class="overlay-field" style="left:155mm; top:111mm;"
-                  th:text="${form['dniRepresentante']}"></span>
+                  <span class="overlay-field" style="left:155mm; top:111mm;"
+                        th:text="${form['dniRepresentante']}"></span>
 
-            <span class="overlay-field" style="left:20mm; top:120mm;"
-                  th:text="${form['calidad']}"></span>
-        </th:block>
+                  <span class="overlay-field" style="left:20mm; top:120mm;" th:text="${form['calidad']}"></span>
+            </th:block>
 
-        <!-- SECCIÓN 2: LUGAR Y MEDIO DE NOTIFICACIÓN -->
-        <span class="overlay-field" style="left:27mm; top:153mm;" th:text="${form['tipoVia'] ?: ''}"></span>
-        <span class="overlay-field" style="left:46mm; top:153mm;" th:text="${form['nombreVia'] ?: ''}"></span>
-        <span class="overlay-field" style="left:27mm; top:162mm;" th:text="${form['numero'] ?: ''}"></span>
-        <span class="overlay-field" style="left:48mm; top:162mm;" th:text="${form['letra'] ?: ''}"></span>
-        <span class="overlay-field" style="left:70mm; top:162mm;" th:text="${form['km'] ?: ''}"></span>
-        <span class="overlay-field" style="left:91mm; top:162mm;" th:text="${form['bloque'] ?: ''}"></span>
-        <span class="overlay-field" style="left:112mm; top:162mm;" th:text="${form['portal'] ?: ''}"></span>
-        <span class="overlay-field" style="left:133mm; top:162mm;" th:text="${form['escalera'] ?: ''}"></span>
-        <span class="overlay-field" style="left:154mm; top:162mm;" th:text="${form['planta'] ?: ''}"></span>
-        <span class="overlay-field" style="left:176mm; top:162mm;" th:text="${form['puerta'] ?: ''}"></span>
+            <!-- SECCIÓN 2: LUGAR Y MEDIO DE NOTIFICACIÓN -->
+            <span class="overlay-field" style="left:27mm; top:153mm;" th:text="${form['tipoVia'] ?: ''}"></span>
+            <span class="overlay-field" style="left:46mm; top:153mm;" th:text="${form['nombreVia'] ?: ''}"></span>
+            <span class="overlay-field" style="left:27mm; top:162mm;" th:text="${form['numero'] ?: ''}"></span>
+            <span class="overlay-field" style="left:48mm; top:162mm;" th:text="${form['letra'] ?: ''}"></span>
+            <span class="overlay-field" style="left:70mm; top:162mm;" th:text="${form['km'] ?: ''}"></span>
+            <span class="overlay-field" style="left:91mm; top:162mm;" th:text="${form['bloque'] ?: ''}"></span>
+            <span class="overlay-field" style="left:112mm; top:162mm;" th:text="${form['portal'] ?: ''}"></span>
+            <span class="overlay-field" style="left:133mm; top:162mm;" th:text="${form['escalera'] ?: ''}"></span>
+            <span class="overlay-field" style="left:154mm; top:162mm;" th:text="${form['planta'] ?: ''}"></span>
+            <span class="overlay-field" style="left:176mm; top:162mm;" th:text="${form['puerta'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:27mm; top:170mm;" th:text="${form['entidad'] ?: ''}"></span>
-        <span class="overlay-field" style="left:73mm; top:170mm;" th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
-        <span class="overlay-field" style="left:123mm; top:170mm;" th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
-        <span class="overlay-field" style="left:154mm; top:170mm;" th:text="${form['pais'] ?: 'ESPAÑA'}"></span>
-        <span class="overlay-field" style="left:175.5mm; top:169.5mm; font-size:14pt; letter-spacing:3.4pt;" 
-              th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:27mm; top:170mm;" th:text="${form['entidad'] ?: ''}"></span>
+            <span class="overlay-field" style="left:73mm; top:170mm;"
+                  th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:123mm; top:170mm;"
+                  th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:154mm; top:170mm;" th:text="${form['pais'] ?: 'ESPAÑA'}"></span>
+            <span class="overlay-field" style="left:175.5mm; top:169.5mm; font-size:14pt; letter-spacing:3.4pt;"
+                  th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:53mm; top:179mm;" th:text="${form['telefonoMovil'] ?: ''}"></span>
-        <span class="overlay-field" style="left:80mm; top:179mm;" th:text="${form['correoElectronico'] ?: ''}"></span>
+            <span class="overlay-field" style="left:53mm; top:179mm;" th:text="${form['telefonoMovil'] ?: ''}"></span>
+            <span class="overlay-field" style="left:80mm; top:179mm;"
+                  th:text="${form['correoElectronico'] ?: ''}"></span>
 
-        <!-- Campos inferiores de la Sección 2 (sobre puntos suspensivos) -->
-        <span class="overlay-field" style="left:45mm; top:201mm; font-size:8.5pt;" th:text="${form['correoElectronico'] ?: ''}"></span>
-        <span class="overlay-field" style="left:172mm; top:201mm; font-size:8.5pt;" th:text="${form['telefonoMovil'] ?: ''}"></span>
+            <!-- Campos inferiores de la Sección 2 (sobre puntos suspensivos) -->
+            <span class="overlay-field" style="left:60mm; top:201mm; font-size:8.5pt;"
+                  th:text="${form['correoElectronico'] ?: ''}"></span>
+            <span class="overlay-field" style="left:172mm; top:201mm; font-size:8.5pt;"
+                  th:text="${form['telefonoMovil'] ?: ''}"></span>
 
-        <!-- SECCIÓN 3: DATOS DEL ESTABLECIMIENTO E INSTALACIONES -->
-        <span class="overlay-field" style="left:20mm; top:228mm;"
-              th:text="${form['denominacionEstablecimiento'] ?: 'Vivienda'}"></span>
+            <!-- SECCIÓN 3: DATOS DEL ESTABLECIMIENTO E INSTALACIONES -->
+            <span class="overlay-field" style="left:20mm; top:228mm;"
+                  th:text="${form['denominacionEstablecimiento'] ?: 'Vivienda'}"></span>
 
-        <span class="overlay-field" style="left:20mm; top:237mm;"
-              th:text="${form['domicilioEstablecimiento'] ?: (form['emplazamientoCalle'] + ' ' + (form['numero'] ?: ''))}"></span>
+            <span class="overlay-field" style="left:20mm; top:237mm;"
+                  th:text="${form['domicilioEstablecimiento'] ?: (form['emplazamientoCalle'] + ' ' + (form['numero'] ?: ''))}"></span>
 
-        <span class="overlay-field" style="left:32mm; top:246mm;"
-              th:text="${form['localidadEstablecimiento'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:32mm; top:246mm;"
+                  th:text="${form['localidadEstablecimiento'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:111mm; top:246mm;"
-              th:text="${form['provinciaEstablecimiento'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:111mm; top:246mm;"
+                  th:text="${form['provinciaEstablecimiento'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:177.5mm; top:245.5mm; font-size:11pt; letter-spacing:4.4pt;"
-              th:text="${form['codigoPostalEstablecimiento'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
+            <span class="overlay-field" style="left:177.5mm; top:245.5mm; font-size:11pt; letter-spacing:4.4pt;"
+                  th:text="${form['codigoPostalEstablecimiento'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
 
-        <!-- Tipo de instalación -->
-        <span class="overlay-field" style="left:47mm; top:255mm;"
-              th:text="${form['instalacion1'] ?: 'Instalación fotovoltaica de autoconsumo'}"></span>
-    </article>
+            <!-- Tipo de instalación -->
+            <span class="overlay-field" style="left:47mm; top:255mm;"
+                  th:text="${form['instalacion1'] ?: 'Instalación fotovoltaica de autoconsumo'}"></span>
+      </article>
 
 
-    <!-- ===================== PÃGINA 2 ===================== -->
-    <article class="pagina-documento" th:style="${fondoStyle2} + ' background-color: white;'">
+      <!-- ===================== PÃGINA 2 ===================== -->
+      <article class="pagina-documento" th:style="${fondoStyle2} + ' background-color: white;'">
 
-        <!-- SECCIÃ“N 4: FIGURA DEL TÃ‰CNICO / INSTALADOR -->
-        <!-- TÃ©cnico Competente -->
-        <span class="overlay-marker"
-              th:if="${form['figuraTecnicoCompetente'] == true or form['figuraTecnicoCompetente'] == 'true'}"
-              style="left:53.5mm; top:50.5mm;">X</span>
+            <!-- SECCIÃ“N 4: FIGURA DEL TÃ‰CNICO / INSTALADOR -->
+            <!-- TÃ©cnico Competente -->
+            <span class="overlay-marker"
+                  th:if="${form['figuraTecnicoCompetente'] == true or form['figuraTecnicoCompetente'] == 'true'}"
+                  style="left:53.5mm; top:50.5mm;">X</span>
 
-        <!-- Instalador Habilitado -->
-        <span class="overlay-marker"
-              th:if="${form['figuraInstaladorHabilitado'] == true or form['figuraInstaladorHabilitado'] == 'true'}"
-              style="left:53.5mm; top:56.5mm;">X</span>
+            <!-- Instalador Habilitado -->
+            <span class="overlay-marker"
+                  th:if="${form['figuraInstaladorHabilitado'] == true or form['figuraInstaladorHabilitado'] == 'true'}"
+                  style="left:53.5mm; top:56.5mm;">X</span>
 
-        <!-- Responsable TÃ©cnico -->
-        <span class="overlay-marker"
-              th:if="${form['figuraResponsableTecnico'] == true or form['figuraResponsableTecnico'] == 'true'}"
-              style="left:53.5mm; top:62.5mm;">X</span>
+            <!-- Responsable TÃ©cnico -->
+            <span class="overlay-marker"
+                  th:if="${form['figuraResponsableTecnico'] == true or form['figuraResponsableTecnico'] == 'true'}"
+                  style="left:53.5mm; top:62.5mm;">X</span>
 
-        <!-- Apellidos y Nombre del TÃ©cnico -->
-        <span class="overlay-field" style="left:20mm; top:73mm;"
-              th:text="${form['apellidosNombrePersona'] ?: 'Eduardo Rivera Cabezas'}"></span>
+            <!-- Apellidos y Nombre del TÃ©cnico -->
+            <span class="overlay-field" style="left:20mm; top:73mm;"
+                  th:text="${form['apellidosNombrePersona'] ?: 'Eduardo Rivera Cabezas'}"></span>
 
-        <span class="overlay-field" style="left:160mm; top:73mm;"
-              th:text="${form['dniNiePersona'] ?: '28818007L'}"></span>
+            <span class="overlay-field" style="left:160mm; top:73mm;"
+                  th:text="${form['dniNiePersona'] ?: '28818007L'}"></span>
 
-        <!-- SECCIÓN 5: LUGAR, FECHA Y FIRMA -->
-        <span class="overlay-field" style="left:58mm; top:100mm;"
-              th:text="${form['lugarFirma'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
+            <!-- SECCIÓN 5: LUGAR, FECHA Y FIRMA -->
+            <span class="overlay-field" style="left:58mm; top:100mm;"
+                  th:text="${form['lugarFirma'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:105mm; top:100mm; width:15mm; text-align:center;"
-              th:text="${form['diaFirma'] ?: form['dia'] ?: ''}"></span>
+            <span class="overlay-field" style="left:105mm; top:100mm; width:15mm; text-align:center;"
+                  th:text="${form['diaFirma'] ?: form['dia'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:123mm; top:100mm; width:20mm; text-align:center;"
-              th:text="${form['mesFirma'] ?: form['mes'] ?: ''}"></span>
+            <span class="overlay-field" style="left:123mm; top:100mm; width:20mm; text-align:center;"
+                  th:text="${form['mesFirma'] ?: form['mes'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:146mm; top:100mm; width:20mm; text-align:center;"
-              th:text="${form['anioFirma'] ?: form['anio'] ?: ''}"></span>
+            <span class="overlay-field" style="left:146mm; top:100mm; width:20mm; text-align:center;"
+                  th:text="${form['anioFirma'] ?: form['anio'] ?: ''}"></span>
 
-        <!-- Firma imagen -->
-        <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}"
-             style="position:absolute; left:70mm; top:105mm; height:20mm; object-fit:contain;" alt="Firma" />
+            <!-- Firma imagen -->
+            <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}"
+                  style="position:absolute; left:70mm; top:105mm; height:20mm; object-fit:contain;" alt="Firma" />
 
-        <!-- Nombre firmante -->
-        <span class="overlay-field" style="left:73.3mm; top:125mm;"
-              th:text="${form['nombreFirma'] ?: 'Eduardo Rivera Cabezas'}"></span>
+            <!-- Nombre firmante -->
+            <span class="overlay-field" style="left:73.3mm; top:125mm;"
+                  th:text="${form['nombreFirma'] ?: 'Eduardo Rivera Cabezas'}"></span>
 
-        <!-- Provincia firma -->
-        <span class="overlay-field" style="left:65.3mm; top:141mm;"
-              th:text="${form['provinciaFirma'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
+            <!-- Provincia firma -->
+            <span class="overlay-field" style="left:65.3mm; top:141mm;"
+                  th:text="${form['provinciaFirma'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
 
-        <!-- Código directorio -->
-        <span class="overlay-field" style="left:106.8mm; top:145.5mm; font-size:11pt; letter-spacing:4.4pt;"
-              th:text="${form['codigoDirectorio'] ?: 'A01041434'}"></span>
-    </article>
+            <!-- Código directorio -->
+            <span class="overlay-field" style="left:106.8mm; top:145.5mm; font-size:11pt; letter-spacing:4.4pt;"
+                  th:text="${form['codigoDirectorio'] ?: 'A01041434'}"></span>
+      </article>
 </body>
 
 </html>
