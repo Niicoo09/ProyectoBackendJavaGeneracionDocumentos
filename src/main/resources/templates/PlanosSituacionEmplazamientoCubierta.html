@@ -317,7 +317,7 @@
                 <p class="texto-descriptivo">
                     <span th:text="${form['pse_tipo']}"></span>
                     <span> de </span>
-                    <span th:text="${form['pse_potencia'] + 'kW '}"></span>
+                    <span th:text="${(form['potenciaNominalInversores'] ?: form['e2_potenciaNominalInversores'] ?: form['pse_potencia']) + 'kW '}"></span>
                     <span th:text="${form['pse_descripcion']}"></span>
                 </p>
             </div>
@@ -351,7 +351,7 @@
                             </tr>
                             <tr>
                                 <td class="label">Potencia:</td>
-                                <td class="valor" th:text="${form['pse_potencia'] + ' kW'}"></td>
+                                <td class="valor" th:text="${(form['potenciaNominalInversores'] ?: form['e2_potenciaNominalInversores'] ?: form['pse_potencia']) + ' kW'}"></td>
                                 <td class="label">Tipo Instalación:</td>
                                 <td class="valor" th:text="${form['tipoInstalacion']}"></td>
                             </tr>

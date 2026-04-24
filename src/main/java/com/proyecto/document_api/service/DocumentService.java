@@ -12,6 +12,7 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.WaitUntilState;
 import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,21 +68,24 @@ public class DocumentService {
         // Abrimos un "Playwright", que es como un motor de navegador invisible (Headless)
         try (Playwright playwright = Playwright.create()) {
             
-            // Lanzamos un navegador Chromium (el mismo motor que Google Chrome)
+            // Lanzamos un navegador Chromium
             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
             
-            // Creamos una nueva página en el navegador
-            BrowserContext browserContext = browser.newContext();
+            // Creamos un contexto con el locale en español para asegurar formatos y caracteres
+            BrowserContext browserContext = browser.newContext(new Browser.NewContextOptions()
+                    .setLocale("es-ES"));
             Page page = browserContext.newPage();
             
             // PASO 4: Carga del contenido
-            // Inyectamos el HTML que generamos en el PASO 2 directamente en la página del navegador
-            page.setContent(htmlContent);
+            // Inyectamos el HTML especificando que la carga debe esperar a que el DOM esté listo
+            page.setContent(htmlContent, new Page.SetContentOptions()
+                    .setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
             
             // Generar el PDF
             byte[] pdfBytes = page.pdf(new Page.PdfOptions()
                     .setFormat("A4")
-                    .setPrintBackground(true));
+                    .setPrintBackground(true)
+                    .setDisplayHeaderFooter(false));
             
             browser.close();
             return pdfBytes;

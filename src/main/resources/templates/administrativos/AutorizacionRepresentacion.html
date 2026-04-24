@@ -208,8 +208,7 @@
                     con DNI/NIF <strong th:text="${form['dniAutorizante'] ?: form['nifCif'] ?: ''}">NIF</strong>,
                     y con domicilio en
                     <strong th:text="${form['domicilioAutorizante'] ?: (form['emplazamientoCalle'] + ' ' + (form['numero'] ?: ''))}">Domicilio</strong>,
-                    localidad <strong th:text="${form['localidad'] ?: form['localidadEmplazamiento'] ?: ''}">Localidad</strong>,
-                    provincia de <strong th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}">Provincia</strong>,
+                    <span th:text="${(form['localidad'] ?: form['localidadEmplazamiento'] ?: '') + ( (form['localidad'] ?: form['localidadEmplazamiento'] ?: '') == (form['provincia'] ?: form['provinciaEmplazamiento'] ?: '') ? '' : ', ' + (form['provincia'] ?: form['provinciaEmplazamiento'] ?: '') )}">Localidad, Provincia</span>,
                     actuando en nombre propio,
                 </p>
 
@@ -219,8 +218,8 @@
                     <strong th:text="${form['representante'] ?: 'Solay Ingenieros, S.L.'}">Representante</strong>,
                     con DNI/NIF <strong th:text="${form['dniRepresentante'] ?: 'B09848912'}">NIF Rep.</strong>,
                     y con domicilio en
-                    <strong th:text="${form['domicilioRepresentante'] ?: 'Calle Ebro, 35 – 41012, Sevilla, Sevilla'}">Domicilio Rep.</strong>,
-                    localidad Sevilla, provincia de Sevilla, ante el ayuntamiento
+                    <strong th:text="${form['domicilioRepresentante'] ?: 'Calle Ebro, 35 – 41012, Sevilla'}">Domicilio Rep.</strong>,
+                    ante el ayuntamiento
                     de <strong th:text="${form['organismo'] ?: form['localidadEmplazamiento'] ?: ''}">Localidad</strong>,
                     para realizar en mi nombre las gestiones de
                     <strong th:text="${form['gestiones'] ?: 'SOLICITUD DE LICENCIA DE OBRA MENOR CON DECLARACIÓN RESPONSABLE O AUTORIZACIÓN URBANÍSTICA'}">Gestiones</strong>.
