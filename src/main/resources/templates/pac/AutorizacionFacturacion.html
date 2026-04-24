@@ -92,7 +92,7 @@
             <span class="overlay-field" style="left:98mm; top:43mm;" th:text="${form['localidad'] ?: ''}"></span>
             <!-- Vía Pública -->
             <span class="overlay-field" style="left:38mm; top:49mm;"
-                th:text="${form['emplazamientoCalle'] ?: ''}"></span>
+                th:text="${form['direccionCompleta'] ?: ''}"></span>
 
             <!-- E-mail -->
             <span class="overlay-field" style="left:38mm; top:55.5mm;"
@@ -111,7 +111,7 @@
         <article class="pagina-documento" th:style="${fondoStyle2}">
             <!-- 3. UBICACIÓN DEL SUMINISTRO -->
             <span class="overlay-field" style="left:109mm; top:176mm;"
-                th:text="${form['emplazamientoCalle'] ?: ''}"></span>
+                th:text="${form['direccionCompleta'] ?: ''}"></span>
             <span class="overlay-field" style="left:52mm; top:189.5mm;"
                 th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
             <span class="overlay-field" style="left:150mm; top:189.5mm;"

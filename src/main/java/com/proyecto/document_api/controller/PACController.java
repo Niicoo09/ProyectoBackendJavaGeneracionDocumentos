@@ -36,7 +36,7 @@ public class PACController {
     @Operation(summary = "Generar Declaración del Propietario")
     @GetMapping("/declaracion-propietario/{id}")
     public ResponseEntity<byte[]> generateDeclaracionPropietario(@PathVariable UUID id) {
-        return processPacResponse(id, "pac/DeclaracionPropietario", "Declaracion_Propietario", "declaracion-propietario", formData -> {
+        return processPacResponse(id, "pac/DeclaracionPropietario", "declaracion_del_propietario", "declaracion-propietario", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             byte[] imgBytes = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_declaracion.jpg");
             System.out.println("[DEBUG-PAC] Tamaño imagen fondo_declaracion: " + imgBytes.length + " bytes");
@@ -49,7 +49,7 @@ public class PACController {
     @Operation(summary = "Generar Autorización de Facturación")
     @GetMapping("/autorizacion-facturacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionFacturacion(@PathVariable UUID id) {
-        return processPacResponse(id, "pac/AutorizacionFacturacion", "Autorizacion_Facturacion", "autorizacion-facturacion", formData -> {
+        return processPacResponse(id, "pac/AutorizacionFacturacion", "autorizacion_de_facturacion", "autorizacion-facturacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             byte[] img1 = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_facturacion_1.jpg");
             byte[] img2 = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_facturacion_2.jpg");

@@ -46,7 +46,7 @@
             justify-content: space-between;
             align-items: flex-start;
             padding: 18px 0;
-            border-bottom: 2px solid #0066cc;
+            border-bottom: 2px solid #000000;
             margin-bottom: 15px;
         }
 
@@ -94,7 +94,7 @@
             text-align: center;
             font-size: 17px;
             font-weight: bold;
-            color: #0066cc;
+            color: #000000;
             margin: 10px 0;
             padding: 8px 0;
             border-top: 1px solid #ccc;
@@ -136,7 +136,7 @@
         /* ========== PIE DE PÃGINA ========== */
         .pie-pagina {
             padding: 10px 0;
-            border-top: 1px solid #0066cc;
+            border-top: 1px solid #000000;
             margin-top: 20px;
             text-align: center;
             font-size: 12px;
@@ -214,7 +214,7 @@
                 <!-- FIRMA -->
                 <div class="firma-bloque">
                     <img th:src="${firmaBase64}" alt="Firma" class="imagen-firma" />
-                    <p class="etiqueta-firma">FIRMA DEL REPRESENTANTE</p>
+                    <p class="etiqueta-firma" th:text="${(form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty()) or (form['representante'] != null and !form['representante'].isEmpty()) ? 'FIRMA DEL REPRESENTANTE' : 'FIRMA DEL TITULAR'}">FIRMA DEL REPRESENTANTE</p>
                     <p class="texto-pie-fecha">
                         <strong>LUGAR Y FECHA:</strong>
                         <span th:text="${form['localidadEmplazamiento']}">Localidad</span>, a

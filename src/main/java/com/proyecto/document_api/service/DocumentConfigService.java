@@ -205,6 +205,12 @@ public class DocumentConfigService {
             case "cartel-l4":
                 applyCartelL4(enriched, formData);
                 break;
+            case "declaracion-propietario":
+                applyDeclaracionPropietario(enriched, formData);
+                break;
+            case "autorizacion-facturacion":
+                applyAutorizacionFacturacion(enriched, formData);
+                break;
 
             default:
                 applyCommonFieldMapping(enriched, formData);
@@ -256,9 +262,18 @@ public class DocumentConfigService {
 
         enriched.put("direccion", buildDireccionCompleta(form));
 
-        // Representante y Entidad (si existen)
-        applyMapping(enriched, form, "nombreRepresentante", "representante");
-        enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
+        // Datos del Representante (solo si existe)
+        String rep = getString(form, "representante");
+        if (rep != null && !rep.trim().isEmpty()) {
+            applyMapping(enriched, form, "nombreRepresentante", "representante");
+            enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
+            applyMapping(enriched, form, "calidad", "representanteCargo");
+            putIfAbsent(enriched, "calidad", "Representante de la sociedad");
+        } else {
+            enriched.put("nombreRepresentante", "");
+            enriched.put("dniRepresentante", "");
+            enriched.put("calidad", "");
+        }
 
         applyMapping(enriched, form, "nombreEntidadRepresentada", "razonSocial");
         enriched.put("nifEntidadRepresentada", cleanDni(getString(form, "nifCif")));
@@ -292,6 +307,36 @@ public class DocumentConfigService {
     private void applyCartelL4(Map<String, Object> enriched, Map<String, Object> form) {
         // Reutilizamos la lógica del L3 ya que los campos son idénticos
         applyCartelL3(enriched, form);
+    }
+
+    private void applyDeclaracionPropietario(Map<String, Object> enriched, Map<String, Object> form) {
+        applyCommonFieldMapping(enriched, form);
+        applyMapping(enriched, form, "apellidosNombre", "apellidosNombre");
+        enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
+        
+        // Dirección detallada
+        enriched.put("direccionCompleta", buildDireccionCompleta(form));
+        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        applyMapping(enriched, form, "numero", "numero");
+        applyMapping(enriched, form, "bloque", "bloque");
+        applyMapping(enriched, form, "escalera", "escalera");
+        applyMapping(enriched, form, "planta", "planta");
+        applyMapping(enriched, form, "puerta", "puerta");
+        
+        applyMapping(enriched, form, "correoElectronicoEmplazamiento", "email");
+        applyMapping(enriched, form, "telefono", "telefono");
+        applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
+        applyMapping(enriched, form, "tipoInstalacion", "tipoInstalacion");
+        applyMapping(enriched, form, "potencia_instalacion", "e2_potenciaNominalInversores");
+
+        // Fecha
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
+    }
+
+    private void applyAutorizacionFacturacion(Map<String, Object> enriched, Map<String, Object> form) {
+        applyDeclaracionPropietario(enriched, form); // Reutiliza la mayoría de los campos
     }
 
     private void applyDeclaracionCompromisoCorriente(Map<String, Object> enriched, Map<String, Object> form) {
@@ -541,6 +586,19 @@ public class DocumentConfigService {
 
         applyMapping(enriched, form, "expediente", "expedienteEco");
 
+        // Datos del Representante (solo si existe)
+        String rep = getString(form, "representante");
+        if (rep != null && !rep.trim().isEmpty()) {
+            applyMapping(enriched, form, "nombreRepresentante", "representante");
+            enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
+            applyMapping(enriched, form, "calidad", "representanteCargo");
+            putIfAbsent(enriched, "calidad", "Representante de la sociedad");
+        } else {
+            enriched.put("nombreRepresentante", "");
+            enriched.put("dniRepresentante", "");
+            enriched.put("calidad", "");
+        }
+
         // Sección 2: Lugar y medio de notificación (mapeo ultra-robusto)
         String rawCalle = getString(form, "emplazamientoCalle");
         if (rawCalle.isEmpty()) rawCalle = getString(form, "direccion");
@@ -583,13 +641,9 @@ public class DocumentConfigService {
         // Contacto (solo móvil)
         // El móvil suele venir en 'telefono' o 'telefonos' en tu base de datos
         
-        // El móvil suele venir en 'telefono' o 'telefonos' en tu base de datos
-        applyMappingWithFallback(enriched, form, "telefonoMovil", "telefono", "telefonos", "telefono_movil", "movil", "telefonoRepresentante");
-        
-        // Si el móvil sigue vacío, probamos con el fijo como último recurso (opcional, lo quito si prefieres)
-        // putIfAbsent(enriched, "telefonoMovil", enriched.get("telefonoFijo"));
-        
-        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "email", "emailEmplazamiento", "correo", "emailRepresentante", "mail");
+        // Contacto y Email con refuerzo máximo
+        applyMappingWithFallback(enriched, form, "telefonoMovil", "telefono", "telefonos", "telefono_movil", "movil", "telefonoRepresentante", "telefono_contacto");
+        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "email", "emailEmplazamiento", "email_emplazamiento", "correo", "emailRepresentante", "mail", "e_mail", "e-mail", "email_contacto", "emailInstalacion");
 
         applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "mes", "mesAceptacion");
@@ -610,7 +664,7 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "telefono", "telefono");
-        applyMapping(enriched, form, "correoElectronico", "email");
+        applyMappingWithFallback(enriched, form, "correoElectronico", "correoElectronico", "correoElectronicoEmplazamiento", "email", "emailEmplazamiento", "email_emplazamiento", "correo", "emailRepresentante", "mail", "e_mail", "e-mail", "email_contacto", "emailInstalacion");
         
         // Emplazamiento
         applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
@@ -624,7 +678,8 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
         applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaEmplazamiento");
 
-        // Datos Técnicos
+        // Datos Técnicos y Verificación
+        enriched.put("nifInstalador", cleanDni("28.818.007-L"));
         applyMapping(enriched, form, "potenciaContratada", "potenciaInstalacion");
         applyMapping(enriched, form, "cups", "cups");
         

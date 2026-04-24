@@ -446,7 +446,7 @@
                     </div>
                 </div>
 
-                <div class="fila-grid fila-2col fila-sin-borde">
+                <div class="fila-grid fila-2col fila-sin-borde" th:if="${form['representante'] != null and !form['representante'].isEmpty()}">
                     <div class="celda celda-izquierda">
                         <div class="etiqueta">REPRESENTANTE:</div>
                         <div class="valor" th:text="${form['representante']}"></div>

@@ -76,17 +76,20 @@
         <span class="overlay-field" style="left:20mm; top:102mm;"
               th:text="${form['apellidosNombre'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:20mm; top:111mm;"
-              th:text="${form['nombreRepresentante'] ?: form['representante'] ?: ''}"></span>
-
-        <span class="overlay-field" style="left:155mm; top:111mm;"
-              th:text="${form['dniCifRepresentante'] ?: form['dniRepresentante'] ?: ''}"></span>
-
         <span class="overlay-field" style="left:175mm; top:102mm;"
               th:text="${form['nifCif'] ?: ''}"></span>
 
-        <span class="overlay-field" style="left:20mm; top:120mm;"
-              th:text="${form['calidad'] ?: 'Representante de la sociedad'}"></span>
+        <!-- Bloque Representante (solo si existe nombreRepresentante) -->
+        <th:block th:if="${form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty()}">
+            <span class="overlay-field" style="left:20mm; top:111mm;"
+                  th:text="${form['nombreRepresentante']}"></span>
+
+            <span class="overlay-field" style="left:155mm; top:111mm;"
+                  th:text="${form['dniRepresentante']}"></span>
+
+            <span class="overlay-field" style="left:20mm; top:120mm;"
+                  th:text="${form['calidad']}"></span>
+        </th:block>
 
         <!-- SECCIÓN 2: LUGAR Y MEDIO DE NOTIFICACIÓN -->
         <span class="overlay-field" style="left:27mm; top:153mm;" th:text="${form['tipoVia'] ?: ''}"></span>
