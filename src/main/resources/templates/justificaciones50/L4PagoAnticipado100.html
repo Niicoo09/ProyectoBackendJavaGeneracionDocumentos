@@ -46,9 +46,12 @@
 <body>
     <!-- PÁGINA 1 -->
     <div class="pagina-documento" th:style="${fondoStyle1}">
-        <div class="overlay-field"
+        <!-- Numeración corregida (parche blanco) -->
+        <div class="overlay-field" style="left: 170mm; top: 15mm; width: 30mm; height: 5mm; background: #fff; font-size: 10pt; text-align: right; color: #008144 !important; font-weight: bold;">(Página 1 de 2)</div>
+
+        <!-- <div class="overlay-field"
             style="left: 47mm; top: 113.5mm; min-width: 80mm; height: 6mm; font-size: 11pt; text-align: left;"
-            th:text="${form.expediente}"></div>
+            th:text="${form.expediente}"></div> -->
 
         <div class="overlay-field"
             style="left: 20mm; top: 135.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
@@ -63,25 +66,31 @@
             style="left: 55mm; top: 144.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
             th:text="${form.correoElectronico}"></div>
 
-        <div class="overlay-field"
-            style="left: 20mm; top: 153.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
-            th:text="${form.apellidosNombreRepresentante}"></div>
-        <div class="overlay-field"
-            style="left: 172mm; top: 153.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
-            th:text="${form.dniRepresentante}"></div>
-        <div class="overlay-field"
-            style="left: 20mm; top: 161.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
-            th:text="${form.actuaCalidad}"></div>
-        <div class="overlay-field"
-            style="left: 20mm; top: 170.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
-            th:text="${form.telefonoRepresentante}"></div>
-        <div class="overlay-field"
-            style="left: 55mm; top: 170.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
-            th:text="${form.correoElectronicoRepresentante}"></div>
+        <!-- Bloque Representante (solo si existe) -->
+        <th:block th:if="${form.apellidosNombreRepresentante != null and !form.apellidosNombreRepresentante.isEmpty()}">
+            <div class="overlay-field"
+                style="left: 20mm; top: 153.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+                th:text="${form.apellidosNombreRepresentante}"></div>
+            <div class="overlay-field"
+                style="left: 172mm; top: 153.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+                th:text="${form.dniRepresentante}"></div>
+            <div class="overlay-field"
+                style="left: 20mm; top: 161.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;"
+                th:text="${form.actuaCalidad}"></div>
+            <div class="overlay-field"
+                style="left: 20mm; top: 170.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;"
+                th:text="${form.telefonoRepresentante}"></div>
+            <div class="overlay-field"
+                style="left: 55mm; top: 170.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;"
+                th:text="${form.correoElectronicoRepresentante}"></div>
+        </th:block>
     </div>
 
     <!-- PÁGINA 2 -->
     <div class="pagina-documento" th:style="${fondoStyle2}">
+        <!-- Numeración corregida (parche blanco) -->
+        <div class="overlay-field" style="left: 170mm; top: 15mm; width: 30mm; height: 5mm; background: #fff; font-size: 10pt; text-align: right; color: #008144 !important; font-weight: bold;">(Página 2 de 2)</div>
+
         <!-- Checkboxes hardcoded (como en tu array Vue) -->
         <div class="overlay-field"
             style="left: 23mm; top: 60mm; min-width: 5mm; height: 5mm; font-size: 12pt; text-align: center;">X</div>

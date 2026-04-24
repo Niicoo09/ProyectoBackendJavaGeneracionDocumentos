@@ -37,26 +37,32 @@
 <body>
     <!-- PÁGINA 1 -->
     <div class="pagina-documento" th:style="${fondoStyle1}">
-        <div class="overlay-field" style="left: 45mm; top: 105.5mm; min-width: 80mm; height: 6mm; font-size: 11pt; text-align: left;" th:text="${form.expediente}"></div>
+        <!-- Numeración corregida (parche blanco) -->
+        <div class="overlay-field" style="left: 170mm; top: 15mm; width: 30mm; height: 5mm; background: #fff; font-size: 10pt; text-align: right; color: #008144 !important; font-weight: bold;">(Página 1 de 2)</div>
+
+        <!-- Expediente (comentado por petición) -->
+        <!-- <div class="overlay-field" style="left: 45mm; top: 105.5mm; min-width: 80mm; height: 6mm; font-size: 11pt; text-align: left;" th:text="${form.expediente}"></div> -->
 
         <div class="overlay-field" style="left: 20mm; top: 126.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.apellidosNombre}"></div>
         <div class="overlay-field" style="left: 172mm; top: 126.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.dni}"></div>
         <div class="overlay-field" style="left: 20mm; top: 135.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.telefono}"></div>
         <div class="overlay-field" style="left: 55mm; top: 135.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.correoElectronico}"></div>
-        <div class="overlay-field" style="left: 20mm; top: 144.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.apellidosNombreRepresentante}"></div>
-        <div class="overlay-field" style="left: 172mm; top: 144.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.dniRepresentante}"></div>
-        <div class="overlay-field" style="left: 20mm; top: 153.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.actuaCalidad}"></div>
-        <div class="overlay-field" style="left: 20mm; top: 162.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.telefonoRepresentante}"></div>
-        <div class="overlay-field" style="left: 55mm; top: 162.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.correoElectronicoRepresentante}"></div>
+        
+        <!-- Bloque Representante (solo si existe) -->
+        <th:block th:if="${form.apellidosNombreRepresentante != null and !form.apellidosNombreRepresentante.isEmpty()}">
+            <div class="overlay-field" style="left: 20mm; top: 144.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.apellidosNombreRepresentante}"></div>
+            <div class="overlay-field" style="left: 172mm; top: 144.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.dniRepresentante}"></div>
+            <div class="overlay-field" style="left: 20mm; top: 153.5mm; min-width: 80mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.actuaCalidad}"></div>
+            <div class="overlay-field" style="left: 20mm; top: 162.5mm; min-width: 40mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.telefonoRepresentante}"></div>
+            <div class="overlay-field" style="left: 55mm; top: 162.5mm; min-width: 60mm; height: 6mm; font-size: 10pt; text-align: left;" th:text="${form.correoElectronicoRepresentante}"></div>
+        </th:block>
     </div>
 
-    <!-- PÁGINA 2 -->
-    <div class="pagina-documento" th:style="${fondoStyle2}">
-        <!-- Página sin campos fijos redundantes -->
-    </div>
-
-    <!-- PÁGINA 3 -->
+    <!-- PÁGINA 2 (Antes Página 3) -->
     <div class="pagina-documento" th:style="${fondoStyle3}">
+        <!-- Numeración corregida (parche blanco) -->
+        <div class="overlay-field" style="left: 170mm; top: 32mm; width: 30mm; height: 5mm; background: #fff; font-size: 10pt; text-align: right; color: #008144 !important; font-weight: bold;">(Página 2 de 2)</div>
+
         <!-- Campos con máscara blanca (#fff) -->
         <div class="overlay-field" style="left: 57.5mm; top: 122.5mm; min-width: 40mm; height: 3.5mm; font-size: 10pt; text-align: left; background: #fff;" th:text="${form.provincia}"></div>
         <div class="overlay-field" style="left: 107.8mm; top: 122.5mm; min-width: 11.1mm; height: 3.5mm; font-size: 10pt; text-align: center; background: #fff;" th:text="${form.dia}"></div>

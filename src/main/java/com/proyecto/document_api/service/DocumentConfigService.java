@@ -115,7 +115,10 @@ public class DocumentConfigService {
                 break;
             case "justificacion-pago-subvencion-l4":
             case "JustificacionPagoSubvencionL4":
-                applyJustificacionPagoSubvencionL4(enriched, formData);
+            case "L3PagoAnticipado50":
+            case "L3PagoRestante50":
+            case "L4PagoAnticipado100":
+                applyJustificacionPagoSubvencionL3(enriched, formData);
                 break;
             case "memoria-economica":
             case "MemoriaEconomica":
@@ -358,7 +361,7 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "personaFirma", "apellidosNombre");
 
         // --- VALORES POR DEFECTO PARA EVITAR ERRORES SPEL ---
-        putIfAbsent(enriched, "expediente", "___");
+        putIfAbsent(enriched, "expediente", "");
         putIfAbsent(enriched, "apellidosNombre", "");
         putIfAbsent(enriched, "dni", "");
         putIfAbsent(enriched, "telefono", "");
@@ -372,7 +375,7 @@ public class DocumentConfigService {
         putIfAbsent(enriched, "mes", "");
         putIfAbsent(enriched, "anio", "");
         putIfAbsent(enriched, "personaFirma", "");
-        putIfAbsent(enriched, "actuaCalidad", "REPRESENTANTE / ADMINISTRADOR");
+        putIfAbsent(enriched, "actuaCalidad", "");
     }
 
     private void applyJustificacionPagoSubvencionL4(Map<String, Object> enriched, Map<String, Object> form) {
@@ -485,7 +488,7 @@ public class DocumentConfigService {
         enriched.put("direccion", buildDireccionCompleta(form));
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMappingWithFallback(enriched, form, "expediente", "expedienteEco", "expediente", "numeroExpediente");
-        putIfAbsent(enriched, "expediente", "___");
+        putIfAbsent(enriched, "expediente", "");
 
         applyMapping(enriched, form, "diaFirma", "diaFirmaJustificacion");
         applyMapping(enriched, form, "mesFirma", "mesFirmaJustificacion");
