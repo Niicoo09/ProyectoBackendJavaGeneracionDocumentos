@@ -172,9 +172,9 @@
               th:text="${form['potenciaContratada'] ?: form['e2_potenciaPicoGenerador'] ?: ''}"></span>
 
         <!-- Fase (marcadores) -->
-        <span class="overlay-marker" th:if="${form['fase'] == 'Monofásica' or form['tipoConexionRed'] == 'Monofásica'}"
+        <span class="overlay-marker" th:if="${form['fase'] == 'Monofásica' or form['fase'] == 'Monofasica' or form['tipoConexionRed'] == 'Monofásica' or form['tipoConexionRed'] == 'Monofasica'}"
               style="left:39.7mm; top:152.6mm;">X</span>
-        <span class="overlay-marker" th:if="${form['fase'] == 'Trifásica' or form['tipoConexionRed'] == 'Trifásica'}"
+        <span class="overlay-marker" th:if="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' or form['tipoConexionRed'] == 'Trifásica' or form['tipoConexionRed'] == 'Trifasica'}"
               style="left:60mm; top:152.6mm;">X</span>
 
         <span class="overlay-field" style="left:75mm; top:155mm; font-size:7.5pt;"

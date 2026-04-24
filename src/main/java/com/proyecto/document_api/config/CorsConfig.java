@@ -17,7 +17,7 @@ public class CorsConfig {
                         .allowedOrigins("*") // Permitir todos los orígenes
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                         .allowedHeaders("*")
-                        .exposedHeaders("Authorization");
+                        .exposedHeaders("Authorization", "Content-Disposition");
             }
         };
     }

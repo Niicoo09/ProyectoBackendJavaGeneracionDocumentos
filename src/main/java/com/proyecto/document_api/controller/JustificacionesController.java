@@ -42,7 +42,7 @@ public class JustificacionesController {
     @Operation(summary = "Cartel Publicitario L3")
     @GetMapping("/cartel-l3/{id}")
     public ResponseEntity<byte[]> generateCartelL3(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CartelL3", "Cartel_L3", "cartel-l3", formData -> {
+        return processDocumentResponse(id, "justificaciones/CartelL3", "5.-Modelo_de_cartel_Publicitario_L3", "cartel-l3", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/cartel-l3.png");
             extraImages.put("fondoStyle", "background-image: url(data:image/png;base64," + base64 + ");");
@@ -53,7 +53,7 @@ public class JustificacionesController {
     @Operation(summary = "Cartel Publicitario L4")
     @GetMapping("/cartel-l4/{id}")
     public ResponseEntity<byte[]> generateCartelL4(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CartelL4", "Cartel_L4", "cartel-l4", formData -> {
+        return processDocumentResponse(id, "justificaciones/CartelL4", "6.-Modelo_de_cartel_Publicitario_L4", "cartel-l4", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/cartel-l4.png");
             extraImages.put("fondoStyle", "background-image: url(data:image/png;base64," + base64 + ");");
@@ -64,7 +64,7 @@ public class JustificacionesController {
     @Operation(summary = "Declaración de Compromiso Corriente")
     @GetMapping("/declaracion-compromiso-corriente/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoCorriente(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/DeclaracionCompromisoCorriente", "Compromiso_Al_Corriente", "declaracion-compromiso-corriente", formData -> {
+        return processDocumentResponse(id, "justificaciones/DeclaracionCompromisoCorriente", "9.-Declaracion_de_compromiso_de_pago_-_Corriente", "declaracion-compromiso-corriente", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/declaracion-compromiso-corriente.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -76,7 +76,7 @@ public class JustificacionesController {
     @Operation(summary = "Justificación Pago Subvención L3")
     @GetMapping("/justificacion-pago-subvencion-l3/{id}")
     public ResponseEntity<byte[]> generateJustificacionPagoSubvencionL3(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL3", "Justificacion_Pago_L3", "justificacion-pago-subvencion-l3", formData -> {
+        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL3", "1.-Formato_para_Pago_previa_justificacion_(100%)_L3", "justificacion-pago-subvencion-l3", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/formato-pago-justificacion-linea3-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/formato-pago-justificacion-linea3-2.jpg");
@@ -90,7 +90,7 @@ public class JustificacionesController {
     @Operation(summary = "Justificación Pago Subvención L4")
     @GetMapping("/justificacion-pago-subvencion-l4/{id}")
     public ResponseEntity<byte[]> generateJustificacionPagoSubvencionL4(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL4", "Justificacion_Pago_L4", "justificacion-pago-subvencion-l4", formData -> {
+        return processDocumentResponse(id, "justificaciones/JustificacionPagoSubvencionL4", "2.-Formato_para_Pago_previa_justificacion_(100%)_L4", "justificacion-pago-subvencion-l4", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/formato-pago-justificacion-linea4-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("/static/images/justificaciones/formato-pago-justificacion-linea4-2.jpg");
@@ -104,7 +104,7 @@ public class JustificacionesController {
     @Operation(summary = "Memoria Económica")
     @GetMapping("/memoria-economica/{id}")
     public ResponseEntity<byte[]> generateMemoriaEconomica(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/MemoriaEconomica", "Memoria_Economica", "memoria-economica", formData -> {
+        return processDocumentResponse(id, "justificaciones/MemoriaEconomica", "3.-Memoria_Económica_Justificativa", "memoria-economica", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/icono-junta-andalucia.png"));
@@ -116,7 +116,7 @@ public class JustificacionesController {
     @Operation(summary = "Memoria FV AER")
     @GetMapping("/memoria-fv-aer/{id}")
     public ResponseEntity<byte[]> generateMemoriaFvAer(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/MemoriaFvAer", "Memoria_FV_AER", "memoria-fv-aer", formData -> {
+        return processDocumentResponse(id, "justificaciones/MemoriaFvAer", "4.-Memoria_Tecnica_de_la_Actuacion_Realizada_(FV+AER)", "memoria-fv-aer", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/icono-junta-andalucia.png"));
@@ -128,7 +128,7 @@ public class JustificacionesController {
     @Operation(summary = "Declaración Inicio de Obras Massol")
     @GetMapping("/obra-massol/{id}")
     public ResponseEntity<byte[]> generateObraMassol(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/ObraMassol", "Declaracion_Inicio_Obra", "obra-massol", formData -> {
+        return processDocumentResponse(id, "justificaciones/ObraMassol", "8.-Declaracion_inicio_de_obras-Massol", "obra-massol", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoSolay",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logo-solay.png"));
             extraImages.put("firmaSolay", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/firma-solay.png"));
@@ -140,11 +140,48 @@ public class JustificacionesController {
     @Operation(summary = "Certificado de Pedidos")
     @GetMapping("/certificado-pedidos/{id}")
     public ResponseEntity<byte[]> generateCertificadoPedidos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "justificaciones/CertificadoPedidos", "Certificado_Pedidos", "certificado-pedidos", formData -> {
+        return processDocumentResponse(id, "justificaciones/CertificadoPedidos", "7.-Certificado_de_pedidos_y_contratos", "certificado-pedidos", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             extraImages.put("logoOrganizaciones", "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/iconos-organizaciones.png"));
             extraImages.put("logoJunta",           "data:image/png;base64," + jsonUtils.getResourceAsBase64("/static/logos/icono-junta-andalucia.png"));
             mapDynamicImageWithFallback(extraImages, formData, "firmaImagen", "firma", "firmaImagen", "firmaCliente");
+            return extraImages;
+        });
+    }
+    @Operation(summary = "Anexo A - Cesión de Datos")
+    @GetMapping("/anexo-a/{id}")
+    public ResponseEntity<byte[]> generateAnexoA(@PathVariable UUID id) {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCesionTratamiento", "10.-ANEXO_A-Declaracion_de_cesion_y_tratamiento_de_datos", "cesion-tratamiento-datos", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String b1 = jsonUtils.getResourceAsBase64("/static/images/aceptaciones/declaracio-cesion-tratamiento-1.jpg");
+            String b2 = jsonUtils.getResourceAsBase64("/static/images/aceptaciones/declaracio-cesion-tratamiento-2.jpg");
+            extraImages.put("fondoStyle1", "background-image: url(data:image/jpeg;base64," + b1 + ");");
+            extraImages.put("fondoStyle2", "background-image: url(data:image/jpeg;base64," + b2 + ");");
+            mapDynamicImageWithFallback(extraImages, formData, "firmaBase64", "firma", "firmaImagen", "firmaCliente");
+            return extraImages;
+        });
+    }
+
+    @Operation(summary = "Anexo B - Principios Transversales")
+    @GetMapping("/anexo-b/{id}")
+    public ResponseEntity<byte[]> generateAnexoB(@PathVariable UUID id) {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoDerechos", "11.-ANEXO_B-Declaracion_compromiso_cumplimiento_principios_transversales", "compromiso-principios-transversales", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaración-de-compromiso.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            mapDynamicImageWithFallback(extraImages, formData, "firmaBase64", "firma", "firmaImagen", "firmaCliente");
+            return extraImages;
+        });
+    }
+
+    @Operation(summary = "Anexo C - Principios Transversales (DNSH)")
+    @GetMapping("/anexo-c/{id}")
+    public ResponseEntity<byte[]> generateAnexoC(@PathVariable UUID id) {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoTransversales", "12.-ANEXO_C-Declaracion_compromiso_cumplimiento_de_principios_transversales_(DNSH)", "compromiso-transversales-dnsh", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/compromiso-cumplimiento-principios-transv.jpg");
+            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
+            mapDynamicImageWithFallback(extraImages, formData, "firmaBase64", "firma", "firmaImagen", "firmaCliente");
             return extraImages;
         });
     }

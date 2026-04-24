@@ -653,13 +653,20 @@ public class DocumentConfigService {
     private void applyCertificadoAdecuacion(Map<String, Object> enriched, Map<String, Object> form) {
         applyCertificadoSolidez(enriched, form);
         applyMapping(enriched, form, "expediente", "expedienteEco");
+        putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
+        applyMapping(enriched, form, "usoDestino", "usoDestino");
     }
 
     private void applyCie(Map<String, Object> enriched, Map<String, Object> form) {
         // Datos del Titular
         applyMapping(enriched, form, "apellidosNombre", "apellidosNombre");
         enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
-        applyMapping(enriched, form, "domicilio", "emplazamientoCalle");
+        
+        // Domicilio con número
+        String calleTitular = getString(form, "emplazamientoCalle");
+        String numTitular = getString(form, "numero");
+        enriched.put("domicilio", (calleTitular != null ? calleTitular : "") + (numTitular != null ? " " + numTitular : ""));
+        
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
@@ -680,8 +687,23 @@ public class DocumentConfigService {
 
         // Datos Técnicos y Verificación
         enriched.put("nifInstalador", cleanDni("28.818.007-L"));
-        applyMapping(enriched, form, "potenciaContratada", "potenciaInstalacion");
+        
+        // Potencia del Inversor para "Derivación individual - Potencia prevista"
+        applyMappingWithFallback(enriched, form, "potenciaContratada", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
+        
         applyMapping(enriched, form, "cups", "cups");
+        putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
+        putIfAbsent(enriched, "resistenciaTierra", "20");
+        
+        // Mapeo de fase para checkboxes con fallbacks
+        applyMappingWithFallback(enriched, form, "fase", "e2_tipoConexionRed1", "fase");
+        applyMapping(enriched, form, "tipoConexionRed", "e2_tipoConexionRed1");
+        
+        // Tipo de instalación (Nueva, Ampliación, etc.)
+        applyMappingWithFallback(enriched, form, "tipoInstalacion", "instalacion", "tipoInstalacion");
+        
+        // Tensión de suministro
+        applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         
         // Datos del Director de Obra (Eduardo Rivera por defecto)
         putIfAbsent(enriched, "directorDeObra", "Eduardo Rivera Cabezas");
@@ -830,6 +852,20 @@ public class DocumentConfigService {
 
         // --- fieldMapping: Sección E2.3 Generador ---
         applyMapping(enriched, form, "potenciaPicoGenerador", "e2_potenciaPicoGenerador");
+        
+        // Conversión a kW para la plantilla (ej: 4800 -> 4,8)
+        Object potPicoRaw = form.get("e2_potenciaPicoGenerador");
+        if (potPicoRaw != null) {
+            try {
+                double potKw = Double.parseDouble(potPicoRaw.toString());
+                if (potKw > 50) { // Si es mayor de 50, asumimos que son W y pasamos a kW
+                    potKw = potKw / 1000.0;
+                }
+                enriched.put("potenciaPicoGeneradorKW", String.format("%.2f", potKw).replace(".", ","));
+            } catch (Exception e) {
+                enriched.put("potenciaPicoGeneradorKW", potPicoRaw.toString());
+            }
+        }
         applyMapping(enriched, form, "tensionVpmpGenerador", "e2_tensionVpmpGenerador");
         applyMapping(enriched, form, "orientacionGenerador", "e2_orientacionGenerador");
         applyMapping(enriched, form, "inclinacionGenerador", "e2_inclinacionGenerador");
@@ -869,6 +905,24 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "potenciaGeneradorInversorDirecto", "g_generadorDirectoInversorPotencia");
         applyMapping(enriched, form, "longitudGeneradorInversorDirecto", "g_generadorDirectoInversorLongitud");
         applyMapping(enriched, form, "materialGeneradorInversorDirecto", "g_generadorDirectoInversorSeccion");
+        
+        // Mapeos adicionales para compatibilidad con MemoriaTecnica.html (Sección G)
+        applyMapping(enriched, form, "longitud_generador_inversor", "g_generadorDirectoInversorLongitud");
+        applyMapping(enriched, form, "seccion_generador_inversor", "g_generadorDirectoInversorSeccion");
+        applyMapping(enriched, form, "intensidad_generador_inversor", "g_generadorDirectoInversorIntensidad");
+        applyMapping(enriched, form, "caida_generador_inversor", "g_generadorDirectoInversorCaida");
+
+        // Batería - Inversor
+        applyMapping(enriched, form, "longitud_bateria_inversor", "g_bateriaDiRectaInversorLongitud");
+        applyMapping(enriched, form, "seccion_bateria_inversor", "g_bateriaDiRectaInversorSeccion");
+        applyMapping(enriched, form, "intensidad_bateria_inversor", "g_bateriaDiRectaInversorIntensidad");
+        applyMapping(enriched, form, "caida_bateria_inversor", "g_bateriaDiRectaInversorCaida");
+
+        // Inversor - Red
+        applyMapping(enriched, form, "longitud_inversor_red", "g_inversorRedLongitud");
+        applyMapping(enriched, form, "seccion_inversor_red", "g_inversorRedSeccion");
+        applyMapping(enriched, form, "intensidad_inversor_red", "g_inversorRedIntensidad");
+        applyMapping(enriched, form, "caida_inversor_red", "g_inversorRedCaida");
         
         applyMapping(enriched, form, "potenciaSalidaInversorRed", "g_inversorRedPotencia");
         applyMapping(enriched, form, "longitudSalidaInversorRed", "g_inversorRedLongitud");
