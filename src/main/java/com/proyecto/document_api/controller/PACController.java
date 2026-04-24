@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class PACController {
 
     @Autowired
-    private DocumentService documentService;
+    private DocumentService documentService; // v1.0.2 - Force redeploy
 
     @Autowired
     private DocumentRepository documentRepository;
