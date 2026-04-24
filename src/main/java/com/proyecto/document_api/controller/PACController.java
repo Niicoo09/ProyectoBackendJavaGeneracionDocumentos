@@ -38,7 +38,9 @@ public class PACController {
     public ResponseEntity<byte[]> generateDeclaracionPropietario(@PathVariable UUID id) {
         return processPacResponse(id, "pac/DeclaracionPropietario", "Declaracion_Propietario", "declaracion-propietario", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_declaracion.jpg");
+            byte[] imgBytes = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_declaracion.jpg");
+            System.out.println("[DEBUG-PAC] Tamaño imagen fondo_declaracion: " + imgBytes.length + " bytes");
+            String base64 = java.util.Base64.getEncoder().encodeToString(imgBytes);
             extraImages.put("fondoStyle", "background-image: url('data:image/jpeg;base64," + base64 + "');");
             return extraImages;
         });
@@ -49,10 +51,14 @@ public class PACController {
     public ResponseEntity<byte[]> generateAutorizacionFacturacion(@PathVariable UUID id) {
         return processPacResponse(id, "pac/AutorizacionFacturacion", "Autorizacion_Facturacion", "autorizacion-facturacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64Fondo1 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_facturacion_1.jpg");
-            String base64Fondo2 = jsonUtils.getResourceAsBase64("static/images/pac/fondo_facturacion_2.jpg");
-            extraImages.put("fondoStyle1", "background-image: url('data:image/jpeg;base64," + base64Fondo1 + "');");
-            extraImages.put("fondoStyle2", "background-image: url('data:image/jpeg;base64," + base64Fondo2 + "');");
+            byte[] img1 = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_facturacion_1.jpg");
+            byte[] img2 = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_facturacion_2.jpg");
+            System.out.println("[DEBUG-PAC] Tamaño fondo_facturacion_1: " + img1.length + " bytes");
+            System.out.println("[DEBUG-PAC] Tamaño fondo_facturacion_2: " + img2.length + " bytes");
+            String b64_1 = java.util.Base64.getEncoder().encodeToString(img1);
+            String b64_2 = java.util.Base64.getEncoder().encodeToString(img2);
+            extraImages.put("fondoStyle1", "background-image: url('data:image/jpeg;base64," + b64_1 + "');");
+            extraImages.put("fondoStyle2", "background-image: url('data:image/jpeg;base64," + b64_2 + "');");
             return extraImages;
         });
     }
