@@ -69,6 +69,14 @@ public class PACController {
         Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
         Map<String, Object> enrichedFormData = documentConfigService.enrich(configId, formData);
 
+        // Extraer los últimos 2 dígitos del año de forma segura para las plantillas PAC
+        Object anioObj = enrichedFormData.get("anio");
+        if (anioObj != null) {
+            String anioStr = anioObj.toString();
+            String anioShort = anioStr.length() > 2 ? anioStr.substring(anioStr.length() - 2) : anioStr;
+            enrichedFormData.put("anioShort", anioShort);
+        }
+
         System.out.println("[DEBUG-PAC] Formulario Enriquecido (el que va a la plantilla): " + enrichedFormData);
 
         Map<String, Object> data = new HashMap<>();

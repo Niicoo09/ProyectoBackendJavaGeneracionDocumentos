@@ -84,22 +84,22 @@
             <!-- 1. IDENTIFICACIÓN DEL SOLICITANTE (PROMOTOR) -->
             <!-- D./Dª -->
             <span class="overlay-field" style="left:50mm; top:36.5mm;"
-                th:text="${form['apellidosNombre'] ?: 'XXX'}"></span>
+                th:text="${form['apellidosNombre'] ?: ''}"></span>
             <!-- NIF -->
-            <span class="overlay-field" style="left:38mm; top:43mm;" th:text="${form['nifCif'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:38mm; top:43mm;" th:text="${form['nifCif'] ?: ''}"></span>
 
             <!-- Municipio -->
-            <span class="overlay-field" style="left:98mm; top:43mm;" th:text="${form['localidad'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:98mm; top:43mm;" th:text="${form['localidad'] ?: ''}"></span>
             <!-- Vía Pública -->
             <span class="overlay-field" style="left:38mm; top:49mm;"
-                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+                th:text="${form['emplazamientoCalle'] ?: ''}"></span>
 
             <!-- E-mail -->
             <span class="overlay-field" style="left:38mm; top:55.5mm;"
-                th:text="${form['correoElectronicoEmplazamiento'] ?: 'XXX'}"></span>
+                th:text="${form['correoElectronicoEmplazamiento'] ?: ''}"></span>
 
             <!-- Teléfono -->
-            <span class="overlay-field" style="left:130mm; top:55.5mm;" th:text="${form['telefono'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:130mm; top:55.5mm;" th:text="${form['telefono'] ?: ''}"></span>
 
             <!-- Opción A Check -->
             <span class="check-field" style="left:36mm; top:63.5mm;">X</span>
@@ -111,24 +111,24 @@
         <article class="pagina-documento" th:style="${fondoStyle2}">
             <!-- 3. UBICACIÓN DEL SUMINISTRO -->
             <span class="overlay-field" style="left:109mm; top:176mm;"
-                th:text="${form['emplazamientoCalle'] ?: 'XXX'}"></span>
+                th:text="${form['emplazamientoCalle'] ?: ''}"></span>
             <span class="overlay-field" style="left:52mm; top:189.5mm;"
-                th:text="${form['localidadEmplazamiento'] ?: 'XXX'}"></span>
+                th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
             <span class="overlay-field" style="left:150mm; top:189.5mm;"
-                th:text="${form['provinciaEmplazamiento'] ?: 'XXX'}"></span>
+                th:text="${form['provinciaEmplazamiento'] ?: ''}"></span>
             <span class="overlay-field" style="left:58mm; top:195.5mm;"
-                th:text="${form['potencia_instalacion'] ?: 'XXX'}"></span>
+                th:text="${form['potencia_instalacion'] ?: ''}"></span>
 
             <!-- 4. FIRMA Y FECHA -->
             <!-- Lugar -->
-            <span class="overlay-field" style="left:98mm; top:222mm; padding-right:30mm;" th:text="${form['ciudadFirma'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:98mm; top:222mm; padding-right:30mm;" th:text="${form['ciudadFirma'] ?: ''}"></span>
             <!-- Día -->
-            <span class="overlay-field" style="left:143.1mm; top:222mm;" th:text="${form['dia'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:143.1mm; top:222mm;" th:text="${form['dia'] ?: ''}"></span>
             <!-- Mes -->
-            <span class="overlay-field" style="left:155mm; top:222mm;" th:text="${form['mes'] ?: 'XXX'}"></span>
+            <span class="overlay-field" style="left:155mm; top:222mm;" th:text="${form['mes'] ?: ''}"></span>
             <!-- Año -->
             <span class="overlay-field" style="left:189.5mm; top:222mm;"
-                th:text="${form['anio'] != null and form['anio'].toString().length() > 2 ? form['anio'].toString().substring(form['anio'].toString().length() - 2) : (form['anio'] ?: 'XX')}"></span>
+                th:text="${form['anioShort'] ?: ''}"></span>
 
             <!-- Firma Imagen -->
             <div class="firma-container" style="left:160mm; top:280mm; width:60mm; height:30mm;">
