@@ -38,7 +38,7 @@ public class PACController {
     public ResponseEntity<byte[]> generateDeclaracionPropietario(@PathVariable UUID id) {
         return processPacResponse(id, "pac/DeclaracionPropietario", "Declaracion_Propietario", "declaracion-propietario", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            byte[] imgBytes = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_declaracion.jpg");
+            byte[] imgBytes = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_declaracion.jpg");
             System.out.println("[DEBUG-PAC] Tamaño imagen fondo_declaracion: " + imgBytes.length + " bytes");
             String base64 = java.util.Base64.getEncoder().encodeToString(imgBytes);
             extraImages.put("fondoStyle", "background-image: url('data:image/jpeg;base64," + base64 + "');");
@@ -51,8 +51,8 @@ public class PACController {
     public ResponseEntity<byte[]> generateAutorizacionFacturacion(@PathVariable UUID id) {
         return processPacResponse(id, "pac/AutorizacionFacturacion", "Autorizacion_Facturacion", "autorizacion-facturacion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            byte[] img1 = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_facturacion_1.jpg");
-            byte[] img2 = jsonUtils.getResourceAsBytes("/static/images/pac/fondo_facturacion_2.jpg");
+            byte[] img1 = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_facturacion_1.jpg");
+            byte[] img2 = jsonUtils.getResourceAsBytes("/static/images/PAC/fondo_facturacion_2.jpg");
             System.out.println("[DEBUG-PAC] Tamaño fondo_facturacion_1: " + img1.length + " bytes");
             System.out.println("[DEBUG-PAC] Tamaño fondo_facturacion_2: " + img2.length + " bytes");
             String b64_1 = java.util.Base64.getEncoder().encodeToString(img1);
