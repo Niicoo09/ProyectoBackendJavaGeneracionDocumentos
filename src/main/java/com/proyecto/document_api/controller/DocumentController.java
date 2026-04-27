@@ -296,6 +296,7 @@ public class DocumentController {
                     mapDynamicImage(images, formData, "otros_imagenPlanoCubierta", "imagenCubiertaBase64");
                     mapDynamicImage(images, formData, "otros_imagenCubierta", "imagenCubiertaBase64");
                     mapDynamicImage(images, formData, "otros_foto2", "imagenCubiertaBase64");
+                    mapDynamicImage(images, formData, "otros_PlanoCubiertaNuevo", "imagenCubiertaBase64");
                     return images;
                 });
     }

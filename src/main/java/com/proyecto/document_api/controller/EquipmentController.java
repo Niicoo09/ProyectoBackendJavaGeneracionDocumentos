@@ -58,7 +58,7 @@ public class EquipmentController {
         equipment.setId(id);
         
         // El nombre comercial
-        equipment.setNombre((String) payload.getOrDefault("nombre", payload.getOrDefault("marcaModelo", payload.getOrDefault("label", "Sin nombre"))));
+        equipment.setNombre((String) payload.getOrDefault("nombre", payload.getOrDefault("marcaModelo", payload.getOrDefault("marca", payload.getOrDefault("label", "Sin nombre")))));
         
         // El resto va a la columna JSONB 'datos'
         payload.remove("id");
@@ -74,7 +74,7 @@ public class EquipmentController {
     public ResponseEntity<EquipmentEntity> update(@PathVariable String tipo, @PathVariable String id, @RequestBody Map<String, Object> payload) {
         return equipmentRepository.findById(id)
                 .map(existing -> {
-                    existing.setNombre((String) payload.getOrDefault("nombre", payload.getOrDefault("marcaModelo", payload.getOrDefault("label", existing.getNombre()))));
+                    existing.setNombre((String) payload.getOrDefault("nombre", payload.getOrDefault("marcaModelo", payload.getOrDefault("marca", payload.getOrDefault("label", existing.getNombre())))));
                     
                     payload.remove("id");
                     payload.remove("tipo");
