@@ -103,7 +103,7 @@ public class PACController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.attachment().filename(filePrefix + "_" + doc.getNombre().replace(" ", "_") + ".pdf").build());
+        headers.setContentDisposition(ContentDisposition.attachment().filename(filePrefix + ".pdf").build());
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }

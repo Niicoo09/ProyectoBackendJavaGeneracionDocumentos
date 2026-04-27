@@ -333,11 +333,10 @@ public class DocumentController {
         pdfsToMerge.add(pdfFinal);
 
         byte[] combinedPdf = documentService.mergePdfs(pdfsToMerge);
-        String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(
-                ContentDisposition.attachment().filename("11.-Estudio_Basico_de_Seguridad_y_Salud_" + safeName + ".pdf").build());
+                ContentDisposition.attachment().filename("11.-Estudio_Basico_de_Seguridad_y_Salud.pdf").build());
         return new ResponseEntity<>(combinedPdf, headers, HttpStatus.OK);
     }
 
@@ -386,8 +385,7 @@ public class DocumentController {
             data.putAll(extraImages);
 
         byte[] pdfBytes = documentService.generatePdf(templateName, data);
-        String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
-        String fileName = filePrefix + "_" + safeName + ".pdf";
+        String fileName = filePrefix + ".pdf";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

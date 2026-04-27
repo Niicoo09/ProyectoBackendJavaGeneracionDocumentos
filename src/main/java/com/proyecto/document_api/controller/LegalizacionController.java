@@ -214,8 +214,7 @@ public class LegalizacionController {
 
         byte[] pdfBytes = documentService.generatePdf(templateName, data);
 
-        String safeName = (doc.getNombre() != null) ? doc.getNombre().replace(" ", "_") : "Documento";
-        String fileName = filePrefix + "_" + safeName + ".pdf";
+        String fileName = filePrefix + ".pdf";
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
