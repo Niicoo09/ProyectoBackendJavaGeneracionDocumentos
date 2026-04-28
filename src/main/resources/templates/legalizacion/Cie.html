@@ -98,7 +98,12 @@
               th:text="${form['nifCif'] ?: ''}"></span>
 
         <span class="overlay-field" style="left:13mm; top:71mm; font-size:7.5pt;"
-              th:text="${form['domicilio'] ?: form['emplazamientoCalle'] ?: ''}"></span>
+              th:text="${(form['domicilio'] ?: (form['emplazamientoCalle'] + (form['numero'] != null and form['numero'] != '' ? ' ' + form['numero'] : ''))) + 
+                        (form['bloque'] != null and form['bloque'] != '' ? ', bloque ' + form['bloque'] : '') + 
+                        (form['portal'] != null and form['portal'] != '' ? ', portal ' + form['portal'] : '') + 
+                        (form['escalera'] != null and form['escalera'] != '' ? ', escalera ' + form['escalera'] : '') + 
+                        (form['piso'] != null and form['piso'] != '' ? ', piso ' + form['piso'] : '') + 
+                        (form['puerta'] != null and form['puerta'] != '' ? ', puerta ' + form['puerta'] : '')}"></span>
 
         <span class="overlay-field" style="left:139mm; top:71mm; font-size:7.5pt;"
               th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
