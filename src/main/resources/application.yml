@@ -12,7 +12,7 @@ spring:
     #username: postgres
     #password: yLDXHfdOBe3u9o3q19eyDm9EiXSWTuaI2shMDNkp22QjY6qTCoXD4NvtlFRdHGlG
     
-  driver-class-name: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       # 'none' para asegurar el acceso de solo lectura
