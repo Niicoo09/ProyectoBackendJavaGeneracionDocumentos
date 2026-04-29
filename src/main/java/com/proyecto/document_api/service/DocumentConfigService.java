@@ -846,6 +846,7 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "telefono", "telefono");
+        applyMapping(enriched, form, "telefonoMovil", "telefono");
         applyMapping(enriched, form, "correoElectronico", "correoElectronicoEmplazamiento");
         applyMapping(enriched, form, "piso", "planta");
 
