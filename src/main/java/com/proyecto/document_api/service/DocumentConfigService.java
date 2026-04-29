@@ -715,6 +715,14 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
+
+        // Especial para el recuadro del CIE: Últimos 2 dígitos del año
+        String anioValue = getString(form, "anio");
+        if (anioValue != null && anioValue.length() >= 2) {
+            enriched.put("terminacioAnual", anioValue.substring(anioValue.length() - 2));
+        } else {
+            enriched.put("terminacioAnual", anioValue);
+        }
     }
 
     private void applyCertificadoDireccionObra(Map<String, Object> enriched, Map<String, Object> form) {
