@@ -50,7 +50,7 @@ public class Justificaciones50Controller {
 
         loadSignature(id, extraImages);
 
-        return processDocumentResponse(id, "justificaciones50/L3PagoAnticipado50", "1.-Formato_para_Pago_previa_justificacion_(50%)_L3", extraImages,
+        return processDocumentResponse(id, "justificaciones50/L3PagoAnticipado50", "1.- Formato para Pago previa justificacion (50%) L3", extraImages,
                 "L3PagoAnticipado50");
     }
 
@@ -67,7 +67,7 @@ public class Justificaciones50Controller {
 
         loadSignature(id, extraImages);
 
-        return processDocumentResponse(id, "justificaciones50/L3PagoRestante50", "2.-Formato_para_Pago_previa_justificacion_(50%)_L3_-_Restante", extraImages,
+        return processDocumentResponse(id, "justificaciones50/L3PagoRestante50", "2.- Formato para Pago previa justificacion (50%) L3 - Restante", extraImages,
                 "L3PagoRestante50");
     }
 
@@ -84,7 +84,7 @@ public class Justificaciones50Controller {
 
         loadSignature(id, extraImages);
 
-        return processDocumentResponse(id, "justificaciones50/L4PagoAnticipado100", "3.-Formato_para_Pago_previa_justificacion_(100%)_L4_-_Parcial",
+        return processDocumentResponse(id, "justificaciones50/L4PagoAnticipado100", "3.- Formato para Pago previa justificacion (100%) L4 - Parcial",
                 extraImages, "L4PagoAnticipado100");
     }
 

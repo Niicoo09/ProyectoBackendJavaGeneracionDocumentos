@@ -74,7 +74,7 @@ public class DocumentController {
     @Operation(summary = "Certificado de Adecuación", description = "Genera el certificado de adecuación oficial.")
     @GetMapping("/adecuacion/{id}")
     public ResponseEntity<byte[]> generateAdecuacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoAdecuacion", "7.-Certificado_de_Adecuacion_al_RD_1699-2011", "CertificadoAdecuacion",
+        return processDocumentResponse(id, "CertificadoAdecuacion", "7.- Certificado de Adecuacion al RD 1699-2011", "CertificadoAdecuacion",
                 null);
     }
 
@@ -84,7 +84,7 @@ public class DocumentController {
     @Operation(summary = "Autorización de Representación")
     @GetMapping("/autorizacion-representacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionRepresentacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "1.-Autorizacion_de_representacion",
+        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "1.- Autorizacion de representacion",
                 "autorizacion-representacion", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     String base64 = jsonUtils
@@ -103,31 +103,31 @@ public class DocumentController {
     @Operation(summary = "MTD Autoconsumo Monofásica con Batería")
     @GetMapping("/mtd-monofasica-con-bateria/{id}")
     public ResponseEntity<byte[]> generateMtdMonofasica(@PathVariable UUID id) {
-        return generateMtdVariant("mtd-instalacion-autoconsumo-monofasica-con-bateria", "6.-MTD_(Con_bateria)", id);
+        return generateMtdVariant("mtd-instalacion-autoconsumo-monofasica-con-bateria", "6.- MTD (Con batería)", id);
     }
 
     @Operation(summary = "MTD Aislada con Batería")
     @GetMapping("/mtd-aislada-con-bateria/{id}")
     public ResponseEntity<byte[]> generateMtdAislada(@PathVariable UUID id) {
-        return generateMtdVariant("mtd-instalacion-aislada-con-bateria", "6.-MTD_(Aislada)", id);
+        return generateMtdVariant("mtd-instalacion-aislada-con-bateria", "6.- MTD (Aislada)", id);
     }
 
     @Operation(summary = "MTD Autoconsumo Trifásica con Batería")
     @GetMapping("/mtd-trifasica-con-bateria/{id}")
     public ResponseEntity<byte[]> generateMtdTrifasica(@PathVariable UUID id) {
-        return generateMtdVariant("mtd-instalacion-autoconsumo-trifasica-con-bateria", "6.-MTD_(Trifasica_con_bateria)", id);
+        return generateMtdVariant("mtd-instalacion-autoconsumo-trifasica-con-bateria", "6.- MTD (Trifásica con batería)", id);
     }
 
     @Operation(summary = "MTD Autoconsumo Sin Batería")
     @GetMapping("/mtd-sin-bateria/{id}")
     public ResponseEntity<byte[]> generateMtdSinBateria(@PathVariable UUID id) {
-        return generateMtdVariant("mtd-instalacion-autoconsumo-sin-bateria", "6.-MTD_(Sin_bateria)", id);
+        return generateMtdVariant("mtd-instalacion-autoconsumo-sin-bateria", "6.- MTD (Sin batería)", id);
     }
 
     @Operation(summary = "MTD Punto de Recarga")
     @GetMapping("/mtd-punto-recarga/{id}")
     public ResponseEntity<byte[]> generateMtdPuntoRecarga(@PathVariable UUID id) {
-        return generateMtdVariant("mtd-instalacion-puntos-recarga", "6.-MTD_(Punto_de_recarga)", id);
+        return generateMtdVariant("mtd-instalacion-puntos-recarga", "6.- MTD (Punto de recarga)", id);
     }
 
     private ResponseEntity<byte[]> generateMtdVariant(String mtdId, String filePrefix, UUID id) {
@@ -147,7 +147,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Aporticada Teja")
     @GetMapping({ "/aporticada-teja/{id}", "/aporticado-teja/{id}" })
     public ResponseEntity<byte[]> generateAporticadaTeja(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoAporticadaTeja", "7.-Certificado_de_solidez_(aporticado_teja)",
+        return processDocumentResponse(id, "CertificadoAporticadaTeja", "7.- Certificado de solidez (aporticado teja)",
                 "CertificadoAporticadaTeja", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64",
@@ -162,7 +162,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Chapa Grecada Aporticada")
     @GetMapping("/chapas-grecadas/{id}")
     public ResponseEntity<byte[]> generateChapasGrecadas(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "7.-Certificado_de_solidez_(chapas_grecadas_aporticada)",
+        return processDocumentResponse(id, "CertificadoChapasGrecadasAporticadas", "7.- Certificado de solidez (chapas grecadas aporticada)",
                 "CertificadoChapasGrecadasAporticadas", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64", "data:image/png;base64,"
@@ -178,7 +178,7 @@ public class DocumentController {
     @GetMapping("/chapas-grecadas-coplanaria/{id}")
     public ResponseEntity<byte[]> generateChapasGrecadasCoplanaria(@PathVariable UUID id) {
         return processDocumentResponse(id, "CertificadoChapasGrecadasCoplanaria",
-                "7.-Certificado_de_solidez_(chapas_grecadas_coplanaria)", "CertificadoChapasGrecadasCoplanaria", formData -> {
+                "7.- Certificado de solidez (chapas grecadas coplanaria)", "CertificadoChapasGrecadasCoplanaria", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64",
                             "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/grecada-coplanaria.png"));
@@ -192,7 +192,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Coplanar Teja")
     @GetMapping("/coplanar-teja/{id}")
     public ResponseEntity<byte[]> generateCoplanarTeja(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoCoplanarTeja", "7.-Certificado_de_solidez_(coplanar_teja)",
+        return processDocumentResponse(id, "CertificadoCoplanarTeja", "7.- Certificado de solidez (coplanar teja)",
                 "CertificadoCoplanarTeja", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64",
@@ -208,7 +208,7 @@ public class DocumentController {
     @GetMapping("/cubierta-plana-aporticada/{id}")
     public ResponseEntity<byte[]> generateCubiertaPlanaAporticada(@PathVariable UUID id) {
         return processDocumentResponse(id, "CertificadoCubiertaPlanaAporticada",
-                "7.-Certificado_de_solidez_(cubierta_plana_aporticada)", "CertificadoCubiertaPlanaAporticada", formData -> {
+                "7.- Certificado de solidez (cubierta plana aporticada)", "CertificadoCubiertaPlanaAporticada", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64", "data:image/png;base64,"
                             + jsonUtils.getResourceAsBase64("static/cubierta-plana-aporticada.png"));
@@ -222,7 +222,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Paramento Vertical")
     @GetMapping("/paramento-vertical/{id}")
     public ResponseEntity<byte[]> generateParamentoVertical(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoParamentoVertical", "7.-Certificado_de_solidez_(paramento_vertical)",
+        return processDocumentResponse(id, "CertificadoParamentoVertical", "7.- Certificado de solidez (paramento vertical)",
                 "CertificadoParamentoVertical", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     extraImages.put("imagenTecnicaBase64",
@@ -237,7 +237,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Pérgola Aporticada")
     @GetMapping({ "/pergola-aporticada/{id}", "/pergola/{id}" })
     public ResponseEntity<byte[]> generatePergolaAporticada(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoPergolaAporticada", "7.-Certificado_de_solidez_(pergola_aporticada)",
+        return processDocumentResponse(id, "CertificadoPergolaAporticada", "7.- Certificado de solidez (pergola aporticada)",
                 "CertificadoPergolaAporticada", null);
     }
 
@@ -247,7 +247,7 @@ public class DocumentController {
     @Operation(summary = "Declaración de Habilitación Profesional")
     @GetMapping("/habilitacion-profesional/{id}")
     public ResponseEntity<byte[]> generateHabilitacionProfesional(@PathVariable UUID id) {
-        return processDocumentResponse(id, "DeclaracionHabilitacionProfesional", "9.-DR_de_Habilitación_Profesional",
+        return processDocumentResponse(id, "DeclaracionHabilitacionProfesional", "9.- DR de Habilitación Profesional",
                 "DeclaracionHabilitacionProfesional", null);
     }
 
@@ -257,7 +257,7 @@ public class DocumentController {
     @Operation(summary = "Declaración No Generación RCDs")
     @GetMapping({ "/no-generacion-rcds/{id}", "/no-generacion-residuos/{id}" })
     public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion_responsable_de_no_generacion_de_RCDs",
+        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion responsable de no generacion de RCDs",
                 "DeclaracionNoGeneracionRcds", null);
     }
 
@@ -267,7 +267,7 @@ public class DocumentController {
     @Operation(summary = "Memoria Técnica de Diseño")
     @GetMapping("/memoria-tecnica/{id}")
     public ResponseEntity<byte[]> generateMemoriaTecnica(@PathVariable UUID id) {
-        return processDocumentResponse(id, "MemoriaTecnica", "6.-MTD", "MemoriaTecnica", formData -> {
+        return processDocumentResponse(id, "MemoriaTecnica", "6.- MTD", "MemoriaTecnica", formData -> {
             Map<String, String> images = new HashMap<>();
             mapDynamicImage(images, formData, "h_esquemaUnifilar", "esquemaUnifilarBase64");
             mapDynamicImage(images, formData, "otros_imagenPlanoEmplazamiento", "planoEmplazamientoBase64");
@@ -281,7 +281,7 @@ public class DocumentController {
     @Operation(summary = "Planos de Situación y Cubierta")
     @GetMapping("/planos/{id}")
     public ResponseEntity<byte[]> generatePlanos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "12.-Planos_de_Situacion,_Emplazamiento_y_Cubierta",
+        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "12.- Planos de Situacion, Emplazamiento y Cubierta",
                 "PlanosSituacionEmplazamientoCubierta", formData -> {
                     Map<String, String> images = new HashMap<>();
                     for (int i = 1; i <= 5; i++) {
@@ -336,7 +336,7 @@ public class DocumentController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(
-                ContentDisposition.attachment().filename("11.-Estudio_Basico_de_Seguridad_y_Salud.pdf").build());
+                ContentDisposition.attachment().filename("11.- Estudio Básico de Seguridad y Salud.pdf").build());
         return new ResponseEntity<>(combinedPdf, headers, HttpStatus.OK);
     }
 
@@ -346,7 +346,7 @@ public class DocumentController {
     @Operation(summary = "Última Página Informativa")
     @GetMapping("/documento-ultima-pagina/{id}")
     public ResponseEntity<byte[]> generateUltimaPagina(@PathVariable UUID id) {
-        return processDocumentResponse(id, "DocumentoUltimaPagina", "13.-Otras_informaciones_utiles", "documento-ultima-pagina", null);
+        return processDocumentResponse(id, "DocumentoUltimaPagina", "13.- Otras informaciones utiles", "documento-ultima-pagina", null);
     }
 
     /**
