@@ -705,11 +705,11 @@ public class DocumentConfigService {
         // Tensión de suministro
         applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         
-        // Datos del Director de Obra (Eduardo Rivera por defecto)
-        putIfAbsent(enriched, "directorDeObra", "Eduardo Rivera Cabezas");
-        putIfAbsent(enriched, "titulacion", "Ingeniero Industrial");
-        putIfAbsent(enriched, "colegioOficial", "COIIAOC");
-        putIfAbsent(enriched, "numeroColegiado", "4654");
+        // Datos del Director de Obra (Vacíos según solicitud)
+        enriched.put("directorDeObra", "");
+        enriched.put("titulacion", "");
+        enriched.put("colegioOficial", "");
+        enriched.put("numeroColegiado", "");
 
         // Fecha
         applyMapping(enriched, form, "dia", "dia");
