@@ -257,7 +257,7 @@ public class DocumentController {
     @Operation(summary = "Declaración No Generación RCDs")
     @GetMapping({ "/no-generacion-rcds/{id}", "/no-generacion-residuos/{id}" })
     public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "Declaracion responsable de no generacion de RCDs",
+        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "8.- Declaracion responsable de no generacion de RCDs",
                 "DeclaracionNoGeneracionRcds", null);
     }
 
