@@ -118,7 +118,7 @@ public class DocumentConfigService {
             case "L3PagoAnticipado50":
             case "L3PagoRestante50":
             case "L4PagoAnticipado100":
-                applyJustificacionPagoSubvencionL3(enriched, formData);
+                applyJustificacionPagoSubvencionL4(enriched, formData);
                 break;
             case "memoria-economica":
             case "MemoriaEconomica":
@@ -140,6 +140,26 @@ public class DocumentConfigService {
             case "certificado-pedidos-contratos":
             case "CertificadoPedidos":
                 applyCertificadoPedidosContratos(enriched, formData);
+                break;
+
+            case "declaracion-ausencia-conflicto":
+            case "DeclaracionAusenciaConflicto":
+                applyDeclaracionAusenciaConflicto(enriched, formData);
+                break;
+
+            case "declaracion-cesion-tratamiento":
+            case "DeclaracionCesionTratamiento":
+                applyDeclaracionCesionTratamiento(enriched, formData);
+                break;
+
+            case "declaracion-compromiso-derechos":
+            case "DeclaracionCompromisoDerechos":
+                applyDeclaracionCompromisoDerechos(enriched, formData);
+                break;
+
+            case "declaracion-compromiso-transversales":
+            case "DeclaracionCompromisoTransversales":
+                applyDeclaracionCompromisoTransversales(enriched, formData);
                 break;
 
             // --- OTROS DOCUMENTOS ---
@@ -692,7 +712,7 @@ public class DocumentConfigService {
         applyMappingWithFallback(enriched, form, "potenciaContratada", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
         
         applyMapping(enriched, form, "cups", "cups");
-        putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
+        enriched.put("usoDestino", "Producción de Energía Eléctrica");
         putIfAbsent(enriched, "resistenciaTierra", "20");
         
         // Mapeo de fase para checkboxes con fallbacks
