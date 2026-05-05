@@ -987,6 +987,13 @@ public class DocumentConfigService {
         putIfAbsent(enriched, "modalidadEspecialistaM7", true);
         putIfAbsent(enriched, "modalidadEspecialistaM8", true);
         putIfAbsent(enriched, "modalidadEspecialistaM9", true);
+
+        // Formatear a 2 decimales los valores de Inversor - Red (Sección G)
+        formatToTwoDecimals(enriched, "g_inversorRedLongitud");
+        formatToTwoDecimals(enriched, "g_inversorRedSeccion");
+        formatToTwoDecimals(enriched, "g_inversorRedIntensidad");
+        formatToTwoDecimals(enriched, "g_inversorRedCaida");
+        formatToTwoDecimals(enriched, "g_inversorRedPotencia");
     }
 
     // =========================================================================
@@ -1302,6 +1309,20 @@ public class DocumentConfigService {
             return Double.parseDouble(clean);
         } catch (Exception e) {
             return 0.0;
+        }
+    }
+
+    private void formatToTwoDecimals(Map<String, Object> map, String key) {
+        Object value = map.get(key);
+        if (value != null && !value.toString().trim().isEmpty()) {
+            try {
+                String clean = value.toString().replace("€", "").replace(" ", "").replace(",", ".");
+                double parsed = Double.parseDouble(clean);
+                // Forzamos 2 decimales con formato español (coma)
+                map.put(key, String.format(new java.util.Locale("es", "ES"), "%.2f", parsed));
+            } catch (Exception e) {
+                // Si no es un número válido o es texto, lo dejamos como estaba
+            }
         }
     }
 }
