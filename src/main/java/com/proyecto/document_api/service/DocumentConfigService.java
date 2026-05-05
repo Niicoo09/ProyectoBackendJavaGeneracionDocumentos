@@ -994,6 +994,14 @@ public class DocumentConfigService {
         formatToTwoDecimals(enriched, "g_inversorRedIntensidad");
         formatToTwoDecimals(enriched, "g_inversorRedCaida");
         formatToTwoDecimals(enriched, "g_inversorRedPotencia");
+
+        // Campos directos usados en MemoriaTecnica.html
+        formatToTwoDecimals(enriched, "potenciaACInversor");
+        formatToTwoDecimals(enriched, "longitud_inversor_red");
+        formatToTwoDecimals(enriched, "seccion_inversor_red");
+        formatToTwoDecimals(enriched, "intensidad_inversor_red");
+        formatToTwoDecimals(enriched, "caida_inversor_red");
+        formatToTwoDecimals(enriched, "potenciaPicoGeneradorKW");
     }
 
     // =========================================================================
