@@ -995,13 +995,38 @@ public class DocumentConfigService {
         formatToTwoDecimals(enriched, "g_inversorRedCaida");
         formatToTwoDecimals(enriched, "g_inversorRedPotencia");
 
-        // Campos directos usados en MemoriaTecnica.html
+        // Campos directos usados en MemoriaTecnica.html - Fila 1 (Inversor - Red)
         formatToTwoDecimals(enriched, "potenciaACInversor");
         formatToTwoDecimals(enriched, "longitud_inversor_red");
         formatToTwoDecimals(enriched, "seccion_inversor_red");
         formatToTwoDecimals(enriched, "intensidad_inversor_red");
         formatToTwoDecimals(enriched, "caida_inversor_red");
+
+        // Fila 2 (Bornas Regulador - Batería)
+        formatToTwoDecimals(enriched, "potencia_g2");
+        formatToTwoDecimals(enriched, "longitud_g2");
+        formatToTwoDecimals(enriched, "intensidad_g2");
+        formatToTwoDecimals(enriched, "caida_g2");
+
+        // Fila 3 (Salida Regulador - Inversor)
+        formatToTwoDecimals(enriched, "potencia_g3");
+        formatToTwoDecimals(enriched, "longitud_g3");
+        formatToTwoDecimals(enriched, "intensidad_g3");
+        formatToTwoDecimals(enriched, "caida_g3");
+
+        // Fila 4 (Batería - Inversor)
+        formatToTwoDecimals(enriched, "energiaTotalBateria");
+        formatToTwoDecimals(enriched, "longitud_bateria_inversor");
+        formatToTwoDecimals(enriched, "seccion_bateria_inversor");
+        formatToTwoDecimals(enriched, "intensidad_bateria_inversor");
+        formatToTwoDecimals(enriched, "caida_bateria_inversor");
+
+        // Fila 5 (Generador - Inversor)
         formatToTwoDecimals(enriched, "potenciaPicoGeneradorKW");
+        formatToTwoDecimals(enriched, "longitud_generador_inversor");
+        formatToTwoDecimals(enriched, "seccion_generador_inversor");
+        formatToTwoDecimals(enriched, "intensidad_generador_inversor");
+        formatToTwoDecimals(enriched, "caida_generador_inversor");
     }
 
     // =========================================================================
