@@ -1352,7 +1352,7 @@ public class DocumentConfigService {
                 String clean = value.toString().replace("€", "").replace(" ", "").replace(",", ".");
                 double parsed = Double.parseDouble(clean);
                 // Forzamos 2 decimales con formato español (coma)
-                map.put(key, String.format(new java.util.Locale("es", "ES"), "%.2f", parsed));
+                map.put(key, String.format(java.util.Locale.of("es", "ES"), "%.2f", parsed));
             } catch (Exception e) {
                 // Si no es un número válido o es texto, lo dejamos como estaba
             }
