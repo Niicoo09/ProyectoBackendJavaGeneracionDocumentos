@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
@@ -110,13 +112,49 @@ public class LegalizacionController {
     @Operation(summary = "Certificado de Instalación Eléctrica (CIE)")
     @GetMapping({"/cie/{id}", "/boletin/{id}"})
     public ResponseEntity<byte[]> generateCie(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/Cie", "2.- CIE", "cie", formData -> {
-            Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie.jpg");
-            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
-            loadSignatureIntoExtraImages(extraImages, formData);
-            return extraImages;
-        });
+        // 1. Obtener y preparar datos del cliente
+        DocumentEntity doc = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe el registro con ID: " + id));
+        Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+
+        // 2. Preparar imágenes (Fondo y Firmas)
+        Map<String, String> extraImages = new HashMap<>();
+        String base64Fondo = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie.jpg");
+        extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64Fondo + ");");
+        loadSignatureIntoExtraImages(extraImages, formData);
+
+        // 3. Enriquecer datos para la plantilla
+        Map<String, Object> enrichedFormData = documentConfigService.enrich("cie", formData);
+        Map<String, Object> data = new HashMap<>();
+        data.put("form", enrichedFormData);
+        data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
+        data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        data.putAll(extraImages);
+
+        // 4. Generar la primera página (CIE)
+        byte[] ciePdf = documentService.generatePdf("legalizacion/Cie", data);
+
+        // 5. Cargar la segunda página (Consejos)
+        byte[] consejosPdf = jsonUtils.getResourceAsBytes("static/pdf/consejos_para_una_correcta.pdf");
+
+        // 6. Fusionar si el segundo PDF existe
+        byte[] finalPdf;
+        if (consejosPdf != null && consejosPdf.length > 0) {
+            List<byte[]> toMerge = new ArrayList<>();
+            toMerge.add(ciePdf);
+            toMerge.add(consejosPdf);
+            finalPdf = documentService.mergePdfs(toMerge);
+        } else {
+            finalPdf = ciePdf;
+        }
+
+        // 7. Preparar respuesta
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment().filename("2.- CIE con Consejos.pdf").build());
+        
+        return new ResponseEntity<>(finalPdf, headers, HttpStatus.OK);
     }
 
     @Operation(summary = "Certificado de Adecuación")
