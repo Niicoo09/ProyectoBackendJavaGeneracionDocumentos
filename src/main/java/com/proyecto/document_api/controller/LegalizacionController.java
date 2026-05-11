@@ -152,7 +152,7 @@ public class LegalizacionController {
         // 7. Preparar respuesta
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(ContentDisposition.attachment().filename("2.- CIE con Consejos.pdf").build());
+        headers.setContentDisposition(ContentDisposition.attachment().filename("2.- CIE.pdf").build());
         
         return new ResponseEntity<>(finalPdf, headers, HttpStatus.OK);
     }
