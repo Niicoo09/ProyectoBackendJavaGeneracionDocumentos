@@ -580,14 +580,15 @@ public class DocumentConfigService {
         enriched.put("domicilioAutorizante", buildDireccionCompleta(form));
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
 
-        applyMapping(enriched, form, "nombreRepresentante", "representante");
-        enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
-
-        applyMapping(enriched, form, "dia", "diaAceptacion");
+applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "mes", "mesAceptacion");
         applyMapping(enriched, form, "anio", "anioAceptacion");
     }
 
+    /**
+     * Documento 8: Declaración responsable de no generación de RCDs.
+     * Versión con dirección dinámica reforzada (Escalera, Planta, Puerta).
+     */
     private void applyDeclaracionNoGeneracionRcds(Map<String, Object> enriched, Map<String, Object> form) {
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
