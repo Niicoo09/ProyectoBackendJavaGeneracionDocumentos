@@ -590,7 +590,32 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
-        enriched.put("domicilio", buildDireccionCompleta(form));
+        // Construcción dinámica solo para este documento
+        StringBuilder dir = new StringBuilder();
+        String calle = getString(form, "emplazamientoCalle").trim();
+        if (calle.isEmpty()) calle = getString(form, "direccion").trim();
+        String num = getString(form, "numero").trim();
+        
+        if (!calle.isEmpty()) dir.append(calle);
+        if (!num.isEmpty()) {
+            if (dir.length() > 0) dir.append(", ");
+            dir.append(num);
+        }
+        
+        String bloque = getString(form, "bloque").trim();
+        if (!bloque.isEmpty()) dir.append(", Bloque ").append(bloque);
+        
+        String escalera = getString(form, "escalera").trim();
+        if (!escalera.isEmpty()) dir.append(", Escalera ").append(escalera);
+        
+        String planta = getString(form, "planta").trim();
+        if (!planta.isEmpty()) dir.append(", Planta ").append(planta);
+        
+        String puerta = getString(form, "puerta").trim();
+        if (!puerta.isEmpty()) dir.append(", Puerta ").append(puerta);
+
+        enriched.put("direccionCompleta", dir.toString());
+        enriched.put("domicilio", buildDireccionCompleta(form)); // Mantenemos el original para el domicilio del promotor
 
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
