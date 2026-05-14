@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Servicio que replica la lógica de `defaultData` y `fieldMapping` del archivo
@@ -590,32 +592,32 @@ public class DocumentConfigService {
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
-        // Construcción dinámica solo para este documento
-        StringBuilder dir = new StringBuilder();
-        String calle = getString(form, "emplazamientoCalle").trim();
-        if (calle.isEmpty()) calle = getString(form, "direccion").trim();
-        String num = getString(form, "numero").trim();
+        // Construcción dinámica REFORZADA para este documento
+        List<String> partes = new ArrayList<>();
         
-        if (!calle.isEmpty()) dir.append(calle);
-        if (!num.isEmpty()) {
-            if (dir.length() > 0) dir.append(", ");
-            dir.append(num);
+        String calle = getString(form, "emplazamientoCalle").trim();
+        if (calle.isEmpty()) {
+            // Si la calle está vacía, intentamos sacar la calle del campo 'direccion' 
+            // pero limpiando posibles datos de bloque/escalera que ya vengan concatenados
+            calle = getString(form, "direccion").split(" Es:| Pl:| Pt:| Bloque")[0].trim();
         }
         
-        String bloque = getString(form, "bloque").trim();
-        if (!bloque.isEmpty()) dir.append(", Bloque ").append(bloque);
-        
-        String escalera = getString(form, "escalera").trim();
-        if (!escalera.isEmpty()) dir.append(", Escalera ").append(escalera);
-        
-        String planta = getString(form, "planta").trim();
-        if (!planta.isEmpty()) dir.append(", Planta ").append(planta);
-        
-        String puerta = getString(form, "puerta").trim();
-        if (!puerta.isEmpty()) dir.append(", Puerta ").append(puerta);
+        String num = getString(form, "numero").trim();
+        if (!calle.isEmpty() && !num.isEmpty()) {
+            partes.add(calle + ", " + num);
+        } else if (!calle.isEmpty()) {
+            partes.add(calle);
+        }
 
-        enriched.put("direccionCompleta", dir.toString());
-        enriched.put("domicilio", buildDireccionCompleta(form)); // Mantenemos el original para el domicilio del promotor
+        // Helpers para añadir partes con nombres completos y sin dos puntos
+        addDireccionPart(partes, "Bloque", getString(form, "bloque"));
+        addDireccionPart(partes, "Escalera", getString(form, "escalera"));
+        addDireccionPart(partes, "Planta", getString(form, "planta"));
+        addDireccionPart(partes, "Puerta", getString(form, "puerta"));
+
+        String dirFinal = String.join(", ", partes);
+        enriched.put("direccionCompleta", dirFinal);
+        enriched.put("domicilio", dirFinal); // Forzamos también en domicilio para este doc
 
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
@@ -1381,6 +1383,25 @@ public class DocumentConfigService {
             } catch (Exception e) {
                 // Si no es un número válido o es texto, lo dejamos como estaba
             }
+        }
+    }
+
+    /**
+     * Helper para la dirección dinámica: limpia prefijos de la BD y añade el nombre completo.
+     */
+    private void addDireccionPart(List<String> partes, String label, String value) {
+        if (value == null) return;
+        
+        // Limpiamos posibles prefijos (Es:, Pl:, Pt:, etc.) y los dos puntos
+        String cleanValue = value.toString()
+            .replace("Es:", "")
+            .replace("Pl:", "")
+            .replace("Pt:", "")
+            .replace(":", "")
+            .trim();
+
+        if (!cleanValue.isEmpty()) {
+            partes.add(label + " " + cleanValue);
         }
     }
 }
