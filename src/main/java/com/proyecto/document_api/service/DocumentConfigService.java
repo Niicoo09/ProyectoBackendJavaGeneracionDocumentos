@@ -186,6 +186,7 @@ public class DocumentConfigService {
             case "no-generacion-rcds":
             case "no-generacion-residuos":
             case "declaracion-no-generacion-rcds":
+            case "DeclaracionNoGeneracionRcds":
                 applyDeclaracionNoGeneracionRcds(enriched, formData);
                 break;
             case "AnexoIii":
@@ -593,32 +594,24 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
-        // Construcción dinámica REFORZADA para este documento
-        List<String> partes = new ArrayList<>();
+        // Super-limpieza de dirección (Version 2 - Ultra-robusta)
+        String direccionBD = getString(form, "direccion").trim();
+        String calleBD = getString(form, "emplazamientoCalle").trim();
+        String numBD = getString(form, "numero").trim();
         
-        String calle = getString(form, "emplazamientoCalle").trim();
-        if (calle.isEmpty()) {
-            // Si la calle está vacía, intentamos sacar la calle del campo 'direccion' 
-            // pero limpiando posibles datos de bloque/escalera que ya vengan concatenados
-            calle = getString(form, "direccion").split(" Es:| Pl:| Pt:| Bloque")[0].trim();
-        }
-        
-        String num = getString(form, "numero").trim();
-        if (!calle.isEmpty() && !num.isEmpty()) {
-            partes.add(calle + ", " + num);
-        } else if (!calle.isEmpty()) {
-            partes.add(calle);
+        // Si todo está vacío en la BD, usamos fallbacks de otros campos comunes
+        if (direccionBD.isEmpty() && calleBD.isEmpty()) {
+             direccionBD = getString(form, "emplazamiento_direccion").trim();
         }
 
-        // Helpers para añadir partes con nombres completos y sin dos puntos
-        addDireccionPart(partes, "Bloque", getString(form, "bloque"));
-        addDireccionPart(partes, "Escalera", getString(form, "escalera"));
-        addDireccionPart(partes, "Planta", getString(form, "planta"));
-        addDireccionPart(partes, "Puerta", getString(form, "puerta"));
+        String dirLimpia = procesarYLimpiarDireccion(direccionBD, calleBD, numBD, form);
+        
+        // Si por algún motivo la limpieza falló y devolvió vacío, usamos la dirección original como último recurso
+        if (dirLimpia.isEmpty()) dirLimpia = direccionBD;
 
-        String dirFinal = String.join(", ", partes);
-        enriched.put("direccionCompleta", dirFinal);
-        enriched.put("domicilio", dirFinal); // Forzamos también en domicilio para este doc
+        enriched.put("direccionCompleta", dirLimpia);
+        enriched.put("direccion", dirLimpia);
+        enriched.put("domicilio", dirLimpia);
 
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
@@ -1404,5 +1397,74 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         if (!cleanValue.isEmpty()) {
             partes.add(label + " " + cleanValue);
         }
+    }
+
+    private String procesarYLimpiarDireccion(String direccion, String calle, String numero, Map<String, Object> form) {
+        // Si no hay datos base, devolvemos lo que tengamos
+        if (calle.isEmpty() && direccion.isEmpty()) return "";
+
+        List<String> partes = new ArrayList<>();
+
+        // 1. Extraemos la calle y el número
+        String calleFinal = calle.trim();
+        if (calleFinal.isEmpty()) {
+            // Intentamos limpiar la calle desde la dirección completa si esta contiene los separadores
+            calleFinal = direccion.split(" Es:| Pl:| Pt:| Bloque| Escalera| Planta| Puerta| :")[0].trim();
+        }
+        
+        String num = numero.trim();
+        // Si el número no está en la calle, lo añadimos
+        if (!num.isEmpty() && !calleFinal.toLowerCase().contains(num.toLowerCase())) {
+            partes.add(calleFinal + ", " + num);
+        } else {
+            partes.add(calleFinal);
+        }
+
+        // 2. Añadimos el resto de partes (limpiando si ya vienen con prefijo)
+        addDireccionParteLimpia(partes, "Bloque", getString(form, "bloque"), "Bloque", direccion);
+        addDireccionParteLimpia(partes, "Escalera", getString(form, "escalera"), "Es:", direccion);
+        addDireccionParteLimpia(partes, "Planta", getString(form, "planta"), "Pl:", direccion);
+        addDireccionParteLimpia(partes, "Puerta", getString(form, "puerta"), "Pt:", direccion);
+
+        String resultado = String.join(", ", partes);
+        
+        // Si el resultado es muy corto o igual a la calle, y la dirección original tenía más info, 
+        // quizá falló el split. Como último recurso, devolvemos la dirección original traducida.
+        if (resultado.length() < direccion.length() && (direccion.contains("Es:") || direccion.contains("Pl:"))) {
+            return traducirDireccionDirectamente(direccion);
+        }
+
+        return resultado;
+    }
+
+    private void addDireccionParteLimpia(List<String> partes, String label, String value, String prefix, String fullDir) {
+        String val = value.trim();
+        
+        // Si el campo está vacío, intentamos buscarlo en la dirección completa
+        if (val.isEmpty() && fullDir.contains(prefix)) {
+            try {
+                String sub = fullDir.substring(fullDir.indexOf(prefix) + prefix.length()).trim();
+                val = sub.split(" ")[0].replace(":", "").trim();
+            } catch (Exception e) {}
+        }
+
+        // Limpieza final
+        val = val.replace(prefix, "").replace(":", "").trim();
+        
+        if (!val.isEmpty() && !val.equals("00") && !val.equals("0")) {
+            partes.add(label + " " + val);
+        }
+    }
+
+    private String traducirDireccionDirectamente(String dir) {
+        if (dir == null) return "";
+        return dir.replace("Es:", ", Escalera ")
+                  .replace("Pl:", ", Planta ")
+                  .replace("Pt:", ", Puerta ")
+                  .replace("Bloque:", ", Bloque ")
+                  .replace(" :", " ")
+                  .replace("  ", " ")
+                  .replace(", ,", ",")
+                  .trim();
     }
 }

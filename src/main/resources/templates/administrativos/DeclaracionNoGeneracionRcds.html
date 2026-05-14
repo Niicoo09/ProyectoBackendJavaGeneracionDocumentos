@@ -60,7 +60,7 @@
 
                 <p>
                     La instalación fotovoltaica a realizar en 
-                    <strong th:text="${form['direccionCompleta'] ?: form['direccion'] ?: form['emplazamientoCalle'] ?: ''}">Calle Ejemplo, Nº 1, Bloque A, Puerta 2</strong>
+                    <strong th:text="${form['direccionCompleta']}">Calle Ejemplo, Nº 1, Bloque A, Puerta 2</strong>
                     – código postal <strong th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}">41015</strong>, 
                     con Referencia Catastral <strong th:text="${form['referenciaCatastral'] ?: form['cups'] ?: ''}">7259005TG3475N0007WD</strong>, 
                     en el término municipal de <strong th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}">Sevilla</strong>, 
