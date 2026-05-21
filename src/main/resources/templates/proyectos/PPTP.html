@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo 5: Pliego de Prescripciones Técnicas Particulares (PPTP)</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 25px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 10px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 10px 4px 10px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 12px;
+            color: #0f172a;
+        }
+
+        .pl-6 {
+            padding-left: 20px;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 18px 0 10px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.subseccion-titulo {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 14px 0 6px 0;
+            text-transform: uppercase;
+        }
+
+        p.texto-parrafo {
+            font-size: 11.5px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 10px 0;
+            line-height: 1.55;
+        }
+
+        ul.lista-puntos {
+            margin: 0 0 10px 0;
+            padding-left: 18px;
+        }
+
+        ul.lista-puntos li {
+            font-size: 11.5px;
+            color: #334155;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 11px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            color: #334155;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf" th:with="
+        rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '36.30'},
+        potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9.]', '').isEmpty() ? '36.30' : rawPot.toString().replaceAll('[^0-9.]', ''))},
+        potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+        potStr=${T(java.lang.String).format('%.2f', potKwp).replace('.', ',')},
+        tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+        clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : 'CLIENTE')}
+    ">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO V</div>
+                        <div class="portada-titulo">PLIEGO DE PRESCRIPCIONES TÉCNICAS PARTICULARES (PPTP)</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span th:text="${'Diciembre de 2024'}">Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. DISEÑO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.1. DISEÑO DEL GENERADOR FOTOVOLTAICO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.2. ORIENTACIÓN, INCLINACIÓN Y SOMBRAS</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. COMPONENTES Y MATERIALES</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.1. SISTEMAS GENERADORES FOTOVOLTAICOS</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.2. ESTRUCTURA DE SOPORTE</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.3. INVERSORES FOTOVOLTAICOS</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.4. CABLEADOS CC Y CA</span>
+                        <span>6</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.5. PROTECCIONES Y ENVOLVENTES</span>
+                        <span>6</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.6. PUESTA A TIERRA</span>
+                        <span>6</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>3. APROVISIONAMIENTO Y TRANSPORTE</span>
+                        <span>7</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>4. RECEPCIÓN Y PRUEBAS</span>
+                        <span>7</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>5. MANTENIMIENTO PREVENTIVO Y CORRECTIVO</span>
+                        <span>8</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: DISEÑO ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. DISEÑO</h1>
+                
+                <h2 class="subseccion-titulo">1.1. DISEÑO DEL GENERADOR FOTOVOLTAICO</h2>
+                <p class="texto-parrafo">
+                    Todos los módulos que integran la instalación serán del mismo modelo y del mismo fabricante, y en el caso de existir otros distintos, el diseño técnico deberá garantizar su total compatibilidad física y eléctrica, evitando la degradación prematura de las prestaciones de la instalación por desajuste (mismatch).
+                </p>
+                <p class="texto-parrafo">
+                    Se utilizarán exclusivamente módulos fotovoltaicos de silicio monocristalino calificados, aportando certificados emitidos por laboratorios reconocidos internacionalmente. En todos los casos se cumplimentarán las normas UNE-EN e internacionales vigentes de obligado cumplimiento.
+                </p>
+
+                <h2 class="subseccion-titulo">1.2. ORIENTACIÓN, INCLINACIÓN Y SOMBRAS</h2>
+                <p class="texto-parrafo">
+                    La orientación e inclinación óptima de la estructura y de los módulos solares se ajustará a los límites físicos establecidos en la Memoria Técnica del proyecto. 
+                </p>
+                <p class="texto-parrafo">
+                    El cálculo de la distancia mínima entre filas de módulos solares se realizará conforme a los criterios de sombreado en el día del solsticio de invierno (21 de diciembre), garantizando un mínimo de 4 horas de sol sin sombras entre las 10:00 y las 14:00 hora solar.
+                </p>
+                <p class="texto-parrafo">
+                    Se asegurará asimismo la no afectación por sombras parciales causadas por obstáculos fijos (chimeneas, pretiles, vegetación) mediante el análisis previo y la instalación selectiva de optimizadores de potencia en caso de sombras parciales inevitables.
+                </p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: COMPONENTES I ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">2. COMPONENTES Y MATERIALES</h1>
+
+                <h2 class="subseccion-titulo">2.1. SISTEMAS GENERADORES FOTOVOLTAICOS</h2>
+                <p class="texto-parrafo">
+                    Todos los módulos tendrán que satisfacer las especificaciones técnicas UNE-EN 61215 para módulos de silicio cristalino, así como la calificación de seguridad eléctrica Clase II.
+                </p>
+                <p class="texto-parrafo">
+                    Cada módulo solar llevará de forma clara e indeleble el modelo, marca, logotipo del fabricante y un número de serie único que lo vincule con los informes de flash test del fabricante.
+                </p>
+                <ul class="lista-puntos">
+                    <li>Los módulos deberán incorporar diodos de derivación (bypass) integrados en la caja de conexiones IP68 para mitigar la formación de puntos calientes (hotspots).</li>
+                    <li>Los marcos laterales estructurales del módulo serán de aleación de aluminio anodizado de alta resistencia mecánica.</li>
+                    <li>La tolerancia de la potencia nominal de salida de los paneles solares será exclusivamente positiva (0 a +5 W), rechazando cualquier panel de potencia inferior.</li>
+                    <li>La estructura de soporte del generador y los paneles fotovoltaicos se conectará de manera íntegra a la red de tierra de protección de la instalación.</li>
+                </ul>
+                <p class="texto-parrafo">
+                    El montaje de los paneles se realizará conforme a los manuales del fabricante, respetando los puntos de anclaje recomendados y aplicando el par de apriete exacto mediante el uso de llaves dinamométricas calibradas en obra.
+                </p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 5: COMPONENTES II ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo">2.2. ESTRUCTURA DE SOPORTE</h2>
+                <p class="texto-parrafo">
+                    El sistema estructural será de aluminio anodizado AL6005-T5 y tornillería de acero inoxidable A2-70, garantizando una resistencia mínima a la corrosión de clase C4.
+                </p>
+                <p class="texto-parrafo">
+                    Se justificará la estabilidad estructural mediante cálculo de cargas de viento y nieve según las especificaciones del Código Técnico de la Edificación (CTE DB-SE-AE).
+                </p>
+                <ul class="lista-puntos">
+                    <li>La estructura posibilitará la libre dilatación térmica del metal sin transmitir esfuerzos mecánicos nocivos a las células de silicio del panel.</li>
+                    <li>Las pinzas de sujeción (end clamps y mid clamps) serán de la medida exacta recomendada por el fabricante del módulo solar.</li>
+                    <li>No se permitirá bajo ninguna circunstancia que los elementos estructurales generen sombreado alguno sobre las células activas del panel solar.</li>
+                </ul>
+
+                <h2 class="subseccion-titulo">2.3. INVERSORES FOTOVOLTAICOS</h2>
+                <p class="texto-parrafo">
+                    Serán autoconmutados con tecnología MPPT (seguidores del punto de máxima potencia) capaces de optimizar de forma continua la curva de potencia eléctrica.
+                </p>
+                <p class="texto-parrafo">
+                    Cumplirán estrictamente con las directivas de seguridad eléctrica de baja tensión y compatibilidad electromagnética CE. Incorporarán de serie protecciones electrónicas contra:
+                </p>
+                <ul class="lista-puntos">
+                    <li>Cortocircuitos e inversión de polaridad en el lado de corriente continua.</li>
+                    <li>Tensión y frecuencia de red fuera del rango normal de operación BT (Protección anti-isla integrada).</li>
+                    <li>Sobretensiones transitorias y permanentes mediante varistores de óxido metálico de Tipo II integrados en CC y CA.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 5</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 6: COMPONENTES III ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo">2.4. CABLEADOS CC Y CA</h2>
+                <p class="texto-parrafo">
+                    Los cables de la sección de continua (CC) serán de cobre flexible, con aislamiento termoestable libre de halógenos de tipo H1Z2Z2-K de 1,5 kV, aptos para intemperie y radiación UV. La sección mínima será de 6 mm² calculada para que la caída de tensión en C.C. sea inferior al 1,5% a potencia nominal.
+                </p>
+                <p class="texto-parrafo">
+                    Los conductores de corriente alterna (CA) serán multipolares de cobre flexibles clase 5, del tipo RZ1-K (AS) libres de halógenos de 0,6/1 kV. La sección mínima se calculará para que la caída de tensión en C.A. sea inferior al 2% a potencia máxima del inversor.
+                </p>
+
+                <h2 class="subseccion-titulo">2.5. PROTECCIONES Y ENVOLVENTES</h2>
+                <p class="texto-parrafo">
+                    Los cuadros generales de protección de corriente continua y alterna cumplirán con la norma UNE-EN 61439 y presentarán un grado de protección mínimo de IP65 para su instalación en exterior.
+                </p>
+                <p class="texto-parrafo">
+                    El conexionado se realizará de forma limpia mediante terminales de cobre de presión punzonados y la canalización se protegerá físicamente mediante tubos rígidos de PVC libres de halógenos de grado M1.
+                </p>
+
+                <h2 class="subseccion-titulo">2.6. PUESTA A TIERRA</h2>
+                <p class="texto-parrafo">
+                    Todas las masas metálicas de la instalación solar fotovoltaica se interconectarán formando un anillo equipotencial cerrado y continuo conectado de forma segura a una pica de puesta a tierra independiente de cobre de 2 metros de longitud.
+                </p>
+                <p class="texto-parrafo">
+                    La resistencia máxima de puesta a tierra del sistema se verificará en obra con telurómetro y no superará en ningún caso el valor máximo admisible de 20 ohmios para garantizar la rápida actuación de las protecciones eléctricas de seguridad.
+                </p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 6</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 7: LOGÍSTICA & PRUEBAS ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">3. APROVISIONAMIENTO Y TRANSPORTE</h1>
+                <p class="texto-parrafo">
+                    El contratista instalador es el único responsable de la logística, acopio y correcto transporte de todo el material solar fotovoltaico hasta las zonas delimitadas en la obra.
+                </p>
+                <p class="texto-parrafo">
+                    Los módulos fotovoltaicos se transportarán exclusivamente en sus palets originales y en posición vertical, evitando vibraciones nocivas o cargas mecánicas sobre las superficies de vidrio. El almacenamiento se realizará en espacios cerrados y vigilados para evitar hurtos o deterioros por agentes climáticos severos.
+                </p>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">4. RECEPCIÓN Y PRUEBAS</h1>
+                <p class="texto-parrafo">
+                    Antes del inicio del montaje, se inspeccionará visualmente todo el material y se contrastarán los certificados de conformidad CE del fabricante de los módulos, inversores y cableado eléctrico.
+                </p>
+                <p class="texto-parrafo">
+                    Antes de la puesta en servicio oficial, el instalador realizará y registrará de forma obligatoria las siguientes pruebas técnicas de funcionamiento:
+                </p>
+                <ul class="lista-puntos">
+                    <li>Prueba de continuidad de la red equipotencial de tierra e inspección visual de las conexiones mecánicas.</li>
+                    <li>Medida de la resistencia de aislamiento de todos los strings de continua y del cableado general de alterna.</li>
+                    <li>Prueba de tensión de circuito abierto (Voc) y de corriente de cortocircuito (Isc) de cada una de las series solares.</li>
+                    <li>Prueba de actuación del relé diferencial y del interruptor de desconexión rápida del inversor (protección anti-isla).</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 7</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 8: MANTENIMIENTO & FIRMA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">5. MANTENIMIENTO PREVENTIVO Y CORRECTIVO</h1>
+                
+                <h2 class="subseccion-titulo">5.1. MANTENIMIENTO PREVENTIVO</h2>
+                <p class="texto-parrafo">
+                    Se establece un programa obligatorio de visitas de mantenimiento preventivo con una periodicidad mínima semestral (cada 6 meses), que incluirá las siguientes operaciones clave:
+                </p>
+                <ul class="lista-puntos">
+                    <li>Inspección visual de los módulos fotovoltaicos para detectar posibles roturas, suciedad severa o delaminación.</li>
+                    <li>Verificación termográfica rápida de las series solares mediante cámara infrarroja para localizar hotspots.</li>
+                    <li>Comprobación de la fijación mecánica y apriete de toda la tornillería de la estructura de soporte.</li>
+                    <li>Revisión del estado de las protecciones eléctricas de CC y CA y verificación manual de la actuación del diferencial.</li>
+                    <li>Limpieza anual de los paneles solares mediante agua desmineralizada y cepillo de cerdas suaves.</li>
+                </ul>
+
+                <h2 class="subseccion-titulo">5.2. MANTENIMIENTO CORRECTIVO</h2>
+                <p class="texto-parrafo">
+                    El mantenimiento correctivo engloba todas aquellas operaciones necesarias de sustitución o reparación urgente de componentes (inversores, strings, fusibles, cables) para garantizar la disponibilidad operativa de la planta. 
+                </p>
+                <p class="texto-parrafo">
+                    El instalador garantiza un tiempo máximo de respuesta técnica de 48 horas tras el aviso de cualquier avería que cause el paro total o parcial de la instalación solar fotovoltaica.
+                </p>
+
+                <!-- FIRMA FINAL -->
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p><strong>El Ingeniero Autor:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p><strong>Firma y Sello Oficial:</strong></p>
+                        <img th:src="${firmaBase64}" alt="Firma Eduardo" class="firma-imagen" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO V: PLIEGO DE CONDICIONES TÉCNICAS (PPTP)</span>
+                <span class="pie-numero">Página 8</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

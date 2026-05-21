@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo 7: Estudio de Gestión de Residuos</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12.5px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 12px 4px 12px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 13px;
+            color: #0f172a;
+        }
+
+        .pl-6 {
+            padding-left: 24px;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 20px 0 12px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.subseccion-titulo {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 16px 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        p.texto-parrafo {
+            font-size: 12px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 10px 0;
+            line-height: 1.6;
+        }
+
+        ul.lista-puntos {
+            margin: 0 0 12px 0;
+            padding-left: 20px;
+        }
+
+        ul.lista-puntos li {
+            font-size: 12px;
+            color: #334155;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 11px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            color: #334155;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+
+        .table-premium tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        .bg-total {
+            background-color: #f1f5f9 !important;
+            font-weight: 700;
+        }
+
+        /* Checkbox table */
+        .check-cell {
+            width: 25px;
+            text-align: center;
+            font-weight: 700;
+            color: #0f172a;
+            border-right: 2px solid #cbd5e1 !important;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO 7</div>
+                        <div class="portada-titulo">ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span th:text="${'Diciembre de 2024'}">Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. ANTECEDENTES Y OBJETO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. INTRODUCCIÓN</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.1. DEFINICIONES</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>3. IDENTIFICACIÓN DE RESIDUOS</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>4. GESTIÓN DE RESÍDUOS SEGÚN JERARQUÍA</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>5. ESTIMACIÓN DE LA CANTIDAD DE RCD´s QUE SE GENERARÁN EN LA OBRA</span>
+                        <span>6</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>6. OPERACIONES DE REUTILIZACIÓN, VALORIZACIÓN O ELIMINACIÓN A QUE SE DESTINARÁN LOS RCD´s QUE SE GENERARÁN EN OBRA</span>
+                        <span>7</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>6.1. MEDIDAS DE SEGREGACIÓN "INSITU" PREVISTAS (CLASIFICACIÓN / SELECCIÓN)</span>
+                        <span>8</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>6.2. OPERACIONES DE REUTILIZACIÓN</span>
+                        <span>8</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>6.3. OPERACIONES DE VALORIZACIÓN</span>
+                        <span>8</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>6.4. DESTINO PREVISTO PARA LOS RESIDUOS</span>
+                        <span>8</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>7. PRESCRIPCIONES TÉCNICAS PARTICULARES PARA LA GESTIÓN DE RCD´s EN LA OBRA</span>
+                        <span>10</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>7.1. CON CARÁCTER GENERAL</span>
+                        <span>10</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>7.2. CON CARÁCTER PARTICULAR</span>
+                        <span>10</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>8. VALORACIÓN DEL COSTE DE LA GESTIÓN DE RCD´s</span>
+                        <span>12</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: SECCIONES 1, 2, 2.1 ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. ANTECEDENTES Y OBJETO</h1>
+                <p class="texto-parrafo">Se redacta el presente Estudio de Gestión de RCD´s en cumplimiento con la siguiente normativa:</p>
+                <ul class="lista-puntos">
+                    <li>Artículo 17 del Reglamento 2020/852 (principio DNSH), por el que se regula el cumplimiento de actuaciones para no causar un perjuicio significativo a los siguientes objetivos medioambientales:
+                        <ul style="margin-top: 4px; padding-left: 15px;">
+                            <li>La mitigación del cambio climático.</li>
+                            <li>La adaptación al cambio climático.</li>
+                            <li>El uso sostenible y la protección de los recursos hídricos y marinos.</li>
+                            <li>La economía circular.</li>
+                            <li>La prevención y control de la contaminación.</li>
+                            <li>La protección y recuperación de la biodiversidad y los ecosistemas.</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 8px;">Real Decreto 105/2008, por el que se regula la producción y gestión de los residuos de construcción y demolición, siendo el objeto del mismo el de realizar una estimación de los residuos que se prevé que se producirán en los trabajos directamente relacionados con la obra y habrá de servir de base para la redacción del correspondiente Plan de Gestión de Residuos por parte del Constructor. En dicho Plan se desarrollarán y complementarán las previsiones contenidas en este documento en función de los proveedores concretos y su propio sistema de ejecución de la obra.</li>
+                </ul>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">2. INTRODUCCIÓN</h1>
+                <p class="texto-parrafo">El presente Estudio de gestión de residuos tiene por objeto la identificación y cuantificación de los residuos de construcción y demolición que se prevé que se producirán en los trabajos asociados al presente proyecto constructivo.</p>
+
+                <h2 class="subseccion-titulo">2.1. DEFINICIONES</h2>
+                <p class="texto-parrafo"><strong>Residuo de construcción y demolición:</strong> cualquier sustancia u objeto que, cumpliendo la definición de "residuo" incluida en el apartado 3.a) de la ley 10/1998, se genere en una obra de construcción o demolición. Real decreto 105/2008, de 1 de febrero, Producción y gestión de los residuos de construcción y demolición BOE, nº38, de 13 de febrero de 2008.</p>
+                <p class="texto-parrafo"><strong>Residuo inerte:</strong> aquel residuo no peligroso que no experimenta transformaciones físicas, químicas o biológicas significativas, no es soluble ni combustible, ni reacciona física ni químicamente ni de ninguna otra manera, no es biodegradable, no afecta negativamente a otras materias con las cuales entra en contacto de forma que pueda dar lugar a contaminación del medio ambiente o perjudicar a la salud humana. La lixiviabilidad total, el contenido de contaminantes del residuo y la ecotoxicidad del lixiviado deberán ser insignificantes, y en particular no deberán suponer un riesgo para la calidad de las aguas superficiales o subterráneas.</p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: SECCIONES 3, 4 ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">3. IDENTIFICACIÓN DE RESIDUOS</h1>
+                <p class="texto-parrafo">Atendiendo a las características de las obras a ejecutar, los residuos que se generarán serán los marcados en la tabla adjunta, de los recogidos en la Lista Europea establecida en la Orden MAM/304/2002.</p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%; text-align: center;">Gen.</th>
+                            <th style="width: 18%;">Código LER</th>
+                            <th>Naturaleza del Residuo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 04 05</td>
+                            <td><strong>Hierro y Acero</strong> (RCD's: Naturaleza no pétrea - Metales)</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">20 01 01</td>
+                            <td><strong>Papel</strong> (RCD's: Naturaleza no pétrea - Papel)</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 02 03</td>
+                            <td><strong>Plástico</strong> (RCD's: Naturaleza no pétrea - Plástico)</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">20 03 01</td>
+                            <td><strong>Mezcla de residuos municipales</strong> (RCD's: Basuras)</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">15 01 10</td>
+                            <td><strong>Envases vacíos</strong> de metal o plástico contaminado (Potencialmente Peligrosos)</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 09 04</td>
+                            <td><strong>RCD's mezclados</strong> distintos de los especificados en los códigos 17 09 01, 17 09 02 y 17 09 03</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">4. GESTIÓN DE RESIDUOS SEGÚN JERARQUÍA</h1>
+                <p class="texto-parrafo">Se propone la gestión conforme a la jerarquía establecida por la normativa europea:</p>
+                <ul class="lista-puntos">
+                    <li><strong>1. Prevención:</strong> Planificación para minimizar los residuos, incluyendo una estimación ajustada de materiales. Uso de técnicas no invasivas para la instalación que reduzcan el daño a las tejas.</li>
+                    <li><strong>2. Preparación para la reutilización:</strong> Componentes como tejas intactas, estructuras metálicas sobrantes y cables pueden ser revisados para su reutilización en otras instalaciones.</li>
+                    <li><strong>3. Reciclaje:</strong> Tejas dañadas en plantas específicas de tratamiento; residuos metálicos entregados a gestores autorizados para su reciclaje; residuos eléctricos gestionados por SCRAP autorizado.</li>
+                    <li><strong>4. Valorización:</strong> Compactación y embalaje de residuos para valorización energética o posterior reciclaje industrial.</li>
+                    <li><strong>5. Eliminación:</strong> Únicamente aquellos residuos no valorizables ni reciclables serán depositados en vertederos autorizados a través de transportistas homologados.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 5: SECCIÓN 5 ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">5. ESTIMACIÓN DE LA CANTIDAD DE RCD´s QUE SE GENERARÁN EN LA OBRA</h1>
+                <p class="texto-parrafo">La cantidad de RCD's generados se ha estimado sobre bases estadísticas ligadas a la tipología de la obra y superficie afectada. Conforme al Plan Nacional de RCD's, se consideran los siguientes pesos y porcentajes de reciclaje:</p>
+
+                <h2 class="subseccion-titulo">5.a. Estimación de cantidades totales</h2>
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Residuos</th>
+                            <th style="width: 20%; text-align: right;">Cant. Generada (kg)</th>
+                            <th style="width: 20%; text-align: right;">Valorizado (%)</th>
+                            <th>Justificación del Destino</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tejas dañadas</td>
+                            <td style="text-align: right; font-weight: bold;">50</td>
+                            <td style="text-align: right; color: #16a34a; font-weight: bold;">90%</td>
+                            <td>Recicladas en plantas específicas de áridos.</td>
+                        </tr>
+                        <tr>
+                            <td>Residuos metálicos</td>
+                            <td style="text-align: right; font-weight: bold;">50</td>
+                            <td style="text-align: right; color: #16a34a; font-weight: bold;">100%</td>
+                            <td>Totalmente reciclados en chatarrería autorizada.</td>
+                        </tr>
+                        <tr>
+                            <td>Residuos eléctricos</td>
+                            <td style="text-align: right; font-weight: bold;">20</td>
+                            <td style="text-align: right; color: #16a34a; font-weight: bold;">80%</td>
+                            <td>Reciclados por gestores autorizados RAEE.</td>
+                        </tr>
+                        <tr>
+                            <td>Residuos de embalajes</td>
+                            <td style="text-align: right; font-weight: bold;">100</td>
+                            <td style="text-align: right; color: #16a34a; font-weight: bold;">90%</td>
+                            <td>Separados, compactados y valorizados.</td>
+                        </tr>
+                        <tr>
+                            <td>Paneles defectuosos</td>
+                            <td style="text-align: right; font-weight: bold;">10</td>
+                            <td style="text-align: right; color: #16a34a; font-weight: bold;">100%</td>
+                            <td>Reciclaje en programas colectivos específicos.</td>
+                        </tr>
+                        <tr class="bg-total">
+                            <td>TOTAL</td>
+                            <td style="text-align: right;">230</td>
+                            <td style="text-align: right; color: #16a34a;">&gt;70%</td>
+                            <td>Cumplimiento normativo y DNSH garantizado.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="texto-parrafo" style="font-style: italic; font-weight: bold; color: #0f172a; margin-top: 5px;">
+                    En consecuencia, queda formalmente justificado el cumplimiento relativo al mínimo del 70% del porcentaje de valorización de los residuos generados.
+                </p>
+
+                <h2 class="subseccion-titulo" style="margin-top: 15px;">5.b. Estimación de cantidades por tipo de RCDs, codificados según Listado Europeo (LER)</h2>
+                <ul class="lista-puntos" style="columns: 2; -webkit-columns: 2; gap: 40px; margin-bottom: 5px;">
+                    <li><strong>Hormigón:</strong> 10% (6,37 Tm)</li>
+                    <li><strong>Ladrillos, tejas:</strong> 68% (43,31 Tm)</li>
+                    <li><strong>Metales:</strong> 5% (3,18 Tm)</li>
+                    <li><strong>Madera:</strong> 7% (4,46 Tm)</li>
+                    <li><strong>Vidrios:</strong> 3% (1,91 Tm)</li>
+                    <li><strong>Plásticos:</strong> 4% (2,55 Tm)</li>
+                    <li><strong>Papel y Cartón:</strong> 3% (1,91 Tm)</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 5</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 6: MEDIDAS DE MINIMIZACIÓN ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo" style="margin-top: 5px;">Medidas para minimizar el volumen de residuos a generar durante la obra</h2>
+                <p class="texto-parrafo">Con el fin de garantizar una correcta gestión ambiental y reducir la huella ecológica de la instalación, se adoptarán las siguientes medidas de control riguroso:</p>
+
+                <table class="table-premium" style="margin-top: 5px; font-size: 10.5px;">
+                    <tbody>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Todos los agentes intervinientes en la obra deberán conocer sus obligaciones en relación con los residuos y cumplir las órdenes y normas dictadas por la Dirección Técnica.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Se deberá optimizar la cantidad de materiales necesarios para la ejecución de la obra. Un exceso de materiales es origen de más residuos sobrantes de ejecución.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Se preverá el acopio de materiales fuera de zonas de tránsito de la obra, de forma que permanezcan bien embalados y protegidos hasta el momento de su utilización, con el fin de evitar la rotura y sus consiguientes residuos.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Si se realiza la clasificación de los residuos, habrá que disponer de los contenedores más adecuados para cada tipo de material sobrante. La separación selectiva se deberá llevar a cabo en el momento en que se originan los residuos. Si se mezclan, la separación posterior incrementa los costes de gestión.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Los contenedores, sacos, depósitos y demás recipientes de almacenaje y transporte de los diversos residuos deberán estar debidamente etiquetados y homologados.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Se dispondrá en obra, si fuera necesario, de maquinaria para el machaqueo de residuos pétreos, con el fin de fabricar áridos reciclados o reutilizables.</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td>Se impedirá que los residuos líquidos y orgánicos se mezclen fácilmente con otros y los contaminen. Los residuos se deben depositar exclusivamente en los contenedores o sacos industriales adecuados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 6</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 7: SECCIÓN 6 & 6.1 ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">6. OPERACIONES DE REUTILIZACIÓN, VALORIZACIÓN O ELIMINACIÓN A QUE SE DESTINARÁN LOS RCD´s QUE SE GENERARÁN EN OBRA</h1>
+                <p class="texto-parrafo">Conforme a la normativa vigente, se define operativamente:</p>
+                <ul class="lista-puntos">
+                    <li><strong>Reutilización:</strong> El empleo de un producto usado para el mismo fin para el que fue diseñado originariamente.</li>
+                    <li><strong>Valorización:</strong> Todo procedimiento que permite el aprovechamiento de los recursos contenidos en los residuos sin poner en peligro la salud humana y sin utilizar métodos que puedan causar perjuicios al medio ambiente.</li>
+                    <li><strong>Eliminación:</strong> Todo procedimiento dirigido, bien al vertido de los residuos o bien a su destrucción, total o parcial, realizado de forma controlada y segura para la salud humana y medioambiental.</li>
+                </ul>
+
+                <h2 class="subseccion-titulo" style="margin-top: 15px;">6.1. MEDIDAS DE SEGREGACIÓN "INSITU" PREVISTAS (CLASIFICACIÓN / SELECCIÓN)</h2>
+                <p class="texto-parrafo">En base al artículo 5.5 del R.D. 105/2008, los residuos de construcción y demolición deberán separarse en fracciones en la propia obra, cuando la generación para el total de la misma supere de forma individualizada las siguientes cantidades límites:</p>
+                
+                <ul class="lista-puntos" style="columns: 2; -webkit-columns: 2; gap: 30px;">
+                    <li><strong>Hormigón:</strong> 80,00 Tn</li>
+                    <li><strong>Ladrillos, tejas:</strong> 40,00 Tn</li>
+                    <li><strong>Metales:</strong> 2,00 Tn</li>
+                    <li><strong>Maderas:</strong> 1,00 Tn</li>
+                    <li><strong>Vidrio:</strong> 1,00 Tn</li>
+                    <li><strong>Plásticos:</strong> 0,50 Tn</li>
+                    <li><strong>Papel y cartón:</strong> 0,50 Tn</li>
+                </ul>
+
+                <p class="texto-parrafo" style="margin-top: 10px;">
+                    Dado que la cantidad total de residuos prevista para la ejecución de esta instalación solar fotovoltaica <strong>no supera ninguno de los límites establecidos anteriormente</strong>, no se requiere la disposición de contenedores de recogida selectiva específicos de forma obligatoria en la obra.
+                </p>
+                <p class="texto-parrafo">
+                    Por consiguiente, se realizará una recogida conjunta de tipo "todo uno" utilizando contenedores normalizados o sacos industriales adecuados. El poseedor de los residuos (contratista principal) o un gestor autorizado se encargará del acopio, carga, transporte e inyección final a planta de reciclaje certificada.
+                </p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 7</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 8: SECCIONES 6.2, 6.3, 6.4 (TABLA 1) ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo" style="margin-top: 5px;">6.2. OPERACIONES DE REUTILIZACIÓN</h2>
+                <p class="texto-parrafo">Dadas las características específicas del montaje, no se prevé la reutilización in-situ de los residuos pétreos o metálicos, por lo que serán transportados de forma íntegra a plantas autorizadas y vertederos homologados.</p>
+
+                <h2 class="subseccion-titulo">6.3. OPERACIONES DE VALORIZACIÓN</h2>
+                <p class="texto-parrafo">No se realizarán operaciones complejas de valorización in-situ en la obra.</p>
+
+                <h2 class="subseccion-titulo">6.4. DESTINO PREVISTO PARA LOS RESIDUOS (RESTO RCD'S)</h2>
+                <p class="texto-parrafo">Se detalla a continuación el flujo y tratamiento previsto según el listado europeo (LER) de residuos:</p>
+
+                <table class="table-premium" style="font-size: 10px; margin-top: 5px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 6%; text-align: center;">Gen.</th>
+                            <th style="width: 18%;">Código LER</th>
+                            <th>Material / Componente</th>
+                            <th style="width: 22%;">Tratamiento</th>
+                            <th style="width: 26%;">Destino de Entrega</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 01 01</td>
+                            <td>Hormigón</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 01 02; 03</td>
+                            <td>Ladrillos; Tejas y cerámicos</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 02 01</td>
+                            <td>Madera</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 02 02</td>
+                            <td>Vidrio</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 04 07</td>
+                            <td>Metales mezclados</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 08 02</td>
+                            <td>Materiales a base de yeso</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">20 01 01</td>
+                            <td>Papel y Cartón</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 02 03</td>
+                            <td>Plástico</td>
+                            <td>Reciclado</td>
+                            <td>Gestor autorizado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 8</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 9: TABLA 2 & SECCIÓN 7 & 7.1 ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <table class="table-premium" style="font-size: 10px; margin-top: 5px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 6%; text-align: center;">Gen.</th>
+                            <th style="width: 18%;">Código LER</th>
+                            <th>Naturaleza Peligrosa / Mezclas</th>
+                            <th style="width: 22%;">Tratamiento</th>
+                            <th style="width: 26%;">Destino de Entrega</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">20 03 01</td>
+                            <td>Mezcla de residuos municipales</td>
+                            <td>Reciclado / Vertedero</td>
+                            <td>Planta de reciclaje RSU</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">15 01 10</td>
+                            <td>Envases vacíos contaminados</td>
+                            <td>Depósito / Tratamiento</td>
+                            <td>Gestor autorizado RPs</td>
+                        </tr>
+                        <tr>
+                            <td class="check-cell">X</td>
+                            <td style="font-family: monospace; font-weight: bold;">17 09 04</td>
+                            <td>RCDs mezclados comunes</td>
+                            <td>Depósito / Tratamiento</td>
+                            <td>Restauración / Vertedero</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">7. PRESCRIPCIONES TÉCNICAS PARTICULARES PARA LA GESTIÓN DE RCD´s EN LA OBRA</h1>
+                
+                <h2 class="subseccion-titulo">7.1. CON CARÁCTER GENERAL</h2>
+                <p class="texto-parrafo"><strong>Gestión General:</strong> Se contempla la retirada, carga y transporte de los residuos desde el punto de generación hasta las plantas correspondientes. Todo residuo se identificará con arreglo al Real Decreto 105/2008 y la Lista Europea de Residuos (Orden MAM/304/2002).</p>
+                <p class="texto-parrafo"><strong>Certificación del Proceso:</strong> El contratista principal tiene la obligación de suministrar de forma documentada a la Dirección Facultativa y a la Propiedad las copias de los certificados de vertido autorizados emitidos por el gestor de destino final.</p>
+                <p class="texto-parrafo"><strong>Gestión de Equipos de Climatización Existentes:</strong> En caso de que interfiera con climatizadores a desmantelar, la retirada y reciclaje de sus gases (CFC, HCFC) y aceites se ejecutará bajo el estricto cumplimiento del Real Decreto 110/2015 a través de un SCRAP autorizado como ECOTIC.</p>
+                <p class="texto-parrafo"><strong>Limpieza Permanente:</strong> El contratista mantendrá limpias las zonas comunes y aledaños de la cubierta libres de escombros de forma diaria.</p>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 9</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 10: SECCIÓN 7.2 (PARTE 1) ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo" style="margin-top: 5px;">7.2. CON CARÁCTER PARTICULAR</h2>
+                <ul class="lista-puntos" style="line-height: 1.6; font-size: 11.5px;">
+                    <li style="margin-bottom: 10px;"><strong>Señalización y segregación:</strong> El depósito temporal de RCD's valorizables (metales, maderas, plásticos, embalajes, etc.) acopiados en obra se señalizará e identificará correctamente para evitar contaminaciones cruzadas con otros tipos de basuras.</li>
+                    <li style="margin-bottom: 10px;"><strong>Identificación de los contenedores:</strong> Los contenedores situados en la vía pública o zona de acopio deberán estar pintados en colores llamativos, disponer de una banda perimetral reflectante de mínimo 15 cm y llevar impresos de forma indeleble la Razón Social, CIF, teléfono del gestor autorizado y su número de registro de transportista de residuos.</li>
+                    <li style="margin-bottom: 10px;"><strong>Seguridad y cierre:</strong> Fuera de las horas de trabajo, los contenedores o sacos industriales deberán permanecer debidamente cubiertos o cerrados para evitar la intrusión o depósito accidental de residuos ajenos a la obra por parte de terceros.</li>
+                    <li style="margin-bottom: 10px;"><strong>Organización del personal:</strong> Se impartirán directrices claras y procedimientos técnicos al equipo técnico y operarios para asegurar la separación selectiva correcta de cada residuo en el momento de su origen.</li>
+                    <li style="margin-bottom: 10px;"><strong>Criterios y ordenanzas municipales:</strong> Se acatarán rigurosamente todas las ordenanzas del ayuntamiento local y condiciones de la licencia. Ante cualquier discrepancia técnica, la Dirección Facultativa tomará la decisión definitiva justificándolo ante el órgano municipal pertinente.</li>
+                    <li style="margin-bottom: 10px;"><strong>Garantía de Destino Final:</strong> Se contratarán transportistas y centros finales (recicladoras, incineradoras, vertederos) que cuenten de forma explícita con la autorización en vigor de la Consejería de Medio Ambiente autonómica competente.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 10</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 11: SECCIÓN 7.2 (PARTE 2) & 8 & FIRMA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', (form['tipoProyecto'] ?: 'PROYECTO DE EJECUCIÓN'), T(java.lang.String).format('%.2f', (form['potenciaInversores'] ?: (form['potencia'] ?: 36.30))))}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <ul class="lista-puntos" style="line-height: 1.6; font-size: 11.5px; margin-top: 5px;">
+                    <li style="margin-bottom: 10px;"><strong>Control y gestión de residuos peligrosos:</strong> La retirada de aceites, envases contaminados o cualquier residuo tóxico se realizará estrictamente conforme a la Ley de Residuos Peligrosos, registrando debidamente cada documento de control y seguimiento en obra.</li>
+                    <li style="margin-bottom: 10px;"><strong>Almacenamiento y acopios seguros:</strong> Los acopios en el suelo se formarán sobre lonas o superficies impermeables no contaminantes para evitar el arrastre de partículas por lluvias y la exposición prolongada a la intemperie.</li>
+                </ul>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">8. VALORACIÓN DEL COSTE DE LA GESTIÓN DE RCD´s</h1>
+                <p class="texto-parrafo">Se realiza la estimación del presupuesto independiente destinado a la partida de gestión ambiental de la obra:</p>
+
+                <table class="table-premium" style="margin-top: 5px; font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th>Concepto de Residuo / Partida</th>
+                            <th style="width: 20%; text-align: right;">Peso (kg)</th>
+                            <th style="width: 22%; text-align: right;">Coste (€/kg)</th>
+                            <th style="width: 22%; text-align: right;">Total (€)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Residuos de Construcción y Demolición (RCD) comunes</td>
+                            <td style="text-align: right; font-weight: bold;">230</td>
+                            <td style="text-align: right;">0,25</td>
+                            <td style="text-align: right; font-weight: bold;">57,50 €</td>
+                        </tr>
+                        <tr>
+                            <td>Costes indirectos de gestión (8%)</td>
+                            <td style="text-align: right; color: #94a3b8;">-</td>
+                            <td style="text-align: right;">0,00</td>
+                            <td style="text-align: right; font-weight: bold;">4,60 €</td>
+                        </tr>
+                        <tr>
+                            <td>Tierras no reutilizadas o excavaciones</td>
+                            <td style="text-align: right; font-weight: bold;">0</td>
+                            <td style="text-align: right;">0,00</td>
+                            <td style="text-align: right; font-weight: bold;">0,00 €</td>
+                        </tr>
+                        <tr class="bg-total" style="font-size: 12px;">
+                            <td>PRESUPUESTO TOTAL ESTIMADO</td>
+                            <td style="text-align: right; color: #94a3b8;">-</td>
+                            <td style="text-align: right; color: #94a3b8;">-</td>
+                            <td style="text-align: right; color: #0f172a;">62,10 €</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="texto-parrafo" style="font-size: 10.5px; color: #64748b; margin-top: 4px;">
+                    <strong>Notas:</strong> (1) El coste total figurará en capítulo independiente en el presupuesto. (2) Contempla los costes íntegros de retirada, carga y transporte autorizado del material.
+                </p>
+
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p>En Sevilla, a <span th:text="${form['dia'] ?: '19'}">19</span> de <span th:text="${form['mes'] ?: 'diciembre'}">diciembre</span> de <span th:text="${form['anio'] ?: '2024'}">2024</span></p>
+                        <p style="margin-top: 15px;"><strong>Ingeniero Industrial:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p>Firma y Sello:</p>
+                        <img th:src="${firmaBase64}" class="firma-imagen" alt="Firma Autorizada" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO 7: ESTUDIO DE GESTIÓN DE RESIDUOS</span>
+                <span class="pie-numero">Página 11</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

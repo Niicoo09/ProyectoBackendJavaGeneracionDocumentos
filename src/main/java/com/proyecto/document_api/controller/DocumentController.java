@@ -301,6 +301,21 @@ public class DocumentController {
                 });
     }
 
+    /**
+     * PROYECTOS: Anexo II - Planos de Detalle Modular.
+     */
+    @Operation(summary = "Anexo II: Planos de Detalle Modular")
+    @GetMapping("/proyectos/anexo-planos/{id}")
+    public ResponseEntity<byte[]> generateAnexoPlanos(@PathVariable UUID id) {
+        return processDocumentResponse(id, "proyectos/AnexoPlanos", "Anexo II - Planos", "AnexoPlanos", formData -> {
+            Map<String, String> images = new HashMap<>();
+            images.put("emplazamientoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("templates/docx/A02 Planos/Emplazamiento1.png"));
+            images.put("layoutBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("templates/docx/A02 Planos/Layout Módulos.png"));
+            images.put("stringsBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("templates/docx/A02 Planos/strings.png"));
+            return images;
+        });
+    }
+
     @Operation(summary = "Estudio Básico de Seguridad y Salud")
     @GetMapping("/estudio-seguridad/{id}")
     public ResponseEntity<byte[]> generateEstudioSeguridad(@PathVariable UUID id) {

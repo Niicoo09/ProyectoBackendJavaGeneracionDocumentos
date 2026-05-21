@@ -173,6 +173,7 @@ public class DocumentConfigService {
             case "DeclaracionHabilitacionProfesional":
                 applyDeclaracionHabilitacion(enriched, formData);
                 break;
+            case "AnexoPlanos":
             case "planos":
             case "planos-situacion-emplazamiento-cubierta":
             case "PlanosSituacionEmplazamientoCubierta":

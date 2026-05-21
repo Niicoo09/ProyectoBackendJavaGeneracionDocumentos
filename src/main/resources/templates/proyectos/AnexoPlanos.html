@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo II: Planos - Solay</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 10mm 12mm;
+        }
+
+        @page landscape-page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        html, body {
+            height: auto;
+            min-height: 100%;
+            overflow: visible;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: white;
+            font-size: 10px;
+            line-height: 1.3;
+        }
+
+        /* ===================================================
+           COMPONENTE: HEADER BOX (reutilizado en cada página)
+           =================================================== */
+        .header-box {
+            display: flex;
+            border: 1.5px solid #000;
+            min-height: 50px;
+        }
+
+        .header-box-left {
+            flex: 0 0 76%;
+            padding: 6px 9px;
+            font-size: 7.5px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-box-left p {
+            margin: 0;
+            text-align: justify;
+        }
+
+        .header-tipo {
+            font-weight: bold;
+        }
+
+        .header-box-right {
+            flex: 0 0 24%;
+            border-left: 1.5px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+
+        .header-box-right img {
+            max-height: 40px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        /* ===================================================
+           PÁGINAS VERTICALES A4
+           =================================================== */
+        .page-vertical {
+            page-break-after: always;
+            box-sizing: border-box;
+            height: 277mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===================================================
+           PÁGINA 1 — PORTADA
+           =================================================== */
+        .portada-cuerpo {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portada-caja {
+            background-color: #f0f0f0;
+            width: 90%;
+            padding: 65px 40px;
+            text-align: center;
+        }
+
+        .portada-anexo {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0 0 25px 0;
+        }
+
+        .portada-planos {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* ===================================================
+           PÁGINA 2 — ÍNDICE
+           =================================================== */
+        .indice-contenedor {
+            flex: 1;
+            padding: 0 5px;
+        }
+
+        .indice-titulo {
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+            margin: 28px 0 24px 0;
+        }
+
+        .indice-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .indice-item {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 18px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .indice-num {
+            min-width: 24px;
+            flex-shrink: 0;
+        }
+
+        .indice-label {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .indice-relleno {
+            flex: 1;
+            border-bottom: 1.5px dotted #000;
+            margin: 0 5px 3px 5px;
+            min-width: 20px;
+        }
+
+        .indice-pagina {
+            min-width: 15px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* ===================================================
+           PÁGINAS LANDSCAPE (planos)
+           =================================================== */
+        .landscape-section {
+            page: landscape-page;
+            page-break-before: always;
+            width: 297mm;
+            height: 210mm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .landscape-section img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .landscape-watermark {
+            position: absolute;
+            bottom: 5mm;
+            right: 10mm;
+            font-size: 9px;
+            font-weight: bold;
+            color: #ffa02a;
+            font-family: Arial, sans-serif;
+        }
+
+        .landscape-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: #bbb;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Wrapper con variables computadas (th:with evalúa secuencialmente) -->
+<div th:with="
+    rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '0'},
+    potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9]', '').isEmpty() ? '0' : rawPot.toString().replaceAll('[^0-9]', ''))},
+    potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+    potStr=${T(java.lang.String).format('%.3f', potKwp).replace('.', ',')},
+    tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+    clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : '')}
+">
+
+    <!-- ============================================================
+         PÁGINA 1: PORTADA
+         ============================================================ -->
+    <div class="page-vertical">
+
+        <!-- HEADER BOX COMPONETIZADO -->
+        <div class="header-box">
+            <div class="header-box-left">
+                <p>
+                    <span class="header-tipo" th:text="${tipoDoc}">PROYECTO DE EJECUCIÓN</span>
+                    DE INSTALACIÓN SOLAR FOTOVOLTAICA DE
+                    <span th:text="${potStr}">16,335</span> kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES,
+                    INSTALADA EN LA CUBIERTA DE <span th:text="${clienteNombre}">CLIENTE</span>.
+                </p>
+            </div>
+            <div class="header-box-right">
+                <img th:if="${logoBase64 != null}" th:src="${logoBase64}" alt="Solay Logo" />
+            </div>
+        </div>
+
+        <!-- CUERPO: caja central gris con ANEXO 2 / PLANOS -->
+        <div class="portada-cuerpo">
+            <div class="portada-caja">
+                <p class="portada-anexo">ANEXO 2</p>
+                <p class="portada-planos">PLANOS</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         PÁGINA 2: ÍNDICE
+         ============================================================ -->
+    <div class="page-vertical">
+
+        <!-- HEADER BOX COMPONETIZADO -->
+        <div class="header-box">
+            <div class="header-box-left">
+                <p>
+                    <span class="header-tipo" th:text="${tipoDoc}">PROYECTO DE EJECUCIÓN</span>
+                    DE INSTALACIÓN SOLAR FOTOVOLTAICA DE
+                    <span th:text="${potStr}">16,335</span> kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES,
+                    INSTALADA EN LA CUBIERTA DE <span th:text="${clienteNombre}">CLIENTE</span>.
+                </p>
+            </div>
+            <div class="header-box-right">
+                <img th:if="${logoBase64 != null}" th:src="${logoBase64}" alt="Solay Logo" />
+            </div>
+        </div>
+
+        <!-- ÍNDICE -->
+        <div class="indice-contenedor">
+            <div class="indice-titulo">Índice</div>
+            <ul class="indice-lista">
+                <li class="indice-item">
+                    <span class="indice-num">1.</span>
+                    <span class="indice-label">PLANO DE SITUACIÓN</span>
+                    <span class="indice-relleno"></span>
+                    <span class="indice-pagina">3</span>
+                </li>
+                <li class="indice-item">
+                    <span class="indice-num">2.</span>
+                    <span class="indice-label">PLANO DE EMPLAZAMIENTO</span>
+                    <span class="indice-relleno"></span>
+                    <span class="indice-pagina">4</span>
+                </li>
+                <li class="indice-item">
+                    <span class="indice-num">3.</span>
+                    <span class="indice-label">PLANO DE LAYOUT</span>
+                    <span class="indice-relleno"></span>
+                    <span class="indice-pagina">5</span>
+                </li>
+                <li class="indice-item">
+                    <span class="indice-num">4.</span>
+                    <span class="indice-label">PLANO DE DISTRIBUCIÓN DE STRINGS</span>
+                    <span class="indice-relleno"></span>
+                    <span class="indice-pagina">6</span>
+                </li>
+                <li class="indice-item">
+                    <span class="indice-num">5.</span>
+                    <span class="indice-label">PLANO UNIFILAR DE LA INSTALACIÓN</span>
+                    <span class="indice-relleno"></span>
+                    <span class="indice-pagina">7</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         PLANO 1: Situación (generado automáticamente vía satélite)
+         ============================================================ -->
+    <div class="landscape-section">
+        <img th:if="${situacionBase64 != null}" th:src="${situacionBase64}" alt="Plano de Situación" />
+        <div th:if="${situacionBase64 == null}" class="landscape-placeholder">
+            <span>Plano de Situación no disponible</span>
+        </div>
+        <div class="landscape-watermark">SOLAY INGENIEROS S.L. — PLANO Nº 1 | SITUACIÓN</div>
+    </div>
+
+    <!-- ============================================================
+         PLANO 2: Emplazamiento (generado automáticamente vía satélite)
+         ============================================================ -->
+    <div class="landscape-section">
+        <img th:if="${emplazamientoBase64 != null}" th:src="${emplazamientoBase64}" alt="Plano de Emplazamiento" />
+        <div th:if="${emplazamientoBase64 == null}" class="landscape-placeholder">
+            <span>Plano de Emplazamiento no disponible</span>
+        </div>
+        <div class="landscape-watermark">SOLAY INGENIEROS S.L. — PLANO Nº 2 | EMPLAZAMIENTO</div>
+    </div>
+
+    <!-- ============================================================
+         PLANO 3: Layout (subido por la operadora)
+         ============================================================ -->
+    <div class="landscape-section">
+        <img th:if="${layoutBase64 != null}" th:src="${layoutBase64}" alt="Plano de Layout" />
+        <div th:if="${layoutBase64 == null}" class="landscape-placeholder">
+            <span>Plano de Layout — pendiente de subida por operadora</span>
+        </div>
+        <div class="landscape-watermark">SOLAY INGENIEROS S.L. — PLANO Nº 3 | LAYOUT</div>
+    </div>
+
+    <!-- ============================================================
+         PLANO 4: Strings (subido por la operadora)
+         ============================================================ -->
+    <div class="landscape-section">
+        <img th:if="${stringsBase64 != null}" th:src="${stringsBase64}" alt="Distribución de Strings" />
+        <div th:if="${stringsBase64 == null}" class="landscape-placeholder">
+            <span>Plano de Strings — pendiente de subida por operadora</span>
+        </div>
+        <div class="landscape-watermark">SOLAY INGENIEROS S.L. — PLANO Nº 4 | STRINGS</div>
+    </div>
+
+    <!-- ============================================================
+         PLANO 5: Unifilar (subido por la operadora)
+         ============================================================ -->
+    <div class="landscape-section">
+        <img th:if="${unifilarBase64 != null}" th:src="${unifilarBase64}" alt="Esquema Unifilar" />
+        <div th:if="${unifilarBase64 == null}" class="landscape-placeholder">
+            <span>Plano Unifilar — pendiente de subida por operadora</span>
+        </div>
+        <div class="landscape-watermark">SOLAY INGENIEROS S.L. — PLANO Nº 5 | UNIFILAR</div>
+    </div>
+
+</div><!-- /th:with wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo 3: Mediciones y Presupuesto</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 13px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 12px 4px 12px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 13.5px;
+            color: #0f172a;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 20px 0 15px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        p.texto-parrafo {
+            font-size: 12px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 11px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            color: #334155;
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+
+        .table-premium tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        .bg-total {
+            background-color: #f1f5f9 !important;
+            font-weight: 700;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf" th:with="
+        rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '36.30'},
+        potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9.]', '').isEmpty() ? '36.30' : rawPot.toString().replaceAll('[^0-9.]', ''))},
+        potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+        potStr=${T(java.lang.String).format('%.2f', potKwp).replace('.', ',')},
+        tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+        clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : 'CLIENTE')}
+    ">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO III</div>
+                        <div class="portada-titulo">MEDICIONES Y PRESUPUESTO</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span th:text="${'Diciembre de 2024'}">Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO III: MEDICIONES Y PRESUPUESTO</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. PRESUPUESTO DE EJECUCIÓN MATERIAL DESGLOSADO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. PRESUPUESTO GLOBAL</span>
+                        <span>4</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO III: MEDICIONES Y PRESUPUESTO</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: DESGLOSE PEM ==================== -->
+        <div class="contenedor-principal" th:with="
+            numModulos=${form['e2_numeroModulos'] ?: form['numModulos'] ?: 37},
+            modulosDouble=${T(java.lang.Double).parseDouble(numModulos.toString())},
+            costeEstruc=${modulosDouble * 31.20},
+            costePaneles=${modulosDouble * 87.00},
+            costeTubos=${(modulosDouble / 2.0) * 11.40},
+            costeCableNegro=${(modulosDouble * 1.3) * 1.12},
+            costeCableRojo=${(modulosDouble * 1.3) * 1.12},
+            costeConectorM=${(modulosDouble * 0.65) * 1.10},
+            costeConectorH=${(modulosDouble * 0.65) * 1.10},
+            costeInversor=1697.79,
+            costeCableUnipolar=417.75,
+            costeTerminal=0.93,
+            costeCuadroCC=650.00,
+            costeCuadroCA=870.00,
+            costeFusibles=13.92,
+            costeVaristores=258.00,
+            costeMagneto=103.00,
+            costeMedidor=230.00,
+            costeCableFTP=75.00,
+            sumEquipos=${costeEstruc + costePaneles + costeTubos + costeCableNegro + costeCableRojo + costeConectorM + costeConectorH + costeInversor + costeCableUnipolar + costeTerminal + costeCuadroCC + costeCuadroCA + costeFusibles + costeVaristores + costeMagneto + costeMedidor + costeCableFTP},
+            
+            costeMOMontaje=789.06,
+            costeMOCableado=500.00,
+            costeMOCuadro=150.00,
+            costeMOInversor=50.00,
+            costeMOVerif=50.00,
+            sumMO=${costeMOMontaje + costeMOCableado + costeMOCuadro + costeMOInversor + costeMOVerif},
+            
+            costeProy=750.00,
+            costeLegal=456.08,
+            sumOtros=${costeProy + costeLegal},
+            
+            totalPem=${sumEquipos + sumMO + sumOtros},
+            bi=${totalPem * 0.06},
+            gg=${totalPem * 0.13},
+            totalPec=${totalPem + bi + gg},
+            iva=${totalPec * 0.21},
+            totalPresupuesto=${totalPec + iva}
+        ">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. PRESUPUESTO DE EJECUCIÓN MATERIAL DESGLOSADO</h1>
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%; text-align: center;">Ud</th>
+                            <th>Partidas y Conceptos</th>
+                            <th style="width: 12%; text-align: center;">Medición</th>
+                            <th style="width: 16%; text-align: right;">P. Unitario</th>
+                            <th style="width: 16%; text-align: right;">P. Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Subcabecera Equipos -->
+                        <tr class="bg-total">
+                            <td colspan="4">Equipos y Materiales</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', sumEquipos) + ' €'}">9.061,23 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Estructura de aluminio para el soporte de módulos fotovoltaicos</td>
+                            <td class="text-center" th:text="${numModulos}">37</td>
+                            <td class="text-right">31,20 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeEstruc) + ' €'}">1.154,40 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Módulo Fotovoltaico monocristalino LONGI LR5-72HPH-540M</td>
+                            <td class="text-center" th:text="${numModulos}">37</td>
+                            <td class="text-right">87,00 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costePaneles) + ' €'}">3.219,00 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Tubo H rígido 20 mm en barras de 3 m con fijaciones</td>
+                            <td class="text-center" th:text="${T(java.lang.String).format('%.1f', (modulosDouble / 2.0)).replace('.', ',')}">18,5</td>
+                            <td class="text-right">11,40 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeTubos) + ' €'}">210,90 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ml</td>
+                            <td>Cable solar de C.C. negro libre de halógenos de 6 mm²</td>
+                            <td class="text-center" th:text="${T(java.lang.String).format('%.1f', (modulosDouble * 1.3)).replace('.', ',')}">48,1</td>
+                            <td class="text-right">1,12 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeCableNegro) + ' €'}">53,87 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ml</td>
+                            <td>Cable solar de C.C. rojo libre de halógenos de 6 mm²</td>
+                            <td class="text-center" th:text="${T(java.lang.String).format('%.1f', (modulosDouble * 1.3)).replace('.', ',')}">48,1</td>
+                            <td class="text-right">1,12 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeCableRojo) + ' €'}">53,87 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>MC4 Conector macho PV-KST4/6II-UR</td>
+                            <td class="text-center" th:text="${T(java.lang.Math).round(modulosDouble * 0.65)}">24</td>
+                            <td class="text-right">1,10 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeConectorM) + ' €'}">26,40 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>MC4 Conector hembra PV-KBT4/6II-UR</td>
+                            <td class="text-center" th:text="${T(java.lang.Math).round(modulosDouble * 0.65)}">24</td>
+                            <td class="text-right">1,10 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeConectorH) + ' €'}">26,40 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Inversor Huawei SUN2000-20KTL-M3</td>
+                            <td class="text-center">1</td>
+                            <td class="text-right">1.697,79 €</td>
+                            <td class="text-right">1.697,79 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ml</td>
+                            <td>Cable unipolar flexible de potencia RZ1-K (AS) 10 mm²</td>
+                            <td class="text-center">25</td>
+                            <td class="text-right">16,71 €</td>
+                            <td class="text-right">417,75 €</td>
+                        </tr>
+                        <!-- Subcabecera Mano de Obra -->
+                        <tr class="bg-total">
+                            <td colspan="4">Mano de Obra</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', sumMO) + ' €'}">1.539,06 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">h</td>
+                            <td>Montaje de estructura y módulos fotovoltaicos</td>
+                            <td class="text-center">16</td>
+                            <td class="text-right">50,00 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', costeMOMontaje) + ' €'}">789,06 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">h</td>
+                            <td>Tendido y conexionado de cableados solares</td>
+                            <td class="text-center">10</td>
+                            <td class="text-right">50,00 €</td>
+                            <td class="text-right">500,00 €</td>
+                        </tr>
+                        <!-- Subcabecera Otros -->
+                        <tr class="bg-total">
+                            <td colspan="4">Otros y Legalización</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', sumOtros) + ' €'}">1.206,08 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Proyecto Técnico y Dirección de Obra</td>
+                            <td class="text-center">1</td>
+                            <td class="text-right">750,00 €</td>
+                            <td class="text-right">750,00 €</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">ud</td>
+                            <td>Tasas y registro oficial industrial (Legalización)</td>
+                            <td class="text-center">1</td>
+                            <td class="text-right">456,08 €</td>
+                            <td class="text-right">456,08 €</td>
+                        </tr>
+                        <tr class="bg-total">
+                            <td colspan="4" class="text-right">TOTAL PRESUPUESTO DE EJECUCIÓN MATERIAL (P.E.M.)</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', totalPem) + ' €'}">11.806,38 €</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO III: MEDICIONES Y PRESUPUESTO</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: PRESUPUESTO GLOBAL & FIRMAS ==================== -->
+        <div class="contenedor-principal" th:with="
+            numModulos=${form['e2_numeroModulos'] ?: form['numModulos'] ?: 37},
+            modulosDouble=${T(java.lang.Double).parseDouble(numModulos.toString())},
+            costeEstruc=${modulosDouble * 31.20},
+            costePaneles=${modulosDouble * 87.00},
+            costeTubos=${(modulosDouble / 2.0) * 11.40},
+            costeCableNegro=${(modulosDouble * 1.3) * 1.12},
+            costeCableRojo=${(modulosDouble * 1.3) * 1.12},
+            costeConectorM=${(modulosDouble * 0.65) * 1.10},
+            costeConectorH=${(modulosDouble * 0.65) * 1.10},
+            costeInversor=1697.79,
+            costeCableUnipolar=417.75,
+            costeTerminal=0.93,
+            costeCuadroCC=650.00,
+            costeCuadroCA=870.00,
+            costeFusibles=13.92,
+            costeVaristores=258.00,
+            costeMagneto=103.00,
+            costeMedidor=230.00,
+            costeCableFTP=75.00,
+            sumEquipos=${costeEstruc + costePaneles + costeTubos + costeCableNegro + costeCableRojo + costeConectorM + costeConectorH + costeInversor + costeCableUnipolar + costeTerminal + costeCuadroCC + costeCuadroCA + costeFusibles + costeVaristores + costeMagneto + costeMedidor + costeCableFTP},
+            
+            costeMOMontaje=789.06,
+            costeMOCableado=500.00,
+            costeMOCuadro=150.00,
+            costeMOInversor=50.00,
+            costeMOVerif=50.00,
+            sumMO=${costeMOMontaje + costeMOCableado + costeMOCuadro + costeMOInversor + costeMOVerif},
+            
+            costeProy=750.00,
+            costeLegal=456.08,
+            sumOtros=${costeProy + costeLegal},
+            
+            totalPem=${sumEquipos + sumMO + sumOtros},
+            bi=${totalPem * 0.06},
+            gg=${totalPem * 0.13},
+            totalPec=${totalPem + bi + gg},
+            iva=${totalPec * 0.21},
+            totalPresupuesto=${totalPec + iva}
+        ">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">2. PRESUPUESTO GLOBAL</h1>
+                <p class="texto-parrafo">El Presupuesto Global resultante de la aplicación de los coeficientes legales sobre el Presupuesto de Ejecución Material (P.E.M.) es el siguiente:</p>
+                
+                <table class="table-premium" style="margin-top: 15px; font-size: 12px;">
+                    <thead>
+                        <tr class="bg-total">
+                            <th>Concepto</th>
+                            <th style="width: 30%; text-align: right;">Importe (€)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Presupuesto de Ejecución Material – P.E.M.</strong></td>
+                            <td class="text-right font-bold" th:text="${T(java.lang.String).format('%,.2f', totalPem) + ' €'}">11.806,38 €</td>
+                        </tr>
+                        <tr>
+                            <td>Beneficio Industrial (6%)</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', bi) + ' €'}">708,38 €</td>
+                        </tr>
+                        <tr>
+                            <td>Gastos Generales (13%)</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', gg) + ' €'}">1.534,83 €</td>
+                        </tr>
+                        <tr class="bg-total">
+                            <td><strong>Presupuesto de Ejecución por Contrata – P.E.C.</strong></td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', totalPec) + ' €'}">14.049,59 €</td>
+                        </tr>
+                        <tr>
+                            <td>21% de Impuesto sobre el Valor Añadido (I.V.A.)</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', iva) + ' €'}">2.950,41 €</td>
+                        </tr>
+                        <tr class="bg-total" style="font-size: 13.5px;">
+                            <td><strong>PRESUPUESTO TOTAL (IVA INCLUIDO)</strong></td>
+                            <td class="text-right" style="color: #0f172a;" th:text="${T(java.lang.String).format('%,.2f', totalPresupuesto) + ' €'}">17.000,00 €</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="texto-parrafo" style="margin-top: 20px;">
+                    Asciende el presente presupuesto total a la cantidad expresada de **<span th:text="${T(java.lang.String).format('%,.2f', totalPresupuesto) + ' euros'}">17.000,00 euros</span>** (I.V.A. incluido).
+                </p>
+
+                <!-- FIRMA FINAL -->
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p><strong>El Ingeniero Autor:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p><strong>Firma y Sello Oficial:</strong></p>
+                        <img th:src="${firmaBase64}" alt="Firma Eduardo" class="firma-imagen" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO III: MEDICIONES Y PRESUPUESTO</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
