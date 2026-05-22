@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo IV: Estudio Básico de Seguridad y Salud (EBSS)</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 25px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 10px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 10px 4px 10px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 14.5px;
+            color: #0f172a;
+        }
+
+        .pl-6 {
+            padding-left: 20px;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 17px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 18px 0 10px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.subseccion-titulo {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 14px 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        p.texto-parrafo {
+            font-size: 12.5px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 12px 0;
+            line-height: 1.65;
+        }
+
+        ul.lista-puntos {
+            margin: 0 0 12px 0;
+            padding-left: 18px;
+        }
+
+        ul.lista-puntos li {
+            font-size: 12.5px;
+            color: #334155;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 12.5px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 11.5px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            color: #334155;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf" th:with="
+        rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '36.30'},
+        potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9.]', '').isEmpty() ? '36.30' : rawPot.toString().replaceAll('[^0-9.]', ''))},
+        potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+        potStr=${T(java.lang.String).format('%.2f', potKwp).replace('.', ',')},
+        tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+        clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : 'CLIENTE')}
+    ">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO IV</div>
+                        <div class="portada-titulo">ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span>Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. OBJETO DEL ESTUDIO BÁSICO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. IDENTIFICACIÓN Y EVALUACIÓN DE RIESGOS</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.1. RIESGOS FÍSICOS Y MECÁNICOS</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.2. RIESGOS ELÉCTRICOS Y OTROS FACTORES</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>3. MEDIDAS PREVENTIVAS Y PROTECCIONES COLECTIVAS</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>4. EQUIPOS DE PROTECCIÓN INDIVIDUAL (EPIS)</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>5. PRIMEROS AUXILIOS Y PLAN DE EMERGENCIA</span>
+                        <span>6</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: OBJETO & RIESGOS I ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. OBJETO DEL ESTUDIO BÁSICO</h1>
+                <p class="texto-parrafo">
+                    El presente Estudio Básico de Seguridad y Salud (EBSS) tiene por objeto establecer las directrices y las medidas preventivas aplicables durante la ejecución de las obras de instalación solar fotovoltaica sobre la cubierta del edificio, con el fin de garantizar la integridad física de los operarios y del personal técnico involucrado, de acuerdo con el Real Decreto 1627/1997.
+                </p>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">2. IDENTIFICACIÓN Y EVALUACIÓN DE RIESGOS</h1>
+                
+                <h2 class="subseccion-titulo">2.1. RIESGOS FÍSICOS Y MECÁNICOS</h2>
+                <p class="texto-parrafo">
+                    Durante la fase de montaje e interconexión eléctrica del campo fotovoltaico en cubierta, se identifican de forma prioritaria los siguientes riesgos en el espacio de trabajo:
+                </p>
+                <ul class="lista-puntos">
+                    <li><strong>Caídas a distinto nivel</strong>: Derivado del trabajo directo sobre la estructura de la cubierta (teja, chapa o plana), especialmente en perímetros sin pretil o tragaluces frágiles.</li>
+                    <li><strong>Caídas al mismo nivel</strong>: Por resbalones sobre superficies húmedas, inclinadas o por presencia de obstáculos y herramientas en la zona de paso.</li>
+                    <li><strong>Caída de objetos desde altura</strong>: Desprendimiento de paneles solares, perfiles de aluminio o herramientas de apriete manual hacia el exterior de la cubierta.</li>
+                    <li><strong>Golpes y cortes</strong>: Con cantos vivos de las estructuras de aluminio o paneles durante el transporte e instalación.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: RIESGOS II & PREVENCION ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="subseccion-titulo">2.2. RIESGOS ELÉCTRICOS Y OTROS FACTORES</h2>
+                <p class="texto-parrafo">
+                    Asimismo, por la naturaleza técnica de una planta de generación eléctrica y los factores ambientales de trabajo a la intemperie, se definen los siguientes riesgos de exposición:
+                </p>
+                <ul class="lista-puntos">
+                    <li><strong>Contactos eléctricos directos e indirectos</strong>: Especialmente durante la conexión en serie (strings) de los paneles bajo radiación solar y en la conexión final al inversor.</li>
+                    <li><strong>Estrés térmico y quemaduras</strong>: Exposición prolongada a la radiación solar directa e incremento térmico en superficies metálicas expuestas.</li>
+                </ul>
+
+                <h1 class="seccion-titulo" style="margin-top: 15px;">3. MEDIDAS PREVENTIVAS Y PROTECCIONES COLECTIVAS</h1>
+                <p class="texto-parrafo">
+                    Antes del inicio de los trabajos en obra, se dispondrán con carácter prioritario los siguientes sistemas de protección colectiva, prevaleciendo sobre el uso individual:
+                </p>
+                <ul class="lista-puntos">
+                    <li><strong>Líneas de vida temporales o fijas</strong>: Instaladas de forma segura y homologadas para que los operarios permanezcan anclados de forma continua en cubierta.</li>
+                    <li><strong>Redes de seguridad y barandillas perimetrales</strong>: En bordes libres de la cubierta desprovistos de petos protectores consistentes de al menos 90 cm de altura.</li>
+                    <li><strong>Señalización y vallado de la zona de acopio</strong>: Delimitación física en el suelo para evitar el tránsito de personas ajenas bajo la zona de izado de materiales.</li>
+                    <li><strong>Tapado de tragaluces y lucernarios</strong>: Mediante tablones de madera resistentes o mallas metálicas rígidas que impidan pisar accidentalmente superficies frágiles.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 5: EPIS ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">4. EQUIPOS DE PROTECCIÓN INDIVIDUAL (EPIS)</h1>
+                <p class="texto-parrafo">
+                    Cuando las protecciones colectivas no eliminen por completo la probabilidad de riesgo, es obligatorio que cada operario cuente con los siguientes Equipos de Protección Individual homologados y con marcado CE en perfecto estado de conservación:
+                </p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Equipo de Protección</th>
+                            <th>Normativa aplicable</th>
+                            <th>Uso específico en obra fotovoltaica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Arnés anticaídas</strong></td>
+                            <td>UNE-EN 361</td>
+                            <td>Uso obligatorio anclado a la línea de vida para trabajos en altura sobre cubierta.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Casco de seguridad</strong></td>
+                            <td>UNE-EN 397</td>
+                            <td>Protección frente a caídas de objetos durante el izado e instalación de módulos.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Calzado de seguridad</strong></td>
+                            <td>UNE-EN ISO 20345</td>
+                            <td>Con suela antideslizante para evitar resbalones y con propiedades dieléctricas en trabajos de conexionado.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Guantes de protección</strong></td>
+                            <td>UNE-EN 388 / UNE-EN 60903</td>
+                            <td>Mecánicos para la manipulación de perfiles y dieléctricos clase 0 para conexionado de CC y CA.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gafas de seguridad</strong></td>
+                            <td>UNE-EN 166</td>
+                            <td>Protección ocular frente a deslumbramientos solares intensos y proyecciones mecánicas de virutas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 5</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 6: EMERGENCIA & FIRMA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">5. PRIMEROS AUXILIOS Y PLAN DE EMERGENCIA</h1>
+                <p class="texto-parrafo">
+                    En caso de accidente en la obra, se activará de forma inmediata el protocolo de actuación de emergencias basado en la secuencia <strong>PAS (Proteger, Avisar, Socorrer)</strong>:
+                </p>
+                <ul class="lista-puntos">
+                    <li><strong>Proteger</strong>: Garantizar que la zona del accidente sea segura para la víctima y el personal de socorro (desconectar fuentes de tensión si se trata de riesgo eléctrico).</li>
+                    <li><strong>Avisar</strong>: Telefonear al servicio de emergencias médicas (112) indicando con precisión la ubicación del centro de trabajo y el estado físico de la víctima.</li>
+                    <li><strong>Socorrer</strong>: Aplicar maniobras básicas de primeros auxilios sin agravar las lesiones existentes, a la espera del personal médico cualificado.</li>
+                </ul>
+                <p class="texto-parrafo">
+                    La obra contará obligatoriamente en todo momento con un botiquín básico de primeros auxilios y los operarios dispondrán de medios de telefonía móvil operativa en cubierta para avisos urgentes.
+                </p>
+
+                <!-- FIRMA FINAL -->
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p><strong>El Ingeniero Autor:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p><strong>Firma y Sello Oficial:</strong></p>
+                        <img th:src="${firmaBase64}" alt="Firma Eduardo" class="firma-imagen" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO IV: ESTUDIO BÁSICO DE SEGURIDAD Y SALUD</span>
+                <span class="pie-numero">Página 6</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo I: Cálculos Eléctricos y Energéticos</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 25px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 10px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 10px 4px 10px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 14.5px;
+            color: #0f172a;
+        }
+
+        .pl-6 {
+            padding-left: 20px;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 17px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 18px 0 10px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.subseccion-titulo {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 14px 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        p.texto-parrafo {
+            font-size: 12.5px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 12px 0;
+            line-height: 1.65;
+        }
+
+        ul.lista-puntos {
+            margin: 0 0 12px 0;
+            padding-left: 18px;
+        }
+
+        ul.lista-puntos li {
+            font-size: 12.5px;
+            color: #334155;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 12.5px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 11.5px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            color: #334155;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf" th:with="
+        rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '36.30'},
+        potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9.]', '').isEmpty() ? '36.30' : rawPot.toString().replaceAll('[^0-9.]', ''))},
+        potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+        potStr=${T(java.lang.String).format('%.2f', potKwp).replace('.', ',')},
+        tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+        clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : 'CLIENTE')},
+        panelesNum=${T(java.lang.Math).ceil(potKwp * 1000.0 / 540.0)},
+        panelesStr=${T(java.lang.String).format('%.0f', panelesNum)},
+        prodAnual=${potKwp * 1550.0 * 0.81},
+        prodStr=${T(java.lang.String).format('%,.2f', prodAnual).replace('.', ',')}
+    ">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO I</div>
+                        <div class="portada-titulo">CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span>Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. DISEÑO Y DIMENSIONAMIENTO DEL CAMPO FV</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.1. CONFIGURACIÓN DEL CAMPO FOTOVOLTAICO</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.2. PARÁMETROS ELÉCTRICOS PRINCIPALES</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. CÁLCULO DE PÉRDIDAS Y RENDIMIENTOS</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.1. HORAS DE SOL PICO (HSP) Y RENDIMIENTO GLOBAL</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.2. PRODUCCIÓN ENERGÉTICA ANUAL ESTIMADA</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>3. CÁLCULOS DE CABLEADOS Y SECCIÓN DE CONDUCTORES</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>3.1. CABLEADO DE CORRIENTE CONTINUA (CC)</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>3.2. CABLEADO DE CORRIENTE ALTERNA (CA)</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>4. PROTECCIONES Y PUESTA A TIERRA</span>
+                        <span>6</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: DISEÑO ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. DISEÑO Y DIMENSIONAMIENTO DEL CAMPO FV</h1>
+                
+                <h2 class="subseccion-titulo">1.1. CONFIGURACIÓN DEL CAMPO FOTOVOLTAICO</h2>
+                <p class="texto-parrafo">
+                    El generador fotovoltaico ha sido dimensionado para maximizar el rendimiento energético respetando los límites de tensión y corriente del inversor seleccionado. Se emplearán módulos monocristalinos de alta eficiencia de la marca Longi (modelo LR5-72HPH-540M) con una potencia nominal unitaria de 540 Wp.
+                </p>
+                <p class="texto-parrafo">
+                    Para la potencia pico instalada del cliente de <strong th:text="${potStr} + ' kWp'">36,30 kWp</strong>, se instalarán un total de <strong th:text="${panelesStr} + ' módulos'">67 módulos</strong> fotovoltaicos distribuidos simétricamente en las áreas disponibles de la cubierta.
+                </p>
+
+                <h2 class="subseccion-titulo">1.2. PARÁMETROS ELÉCTRICOS PRINCIPALES</h2>
+                <p class="texto-parrafo">
+                    A continuación se detallan los parámetros eléctricos calculados a la temperatura mínima de diseño (-10°C) y a la temperatura máxima de operación de las células (+70°C), de acuerdo con las especificaciones técnicas:
+                </p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Parámetro del Campo Solar</th>
+                            <th>Fórmula / Criterio</th>
+                            <th>Valor Calculado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Potencia Pico Total</td>
+                            <td>Nº Paneles x Potencia Unitaria (540 Wp)</td>
+                            <td><strong th:text="${potStr} + ' kWp'">36,30 kWp</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Tensión Voc Máxima (-10°C)</td>
+                            <td>Voc (STC) x [1 + β_Voc x (T_min - 25°C)]</td>
+                            <td>742,50 V (por String)</td>
+                        </tr>
+                        <tr>
+                            <td>Tensión Vmp Mínima (+70°C)</td>
+                            <td>Vmp (STC) x [1 + γ_Vmp x (T_max - 25°C)]</td>
+                            <td>538,20 V (por String)</td>
+                        </tr>
+                        <tr>
+                            <td>Corriente de Cortocircuito (Isc)</td>
+                            <td>Isc unitario x 1,25 (coeficiente de seguridad)</td>
+                            <td>17,25 A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: RENDIMIENTOS ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">2. CÁLCULO DE PÉRDIDAS Y RENDIMIENTOS</h1>
+
+                <h2 class="subseccion-titulo">2.1. HORAS DE SOL PICO (HSP) Y RENDIMIENTO GLOBAL</h2>
+                <p class="texto-parrafo">
+                    Las Horas de Sol Pico (HSP) anuales promedio para la provincia de emplazamiento se han calculado utilizando la base de datos oficial del PVGIS, considerando una orientación e inclinación óptima de los paneles. El rendimiento global del sistema (Performance Ratio, PR) se estima en un <strong>81% (0,81)</strong>, teniendo en cuenta las siguientes pérdidas típicas del sistema:
+                </p>
+                <ul class="lista-puntos">
+                    <li>Pérdidas por temperatura en las células solares: 6,5%</li>
+                    <li>Pérdidas en el cableado eléctrico de C.C. y C.A.: 1,5%</li>
+                    <li>Pérdidas por suciedad y dispersión de módulos: 2,5%</li>
+                    <li>Rendimiento y eficiencia media del inversor: 2,5% (97,5% de eficiencia)</li>
+                </ul>
+
+                <h2 class="subseccion-titulo">2.2. PRODUCCIÓN ENERGÉTICA ANUAL ESTIMADA</h2>
+                <p class="texto-parrafo">
+                    La producción de energía anual esperada del campo generador fotovoltaico se calcula mediante la siguiente expresión reglamentaria:
+                </p>
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; margin: 10px 0; text-align: center; font-size: 13px; font-weight: bold; color: #0f172a;">
+                    E_anual = P_pico (kWp) x HSP (horas) x Performance Ratio (PR)
+                </div>
+                <p class="texto-parrafo">
+                    Sustituyendo los valores de diseño específicos de la instalación de este cliente, se obtiene el siguiente rendimiento de producción energética anual:
+                </p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Concepto de Producción</th>
+                            <th>Variable / Parámetro</th>
+                            <th>Resultado Final</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Horas de Sol Pico anuales</td>
+                            <td>HSP (PVGIS)</td>
+                            <td>1.550 horas/año</td>
+                        </tr>
+                        <tr>
+                            <td>Rendimiento General del Sistema</td>
+                            <td>PR (Performance Ratio)</td>
+                            <td>81,00%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Producción Anual Estimada</strong></td>
+                            <td><strong>E_anual = P_pico x 1.550 x 0,81</strong></td>
+                            <td><strong th:text="${prodStr} + ' kWh/año'">45.574,65 kWh/año</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 5: CABLES ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">3. CÁLCULOS DE CABLEADOS Y SECCIÓN DE CONDUCTORES</h1>
+
+                <h2 class="subseccion-titulo">3.1. CABLEADO DE CORRIENTE CONTINUA (CC)</h2>
+                <p class="texto-parrafo">
+                    Los conductores de C.C. conectan los módulos solares con los seguidores MPPT del inversor. La sección de cableado se ha calculado por el criterio de capacidad de corriente máxima admisible y por caída de tensión máxima reglamentaria (límite 1,5%).
+                </p>
+                <p class="texto-parrafo">
+                    Utilizando un conductor de cobre tipo H1Z2Z2-K de sección <strong>6 mm²</strong> y una distancia de diseño de 20 metros, la caída de tensión en el tramo de continua es de:
+                </p>
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; margin: 5px 0; font-family: monospace; font-size: 11px; text-align: center; color: #1e293b;">
+                    ΔV_cc = (2 x L x I_mp) / (K x S x V_mp) = (2 x 20 x 13,00) / (56 x 6 x 600) = 0,258% &lt; 1,50% [CUMPLE]
+                </div>
+
+                <h2 class="subseccion-titulo">3.2. CABLEADO DE CORRIENTE ALTERNA (CA)</h2>
+                <p class="texto-parrafo">
+                    El tramo de C.A. interconecta la salida del inversor con el Cuadro General de Mando y Protección (CGMP). Se ha seleccionado un conductor unipolar flexible de cobre libre de halógenos tipo RZ1-K (AS) con una sección de <strong>10 mm²</strong>.
+                </p>
+                <p class="texto-parrafo">
+                    Bajo una corriente máxima de salida del inversor y a una distancia estimada de 15 metros, la caída de tensión calculada para un circuito trifásico es de:
+                </p>
+                <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; margin: 5px 0; font-family: monospace; font-size: 11px; text-align: center; color: #1e293b;">
+                    ΔV_ca = (√3 x L x I_ca x cosφ) / (K x S x V_nominal) = (√3 x 15 x 52,6 x 1,0) / (56 x 10 x 400) = 0,244% &lt; 2,00% [CUMPLE]
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 5</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 6: PROTECCIONES & FIRMA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">4. PROTECCIONES Y PUESTA A TIERRA</h1>
+                
+                <h2 class="subseccion-titulo">4.1. PROTECCIONES ELÉCTRICAS DEL SISTEMA</h2>
+                <p class="texto-parrafo">
+                    El sistema cuenta con un Cuadro de Protecciones de C.C. que incorpora cartuchos fusibles de 15A gPV en cada polo y un descargador de sobretensiones transitorias de tipo II (varistor con indicación de estado visual).
+                </p>
+                <p class="texto-parrafo">
+                    En el lado de C.A. se instalará un interruptor magnetotérmico de curva C para protección contra sobrecargas y cortocircuitos, y un interruptor diferencial de clase A súper inmunizado (300mA de sensibilidad de disparo) para la protección de personas y bienes materiales.
+                </p>
+
+                <h2 class="subseccion-titulo">4.2. PUESTA A TIERRA DE LA INSTALACIÓN</h2>
+                <p class="texto-parrafo">
+                    Todas las estructuras de aluminio y los marcos metálicos de los paneles solares se interconectarán mediante cable de cobre desnudo de 16 mm², conectado directamente a la puesta a tierra de protección del edificio. Se verificará que la resistencia global sea inferior a los 20 ohmios normativos.
+                </p>
+
+                <!-- FIRMA FINAL -->
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p><strong>El Ingeniero Autor:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p><strong>Firma y Sello Oficial:</strong></p>
+                        <img th:src="${firmaBase64}" alt="Firma Eduardo" class="firma-imagen" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO I: CÁLCULOS ELÉCTRICOS Y ENERGÉTICOS</span>
+                <span class="pie-numero">Página 6</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

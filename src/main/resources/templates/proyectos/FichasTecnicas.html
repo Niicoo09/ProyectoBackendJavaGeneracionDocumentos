@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Anexo VI: Fichas Técnicas de los Equipos</title>
+    <style>
+        /* ========== ESTILOS BASE (A4 PORTRAIT) ========== */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .contenedor-pdf {
+            width: 210mm;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        .contenedor-principal {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm 15mm 20mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            background: white;
+        }
+
+        /* ========== CABECERA (HEADER) ========== */
+        .header-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            height: 45px;
+        }
+
+        .header-left {
+            width: 72%;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            width: 23%;
+            text-align: right;
+        }
+
+        .header-right img {
+            max-height: 38px;
+            width: auto;
+        }
+
+        /* ========== PIE DE PÁGINA (FOOTER) ========== */
+        .pie-pagina {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .pie-texto {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pie-numero {
+            font-weight: 700;
+        }
+
+        /* ========== CONTENIDO ========== */
+        .contenido-principal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Portada styles */
+        .portada-contenedor {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .portada-caja-gris {
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 45px 30px;
+            text-align: center;
+            margin-top: 60mm;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .portada-anexo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .portada-titulo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .portada-firma-seccion {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+            font-size: 12px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .portada-firma-col {
+            width: 48%;
+        }
+
+        .portada-firma-col p {
+            margin: 4px 0;
+        }
+
+        /* ========== ÍNDICE DOTTED ========== */
+        .titulo-indice {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 10px 0 25px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0f172a;
+        }
+
+        .indice-container {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 10px;
+        }
+
+        .dotted-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 11.5px;
+            color: #1e293b;
+        }
+
+        .dotted-row::after {
+            content: "";
+            flex-grow: 1;
+            border-bottom: 1.5px dotted #cbd5e1;
+            margin: 0 10px 4px 10px;
+        }
+
+        .dotted-row span:last-child {
+            order: 2;
+            font-weight: 700;
+            color: #0f172a;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .dotted-row.font-bold {
+            font-weight: 700;
+            font-size: 12px;
+            color: #0f172a;
+        }
+
+        .pl-6 {
+            padding-left: 20px;
+        }
+
+        /* ========== ESTILOS DE TEXTO ========== */
+        h1.seccion-titulo {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 18px 0 10px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        h2.subseccion-titulo {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 14px 0 6px 0;
+            text-transform: uppercase;
+        }
+
+        p.texto-parrafo {
+            font-size: 11.5px;
+            color: #334155;
+            text-align: justify;
+            margin: 0 0 10px 0;
+            line-height: 1.55;
+        }
+
+        ul.lista-puntos {
+            margin: 0 0 10px 0;
+            padding-left: 18px;
+        }
+
+        ul.lista-puntos li {
+            font-size: 11.5px;
+            color: #334155;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        /* ========== TABLAS PREMIUM ========== */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 11px;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .table-premium td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            color: #334155;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+
+        /* Firmas Finales */
+        .firma-contenedor-final {
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #334155;
+        }
+
+        .firma-col-final {
+            width: 48%;
+        }
+
+        .firma-col-final p {
+            margin: 3px 0;
+        }
+
+        .firma-imagen {
+            max-height: 65px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-pdf" th:with="
+        rawPot=${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '36.30'},
+        potNum=${T(java.lang.Double).parseDouble(rawPot.toString().replaceAll('[^0-9.]', '').isEmpty() ? '36.30' : rawPot.toString().replaceAll('[^0-9.]', ''))},
+        potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
+        potStr=${T(java.lang.String).format('%.2f', potKwp).replace('.', ',')},
+        tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
+        clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : 'CLIENTE')}
+    ">
+
+        <!-- ==================== PÁGINA 1: PORTADA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <div class="portada-contenedor">
+                    <div class="portada-caja-gris">
+                        <div class="portada-anexo">ANEXO VI</div>
+                        <div class="portada-titulo">FICHAS TÉCNICAS DE LOS EQUIPOS</div>
+                    </div>
+                    <div class="portada-firma-seccion">
+                        <div class="portada-firma-col">
+                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
+                        </div>
+                        <div class="portada-firma-col" style="text-align: right;">
+                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
+                            <p><strong>Colegiado Nº:</strong> 4654</p>
+                            <p><strong>Fecha:</strong> <span>Diciembre de 2024</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO VI: FICHAS TÉCNICAS DE LOS EQUIPOS</span>
+                <span class="pie-numero">Página 1</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 2: ÍNDICE ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h2 class="titulo-indice">Índice</h2>
+                <div class="indice-container">
+                    <div class="dotted-row font-bold">
+                        <span>1. MÓDULO FOTOVOLTAICO LONGI 540 WP</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.1. ESPECIFICACIONES ELÉCTRICAS (STC)</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>1.2. ESPECIFICACIONES MECÁNICAS</span>
+                        <span>3</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>2. INVERSOR HUAWEI SUN2000 (12-20KTL-M5)</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.1. PARÁMETROS DE ENTRADA (CC)</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>2.2. PARÁMETROS DE SALIDA (CA)</span>
+                        <span>4</span>
+                    </div>
+                    <div class="dotted-row font-bold">
+                        <span>3. ESTRUCTURA DE SOPORTE SUNFER</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>3.1. COMPOSICIÓN Y RESISTENCIA A LA CORROSIÓN</span>
+                        <span>5</span>
+                    </div>
+                    <div class="dotted-row pl-6">
+                        <span>3.2. DISEÑO Y MONTAJE MECÁNICO</span>
+                        <span>5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO VI: FICHAS TÉCNICAS DE LOS EQUIPOS</span>
+                <span class="pie-numero">Página 2</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 3: MODULO FOTOVOLTAICO ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">1. MÓDULO FOTOVOLTAICO LONGI 540 WP</h1>
+                
+                <h2 class="subseccion-titulo">1.1. ESPECIFICACIONES ELÉCTRICAS (STC)</h2>
+                <p class="texto-parrafo">
+                    El generador principal utiliza los módulos de silicio monocristalino LR5-72HPH-540M, diseñados bajo tecnología de celdas partidas (Half-Cut) que reduce la resistencia interna y optimiza la disipación térmica.
+                </p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Característica Eléctrica</th>
+                            <th>Valor de Ficha Técnica</th>
+                            <th>Tolerancia / Unidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Potencia Máxima (Pmax)</td>
+                            <td>540 Wp</td>
+                            <td>0 a +5 W</td>
+                        </tr>
+                        <tr>
+                            <td>Tensión de Circuito Abierto (Voc)</td>
+                            <td>49,50 V</td>
+                            <td>±3%</td>
+                        </tr>
+                        <tr>
+                            <td>Corriente de Cortocircuito (Isc)</td>
+                            <td>13,85 A</td>
+                            <td>±3%</td>
+                        </tr>
+                        <tr>
+                            <td>Tensión a Potencia Máxima (Vmp)</td>
+                            <td>41,65 V</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Corriente a Potencia Máxima (Imp)</td>
+                            <td>12,97 A</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Eficiencia del Módulo</td>
+                            <td>20,90%</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 class="subseccion-titulo">1.2. ESPECIFICACIONES MECÁNICAS</h2>
+                <ul class="lista-puntos">
+                    <li><strong>Dimensiones</strong>: 2.256 x 1.133 x 35 mm.</li>
+                    <li><strong>Peso estructural</strong>: 27,2 kg por panel.</li>
+                    <li><strong>Vidrio frontal</strong>: Templado de 3,2 mm con tratamiento antirreflejante de alta transmitancia.</li>
+                    <li><strong>Marco perimetral</strong>: Perfil de aleación de aluminio anodizado de alta rigidez estructural.</li>
+                    <li><strong>Caja de conexiones</strong>: Grado de hermeticidad IP68 con tres diodos de derivación (bypass) de respuesta ultra-rápida.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO VI: FICHAS TÉCNICAS DE LOS EQUIPOS</span>
+                <span class="pie-numero">Página 3</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 4: INVERSOR FOTOVOLTAICO ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">2. INVERSOR HUAWEI SUN2000 (12-20KTL-M5)</h1>
+
+                <h2 class="subseccion-titulo">2.1. PARÁMETROS DE ENTRADA (CC)</h2>
+                <p class="texto-parrafo">
+                    Inversor trifásico inteligente y de alta eficiencia con algoritmo de seguimiento del punto de máxima potencia (MPPT) integrado y monitorización individual por ramal.
+                </p>
+
+                <table class="table-premium">
+                    <thead>
+                        <tr>
+                            <th>Especificación de Entrada C.C.</th>
+                            <th>Rango / Límite</th>
+                            <th>Unidad técnica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tensión máxima de entrada</td>
+                            <td>1.100 V</td>
+                            <td>Límite destructivo C.C.</td>
+                        </tr>
+                        <tr>
+                            <td>Rango de tensión de funcionamiento MPPT</td>
+                            <td>160 V - 950 V</td>
+                            <td>Rango operativo dinámico</td>
+                        </tr>
+                        <tr>
+                            <td>Tensión de arranque del inversor</td>
+                            <td>200 V</td>
+                            <td>Inicio de inyección a red</td>
+                        </tr>
+                        <tr>
+                            <td>Número de seguidores MPPT independientes</td>
+                            <td>2 MPPTs</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Corriente de cortocircuito por MPPT</td>
+                            <td>40 A</td>
+                            <td>Máximo de seguridad</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 class="subseccion-titulo">2.2. PARÁMETROS DE SALIDA (CA)</h2>
+                <ul class="lista-puntos">
+                    <li><strong>Potencia activa nominal</strong>: Hasta 20.000 W (según modelo exacto de proyecto).</li>
+                    <li><strong>Tensión nominal de salida</strong>: 220 Vac / 380 Vac, 230 Vac / 400 Vac, trifásico 3F+N+PE.</li>
+                    <li><strong>Eficiencia máxima ponderada</strong>: 98,40% (Eficiencia europea de 98,00%).</li>
+                    <li><strong>Hermeticidad y refrigeración</strong>: Envolvente IP66 con disipación pasiva por convección (sin ventiladores ruidosos).</li>
+                    <li><strong>Comunicaciones integradas</strong>: WLAN, RS485 y Dongle Smart compatible con 4G/FE.</li>
+                </ul>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO VI: FICHAS TÉCNICAS DE LOS EQUIPOS</span>
+                <span class="pie-numero">Página 4</span>
+            </div>
+        </div>
+
+        <!-- ==================== PÁGINA 5: ESTRUCTURA & FIRMA ==================== -->
+        <div class="contenedor-principal">
+            <div class="header-box">
+                <div class="header-left">
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    </span>
+                </div>
+                <div class="header-right">
+                    <img th:src="${logoBase64}" alt="SOLAY" />
+                </div>
+            </div>
+            <div class="contenido-principal">
+                <h1 class="seccion-titulo">3. ESTRUCTURA DE SOPORTE SUNFER</h1>
+
+                <h2 class="subseccion-titulo">3.1. COMPOSICIÓN Y RESISTENCIA A LA CORROSIÓN</h2>
+                <p class="texto-parrafo">
+                    Las estructuras seleccionadas son del fabricante nacional Sunfer, especializadas en montajes sobre cubiertas comerciales e industriales. Están fabricadas en extrusión de aluminio AL6005-T5 y con toda la tornillería y anclajes en acero inoxidable de calidad superior A2-70 (AISI 304).
+                </p>
+                <p class="texto-parrafo">
+                    El sistema cuenta con el tratamiento superficial de anodizado que le confiere una resistencia a la atmósfera salina y la corrosión industrial de Clase C4, garantizando una vida útil libre de mantenimiento superior a los 25 años.
+                </p>
+
+                <h2 class="subseccion-titulo">3.2. DISEÑO Y MONTAJE MECÁNICO</h2>
+                <p class="texto-parrafo">
+                    El soporte dispone de un sistema de juntas de neopreno EPDM integradas en los puntos de contacto con la cubierta para asegurar la estanqueidad y evitar filtraciones de agua de lluvia. El montaje modular en perfiles continuos permite una libre dilatación del metal y una óptima transferencia de esfuerzos de viento hacia los nervios estructurales del edificio.
+                </p>
+
+                <!-- FIRMA FINAL -->
+                <div class="firma-contenedor-final">
+                    <div class="firma-col-final">
+                        <p><strong>El Ingeniero Autor:</strong></p>
+                        <p>Eduardo Rivera Cabezas</p>
+                        <p>Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: 4654</p>
+                    </div>
+                    <div class="firma-col-final" style="text-align: right;">
+                        <p><strong>Firma y Sello Oficial:</strong></p>
+                        <img th:src="${firmaBase64}" alt="Firma Eduardo" class="firma-imagen" />
+                    </div>
+                </div>
+            </div>
+            <div class="pie-pagina">
+                <span class="pie-texto">ANEXO VI: FICHAS TÉCNICAS DE LOS EQUIPOS</span>
+                <span class="pie-numero">Página 5</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
