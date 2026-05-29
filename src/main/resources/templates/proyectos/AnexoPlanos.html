@@ -216,7 +216,7 @@
     potKwp=${potNum > 100 ? potNum / 1000.0 : potNum},
     potStr=${T(java.lang.String).format('%.3f', potKwp).replace('.', ',')},
     tipoDoc=${potKwp > 15.0 ? 'PROYECTO DE EJECUCIÓN' : 'MEMORIA TÉCNICA DE DISEÑO'},
-    clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : '')}
+    clienteNombre=${name != null ? name.toUpperCase() : (form['apellidosNombre'] != null ? form['apellidosNombre'].toUpperCase() : (form['nombre'] != null ? form['nombre'].toUpperCase() : ''))}
 ">
 
     <!-- ============================================================

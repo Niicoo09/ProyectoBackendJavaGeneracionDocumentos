@@ -312,8 +312,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -328,14 +328,14 @@
                     </div>
                     <div class="portada-firma-seccion">
                         <div class="portada-firma-col">
-                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
-                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Promotor:</strong> <span th:text="${form['apellidosNombre'] ?: form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccionCompleta'] ?: form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
                             <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
                         </div>
                         <div class="portada-firma-col" style="text-align: right;">
-                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
-                            <p><strong>Colegiado Nº:</strong> 4654</p>
-                            <p><strong>Fecha:</strong> <span th:text="${'Diciembre de 2024'}">Diciembre de 2024</span></p>
+                            <p><strong>Ingeniero Autor:</strong> <span th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</span></p>
+                            <p><strong>Colegiado Nº:</strong> <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
+                            <p><strong>Fecha:</strong> <span th:text="${form['fechaProyecto'] ?: 'Diciembre de 2024'}">Diciembre de 2024</span></p>
                         </div>
                     </div>
                 </div>
@@ -350,8 +350,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -425,8 +425,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -465,8 +465,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -503,8 +503,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -514,7 +514,7 @@
             <div class="contenido-principal">
                 <h2 class="subseccion-titulo">2.2. ESTRUCTURA DE SOPORTE</h2>
                 <p class="texto-parrafo">
-                    El sistema estructural será de aluminio anodizado AL6005-T5 y tornillería de acero inoxidable A2-70, garantizando una resistencia mínima a la corrosión de clase C4.
+                    El sistema estructural será <span th:text="${form['marcaModeloEstructura'] ?: 'de aluminio anodizado AL6005-T5'}">de aluminio anodizado AL6005-T5</span> y tornillería de acero inoxidable A2-70, garantizando una resistencia mínima a la corrosión de clase C4, fabricada en material <span th:text="${form['materialEstructura'] ?: 'Aluminio'}">Aluminio</span> y soporte tipo <span th:text="${form['tipoSoporteProyecto'] ?: 'Coplanar'}">Coplanar</span> con fijación por <span th:text="${form['fijacionEstructura'] ?: 'anclaje químico'}">anclaje químico</span>.
                 </p>
                 <p class="texto-parrafo">
                     Se justificará la estabilidad estructural mediante cálculo de cargas de viento y nieve según las especificaciones del Código Técnico de la Edificación (CTE DB-SE-AE).
@@ -548,8 +548,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -559,10 +559,10 @@
             <div class="contenido-principal">
                 <h2 class="subseccion-titulo">2.4. CABLEADOS CC Y CA</h2>
                 <p class="texto-parrafo">
-                    Los cables de la sección de continua (CC) serán de cobre flexible, con aislamiento termoestable libre de halógenos de tipo H1Z2Z2-K de 1,5 kV, aptos para intemperie y radiación UV. La sección mínima será de 6 mm² calculada para que la caída de tensión en C.C. sea inferior al 1,5% a potencia nominal.
+                    Los cables de la sección de continua (CC) serán de cobre flexible, con aislamiento termoestable libre de halógenos de tipo H1Z2Z2-K de 1,5 kV, aptos para intemperie y radiación UV. La sección mínima será de <span th:text="${form['seccionCableCC'] ?: '6'}">6</span> mm² calculada para que la caída de tensión en C.C. sea inferior al 1,5% a potencia nominal.
                 </p>
                 <p class="texto-parrafo">
-                    Los conductores de corriente alterna (CA) serán multipolares de cobre flexibles clase 5, del tipo RZ1-K (AS) libres de halógenos de 0,6/1 kV. La sección mínima se calculará para que la caída de tensión en C.A. sea inferior al 2% a potencia máxima del inversor.
+                    Los conductores de corriente alterna (CA) serán multipolares de cobre flexibles clase 5, del tipo RZ1-K (AS) libres de halógenos de 0,6/1 kV. La sección mínima se calculará para que la caída de tensión en C.A. sea inferior al 2% a potencia máxima del inversor (sección seleccionada de <span th:text="${form['seccionCableCA'] ?: '10'}">10</span> mm²).
                 </p>
 
                 <h2 class="subseccion-titulo">2.5. PROTECCIONES Y ENVOLVENTES</h2>
@@ -591,8 +591,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -632,8 +632,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -667,9 +667,9 @@
                 <div class="firma-contenedor-final">
                     <div class="firma-col-final">
                         <p><strong>El Ingeniero Autor:</strong></p>
-                        <p>Eduardo Rivera Cabezas</p>
-                        <p>Ingeniero Técnico Industrial</p>
-                        <p>Colegiado Nº: 4654</p>
+                        <p th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</p>
+                        <p th:text="${form['titulacionAutor'] ?: 'Ingeniero Técnico Industrial'}">Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
                     </div>
                     <div class="firma-col-final" style="text-align: right;">
                         <p><strong>Firma y Sello Oficial:</strong></p>

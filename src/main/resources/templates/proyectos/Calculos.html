@@ -316,8 +316,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -332,14 +332,14 @@
                     </div>
                     <div class="portada-firma-seccion">
                         <div class="portada-firma-col">
-                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
-                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Promotor:</strong> <span th:text="${form['apellidosNombre'] ?: form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccionCompleta'] ?: form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
                             <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
                         </div>
                         <div class="portada-firma-col" style="text-align: right;">
-                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
-                            <p><strong>Colegiado Nº:</strong> 4654</p>
-                            <p><strong>Fecha:</strong> <span>Diciembre de 2024</span></p>
+                            <p><strong>Ingeniero Autor:</strong> <span th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</span></p>
+                            <p><strong>Colegiado Nº:</strong> <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
+                            <p><strong>Fecha:</strong> <span th:text="${form['fechaProyecto'] ?: 'Diciembre de 2024'}">Diciembre de 2024</span></p>
                         </div>
                     </div>
                 </div>
@@ -354,8 +354,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -417,8 +417,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -483,8 +483,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -553,8 +553,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -569,21 +569,21 @@
                     Los conductores de C.C. conectan los módulos solares con los seguidores MPPT del inversor. La sección de cableado se ha calculado por el criterio de capacidad de corriente máxima admisible y por caída de tensión máxima reglamentaria (límite 1,5%).
                 </p>
                 <p class="texto-parrafo">
-                    Utilizando un conductor de cobre tipo H1Z2Z2-K de sección <strong>6 mm²</strong> y una distancia de diseño de 20 metros, la caída de tensión en el tramo de continua es de:
+                    Utilizando un conductor de cobre tipo H1Z2Z2-K de sección <strong th:text="${form['seccionCableCC'] ?: '6'} + ' mm²'">6 mm²</strong> y una distancia de diseño de <span th:text="${form['longitudCableCC'] ?: '20'}">20</span> metros, la caída de tensión en el tramo de continua es de:
                 </p>
                 <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; margin: 5px 0; font-family: monospace; font-size: 11px; text-align: center; color: #1e293b;">
-                    ΔV_cc = (2 x L x I_mp) / (K x S x V_mp) = (2 x 20 x 13,00) / (56 x 6 x 600) = 0,258% &lt; 1,50% [CUMPLE]
+                    ΔV_cc = (2 x L x I_mp) / (K x S x V_mp) = (2 x <span th:text="${form['longitudCableCC'] ?: '20'}">20</span> x 13,00) / (56 x <span th:text="${form['seccionCableCC'] ?: '6'}">6</span> x 600) = <span th:text="${form['vDropCC'] ?: '0,258'}">0,258</span>% &lt; 1,50% [CUMPLE]
                 </div>
 
                 <h2 class="subseccion-titulo">3.2. CABLEADO DE CORRIENTE ALTERNA (CA)</h2>
                 <p class="texto-parrafo">
-                    El tramo de C.A. interconecta la salida del inversor con el Cuadro General de Mando y Protección (CGMP). Se ha seleccionado un conductor unipolar flexible de cobre libre de halógenos tipo RZ1-K (AS) con una sección de <strong>10 mm²</strong>.
+                    El tramo de C.A. interconecta la salida del inversor con el Cuadro General de Mando y Protección (CGMP). Se ha seleccionado un conductor unipolar flexible de cobre libre de halógenos tipo RZ1-K (AS) con una sección de <strong th:text="${form['seccionCableCA'] ?: '10'} + ' mm²'">10 mm²</strong>.
                 </p>
                 <p class="texto-parrafo">
-                    Bajo una corriente máxima de salida del inversor y a una distancia estimada de 15 metros, la caída de tensión calculada para un circuito trifásico es de:
+                    Bajo una corriente máxima de salida del inversor y a una distancia estimada de <span th:text="${form['longitudCableCA'] ?: '15'}">15</span> metros, la caída de tensión calculada para un circuito trifásico es de:
                 </p>
                 <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 10px; margin: 5px 0; font-family: monospace; font-size: 11px; text-align: center; color: #1e293b;">
-                    ΔV_ca = (√3 x L x I_ca x cosφ) / (K x S x V_nominal) = (√3 x 15 x 52,6 x 1,0) / (56 x 10 x 400) = 0,244% &lt; 2,00% [CUMPLE]
+                    ΔV_ca = (√3 x L x I_ca x cosφ) / (K x S x V_nominal) = (√3 x <span th:text="${form['longitudCableCA'] ?: '15'}">15</span> x 52,6 x 1,0) / (56 x <span th:text="${form['seccionCableCA'] ?: '10'}">10</span> x 400) = <span th:text="${form['vDropCA'] ?: '0,244'}">0,244</span>% &lt; 2,00% [CUMPLE]
                 </div>
             </div>
             <div class="pie-pagina">
@@ -596,8 +596,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -624,9 +624,9 @@
                 <div class="firma-contenedor-final">
                     <div class="firma-col-final">
                         <p><strong>El Ingeniero Autor:</strong></p>
-                        <p>Eduardo Rivera Cabezas</p>
-                        <p>Ingeniero Técnico Industrial</p>
-                        <p>Colegiado Nº: 4654</p>
+                        <p th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</p>
+                        <p th:text="${form['titulacionAutor'] ?: 'Ingeniero Técnico Industrial'}">Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
                     </div>
                     <div class="firma-col-final" style="text-align: right;">
                         <p><strong>Firma y Sello Oficial:</strong></p>

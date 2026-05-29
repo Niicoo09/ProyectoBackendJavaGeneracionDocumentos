@@ -311,8 +311,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -327,14 +327,14 @@
                     </div>
                     <div class="portada-firma-seccion">
                         <div class="portada-firma-col">
-                            <p><strong>Promotor:</strong> <span th:text="${form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
-                            <p><strong>Ubicación:</strong> <span th:text="${form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
+                            <p><strong>Promotor:</strong> <span th:text="${form['apellidosNombre'] ?: form['nombre'] ?: 'Cliente'}">Armando Adrián Troncoso</span></p>
+                            <p><strong>Ubicación:</strong> <span th:text="${form['direccionCompleta'] ?: form['direccion'] ?: '-'}">Polígono 12 Parcela 5 RINCON, Coín, Málaga</span></p>
                             <p><strong>Referencia Catastral:</strong> <span th:text="${form['referenciaCatastral'] ?: '-'}">29042A012000050001MB</span></p>
                         </div>
                         <div class="portada-firma-col" style="text-align: right;">
-                            <p><strong>Ingeniero Autor:</strong> Eduardo Rivera Cabezas</p>
-                            <p><strong>Colegiado Nº:</strong> 4654</p>
-                            <p><strong>Fecha:</strong> <span>Diciembre de 2024</span></p>
+                            <p><strong>Ingeniero Autor:</strong> <span th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</span></p>
+                            <p><strong>Colegiado Nº:</strong> <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
+                            <p><strong>Fecha:</strong> <span th:text="${form['fechaProyecto'] ?: 'Diciembre de 2024'}">Diciembre de 2024</span></p>
                         </div>
                     </div>
                 </div>
@@ -349,8 +349,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -408,8 +408,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -485,8 +485,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -557,8 +557,8 @@
         <div class="contenedor-principal">
             <div class="header-box">
                 <div class="header-left">
-                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWP PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA', tipoDoc, potStr)}">
-                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN CUBIERTA
+                    <span th:text="${T(java.lang.String).format('%s DE INSTALACIÓN SOLAR FOTOVOLTAICA DE %s kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE %s', tipoDoc, potStr, clienteNombre)}">
+                        PROYECTO DE EJECUCIÓN DE INSTALACIÓN SOLAR FOTOVOLTAICA DE 36,30 kWp PARA AUTOCONSUMO CONECTADO A RED CON EXCEDENTES, INSTALADA EN LA CUBIERTA DE CLIENTE
                     </span>
                 </div>
                 <div class="header-right">
@@ -585,9 +585,9 @@
                 <div class="firma-contenedor-final">
                     <div class="firma-col-final">
                         <p><strong>El Ingeniero Autor:</strong></p>
-                        <p>Eduardo Rivera Cabezas</p>
-                        <p>Ingeniero Técnico Industrial</p>
-                        <p>Colegiado Nº: 4654</p>
+                        <p th:text="${form['autorProyecto'] ?: 'Eduardo Rivera Cabezas'}">Eduardo Rivera Cabezas</p>
+                        <p th:text="${form['titulacionAutor'] ?: 'Ingeniero Técnico Industrial'}">Ingeniero Técnico Industrial</p>
+                        <p>Colegiado Nº: <span th:text="${form['colegiadoNumero'] ?: '4654'}">4654</span></p>
                     </div>
                     <div class="firma-col-final" style="text-align: right;">
                         <p><strong>Firma y Sello Oficial:</strong></p>
