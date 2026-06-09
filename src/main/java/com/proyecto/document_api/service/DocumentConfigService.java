@@ -747,11 +747,15 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Tensión de suministro
         applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         
-        // Datos del Director de Obra (Vacíos según solicitud)
-        enriched.put("directorDeObra", "");
-        enriched.put("titulacion", "");
-        enriched.put("colegioOficial", "");
-        enriched.put("numeroColegiado", "");
+        // Datos del Director de Obra
+        applyMapping(enriched, form, "directorDeObra", "directorDeObra");
+        applyMapping(enriched, form, "titulacion", "titulacion");
+        applyMapping(enriched, form, "colegioOficial", "colegioOficial");
+        applyMapping(enriched, form, "numeroColegiado", "numeroColegiado");
+        putIfAbsent(enriched, "directorDeObra", "");
+        putIfAbsent(enriched, "titulacion", "");
+        putIfAbsent(enriched, "colegioOficial", "");
+        putIfAbsent(enriched, "numeroColegiado", "");
 
         // Fecha
         applyMapping(enriched, form, "dia", "dia");
@@ -796,7 +800,16 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
-        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
+        String pot = getString(form, "e2_potenciaNominalInversor");
+        if (pot.isEmpty()) pot = getString(form, "e2_potenciaNominalInversores");
+        if (pot.isEmpty()) pot = getString(form, "potenciaProyecto");
+        if (pot.isEmpty()) pot = getString(form, "e2_potenciaPicoGenerador");
+        if (pot.isEmpty()) pot = getString(form, "potenciaContratada");
+        if (!pot.isEmpty()) {
+            enriched.put("potenciaFrase1", pot + " kW");
+        } else {
+            enriched.put("potenciaFrase1", "–");
+        }
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "razonSocial", "nombreCubierta");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");

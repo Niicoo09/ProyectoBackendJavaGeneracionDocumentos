@@ -176,7 +176,7 @@
                 <ol>
                     <li>
                         Ha redactado y firmado el Proyecto de Ejecución titulado: Instalación solar fotovoltaica de
-                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        <strong th:text="${(form['e2_potenciaNominalInversor'] ?: form['e2_potenciaNominalInversores'] ?: form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–') + ' kW'}">XX kW</strong>
                         para Autoconsumo en
                         <strong th:text="${form['usoDestino'] ?: form['tipoInstalacion'] ?: '–'}">vivienda</strong>
                         (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
@@ -190,7 +190,7 @@
                         Localidad: <strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>
                         &nbsp;&nbsp; Provincia: <strong th:text="${form['provinciaEmplazamiento']}">Provincia</strong><br />
                         Título del Proyecto de Ejecución: Instalación solar fotovoltaica de
-                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        <strong th:text="${(form['e2_potenciaNominalInversor'] ?: form['e2_potenciaNominalInversores'] ?: form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–') + ' kW'}">XX kW</strong>
                         para autoconsumo en
                         <strong th:text="${form['usoDestino'] ?: '–'}">vivienda</strong>
                         (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
@@ -198,7 +198,7 @@
                     <li>
                         La empresa instaladora habilitada con Nº de Registro 41045500 – SOLAY INGENIEROS, S.L. ha
                         ejecutado la instalación de autoconsumo fotovoltaico de
-                        <strong th:text="${form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–'}">XX kW</strong>
+                        <strong th:text="${(form['e2_potenciaNominalInversor'] ?: form['e2_potenciaNominalInversores'] ?: form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–') + ' kW'}">XX kW</strong>
                         descrita en el Proyecto de Ejecución, sin ninguna modificación bajo la supervisión y
                         dirección técnica del que suscribe.
                     </li>

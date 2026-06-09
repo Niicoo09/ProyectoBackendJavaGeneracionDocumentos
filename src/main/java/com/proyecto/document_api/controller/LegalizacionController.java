@@ -168,8 +168,6 @@ public class LegalizacionController {
     public ResponseEntity<byte[]> generateDoacfv(@PathVariable UUID id) {
         return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Direccion de Obra", "doacfv", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/z-certificado-doacfv.jpg");
-            extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;
         });
@@ -202,10 +200,8 @@ public class LegalizacionController {
     @Operation(summary = "Certificado de Dirección de Obra")
     @GetMapping("/certificado-direccion-obra/{id}")
     public ResponseEntity<byte[]> generateCertificadoDireccionObra(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "3.- Certificado de Direccion de Obra", "certificado-direccion-obra", formData -> {
+        return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Direccion de Obra", "doacfv", formData -> {
             Map<String, String> extraImages = new HashMap<>();
-            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-direccion-obra.jpg");
-            extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;
         });
