@@ -170,6 +170,9 @@ public class DocumentService {
     public DocumentEntity saveDocument(UUID id, Map<String, Object> formData) {
         DocumentEntity entity;
         
+        // Intercepta e inyecta el desglose del PEM si se proporciona presupuestoTotalConIva
+        calcularYAgregarDesglosePem(formData);
+
         if (id == null) {
             // Caso: Creación sin ID previo
             entity = new DocumentEntity();
@@ -200,4 +203,47 @@ public class DocumentService {
 
         return documentRepository.save(entity);
     }
+
+    /**
+     * Calcula automáticamente el P.E.M., P.E.C. y desgloses de impuestos/gastos a partir
+     * de un presupuesto total con IVA y los inyecta en el mapa de datos.
+     */
+    private void calcularYAgregarDesglosePem(Map<String, Object> formData) {
+        if (formData == null || !formData.containsKey("pemCalculoPresupuestoTotal")) {
+            return;
+        }
+        Object totalRaw = formData.get("pemCalculoPresupuestoTotal");
+        if (totalRaw == null || totalRaw.toString().trim().isEmpty()) {
+            return;
+        }
+        try {
+            String clean = totalRaw.toString().replace("€", "").replace(" ", "").replace(",", ".");
+            double totalVal = Double.parseDouble(clean);
+            if (totalVal <= 0) return;
+
+            // Cálculos con precisión completa sin redondeo intermedio
+            double pecVal = totalVal / 1.21;
+            double pemVal = pecVal / 1.19;
+            double gastosGeneralesVal = pemVal * 0.13;
+            double beneficioIndustrialVal = pemVal * 0.06;
+            double ivaVal = pecVal * 0.21;
+
+            // Redondeamos a 2 decimales para almacenar en la BD
+            java.math.BigDecimal pem = java.math.BigDecimal.valueOf(pemVal).setScale(2, java.math.RoundingMode.HALF_UP);
+            java.math.BigDecimal gastosGenerales = java.math.BigDecimal.valueOf(gastosGeneralesVal).setScale(2, java.math.RoundingMode.HALF_UP);
+            java.math.BigDecimal beneficioIndustrial = java.math.BigDecimal.valueOf(beneficioIndustrialVal).setScale(2, java.math.RoundingMode.HALF_UP);
+            java.math.BigDecimal pec = java.math.BigDecimal.valueOf(pecVal).setScale(2, java.math.RoundingMode.HALF_UP);
+            java.math.BigDecimal iva = java.math.BigDecimal.valueOf(ivaVal).setScale(2, java.math.RoundingMode.HALF_UP);
+
+            formData.put("presupuestoTotal", pem.doubleValue());
+            formData.put("pemCalculoPem", pem.doubleValue());
+            formData.put("pemCalculoGastosGenerales", gastosGenerales.doubleValue());
+            formData.put("pemCalculoBeneficioIndustrial", beneficioIndustrial.doubleValue());
+            formData.put("pemCalculoPec", pec.doubleValue());
+            formData.put("pemCalculoIva", iva.doubleValue());
+        } catch (Exception e) {
+            // Ignoramos silenciosamente errores de parseo para no interrumpir el flujo normal
+        }
+    }
 }
+

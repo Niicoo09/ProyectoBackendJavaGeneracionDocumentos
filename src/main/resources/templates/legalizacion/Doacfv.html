@@ -178,7 +178,7 @@
                         Ha redactado y firmado el Proyecto de Ejecución titulado: Instalación solar fotovoltaica de
                         <strong th:text="${(form['e2_potenciaNominalInversor'] ?: form['e2_potenciaNominalInversores'] ?: form['e2_potenciaPicoGenerador'] ?: form['potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–') + ' kW'}">XX kW</strong>
                         para Autoconsumo en
-                        <strong th:text="${form['usoDestino'] ?: form['tipoInstalacion'] ?: '–'}">vivienda</strong>
+                        <strong>cubierta</strong>
                         (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
                     </li>
                     <li>
@@ -192,7 +192,7 @@
                         Título del Proyecto de Ejecución: Instalación solar fotovoltaica de
                         <strong th:text="${(form['e2_potenciaNominalInversor'] ?: form['e2_potenciaNominalInversores'] ?: form['e2_potenciaPicoGenerador'] ?: form['potenciaContratada'] ?: '–') + ' kW'}">XX kW</strong>
                         para autoconsumo en
-                        <strong th:text="${form['usoDestino'] ?: '–'}">vivienda</strong>
+                        <strong>cubierta</strong>
                         (<strong th:text="${form['localidadEmplazamiento']}">Localidad</strong>).
                     </li>
                     <li>
@@ -217,7 +217,7 @@
                     <p class="etiqueta-firma" th:text="${(form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty()) or (form['representante'] != null and !form['representante'].isEmpty()) ? 'FIRMA DEL REPRESENTANTE' : 'FIRMA DEL TITULAR'}">FIRMA DEL REPRESENTANTE</p>
                     <p class="texto-pie-fecha">
                         <strong>LUGAR Y FECHA:</strong>
-                        <span th:text="${form['localidadEmplazamiento']}">Localidad</span>, a
+                        <span>Bollullos de la Mitación</span>, a
                         <span th:text="${form['dia']}">DD</span> de
                         <span th:text="${form['mes']}">mes</span> de
                         <span th:text="${form['anio']}">AAAA</span>.

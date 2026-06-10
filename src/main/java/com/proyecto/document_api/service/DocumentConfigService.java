@@ -842,14 +842,93 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
-        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
-        applyMapping(enriched, form, "potenciaFrase2", "potenciaProyecto");
+        // Mapear el nombre del cliente a potenciaFrase1 (se pinta justo después de fraseFija1)
+        applyMappingWithFallback(enriched, form, "potenciaFrase1", "apellidosNombre", "nombre", "promotor");
+        
+        // Mapear la potencia del inversor a potenciaFrase2 (se pinta justo después de fraseFija2)
+        String potInversor = getString(form, "e2_potenciaNominalInversor");
+        if (potInversor.isEmpty()) potInversor = getString(form, "e2_potenciaNominalInversores");
+        if (potInversor.isEmpty()) potInversor = getString(form, "potenciaProyecto");
+        
+        if (!potInversor.isEmpty()) {
+            if (!potInversor.toLowerCase().contains("kw")) {
+                potInversor = potInversor + " kW";
+            }
+            enriched.put("potenciaFrase2", potInversor);
+        } else {
+            enriched.put("potenciaFrase2", "–");
+        }
+
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "razonSocial", "nombreCubierta");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
 
-        // Mapeos de fecha
+        // Mapeos de fecha de elaboración de la sección legalización
+        applyFechaElaboracionProyecto(enriched, form);
+    }
+
+    /**
+     * Extrae de forma estructurada el día, mes (en español) y año de la fecha de elaboración 
+     * de proyecto de la sección legalización (fechaElaboracion).
+     */
+    private void applyFechaElaboracionProyecto(Map<String, Object> enriched, Map<String, Object> form) {
+        String fechaRaw = getString(form, "fechaElaboracion");
+        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaElaboracionProyecto");
+        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaProyecto");
+
+        if (!fechaRaw.isEmpty()) {
+            try {
+                String dia = "";
+                String mes = "";
+                String anio = "";
+
+                if (fechaRaw.contains("-")) {
+                    String[] parts = fechaRaw.split("-");
+                    if (parts.length == 3) {
+                        if (parts[0].length() == 4) { // YYYY-MM-DD
+                            anio = parts[0];
+                            mes = parts[1];
+                            dia = parts[2];
+                        } else { // DD-MM-YYYY
+                            dia = parts[0];
+                            mes = parts[1];
+                            anio = parts[2];
+                        }
+                    }
+                } else if (fechaRaw.contains("/")) {
+                    String[] parts = fechaRaw.split("/");
+                    if (parts.length == 3) {
+                        if (parts[0].length() == 4) { // YYYY/MM/DD
+                            anio = parts[0];
+                            mes = parts[1];
+                            dia = parts[2];
+                        } else { // DD/MM/YYYY
+                            dia = parts[0];
+                            mes = parts[1];
+                            anio = parts[2];
+                        }
+                    }
+                }
+
+                if (!dia.isEmpty() && !mes.isEmpty() && !anio.isEmpty()) {
+                    String[] meses = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+                    try {
+                        int mesInt = Integer.parseInt(mes);
+                        if (mesInt >= 1 && mesInt <= 12) {
+                            mes = meses[mesInt - 1];
+                        }
+                    } catch (Exception e) {}
+                    
+                    enriched.put("dia", dia);
+                    enriched.put("mes", mes);
+                    enriched.put("anio", anio);
+                    return;
+                }
+            } catch (Exception e) {}
+        }
+
+        // Fallback si no viene o falla
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");

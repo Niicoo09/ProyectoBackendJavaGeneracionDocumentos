@@ -155,6 +155,31 @@ public class ProyectoController {
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
 
+    @Operation(summary = "Genera el documento 13: Cálculo PEM")
+    @GetMapping("/calculo-pem/{id}")
+    public ResponseEntity<byte[]> generateCalculoPem(@PathVariable UUID id) {
+        DocumentEntity doc = documentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No existe el registro con ID: " + id));
+
+        Map<String, Object> formData = jsonUtils.parseJsonToMap(doc.getFormulario());
+        Map<String, Object> enriched = documentConfigService.enrich("CalculoPem", formData);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("form", enriched);
+        data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
+        data.put("logoBase64",  "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
+        data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+
+        byte[] pdf = documentService.generatePdf("proyectos/CalculoPem", data);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.attachment()
+                .filename("Calculo PEM_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .build());
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
+
     @Operation(summary = "Genera el Anexo V: Pliego de Prescripciones Técnicas Particulares (PPTP)")
     @GetMapping("/pptp/{id}")
     public ResponseEntity<byte[]> generatePPTP(@PathVariable UUID id) {
