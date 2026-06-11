@@ -82,16 +82,13 @@
                   <span class="overlay-field" style="left:20mm; top:111mm;"
                         th:text="${form['nombreRepresentante']}"></span>
 
-                  <span class="overlay-field" style="left:155mm; top:111mm;"
+                  <span class="overlay-field" style="left:175mm; top:111mm;"
                         th:text="${form['dniRepresentante']}"></span>
 
                   <span class="overlay-field" style="left:20mm; top:120mm;" th:text="${form['calidad']}"></span>
             </th:block>
 
             <!-- SECCIÓN 2: LUGAR Y MEDIO DE NOTIFICACIÓN -->
-            <span class="overlay-field" style="left:27mm; top:153mm;" th:text="${form['tipoVia'] ?: ''}"></span>
-            <span class="overlay-field" style="left:46mm; top:153mm;" th:text="${form['nombreVia'] ?: ''}"></span>
-            <span class="overlay-field" style="left:27mm; top:162mm;" th:text="${form['numero'] ?: ''}"></span>
             <span class="overlay-field" style="left:48mm; top:162mm;" th:text="${form['letra'] ?: ''}"></span>
             <span class="overlay-field" style="left:70mm; top:162mm;" th:text="${form['km'] ?: ''}"></span>
             <span class="overlay-field" style="left:91mm; top:162mm;" th:text="${form['bloque'] ?: ''}"></span>
@@ -101,17 +98,6 @@
             <span class="overlay-field" style="left:176mm; top:162mm;" th:text="${form['puerta'] ?: ''}"></span>
 
             <span class="overlay-field" style="left:27mm; top:170mm;" th:text="${form['entidad'] ?: ''}"></span>
-            <span class="overlay-field" style="left:73mm; top:170mm;"
-                  th:text="${form['municipio'] ?: form['localidadEmplazamiento'] ?: ''}"></span>
-            <span class="overlay-field" style="left:123mm; top:170mm;"
-                  th:text="${form['provincia'] ?: form['provinciaEmplazamiento'] ?: ''}"></span>
-            <span class="overlay-field" style="left:154mm; top:170mm;" th:text="${form['pais'] ?: 'ESPAÑA'}"></span>
-            <span class="overlay-field" style="left:175.5mm; top:169.5mm; font-size:14pt; letter-spacing:3.4pt;"
-                  th:text="${form['codigoPostal'] ?: form['codigoPostalEmplazamiento'] ?: ''}"></span>
-
-            <span class="overlay-field" style="left:53mm; top:179mm;" th:text="${form['telefonoMovil'] ?: ''}"></span>
-            <span class="overlay-field" style="left:80mm; top:179mm;"
-                  th:text="${form['correoElectronico'] ?: ''}"></span>
 
             <!-- Campos inferiores de la Sección 2 (sobre puntos suspensivos) -->
             <span class="overlay-field" style="left:60mm; top:201mm; font-size:8.5pt;"

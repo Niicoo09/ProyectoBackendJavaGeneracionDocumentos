@@ -630,11 +630,22 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         // Datos del Representante (solo si existe)
         String rep = getString(form, "representante");
-        if (rep != null && !rep.trim().isEmpty()) {
-            applyMapping(enriched, form, "nombreRepresentante", "representante");
-            enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
-            applyMapping(enriched, form, "calidad", "representanteCargo");
-            putIfAbsent(enriched, "calidad", "Representante de la sociedad");
+        if (rep.isEmpty()) rep = getString(form, "nombreRepresentante");
+        if (rep.isEmpty()) rep = getString(form, "nombreRepresentanteEntidad");
+        if (rep.isEmpty()) rep = getString(form, "apellidosNombreRepresentanteLegal");
+
+        String dniRep = getString(form, "dniRepresentante");
+        if (dniRep.isEmpty()) dniRep = getString(form, "dniCifRepresentante");
+        if (dniRep.isEmpty()) dniRep = getString(form, "dniRepresentanteEntidad");
+
+        String calidadRep = getString(form, "representanteCargo");
+        if (calidadRep.isEmpty()) calidadRep = getString(form, "calidad");
+        if (calidadRep.isEmpty()) calidadRep = getString(form, "actuaCalidad");
+
+        if (!rep.trim().isEmpty()) {
+            enriched.put("nombreRepresentante", rep);
+            enriched.put("dniRepresentante", cleanDni(dniRep));
+            enriched.put("calidad", !calidadRep.isEmpty() ? calidadRep : "Representante de la sociedad");
         } else {
             enriched.put("nombreRepresentante", "");
             enriched.put("dniRepresentante", "");
