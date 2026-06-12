@@ -175,7 +175,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("Calculo PEM_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .filename("13.- Calculo PEM.pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
