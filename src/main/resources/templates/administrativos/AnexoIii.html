@@ -172,7 +172,7 @@
 
             <!-- Nombre firmante -->
             <span class="overlay-field" style="left:73.3mm; top:125mm;"
-                  th:text="${form['nombreFirma'] ?: 'Eduardo Rivera Cabezas'}"></span>
+                  th:text="${form['nombreFirma'] ?: (form['nombreRepresentante'] != null and !form['nombreRepresentante'].isEmpty() ? form['nombreRepresentante'] : form['apellidosNombre'])}"></span>
 
             <!-- Provincia firma -->
             <span class="overlay-field" style="left:65.3mm; top:141mm;"

@@ -240,7 +240,9 @@ public class LegalizacionController {
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
         
         data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
-        data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        if (!"anexo-iii".equals(configId)) {
+            data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
+        }
 
         if (extraImages != null) {
             data.putAll(extraImages);
