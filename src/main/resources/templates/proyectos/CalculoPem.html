@@ -266,27 +266,27 @@
                     <tbody>
                         <tr class="bg-highlight">
                             <td><strong>Presupuesto de Ejecución Material – P.E.M.</strong></td>
-                            <td class="text-right font-bold" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(pemVal.toString())) + ' €'}">7.083,83 €</td>
+                            <td class="text-right font-bold" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(pemVal.toString())) + ' €'}">7.083,83 €</td>
                         </tr>
                         <tr>
                             <td>13% de Gastos Generales</td>
-                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(ggVal.toString())) + ' €'}">920,90 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(ggVal.toString())) + ' €'}">920,90 €</td>
                         </tr>
                         <tr>
                             <td>6% de Beneficio Industrial</td>
-                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(biVal.toString())) + ' €'}">425,03 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(biVal.toString())) + ' €'}">425,03 €</td>
                         </tr>
                         <tr class="bg-total">
                             <td><strong>Presupuesto de Ejecución del Contrato – P.E.C.</strong></td>
-                            <td class="text-right font-bold" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(pecVal.toString())) + ' €'}">8.429,75 €</td>
+                            <td class="text-right font-bold" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(pecVal.toString())) + ' €'}">8.429,75 €</td>
                         </tr>
                         <tr>
                             <td>21% de IVA sobre el P.E.C.</td>
-                            <td class="text-right" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(ivaVal.toString())) + ' €'}">1.770,25 €</td>
+                            <td class="text-right" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(ivaVal.toString())) + ' €'}">1.770,25 €</td>
                         </tr>
                         <tr class="bg-total" style="font-size: 14px;">
                             <td><strong>Presupuesto Total (IVA incluido)</strong></td>
-                            <td class="text-right font-bold" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(presupuestoTotalConIva.toString())) + ' €'}">10.200,00 €</td>
+                            <td class="text-right font-bold" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(presupuestoTotalConIva.toString())) + ' €'}">10.200,00 €</td>
                         </tr>
                     </tbody>
                 </table>
@@ -296,7 +296,7 @@
                     <tbody>
                         <tr class="bg-highlight">
                             <td><strong>PRESUPUESTO A TENER EN CUENTA PARA EL CÁLCULO DE LAS TASAS (P.E.M.)</strong></td>
-                            <td class="text-right font-bold" style="width: 30%;" th:text="${T(java.lang.String).format('%,.2f', T(java.lang.Double).parseDouble(pemVal.toString())) + ' €'}">7.083,83 €</td>
+                            <td class="text-right font-bold" style="width: 30%;" th:text="${T(java.lang.String).format(T(java.util.Locale).forLanguageTag('es-ES'), '%,.2f', T(java.lang.Double).parseDouble(pemVal.toString())) + ' €'}">7.083,83 €</td>
                         </tr>
                     </tbody>
                 </table>
