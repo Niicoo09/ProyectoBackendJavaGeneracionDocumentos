@@ -395,7 +395,7 @@ public class DocumentController {
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
         data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
         data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
-        data.put("firmaSolayMrivasBase64", "data:image/jpeg;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.jpeg"));
+        data.put("firmaSolayMrivasBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.png"));
 
         if (extraImages != null)
             data.putAll(extraImages);

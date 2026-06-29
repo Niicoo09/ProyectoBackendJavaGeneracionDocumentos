@@ -243,7 +243,7 @@ public class LegalizacionController {
         if (!"anexo-iii".equals(configId)) {
             data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
         }
-        data.put("firmaSolayMrivasBase64", "data:image/jpeg;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.jpeg"));
+        data.put("firmaSolayMrivasBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.png"));
 
         if (extraImages != null) {
             data.putAll(extraImages);
