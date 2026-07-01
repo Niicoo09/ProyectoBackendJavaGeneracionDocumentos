@@ -826,10 +826,18 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
         
-        // Mapeos adicionales por si acaso
-        applyMapping(enriched, form, "dia", "dia");
-        applyMapping(enriched, form, "mes", "mes");
-        applyMapping(enriched, form, "anio", "anio");
+        // Fecha de elaboración del trabajo en texto para la sección 2
+        String fechaRaw = getString(form, "fechaElaboracion");
+        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaElaboracionProyecto");
+        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaProyecto");
+        if (!fechaRaw.isEmpty() && fechaRaw.contains("-")) {
+            String[] p = fechaRaw.split("-");
+            if (p.length == 3 && p[0].length() == 4) fechaRaw = p[2] + "/" + p[1] + "/" + p[0];
+        }
+        enriched.put("fechaElaboracionTexto", fechaRaw);
+
+        // Fecha de firma de la declaración (sección 3) → campo 'fecha' del formulario maestro
+        applyFechaFirma(enriched, form);
     }
 
     private void applyDeclaracionTecnicoCompetente(Map<String, Object> enriched, Map<String, Object> form) {
@@ -875,8 +883,18 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
 
-        // Mapeos de fecha de elaboración de la sección legalización
-        applyFechaElaboracionProyecto(enriched, form);
+        // Fecha de elaboración en texto para la sección 2
+        String fechaRawDtc = getString(form, "fechaElaboracion");
+        if (fechaRawDtc.isEmpty()) fechaRawDtc = getString(form, "fechaElaboracionProyecto");
+        if (fechaRawDtc.isEmpty()) fechaRawDtc = getString(form, "fechaProyecto");
+        if (!fechaRawDtc.isEmpty() && fechaRawDtc.contains("-")) {
+            String[] p = fechaRawDtc.split("-");
+            if (p.length == 3 && p[0].length() == 4) fechaRawDtc = p[2] + "/" + p[1] + "/" + p[0];
+        }
+        enriched.put("fechaElaboracionTexto", fechaRawDtc);
+
+        // Fecha de firma de la declaración (sección 3) → campo 'fecha' del formulario maestro
+        applyFechaFirma(enriched, form);
     }
 
     /**
@@ -940,6 +958,59 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         }
 
         // Fallback si no viene o falla
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
+    }
+
+    /**
+     * Extrae día, mes (en español) y año del campo 'fecha' del formulario maestro
+     * para usarlos como fecha de firma en la sección 3 de las declaraciones.
+     */
+    private void applyFechaFirma(Map<String, Object> enriched, Map<String, Object> form) {
+        String fechaRaw = getString(form, "fecha");
+        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaFirma");
+
+        if (!fechaRaw.isEmpty()) {
+            try {
+                String dia = "";
+                String mes = "";
+                String anio = "";
+
+                if (fechaRaw.contains("-")) {
+                    String[] parts = fechaRaw.split("-");
+                    if (parts.length == 3) {
+                        if (parts[0].length() == 4) { // YYYY-MM-DD
+                            anio = parts[0]; mes = parts[1]; dia = parts[2];
+                        } else { // DD-MM-YYYY
+                            dia = parts[0]; mes = parts[1]; anio = parts[2];
+                        }
+                    }
+                } else if (fechaRaw.contains("/")) {
+                    String[] parts = fechaRaw.split("/");
+                    if (parts.length == 3) {
+                        if (parts[0].length() == 4) { // YYYY/MM/DD
+                            anio = parts[0]; mes = parts[1]; dia = parts[2];
+                        } else { // DD/MM/YYYY
+                            dia = parts[0]; mes = parts[1]; anio = parts[2];
+                        }
+                    }
+                }
+
+                if (!dia.isEmpty() && !mes.isEmpty() && !anio.isEmpty()) {
+                    String[] meses = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+                    try {
+                        int mesInt = Integer.parseInt(mes);
+                        if (mesInt >= 1 && mesInt <= 12) mes = meses[mesInt - 1];
+                    } catch (Exception e) {}
+                    enriched.put("dia", dia);
+                    enriched.put("mes", mes);
+                    enriched.put("anio", anio);
+                    return;
+                }
+            } catch (Exception e) {}
+        }
+        // Fallback
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");

@@ -90,21 +90,21 @@
              th:text="${form['numeroColegiadoFijo'] ?: ''}"></div>
 
         <!-- 2. DATOS DEL TRABAJO PROFESIONAL -->
-        <!-- Frase 1 (Movida a la izquierda a 30mm) -->
-        <div class="overlay-field" style="left: 30mm; top: 136mm; width: 120mm; height: 8mm; font-size: 9pt; text-align: left;"
-             th:text="${form['fraseFija1'] ?: ''}"></div>
-        <div class="overlay-field" style="left: 118mm; top: 136mm; width: 30mm; height: 6mm; font-size: 9pt; text-align: left;"
-             th:text="${form['potenciaFrase1'] ?: ''}"></div>
+        <!-- Fila 1: TIPO Y CARACTERÍSTICAS (fraseFija1 + potenciaFrase1 concatenados) -->
+        <div class="overlay-field" style="left: 30mm; top: 136mm; width: 170mm; height: 8mm; font-size: 9pt; text-align: left;"
+             th:text="${(form['fraseFija1'] != null ? form['fraseFija1'].trim() : '') + ' ' + (form['potenciaFrase1'] ?: '')}"></div>
 
-        <!-- Frase 2 (Movida a la izquierda a 30mm) -->
-        <div class="overlay-field" style="left: 30mm; top: 149mm; width: 120mm; height: 8mm; font-size: 9pt; text-align: left;"
-             th:text="${form['fraseFija2'] ?: ''}"></div>
-        <div class="overlay-field" style="left: 109mm; top: 149mm; width: 30mm; height: 6mm; font-size: 9pt; text-align: left;"
-             th:text="${form['potenciaFrase2'] ?: ''}"></div>
-             
-        <!-- Razón Social -->
-        <div class="overlay-field" style="left: 159mm; top: 149.3mm; width: 40mm; height: 6mm; font-size: 8pt;"
+        <!-- Fila 2: TÍTULO DEL DOCUMENTO (fraseFija2 + potenciaFrase2 concatenados) -->
+        <div class="overlay-field" style="left: 30mm; top: 149mm; width: 130mm; height: 8mm; font-size: 9pt; text-align: left;"
+             th:text="${(form['fraseFija2'] != null ? form['fraseFija2'].trim() : '') + ' ' + (form['potenciaFrase2'] ?: '')}"></div>
+
+        <!-- Razón Social (al final de la fila del título) -->
+        <div class="overlay-field" style="left: 162mm; top: 149.3mm; width: 40mm; height: 6mm; font-size: 8pt;"
              th:text="${form['razonSocial'] ?: ''}"></div>
+
+        <!-- FECHA DE ELABORACIÓN DEL TRABAJO (Sección 2) -->
+        <div class="overlay-field" style="left: 60mm; top: 158mm; width: 120mm; height: 6mm; font-size: 10pt; text-align: left;"
+             th:text="${form['fechaElaboracionTexto'] ?: ''}"></div>
 
         <!-- Cabecera Superior -->
         <div class="overlay-field" style="left: 140mm; top: 20.5mm; width: 45mm; height: 6mm; font-size: 10pt; background: white; text-align: center;"
