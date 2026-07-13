@@ -806,8 +806,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
-        putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Certificado de direccion de obra de instalacion de equipos");
+        putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Certificado de dirección de obra de instalación de equipos");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
@@ -856,8 +856,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
-        putIfAbsent(enriched, "fraseFija1", "Elaboracion de proyecto electrico de instalacion solar fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecuccion de instalacion solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija1", "Elaboración de proyecto eléctrico de instalación solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecución de instalación solar fotovoltaica de ");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
