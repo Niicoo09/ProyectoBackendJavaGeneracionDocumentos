@@ -1,0 +1,33 @@
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- 5.1.1 Empresa distribuidora -->
+    <span class="overlay-field" style="left:38.5mm; top:41.5mm; font-size:7.5pt;"
+          th:text="${form['empresaDistribuidora'] ?: ''}"></span>
+
+    <!-- 5.1.1 Código unificado punto suministro (CUPS) -->
+    <span class="overlay-field" style="left:156.5mm; top:41.5mm; font-size:7.5pt;"
+          th:text="${form['cups'] ?: ''}"></span>
+
+    <!-- 5.1.1 Titular del punto de suministro -->
+    <span class="overlay-field" style="left:47.5mm; top:46mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- 5.1.1 Potencia contratada (kW) -->
+    <span class="overlay-field" style="left:178.5mm; top:46.5mm; font-size:7.5pt;"
+          th:text="${form['potenciaContratada'] ?: ''}"></span>
+
+    <!-- 5.1.1 Titular de la instalación de generation -->
+    <span class="overlay-field" style="left:93.5mm; top:51.5mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- 5.1.1 [X] Tensión nominal: 230 -->
+    <span class="overlay-marker" th:if="${form['fase'] == 'Monofásica' or form['fase'] == 'Monofasica' or form['tensionNominalInversor'] == '230' or form['tensionSuministro'] == '230'}" style="left:39.5mm; top:58mm;">X</span>
+
+    <!-- 5.1.1 [X] Tensión nominal: 3x230/400 -->
+    <span class="overlay-marker" th:if="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' or form['tensionNominalInversor'] == '400' or form['tensionSuministro'] == '400'}" style="left:55mm; top:58mm;">X</span>
+
+    <!-- 5.1.1 Intensidad de cortocircuito (kA) -->
+    <span class="overlay-field" style="left:135mm; top:57mm; font-size:7.5pt;"
+          th:text="${form['1'] ?: ''}"></span>
+
+</div>

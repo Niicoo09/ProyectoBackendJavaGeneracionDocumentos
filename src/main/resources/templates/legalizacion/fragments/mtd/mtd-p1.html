@@ -1,0 +1,89 @@
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+<!-- Expediente -->
+    <span class="overlay-field" style="left:153mm; top:37.5mm; font-size:7.5pt;"
+          th:text="${form['numeroExpediente'] ?: ''}"></span>
+
+    <!-- S1 Titular Nombre/Razón Social -->
+    <span class="overlay-field" style="left:12.5mm; top:52mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- S1 Titular NIF/CIF -->
+    <span class="overlay-field" style="left:161.5mm; top:52.5mm; font-size:7.5pt;"
+          th:text="${form['nifCif'] ?: ''}"></span>
+
+    <!-- S1 Titular Domicilio -->
+    <span class="overlay-field" style="left:12.5mm; top:60mm; font-size:7.5pt;"
+          th:text="${form['domicilio'] ?: ''}"></span>
+
+    <!-- S1 Titular Código Postal -->
+    <span class="overlay-field" style="left:161.5mm; top:60.5mm; font-size:7.5pt;"
+          th:text="${form['codigoPostal'] ?: ''}"></span>
+
+    <!-- S1 Titular Localidad -->
+    <span class="overlay-field" style="left:12.5mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: ''}"></span>
+
+    <!-- S1 Titular Provincia -->
+    <span class="overlay-field" style="left:81.5mm; top:69mm; font-size:7.5pt;"
+          th:text="${form['provincia'] ?: ''}"></span>
+
+    <!-- S1 Titular Email -->
+    <span class="overlay-field" style="left:107mm; top:68mm; font-size:7.5pt;"
+          th:text="${form['correoElectronico'] ?: ''}"></span>
+
+    <!-- S1 Titular Teléfono -->
+    <span class="overlay-field" style="left:161.5mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['telefono'] ?: ''}"></span>
+
+    <!-- S2 Redactor [X] Habilitación -->
+    <span class="overlay-marker" style="left:62mm; top:89.5mm;">X</span>
+
+    <!-- S2 Redactor Nombre -->
+    <span class="overlay-field" style="left:40mm; top:101mm; font-size:7.5pt;">EDUARDO RIVERA CABEZAS</span>
+
+    <!-- S2 Redactor NIF -->
+    <span class="overlay-field" style="left:170mm; top:101mm; font-size:7.5pt;">28.818.007-L</span>
+
+    <!-- S2 Redactor ID Empresa -->
+    <span class="overlay-field" style="left:55mm; top:119mm; font-size:7.5pt;">41045500</span>
+
+    <!-- S2 Redactor Titulación -->
+    <span class="overlay-field" style="left:130mm; top:119mm; font-size:7.5pt;">INGENIERO INDUSTRIAL</span>
+
+    <!-- S3 Emplazamiento Calle -->
+    <span class="overlay-field" style="left:13mm; top:133mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoCalle'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Localidad -->
+    <span class="overlay-field" style="left:12.5mm; top:140.5mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Provincia -->
+    <span class="overlay-field" style="left:121.5mm; top:141mm; font-size:7.5pt;"
+          th:text="${form['provinciaEmplazamiento'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento CP -->
+    <span class="overlay-field" style="left:161.5mm; top:140.5mm; font-size:7.5pt;"
+          th:text="${form['codigoPostalEmplazamiento'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Uso -->
+    <span class="overlay-field" style="left:12.5mm; top:148mm; font-size:7.5pt;"
+          th:text="${form['usoDestino'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Superficie -->
+    <span class="overlay-field" style="left:81.5mm; top:148.5mm; font-size:7.5pt;"
+          th:text="${form['superficie'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Ocupantes -->
+    <span class="overlay-field" style="left:102.5mm; top:148mm; font-size:7.5pt;"
+          th:text="${form['ocupacion'] ?: ''}"></span>
+
+    <!-- S3 Emplazamiento Tipo Inst. -->
+    <span class="overlay-field" style="left:121.5mm; top:148.5mm; font-size:7.5pt;"
+          th:text="${form['tipoInstalacion'] ?: ''}"></span>
+
+    <!-- S3 [X] Nueva Instalación -->
+    <span class="overlay-marker" style="left:26mm; top:159.5mm;">X</span>
+
+</div>

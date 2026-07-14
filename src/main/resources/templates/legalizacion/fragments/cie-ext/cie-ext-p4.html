@@ -1,0 +1,19 @@
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- P4 Firma Lugar -->
+    <span class="overlay-field" style="left:42mm; top:199mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: ''}"></span>
+
+    <!-- P4 Firma Día -->
+    <span class="overlay-field" style="left:89mm; top:199.5mm; font-size:7.5pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+
+    <!-- P4 Firma Mes -->
+    <span class="overlay-field" style="left:105mm; top:199mm; font-size:7.5pt;"
+          th:text="${form['mes'] ?: ''}"></span>
+
+    <!-- P4 Firma Año -->
+    <span class="overlay-field" style="left:138mm; top:199mm; font-size:7.5pt;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+</div>

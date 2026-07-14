@@ -202,8 +202,12 @@ public class DocumentConfigService {
                 applyCertificadoAdecuacion(enriched, formData);
                 break;
             case "cie":
+            case "cie-valido-extremadura":
             case "z-certificado-br":
                 applyCie(enriched, formData);
+                break;
+            case "mtd-baja-tension":
+                applyMemoriaTecnicaCommon(enriched, formData, "mtd-instalacion-autoconsumo-sin-bateria"); // Usar el comportamiento común de memorias
                 break;
             case "z-certificado-doacfv":
             case "doacfv":

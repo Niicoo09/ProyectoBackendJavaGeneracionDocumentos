@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Memoria Técnica de Diseño - Baja Tensión (Extremadura)</title>
+    <style>
+        @page { size: A4; margin: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; padding: 0; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 100% 100%;
+            page-break-after: always;
+            font-family: Arial, sans-serif;
+            font-size: 7pt;
+            color: #000;
+        }
+        .pagina-documento:last-child { page-break-after: avoid; }
+
+        .overlay-field {
+            position: absolute;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: visible;
+            padding: 0 0.5mm;
+            color: #000;
+            font-family: Arial, sans-serif;
+            line-height: 1;
+        }
+
+        .overlay-marker {
+            position: absolute;
+            font-size: 9pt;
+            font-weight: bold;
+            color: #000;
+            font-family: Arial, sans-serif;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p1 :: content(${fondoStyle1})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p2 :: content(${fondoStyle2})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p3 :: content(${fondoStyle3})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p4 :: content(${fondoStyle4})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p5 :: content(${fondoStyle5})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p6 :: content(${fondoStyle6})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p7 :: content(${fondoStyle7})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/mtd/mtd-p8 :: content(${fondoStyle8})}"></th:block>
+</body>
+</html>

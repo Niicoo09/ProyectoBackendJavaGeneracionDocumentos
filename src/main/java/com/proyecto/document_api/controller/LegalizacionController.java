@@ -207,6 +207,34 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "CIE Válido Extremadura")
+    @GetMapping("/cie-valido-extremadura/{id}")
+    public ResponseEntity<byte[]> generateCieValidoExtremadura(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/CieValidoExtremadura", "CIE Valido Extremadura", "cie-valido-extremadura", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            for (int i = 1; i <= 4; i++) {
+                String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie-extremadura-p" + i + ".jpg");
+                extraImages.put("fondoStyle" + i, "background-image: url('data:image/jpeg;base64," + base64 + "');");
+            }
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
+    @Operation(summary = "Memoria Técnica de Diseño - Baja Tensión")
+    @GetMapping("/mtd-baja-tension/{id}")
+    public ResponseEntity<byte[]> generateMtdBajaTension(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/MtdBajaTension", "MTD Baja Tension", "mtd-baja-tension", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            for (int i = 1; i <= 8; i++) {
+                String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/mtd-extremadura-p" + i + ".jpg");
+                extraImages.put("fondoStyle" + i, "background-image: url('data:image/jpeg;base64," + base64 + "');");
+            }
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*
+  FRAGMENTO: CIE Válido Extremadura - Página 1 (Posiciones Oficiales)
+  Variables disponibles: form, fondoStyle, firmaBase64
+*/-->
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- S1 Nombre/Razón Social (Titular) -->
+    <span class="overlay-field" style="left:37mm; top:18.5mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- S1 NIF/NIE (Titular) -->
+    <span class="overlay-field" style="left:175mm; top:19mm; font-size:7.5pt;"
+          th:text="${form['nifCif'] ?: ''}"></span>
+
+    <!-- S1 Domicilio (Titular) -->
+    <span class="overlay-field" style="left:21mm; top:22.5mm; font-size:7.5pt;"
+          th:text="${(form['domicilio'] ?: (form['emplazamientoCalle'] ?: '') + (form['numero'] != null ? ' ' + form['numero'] : ''))}"></span>
+
+    <!-- S1 Código Postal (Titular) -->
+    <span class="overlay-field" style="left:186.5mm; top:22.5mm; font-size:7.5pt;"
+          th:text="${form['codigoPostal'] ?: ''}"></span>
+
+    <!-- S1 Localidad (Titular) -->
+    <span class="overlay-field" style="left:21.5mm; top:25.5mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: ''}"></span>
+
+    <!-- S1 Provincia (Titular) -->
+    <span class="overlay-field" style="left:79.5mm; top:25.5mm; font-size:7.5pt;"
+          th:text="${form['provincia'] ?: ''}"></span>
+
+    <!-- S1 Email (Titular) -->
+    <span class="overlay-field" style="left:120mm; top:25.5mm; font-size:7.5pt;"
+          th:text="${form['correoElectronico'] ?: ''}"></span>
+
+    <!-- S1 Teléfono (Titular) -->
+    <span class="overlay-field" style="left:182.5mm; top:25.5mm; font-size:7.5pt;"
+          th:text="${form['telefono'] ?: ''}"></span>
+
+    <!-- S2 [X] Nueva Instalación -->
+    <span class="overlay-marker" style="left:37mm; top:33mm;">X</span>
+
+    <!-- S2 Nº Identificación -->
+    <span class="overlay-field" style="left:172.5mm; top:32.5mm; font-size:7.5pt;"
+          th:text="${form['numeroIdentificacion'] ?: ''}"></span>
+
+    <!-- S2 Calle/Plaza Emplazamiento -->
+    <span class="overlay-field" style="left:27mm; top:36mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoCalle'] ?: ''}"></span>
+
+    <!-- S2 Localidad Emplazamiento -->
+    <span class="overlay-field" style="left:160mm; top:36.5mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- S2 [X] Provincia: Badajoz -->
+    <span class="overlay-marker" th:if="${form['esBadajoz'] == true or form['esBadajoz'] == 'true'}" style="left:28.5mm; top:41mm;">X</span>
+
+    <!-- S2 [X] Provincia: Cáceres -->
+    <span class="overlay-marker" th:if="${form['esCaceres'] == true or form['esCaceres'] == 'true'}" style="left:44.5mm; top:40.5mm;">X</span>
+
+    <!-- S2 Uso destinado -->
+    <span class="overlay-field" style="left:84mm; top:39mm; font-size:7.5pt;"
+          th:text="${form['usoDestino'] ?: ''}"></span>
+
+    <!-- S2 Superficie (m²) -->
+    <span class="overlay-field" style="left:23mm; top:57mm; font-size:7.5pt;"
+          th:text="${form['superficie'] ?: ''}"></span>
+
+    <!-- S2 Ocupación (Personas) -->
+    <span class="overlay-field" style="left:58mm; top:57mm; font-size:7.5pt;"
+          th:text="${form['ocupacion'] ?: ''}"></span>
+
+    <!-- S2 Tipo de Instalación -->
+    <span class="overlay-field" style="left:94.5mm; top:42.5mm; font-size:7.5pt;"
+          th:text="${form['tipoInstalacion'] ?: ''}"></span>
+
+    <!-- S3 Tensión Un (V) -->
+    <span class="overlay-field" style="left:21.5mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['tensionSuministro'] ?: ''}"></span>
+
+    <!-- S3 Potencia instalada (kW) -->
+    <span class="overlay-field" style="left:105mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['potenciaInstaladaPrevista'] ?: ''}"></span>
+
+    <!-- S3 Potencia máx contratar (kW) -->
+    <span class="overlay-field" style="left:143.5mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['potenciaMaximaContratar'] ?: ''}"></span>
+
+    <!-- S3 Potencia admisible (kW) -->
+    <span class="overlay-field" style="left:181mm; top:67.5mm; font-size:7.5pt;"
+          th:text="${form['potenciaMaximaAdmisible'] ?: ''}"></span>
+
+    <!-- S3 [X] Red Pública -->
+    <span class="overlay-marker" style="left:26.5mm; top:72mm;">X</span>
+
+    <!-- S3 [X] Aislada -->
+    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:135.5mm; top:76mm;">X</span>
+
+    <!-- S3 [X] Interconectada -->
+    <span class="overlay-marker" th:if="${form['esInstalacionInterconectada'] == true or form['esInstalacionInterconectada'] == 'true' or (form['esInstalacionAislada'] != true and form['esInstalacionAislada'] != 'true')}" style="left:176mm; top:76mm;">X</span>
+
+    <!-- S3 CGP -->
+    <span class="overlay-field" style="left:42mm; top:81mm; font-size:7.5pt;"
+          th:text="${form['cajasGeneralesProteccion'] ?: ''}"></span>
+
+    <!-- S3 DI Sistema -->
+    <span class="overlay-field" style="left:114mm; top:84.5mm; font-size:7.5pt;"
+          th:text="${form['sistemaInstalacionDI'] ?: ''}"></span>
+
+    <!-- S3 DI Conductor -->
+    <span class="overlay-field" style="left:114.5mm; top:88mm; font-size:7.5pt;"
+          th:text="${form['conductorDI'] ?: ''}"></span>
+
+    <!-- S3 DI Sección (mm²) -->
+    <span class="overlay-field" style="left:114mm; top:91.5mm; font-size:7.5pt;"
+          th:text="${form['seccionFase'] ?: ''}"></span>
+
+    <!-- S3 DI Aislamiento -->
+    <span class="overlay-field" style="left:112.5mm; top:95mm; font-size:7.5pt;"
+          th:text="${form['aislamientoDI'] ?: ''}"></span>
+
+    <!-- S3 CGP Bases (A) -->
+    <span class="overlay-field" style="left:50.5mm; top:84.5mm; font-size:7.5pt;"
+          th:text="${form['intensidadBasesCGP'] ?: ''}"></span>
+
+    <!-- S3 CGP Fusibles (A) -->
+    <span class="overlay-field" style="left:50.5mm; top:88.5mm; font-size:7.5pt;"
+          th:text="${form['intensidadFusiblesCGP'] ?: ''}"></span>
+
+    <!-- S3 CGP Poder corte (kA) -->
+    <span class="overlay-field" style="left:50.5mm; top:91.5mm; font-size:7.5pt;"
+          th:text="${form['poderCorteFusibles'] ?: ''}"></span>
+
+    <!-- S3 IG Corte IN (A) -->
+    <span class="overlay-field" style="left:114mm; top:113mm; font-size:7.5pt;"
+          th:text="${form['intensidadNominal'] ?: ''}"></span>
+
+    <!-- S3 IG Poder corte (kA) -->
+    <span class="overlay-field" style="left:146mm; top:155mm; font-size:7.5pt;"
+          th:text="${form['poderCorteIG'] ?: ''}"></span>
+
+    <!-- S3 [X] Dif 30mA -->
+    <span class="overlay-marker" th:if="${form['sensibilidadDiferencial'] == '30' or form['sensibilidadDiferencial'] == null}" style="left:159.5mm; top:99.5mm;">X</span>
+
+    <!-- S3 [X] Dif 300mA -->
+    <span class="overlay-marker" th:if="${form['sensibilidadDiferencial'] == '300'}" style="left:181mm; top:100mm;">X</span>
+
+    <!-- S3 Prot contactos -->
+    <span class="overlay-field" style="left:9.5mm; top:123mm; font-size:7.5pt;">Diferencial</span>
+
+    <!-- S3 Conductores Tierra -->
+    <span class="overlay-field" style="left:70.5mm; top:123.5mm; font-size:7.5pt;"
+          th:text="${form['conductoresTierra'] ?: ''}"></span>
+
+    <!-- S3 Resistencia Tierra -->
+    <span class="overlay-field" style="left:126mm; top:123.5mm; font-size:7.5pt;">20</span>
+
+    <!-- S3 Resistencia Aislamiento -->
+    <span class="overlay-field" style="left:165mm; top:123.5mm; font-size:7.5pt;">3000</span>
+
+    <!-- S4 Instalador Autorizado -->
+    <span class="overlay-field" style="left:60.5mm; top:162mm; font-size:7.5pt;"
+          th:text="${form['instaladorNombre'] ?: ''}"></span>
+
+    <!-- S4 Organismo Control -->
+    <span class="overlay-field" style="left:109mm; top:168.5mm; font-size:7.5pt;"
+          th:text="${form['organismoControl'] ?: ''}"></span>
+
+    <!-- S4 Nº Certificado -->
+    <span class="overlay-field" style="left:39.5mm; top:172mm; font-size:7.5pt;"
+          th:text="${form['referenciaCertificado'] ?: ''}"></span>
+
+    <!-- S4 Fecha de Certificado -->
+    <span class="overlay-field" style="left:125.5mm; top:205mm; font-size:7.5pt;"
+          th:text="${form['fechaCertificado'] ?: ''}"></span>
+
+    <!-- Firma Lugar -->
+    <span class="overlay-field" style="left:38.5mm; top:209mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: form['lugar'] ?: ''}"></span>
+
+    <!-- Firma Día -->
+    <span class="overlay-field" style="left:101mm; top:209.5mm; font-size:7.5pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+
+    <!-- Firma Mes -->
+    <span class="overlay-field" style="left:118mm; top:209.5mm; font-size:7.5pt;"
+          th:text="${form['mes'] ?: ''}"></span>
+
+    <!-- Firma Año -->
+    <span class="overlay-field" style="left:160mm; top:209.5mm; font-size:7.5pt;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+    <!-- Firma -->
+    <div class="overlay-field" style="left:140mm; top:246mm; width:40mm; height:18mm;">
+        <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}"
+             style="width:100%; height:100%; object-fit:contain;" />
+    </div>
+
+</div>
+</body>
+</html>

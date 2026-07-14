@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*
+  FRAGMENTO: MTD Baja Tensión Extremadura - Página 8
+  Variables disponibles: form, fondoStyle, firmaBase64
+*/-->
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- Firma y fecha final -->
+    <span class="overlay-field" style="left:27mm; top:240mm; font-size:7pt;"
+          th:text="${form['localidad'] ?: form['lugar'] ?: ''}"></span>
+    <span class="overlay-field" style="left:69mm; top:240mm; font-size:7pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+    <span class="overlay-field" style="left:77mm; top:240mm; font-size:7pt;"
+          th:text="${form['mes'] ?: ''}"></span>
+    <span class="overlay-field" style="left:107mm; top:240mm; font-size:7pt;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+    <!-- Firma -->
+    <div class="overlay-field" style="left:140mm; top:225mm; width:40mm; height:18mm;">
+        <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}"
+             style="width:100%; height:100%; object-fit:contain;" />
+    </div>
+
+</div>
+</body>
+</html>
