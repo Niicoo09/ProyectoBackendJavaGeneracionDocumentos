@@ -780,11 +780,23 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Tensión de suministro
         applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         
-        // Datos del Director de Obra (Vacíos según solicitud)
-        enriched.put("directorDeObra", "");
-        enriched.put("titulacion", "");
-        enriched.put("colegioOficial", "");
-        enriched.put("numeroColegiado", "");
+        // Datos del Director de Obra
+        applyMapping(enriched, form, "directorDeObra", "directorDeObra");
+        applyMapping(enriched, form, "titulacion", "titulacion");
+        applyMapping(enriched, form, "colegioOficial", "colegioOficial");
+        applyMapping(enriched, form, "numeroColegiado", "numeroColegiado");
+        
+        boolean llevaProyecto = false;
+        Object llevaProjVal = form.get("llevaProyecto");
+        if (llevaProjVal != null) {
+            llevaProyecto = llevaProjVal.toString().equalsIgnoreCase("true");
+        }
+        if (llevaProyecto) {
+            putIfAbsent(enriched, "directorDeObra", "Eduardo Rivera Cabezas");
+            putIfAbsent(enriched, "titulacion", "Ingeniero Industrial");
+            putIfAbsent(enriched, "colegioOficial", "COIIAOC");
+            putIfAbsent(enriched, "numeroColegiado", "4654");
+        }
 
         // Fecha
         enrichDateParts(enriched, form);
