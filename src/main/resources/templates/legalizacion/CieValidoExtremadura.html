@@ -43,7 +43,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-size: 9pt;
+            font-size: 6pt;
             font-weight: bold;
             color: #000;
             font-family: Arial, sans-serif;
@@ -53,15 +53,15 @@
 </head>
 <body>
     <!-- Página 1: Secciones 1-4 (Titular, Identificación, Características, Responsables) -->
-    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p1 :: content(${fondoStyle1})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p1 :: content}"></th:block>
 
     <!-- Página 2: Anexo Generadores de Energía -->
-    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p2 :: content(${fondoStyle2})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p2 :: content}"></th:block>
 
     <!-- Página 3: Infraestructura Eléctrica -->
-    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p3 :: content(${fondoStyle3})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p3 :: content}"></th:block>
 
     <!-- Página 4: Información Ambiental y Presupuesto -->
-    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p4 :: content(${fondoStyle4})}"></th:block>
+    <th:block th:replace="~{legalizacion/fragments/cie-ext/cie-ext-p4 :: content}"></th:block>
 </body>
 </html>

@@ -1,19 +1,19 @@
-<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+<div th:fragment="content" class="pagina-documento" th:style="${fondoStyle4}">
 
     <!-- P4 Firma Lugar -->
-    <span class="overlay-field" style="left:42mm; top:199mm; font-size:7.5pt;"
-          th:text="${form['localidad'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="p4_lugar" style="left:41mm; top:199mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: form['lugar'] ?: ''}"></span>
 
     <!-- P4 Firma Día -->
-    <span class="overlay-field" style="left:89mm; top:199.5mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="p4_dia" style="left:89.5mm; top:199mm; font-size:7.5pt;"
           th:text="${form['dia'] ?: ''}"></span>
 
     <!-- P4 Firma Mes -->
-    <span class="overlay-field" style="left:105mm; top:199mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="p4_mes" style="left:103.5mm; top:199mm; font-size:7.5pt;"
           th:text="${form['mes'] ?: ''}"></span>
 
     <!-- P4 Firma Año -->
-    <span class="overlay-field" style="left:138mm; top:199mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="p4_anio" style="left:138.5mm; top:199.5mm; font-size:7.5pt;"
           th:text="${form['anio'] ?: ''}"></span>
 
 </div>

@@ -260,8 +260,10 @@ public class LegalizacionController {
             extraImages = extraImagesProvider.apply(formData);
         }
 
+        System.out.println("DEBUG FORM DATA BD: " + formData);
         // Enriquecemos usando el ID de configuración (configId) para que el switch de DocumentConfigService acierte
         Map<String, Object> enrichedFormData = documentConfigService.enrich(configId != null ? configId : templateName, formData);
+        System.out.println("DEBUG ENRICHED DATA: " + enrichedFormData);
 
         Map<String, Object> data = new HashMap<>();
         data.put("form", enrichedFormData);

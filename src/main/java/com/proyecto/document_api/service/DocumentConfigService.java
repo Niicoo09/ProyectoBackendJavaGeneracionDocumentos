@@ -71,8 +71,8 @@ public class DocumentConfigService {
             case "mtd-monofasica-con-bateria":
             case "mtd-aislada-con-bateria":
             case "mtd-trifasica-con-bateria":
-            case "mtd-sin-bateria":
             case "mtd-punto-recarga":
+            case "mtd-baja-tension":
             case "MemoriaTecnica":
             case "MemoriaTecnicaSinBateria":
             case "MemoriaTecnicaTrifasica":
@@ -206,9 +206,6 @@ public class DocumentConfigService {
             case "z-certificado-br":
                 applyCie(enriched, formData);
                 break;
-            case "mtd-baja-tension":
-                applyMemoriaTecnicaCommon(enriched, formData, "mtd-instalacion-autoconsumo-sin-bateria"); // Usar el comportamiento común de memorias
-                break;
             case "z-certificado-doacfv":
             case "doacfv":
                 applyCertificadoDireccionObra(enriched, formData);
@@ -238,6 +235,11 @@ public class DocumentConfigService {
                 break;
             case "autorizacion-facturacion":
                 applyAutorizacionFacturacion(enriched, formData);
+                break;
+
+            case "Memoria":
+            case "memoria":
+                applyMemoria(enriched, formData);
                 break;
 
             default:
@@ -634,22 +636,11 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         // Datos del Representante (solo si existe)
         String rep = getString(form, "representante");
-        if (rep.isEmpty()) rep = getString(form, "nombreRepresentante");
-        if (rep.isEmpty()) rep = getString(form, "nombreRepresentanteEntidad");
-        if (rep.isEmpty()) rep = getString(form, "apellidosNombreRepresentanteLegal");
-
-        String dniRep = getString(form, "dniRepresentante");
-        if (dniRep.isEmpty()) dniRep = getString(form, "dniCifRepresentante");
-        if (dniRep.isEmpty()) dniRep = getString(form, "dniRepresentanteEntidad");
-
-        String calidadRep = getString(form, "representanteCargo");
-        if (calidadRep.isEmpty()) calidadRep = getString(form, "calidad");
-        if (calidadRep.isEmpty()) calidadRep = getString(form, "actuaCalidad");
-
-        if (!rep.trim().isEmpty()) {
-            enriched.put("nombreRepresentante", rep);
-            enriched.put("dniRepresentante", cleanDni(dniRep));
-            enriched.put("calidad", !calidadRep.isEmpty() ? calidadRep : "Representante de la sociedad");
+        if (rep != null && !rep.trim().isEmpty()) {
+            applyMapping(enriched, form, "nombreRepresentante", "representante");
+            enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
+            applyMapping(enriched, form, "calidad", "representanteCargo");
+            putIfAbsent(enriched, "calidad", "Representante de la sociedad");
         } else {
             enriched.put("nombreRepresentante", "");
             enriched.put("dniRepresentante", "");
@@ -719,10 +710,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "apellidosNombre", "apellidosNombre");
         enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
         
-        // Domicilio con número
-        String calleTitular = getString(form, "emplazamientoCalle");
-        String numTitular = getString(form, "numero");
-        enriched.put("domicilio", (calleTitular != null ? calleTitular : "") + (numTitular != null ? " " + numTitular : ""));
+        // Domicilio completo (Sección 1)
+        enriched.put("domicilio", buildDireccionCompleta(form));
         
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
@@ -730,8 +719,9 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "telefono", "telefono");
         applyEmailMapping(enriched, form, "correoElectronico");
         
-        // Emplazamiento
+        // Emplazamiento completo (Sección 2)
         applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        enriched.put("emplazamientoCompleto", buildDireccionCompleta(form));
         applyMapping(enriched, form, "numero", "numero");
         applyMapping(enriched, form, "bloque", "bloque");
         applyMapping(enriched, form, "portal", "portal");
@@ -748,29 +738,52 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Potencia del Inversor para "Derivación individual - Potencia prevista"
         applyMappingWithFallback(enriched, form, "potenciaContratada", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
         
+        // Potencia admisible (kW) -> Potencia del inversor
+        applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
+
+        // Sección de conductores de Tierra -> lo mismo que seccion (mm2) (seccionFase)
+        applyMapping(enriched, form, "conductoresTierra", "seccionFase");
+
+        // Vaciar Caja General de Protección (CGP)
+        enriched.put("cajasGeneralesProteccion", "");
+        enriched.put("intensidadBasesCGP", "");
+        enriched.put("intensidadFusiblesCGP", "");
+        enriched.put("poderCorteFusibles", "");
+
+        // Poder de corte del IG
+        applyMappingWithFallback(enriched, form, "poderCorteIG", "e2_poderCorteInterruptor", "poderCorteInterruptor");
+
         applyMapping(enriched, form, "cups", "cups");
         enriched.put("usoDestino", "Producción de Energía Eléctrica");
         putIfAbsent(enriched, "resistenciaTierra", "20");
+        enriched.put("tipoProteccionSobretensiones", "I.A.");
+        enriched.put("categoriaSobretensiones", "I.V.");
+        enriched.put("aislamientoDI", "XLPE");
         
         // Mapeo de fase para checkboxes con fallbacks
         applyMappingWithFallback(enriched, form, "fase", "e2_tipoConexionRed1", "fase");
         applyMapping(enriched, form, "tipoConexionRed", "e2_tipoConexionRed1");
         
-        // Tipo de instalación (Nueva, Ampliación, etc.)
-        applyMappingWithFallback(enriched, form, "tipoInstalacion", "instalacion", "tipoInstalacion");
+        // Tipo de instalación (Generación Fotovoltaica Interconectada o Generación Fotovoltaica Aislada)
+        boolean esAislada = false;
+        Object aisladaVal = form.get("esInstalacionAislada");
+        if (aisladaVal != null) {
+            esAislada = aisladaVal.toString().equalsIgnoreCase("true");
+        }
+        if (esAislada) {
+            enriched.put("tipoInstalacion", "Generación Fotovoltaica Aislada");
+        } else {
+            enriched.put("tipoInstalacion", "Generación Fotovoltaica Interconectada");
+        }
         
         // Tensión de suministro
         applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         
-        // Datos del Director de Obra
-        applyMapping(enriched, form, "directorDeObra", "directorDeObra");
-        applyMapping(enriched, form, "titulacion", "titulacion");
-        applyMapping(enriched, form, "colegioOficial", "colegioOficial");
-        applyMapping(enriched, form, "numeroColegiado", "numeroColegiado");
-        putIfAbsent(enriched, "directorDeObra", "");
-        putIfAbsent(enriched, "titulacion", "");
-        putIfAbsent(enriched, "colegioOficial", "");
-        putIfAbsent(enriched, "numeroColegiado", "");
+        // Datos del Director de Obra (Vacíos según solicitud)
+        enriched.put("directorDeObra", "");
+        enriched.put("titulacion", "");
+        enriched.put("colegioOficial", "");
+        enriched.put("numeroColegiado", "");
 
         // Fecha
         applyMapping(enriched, form, "dia", "dia");
@@ -810,38 +823,21 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
-        putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación solar fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Certificado de dirección de obra de instalación de equipos");
+        putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Certificado de direccion de obra de instalacion de equipos");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
-        String pot = getString(form, "e2_potenciaNominalInversor");
-        if (pot.isEmpty()) pot = getString(form, "e2_potenciaNominalInversores");
-        if (pot.isEmpty()) pot = getString(form, "potenciaProyecto");
-        if (pot.isEmpty()) pot = getString(form, "e2_potenciaPicoGenerador");
-        if (pot.isEmpty()) pot = getString(form, "potenciaContratada");
-        if (!pot.isEmpty()) {
-            enriched.put("potenciaFrase1", pot + " kW");
-        } else {
-            enriched.put("potenciaFrase1", "–");
-        }
+        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "razonSocial", "nombreCubierta");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
         
-        // Fecha de elaboración del trabajo en texto para la sección 2
-        String fechaRaw = getString(form, "fechaElaboracion");
-        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaElaboracionProyecto");
-        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaProyecto");
-        if (!fechaRaw.isEmpty() && fechaRaw.contains("-")) {
-            String[] p = fechaRaw.split("-");
-            if (p.length == 3 && p[0].length() == 4) fechaRaw = p[2] + "/" + p[1] + "/" + p[0];
-        }
-        enriched.put("fechaElaboracionTexto", fechaRaw);
-
-        // Fecha de firma de la declaración (sección 3) → campo 'fecha' del formulario maestro
-        applyFechaFirma(enriched, form);
+        // Mapeos adicionales por si acaso
+        applyMapping(enriched, form, "dia", "dia");
+        applyMapping(enriched, form, "mes", "mes");
+        applyMapping(enriched, form, "anio", "anio");
     }
 
     private void applyDeclaracionTecnicoCompetente(Map<String, Object> enriched, Map<String, Object> form) {
@@ -860,161 +856,19 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
-        putIfAbsent(enriched, "fraseFija1", "Elaboración de proyecto eléctrico de instalación solar fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecución de instalación solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija1", "Elaboracion de proyecto electrico de instalacion solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecuccion de instalacion solar fotovoltaica de ");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
-        // Mapear el nombre del cliente a potenciaFrase1 (se pinta justo después de fraseFija1)
-        applyMappingWithFallback(enriched, form, "potenciaFrase1", "apellidosNombre", "nombre", "promotor");
-        
-        // Mapear la potencia del inversor a potenciaFrase2 (se pinta justo después de fraseFija2)
-        String potInversor = getString(form, "e2_potenciaNominalInversor");
-        if (potInversor.isEmpty()) potInversor = getString(form, "e2_potenciaNominalInversores");
-        if (potInversor.isEmpty()) potInversor = getString(form, "potenciaProyecto");
-        
-        if (!potInversor.isEmpty()) {
-            if (!potInversor.toLowerCase().contains("kw")) {
-                potInversor = potInversor + " kW";
-            }
-            enriched.put("potenciaFrase2", potInversor);
-        } else {
-            enriched.put("potenciaFrase2", "–");
-        }
-
+        applyMapping(enriched, form, "potenciaFrase1", "potenciaProyecto");
+        applyMapping(enriched, form, "potenciaFrase2", "potenciaProyecto");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
         applyMapping(enriched, form, "razonSocial", "nombreCubierta");
         applyMapping(enriched, form, "provinciaSelect1", "provinciaEmplazamiento");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
 
-        // Fecha de elaboración en texto para la sección 2
-        String fechaRawDtc = getString(form, "fechaElaboracion");
-        if (fechaRawDtc.isEmpty()) fechaRawDtc = getString(form, "fechaElaboracionProyecto");
-        if (fechaRawDtc.isEmpty()) fechaRawDtc = getString(form, "fechaProyecto");
-        if (!fechaRawDtc.isEmpty() && fechaRawDtc.contains("-")) {
-            String[] p = fechaRawDtc.split("-");
-            if (p.length == 3 && p[0].length() == 4) fechaRawDtc = p[2] + "/" + p[1] + "/" + p[0];
-        }
-        enriched.put("fechaElaboracionTexto", fechaRawDtc);
-
-        // Fecha de firma de la declaración (sección 3) → campo 'fecha' del formulario maestro
-        applyFechaFirma(enriched, form);
-    }
-
-    /**
-     * Extrae de forma estructurada el día, mes (en español) y año de la fecha de elaboración 
-     * de proyecto de la sección legalización (fechaElaboracion).
-     */
-    private void applyFechaElaboracionProyecto(Map<String, Object> enriched, Map<String, Object> form) {
-        String fechaRaw = getString(form, "fechaElaboracion");
-        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaElaboracionProyecto");
-        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaProyecto");
-
-        if (!fechaRaw.isEmpty()) {
-            try {
-                String dia = "";
-                String mes = "";
-                String anio = "";
-
-                if (fechaRaw.contains("-")) {
-                    String[] parts = fechaRaw.split("-");
-                    if (parts.length == 3) {
-                        if (parts[0].length() == 4) { // YYYY-MM-DD
-                            anio = parts[0];
-                            mes = parts[1];
-                            dia = parts[2];
-                        } else { // DD-MM-YYYY
-                            dia = parts[0];
-                            mes = parts[1];
-                            anio = parts[2];
-                        }
-                    }
-                } else if (fechaRaw.contains("/")) {
-                    String[] parts = fechaRaw.split("/");
-                    if (parts.length == 3) {
-                        if (parts[0].length() == 4) { // YYYY/MM/DD
-                            anio = parts[0];
-                            mes = parts[1];
-                            dia = parts[2];
-                        } else { // DD/MM/YYYY
-                            dia = parts[0];
-                            mes = parts[1];
-                            anio = parts[2];
-                        }
-                    }
-                }
-
-                if (!dia.isEmpty() && !mes.isEmpty() && !anio.isEmpty()) {
-                    String[] meses = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
-                    try {
-                        int mesInt = Integer.parseInt(mes);
-                        if (mesInt >= 1 && mesInt <= 12) {
-                            mes = meses[mesInt - 1];
-                        }
-                    } catch (Exception e) {}
-                    
-                    enriched.put("dia", dia);
-                    enriched.put("mes", mes);
-                    enriched.put("anio", anio);
-                    return;
-                }
-            } catch (Exception e) {}
-        }
-
-        // Fallback si no viene o falla
-        applyMapping(enriched, form, "dia", "dia");
-        applyMapping(enriched, form, "mes", "mes");
-        applyMapping(enriched, form, "anio", "anio");
-    }
-
-    /**
-     * Extrae día, mes (en español) y año del campo 'fecha' del formulario maestro
-     * para usarlos como fecha de firma en la sección 3 de las declaraciones.
-     */
-    private void applyFechaFirma(Map<String, Object> enriched, Map<String, Object> form) {
-        String fechaRaw = getString(form, "fecha");
-        if (fechaRaw.isEmpty()) fechaRaw = getString(form, "fechaFirma");
-
-        if (!fechaRaw.isEmpty()) {
-            try {
-                String dia = "";
-                String mes = "";
-                String anio = "";
-
-                if (fechaRaw.contains("-")) {
-                    String[] parts = fechaRaw.split("-");
-                    if (parts.length == 3) {
-                        if (parts[0].length() == 4) { // YYYY-MM-DD
-                            anio = parts[0]; mes = parts[1]; dia = parts[2];
-                        } else { // DD-MM-YYYY
-                            dia = parts[0]; mes = parts[1]; anio = parts[2];
-                        }
-                    }
-                } else if (fechaRaw.contains("/")) {
-                    String[] parts = fechaRaw.split("/");
-                    if (parts.length == 3) {
-                        if (parts[0].length() == 4) { // YYYY/MM/DD
-                            anio = parts[0]; mes = parts[1]; dia = parts[2];
-                        } else { // DD/MM/YYYY
-                            dia = parts[0]; mes = parts[1]; anio = parts[2];
-                        }
-                    }
-                }
-
-                if (!dia.isEmpty() && !mes.isEmpty() && !anio.isEmpty()) {
-                    String[] meses = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
-                    try {
-                        int mesInt = Integer.parseInt(mes);
-                        if (mesInt >= 1 && mesInt <= 12) mes = meses[mesInt - 1];
-                    } catch (Exception e) {}
-                    enriched.put("dia", dia);
-                    enriched.put("mes", mes);
-                    enriched.put("anio", anio);
-                    return;
-                }
-            } catch (Exception e) {}
-        }
-        // Fallback
+        // Mapeos de fecha
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
@@ -1645,5 +1499,115 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
                   .replace("  ", " ")
                   .replace(", ,", ",")
                   .trim();
+    }
+
+    private void applyMemoria(Map<String, Object> enriched, Map<String, Object> form) {
+        // Datos del Técnico (Dinámicos si están en el formulario, si no fijos para Eduardo Rivera)
+        applyMapping(enriched, form, "tecnicoNombre", "autorProyecto");
+        applyMapping(enriched, form, "tecnicoNif", "dniAutor");
+        applyMapping(enriched, form, "tecnicoColegiado", "colegiadoNumero");
+        applyMapping(enriched, form, "tecnicoColegio", "colegioAutor");
+        applyMapping(enriched, form, "tecnicoTelefono", "telefonoAutor");
+        
+        applyMapping(enriched, form, "tecnicoDomicilio", "domicilioAutor");
+
+        putIfAbsent(enriched, "tecnicoNombre", TECNICO_NOMBRE);
+        putIfAbsent(enriched, "tecnicoNif", TECNICO_NIF);
+        putIfAbsent(enriched, "tecnicoColegiado", TECNICO_NUMERO_COLEGIADO);
+        putIfAbsent(enriched, "tecnicoColegio", TECNICO_COLEGIO);
+        putIfAbsent(enriched, "tecnicoDomicilio", TECNICO_DOMICILIO);
+        putIfAbsent(enriched, "tecnicoLocalidad", TECNICO_LOCALIDAD);
+        putIfAbsent(enriched, "tecnicoCp", TECNICO_CP);
+        putIfAbsent(enriched, "tecnicoTelefono", TECNICO_TELEFONO);
+        
+        applyMapping(enriched, form, "tecnicoTitulacion", "titulacionAutor");
+        putIfAbsent(enriched, "tecnicoTitulacion", "Ingeniero Industrial");
+
+        // Datos del Promotor e Instalación
+        applyMapping(enriched, form, "promotorNombre", "apellidosNombre");
+        enriched.put("promotorNif", cleanDni(getString(form, "nifCif")));
+        
+        String dirPromotor = buildDireccionCompleta(form);
+        enriched.put("promotorDireccion", dirPromotor);
+        
+        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        applyMapping(enriched, form, "emplazamientoNumero", "numero");
+        applyMapping(enriched, form, "emplazamientoLocalidad", "localidadEmplazamiento");
+        applyMapping(enriched, form, "emplazamientoProvincia", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "emplazamientoCp", "codigoPostalEmplazamiento");
+        
+        String dirEmplazamiento = buildDireccionCompleta(form) + ", " + 
+                                  getString(form, "localidadEmplazamiento") + ", " + 
+                                  getString(form, "provinciaEmplazamiento") + " " + 
+                                  getString(form, "codigoPostalEmplazamiento");
+        enriched.put("emplazamientoCompleto", dirEmplazamiento.trim());
+
+        applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
+
+        // Datos del Generador / Modulos
+        applyMapping(enriched, form, "potenciaPicoGenerador", "e2_potenciaPicoGenerador");
+        applyMapping(enriched, form, "totalModulos", "e2_totalModulos");
+        applyMapping(enriched, form, "marcaModeloModulo", "e2_marcaModeloModulo");
+        applyMapping(enriched, form, "potenciaPicoModulo", "e2_potenciaPicoModulo");
+        applyMapping(enriched, form, "tecnologiaCelulaModulo", "e2_tecnologiaCelulaModulo");
+
+        // Datos del Inversor
+        applyMapping(enriched, form, "marcaModeloInversor", "e2_marcaModeloInversor");
+        applyMapping(enriched, form, "potenciaACInversor", "e2_potenciaNominalInversor");
+        applyMapping(enriched, form, "tensionNominalInversor", "e2_relacionTensionInversor");
+        
+        // Estructura Soporte
+        applyMapping(enriched, form, "tipoSoporte", "e10_tipoSoporteOtejado");
+
+        // Superficie de captación
+        String largoStr = getString(form, "e2_largoModulo");
+        if (largoStr.isEmpty()) largoStr = getString(form, "largoModulo");
+        if (largoStr.isEmpty()) largoStr = getString(form, "largo");
+        double largo = parseDouble(largoStr);
+
+        String anchoStr = getString(form, "e2_anchoModulo");
+        if (anchoStr.isEmpty()) anchoStr = getString(form, "anchoModulo");
+        if (anchoStr.isEmpty()) anchoStr = getString(form, "ancho");
+        double ancho = parseDouble(anchoStr);
+
+        if (largo > 0 && ancho > 0) {
+            double area = (largo * ancho);
+            enriched.put("superficieCaptacion", String.format(java.util.Locale.of("es", "ES"), "%.0f mm x %.0f mm (%.2f m²)", largo, ancho, area / 1_000_000.0));
+        } else {
+            enriched.put("superficieCaptacion", "-");
+        }
+
+        // Marca del inversor dinámica
+        String marcaInversor = "Deye";
+        String inversor = getString(form, "e2_marcaModeloInversor");
+        if (inversor.isEmpty()) inversor = getString(form, "marcaModeloInversor");
+        if (!inversor.isEmpty()) {
+            marcaInversor = inversor.split(" ")[0];
+        }
+        enriched.put("marcaInversor", marcaInversor);
+
+        // Forzar Uso al que se destina
+        enriched.put("usoAlQueSeDestina", "Autoconsumo doméstico");
+        
+        // Mapeos para variables de firma
+        applyMapping(enriched, form, "colegioOficial", "colegioAutor");
+        putIfAbsent(enriched, "colegioOficial", TECNICO_COLEGIO);
+        
+        applyMapping(enriched, form, "poblacionProyecto", "ciudadFirma");
+        if (!enriched.containsKey("poblacionProyecto") || enriched.get("poblacionProyecto").toString().isEmpty()) {
+            applyMapping(enriched, form, "poblacionProyecto", "localidadEmplazamiento");
+        }
+        
+        String dia = getString(form, "dia");
+        String mes = getString(form, "mes");
+        String anio = getString(form, "anio");
+        if (!dia.isEmpty() && !mes.isEmpty() && !anio.isEmpty()) {
+            enriched.put("fechaProyectoStr", dia + " de " + mes + " de " + anio);
+        } else {
+            enriched.put("fechaProyectoStr", "___ de ___________ de 202_");
+        }
+        
+        // Mapeo común por si acaso
+        applyCommonFieldMapping(enriched, form);
     }
 }
