@@ -43,7 +43,7 @@ public class AceptacionesController {
     @Operation(summary = "Aceptación de Subvención")
     @GetMapping("/aceptacion-subvencion/{id}")
     public ResponseEntity<byte[]> generateAceptacionSubvencion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/AceptacionSubvencion", "1.- Aceptacion de la Subvencion Concedida", "aceptacion-subvencion", formData -> {
+        return processDocumentResponse(id, "aceptaciones/AceptacionSubvencion", "1.- Aceptación de la Subvención Concedida", "aceptacion-subvencion", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/aceptacion-subvencion.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -55,7 +55,7 @@ public class AceptacionesController {
     @Operation(summary = "Cesión de Tratamiento de Datos")
     @GetMapping("/declaracion-cesion-tratamiento/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCesionTratamiento(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCesionTratamiento", "2.- ANEXO A - Declaracion de Cesion y Tratamiento de Datos", "declaracion-cesion-tratamiento", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCesionTratamiento", "2.- ANEXO A - Declaración de Cesión y Tratamiento de Datos", "declaracion-cesion-tratamiento", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaracio-cesion-tratamiento-1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaracio-cesion-tratamiento-2.jpg");
@@ -69,7 +69,7 @@ public class AceptacionesController {
     @Operation(summary = "Compromiso de Derechos")
     @GetMapping("/declaracion-compromiso-derechos/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoDerechos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoDerechos", "3.- ANEXO B - Declaracion de Compromiso y Cumplimiento de Principios Transversales", "declaracion-compromiso-derechos", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoDerechos", "3.- ANEXO B - Declaración de Compromiso y Cumplimiento de Principios Transversales", "declaracion-compromiso-derechos", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/declaración-de-compromiso.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -81,7 +81,7 @@ public class AceptacionesController {
     @Operation(summary = "Compromiso Principios Transversales")
     @GetMapping("/declaracion-compromiso-transversales/{id}")
     public ResponseEntity<byte[]> generateDeclaracionCompromisoTransversales(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoTransversales", "4.- ANEXO C - Declaracion de Compromiso y Cumplimiento de Principios Transversales (DNSH)", "declaracion-compromiso-transversales", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionCompromisoTransversales", "4.- ANEXO C - Declaración de Compromiso y Cumplimiento de Principios Transversales (DNSH)", "declaracion-compromiso-transversales", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/compromiso-cumplimiento-principios-transv.jpg");
             extraImages.put("fondoStyle", "background-image: url(data:image/jpeg;base64," + base64 + ");");
@@ -93,7 +93,7 @@ public class AceptacionesController {
     @Operation(summary = "DACI")
     @GetMapping("/declaracion-ausencia-conflicto/{id}")
     public ResponseEntity<byte[]> generateDeclaracionAusenciaConflicto(@PathVariable UUID id) {
-        return processDocumentResponse(id, "aceptaciones/DeclaracionAusenciaConflicto", "5.- Declaracion de Ausencia de Conflicto de Intereses (DACI)", "declaracion-ausencia-conflicto", formData -> {
+        return processDocumentResponse(id, "aceptaciones/DeclaracionAusenciaConflicto", "5.- Declaración de Ausencia de Conflicto de Intereses (DACI)", "declaracion-ausencia-conflicto", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String b1 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/DACI1.jpg");
             String b2 = jsonUtils.getResourceAsBase64("static/images/aceptaciones/DACI2.jpg");

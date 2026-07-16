@@ -1,13 +1,13 @@
 <div th:fragment="content" class="pagina-documento" th:style="${fondoStyle2}">
 
     <!-- 1.1 [X] Actuación: Nueva instalación -->
-    <span class="overlay-marker" data-cal-id="p2_act_nueva" style="left:28mm; top:32.5mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_act_nueva" th:if="${form['instalacion'] == 'nueva' or form['tipoInstalacion'] == 'nueva' or (form['instalacion'] == null and form['tipoInstalacion'] == null)}" style="left:28mm; top:32.5mm;">X</span>
 
     <!-- 1.1 [X] Actuación: Ampliación -->
-    <span class="overlay-marker" data-cal-id="p2_act_amp" style="left:57mm; top:32.5mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_act_amp" th:if="${form['instalacion'] == 'ampliacion' or form['tipoInstalacion'] == 'ampliacion'}" style="left:57mm; top:32.5mm;">X</span>
 
     <!-- 1.1 [X] Actuación: Modificación -->
-    <span class="overlay-marker" data-cal-id="p2_act_mod" style="left:80mm; top:32.5mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_act_mod" th:if="${form['instalacion'] == 'modificacion' or form['tipoInstalacion'] == 'modificacion'}" style="left:80mm; top:32.5mm;">X</span>
 
     <!-- 1.1 Nº identificación instalación -->
     <span class="overlay-field" data-cal-id="p2_n_id" style="left:173.5mm; top:32mm; font-size:7.5pt;"
@@ -28,7 +28,7 @@
     <span class="overlay-marker" data-cal-id="p2_huso_30" th:if="${form['coordenadaHuso'] == '30' or form['coordenadaHuso'] == 30 or form['coordenadaHuso'] == null}" style="left:63.5mm; top:37.5mm;">X</span>
 
     <!-- 2.1 [X] Clasif: Aislada -->
-    <span class="overlay-marker" data-cal-id="p2_gen_aislada" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:106.5mm; top:46mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_gen_aislada" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:41mm; top:46mm;">X</span>
 
     <!-- 2.1 [X] Clasif: Interconectada red int. -->
     <span class="overlay-marker" data-cal-id="p2_gen_int" th:if="${form['esInstalacionAislada'] != true and form['esInstalacionAislada'] != 'true'}" style="left:156.5mm; top:46mm;">X</span>
@@ -68,7 +68,9 @@
 
     <!-- 3.1 Panel Fabricante y Modelo -->
     <span class="overlay-field" data-cal-id="p2_pan_fab" style="left:29.5mm; top:82.5mm; font-size:7.5pt;"
-          th:text="${form['marcaModeloModulo'] ?: ''}"></span>
+          th:text="${form['marcaModulo'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="p2_pan_mod" style="left:96mm; top:82.5mm; font-size:7.5pt;"
+          th:text="${form['modeloModulo'] ?: ''}"></span>
 
     <!-- 3.1 Panel Potencia unitaria (Wp) -->
     <span class="overlay-field" data-cal-id="p2_pan_pot_unit" style="left:181.5mm; top:83.5mm; font-size:7.5pt;"
@@ -94,7 +96,9 @@
 
     <!-- 3.1 Inversor Fabricante y Modelo -->
     <span class="overlay-field" data-cal-id="p2_inv_fab" style="left:26.5mm; top:97mm; font-size:7.5pt;"
-          th:text="${form['marcaModeloInversor'] ?: ''}"></span>
+          th:text="${form['marcaInversor'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="p2_inv_mod" style="left:90mm; top:97mm; font-size:7.5pt;"
+          th:text="${form['modeloInversor'] ?: ''}"></span>
 
     <!-- 3.1 Inversor Potencia unitaria (kW) -->
     <span class="overlay-field" data-cal-id="p2_inv_pot_unit" style="left:184.5mm; top:96.5mm; font-size:7.5pt;"
@@ -128,7 +132,9 @@
 
     <!-- 4.1 Baterías Fabricante y Modelo -->
     <span class="overlay-field" data-cal-id="p2_bat_fab" style="left:35.5mm; top:186mm; font-size:7.5pt;"
-          th:text="${form['marcaModeloBateria'] ?: ''}"></span>
+          th:text="${form['marcaBateria'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="p2_bat_mod" style="left:130mm; top:186mm; font-size:7.5pt;"
+          th:text="${form['modeloBateria'] ?: ''}"></span>
 
     <!-- 4.1 Batería Capacidad unitaria (Ah) -->
     <span class="overlay-field" data-cal-id="p2_bat_cap_unit" style="left:58mm; top:190mm; font-size:7.5pt;"

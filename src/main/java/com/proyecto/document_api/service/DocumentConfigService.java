@@ -753,7 +753,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Poder de corte del IG
         applyMappingWithFallback(enriched, form, "poderCorteIG", "e2_poderCorteInterruptor", "poderCorteInterruptor");
 
-        applyMapping(enriched, form, "cups", "cups");
+        applyMappingWithFallback(enriched, form, "cups", "ext_cups", "cups");
+        applyMappingWithFallback(enriched, form, "empresaDistribuidora", "ext_empresaDistribuidora", "empresaDistribuidora");
         enriched.put("usoDestino", "Producción de Energía Eléctrica");
         putIfAbsent(enriched, "resistenciaTierra", "20");
         enriched.put("tipoProteccionSobretensiones", "I.A.");
@@ -786,9 +787,64 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         enriched.put("numeroColegiado", "");
 
         // Fecha
-        applyMapping(enriched, form, "dia", "dia");
-        applyMapping(enriched, form, "mes", "mes");
-        applyMapping(enriched, form, "anio", "anio");
+        enrichDateParts(enriched, form);
+
+        // Parsear fechaCertificado
+        String fechaCert = getString(form, "fechaCertificado");
+        if (fechaCert.isEmpty()) {
+            fechaCert = getString(form, "fecha");
+        }
+        String certDia = "";
+        String certMes = "";
+        String certAnio = "";
+        if (fechaCert.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            String[] parts = fechaCert.split("-");
+            certDia = parts[2];
+            certMes = parts[1];
+            certAnio = parts[0];
+        } else if (fechaCert.matches("\\d{2}/\\d{2}/\\d{4}")) {
+            String[] parts = fechaCert.split("/");
+            certDia = parts[0];
+            certMes = parts[1];
+            certAnio = parts[2];
+        }
+        enriched.put("fechaCertificadoDia", certDia);
+        enriched.put("fechaCertificadoMes", certMes);
+        enriched.put("fechaCertificadoAnio", certAnio);
+
+        // Mapeo de equipos (Módulos, Inversores y Baterías) para CIE
+        String rawModulo = getString(form, "e2_marcaModeloModulo");
+        splitMarcaModelo(enriched, rawModulo, "marcaModulo", "modeloModulo");
+        applyMapping(enriched, form, "marcaModeloModulo", "e2_marcaModeloModulo");
+        applyMapping(enriched, form, "potenciaPicoModulo", "e2_potenciaPicoModulo");
+        applyMapping(enriched, form, "totalModulos", "e2_totalModulos");
+        String potPicoStr = getString(form, "e2_potenciaPicoGenerador");
+        if (!potPicoStr.isEmpty()) {
+            try {
+                double potPicoW = Double.parseDouble(potPicoStr.replace(",", "."));
+                double potPicoKw = potPicoW / 1000.0;
+                String formatted = String.format(java.util.Locale.of("es", "ES"), "%.2f", potPicoKw);
+                enriched.put("potenciaPicoGenerador", formatted);
+            } catch (Exception e) {
+                enriched.put("potenciaPicoGenerador", potPicoStr);
+            }
+        } else {
+            enriched.put("potenciaPicoGenerador", "");
+        }
+        applyMapping(enriched, form, "potenciaInstaladaPrevista", "e2_potenciaNominalInversores");
+
+        String rawInversor = getString(form, "e2_marcaModeloInversor");
+        splitMarcaModelo(enriched, rawInversor, "marcaInversor", "modeloInversor");
+        applyMapping(enriched, form, "marcaModeloInversor", "e2_marcaModeloInversor");
+        applyMapping(enriched, form, "potenciaACInversor", "e2_potenciaNominalInversor");
+        applyMapping(enriched, form, "tensionNominalInversor", "e2_relacionTensionInversor");
+        applyMapping(enriched, form, "tipoConexionInversor", "e2_tipoConexionRed1");
+
+        String rawBateria = getString(form, "e2_marcaModelo");
+        splitMarcaModelo(enriched, rawBateria, "marcaBateria", "modeloBateria");
+        applyMapping(enriched, form, "marcaModeloBateria", "e2_marcaModelo");
+        applyMapping(enriched, form, "tipoBateria", "e2_tipoDeBateria");
+        applyMapping(enriched, form, "tensionNominalBateria", "e2_tensionNominal");
 
         // Especial para el recuadro del CIE: Últimos 2 dígitos del año
         String anioValue = getString(form, "anio");
@@ -1609,5 +1665,78 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         
         // Mapeo común por si acaso
         applyCommonFieldMapping(enriched, form);
+    }
+
+    private void splitMarcaModelo(Map<String, Object> enriched, String rawValue, String keyMarca, String keyModelo) {
+        if (rawValue == null || rawValue.trim().isEmpty()) {
+            enriched.put(keyMarca, "");
+            enriched.put(keyModelo, "");
+            return;
+        }
+        
+        String trimmed = rawValue.trim();
+        String lower = trimmed.toLowerCase();
+        
+        // Soporte para marcas conocidas de dos palabras
+        if (lower.startsWith("ja solar")) {
+            enriched.put(keyMarca, "JA Solar");
+            enriched.put(keyModelo, trimmed.substring(8).trim());
+            return;
+        } else if (lower.startsWith("turbo energy")) {
+            enriched.put(keyMarca, "Turbo Energy");
+            enriched.put(keyModelo, trimmed.substring(12).trim());
+            return;
+        } else if (lower.startsWith("canadian solar")) {
+            enriched.put(keyMarca, "Canadian Solar");
+            enriched.put(keyModelo, trimmed.substring(14).trim());
+            return;
+        }
+        
+        // Dividir por el primer espacio
+        int firstSpace = trimmed.indexOf(' ');
+        if (firstSpace > 0) {
+            String marca = trimmed.substring(0, firstSpace).trim();
+            String modelo = trimmed.substring(firstSpace + 1).trim();
+            enriched.put(keyMarca, marca);
+            enriched.put(keyModelo, modelo);
+        } else {
+            enriched.put(keyMarca, trimmed);
+            enriched.put(keyModelo, "");
+        }
+    }
+
+    private void enrichDateParts(Map<String, Object> enriched, Map<String, Object> form) {
+        String dia = getString(form, "dia");
+        String mes = getString(form, "mes");
+        String anio = getString(form, "anio");
+        String fecha = getString(form, "fecha");
+        
+        // Si 'dia' contiene una fecha completa (formato YYYY-MM-DD o DD/MM/YYYY)
+        if (dia.contains("-") || dia.contains("/")) {
+            fecha = dia;
+            dia = "";
+            mes = "";
+            anio = "";
+        }
+        
+        if (dia.isEmpty() || mes.isEmpty() || anio.isEmpty()) {
+            if (!fecha.isEmpty()) {
+                if (fecha.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    String[] parts = fecha.split("-");
+                    dia = parts[2];
+                    mes = parts[1];
+                    anio = parts[0];
+                } else if (fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                    String[] parts = fecha.split("/");
+                    dia = parts[0];
+                    mes = parts[1];
+                    anio = parts[2];
+                }
+            }
+        }
+        
+        enriched.put("dia", dia);
+        enriched.put("mes", mes);
+        enriched.put("anio", anio);
     }
 }

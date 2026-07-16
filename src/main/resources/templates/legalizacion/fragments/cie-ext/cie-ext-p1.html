@@ -161,25 +161,17 @@
     <!-- S3 Resistencia Aislamiento -->
     <span class="overlay-field" data-cal-id="s3_res_aisl" style="left:163.5mm; top:123.5mm; font-size:7.5pt;">3000</span>
 
-    <!-- S4 Empresa -->
-    <span class="overlay-field" data-cal-id="s4_emp" style="left:46.5mm; top:227mm; font-size:7.5pt;">SOLAY INGENIEROS, S.L.</span>
 
-    <!-- S4 Empresa CIF -->
-    <span class="overlay-field" data-cal-id="s4_cif" style="left:94.5mm; top:244.5mm; font-size:7.5pt;">B09848912</span>
 
-    <!-- S4 Empresa Nº ID -->
-    <span class="overlay-field" data-cal-id="s4_id_emp" style="left:77mm; top:245mm; font-size:7.5pt;">41045500</span>
+
 
     <!-- S4 Instalador Autorizado -->
     <span class="overlay-field" data-cal-id="s4_inst" style="left:61mm; top:162mm; font-size:7.5pt;"
           th:text="${form['instaladorNombre'] ?: ''}"></span>
 
-    <!-- S4 Habilitación Profesional -->
-    <span class="overlay-field" data-cal-id="s4_hab" style="left:38.5mm; top:245.5mm; font-size:7.5pt;">INGENIERO INDUSTRIAL</span>
 
-    <!-- S4 NIF Instalador -->
-    <span class="overlay-field" data-cal-id="s4_nif_inst" style="left:101.5mm; top:228.5mm; font-size:7.5pt;"
-          th:text="${form['nifInstalador'] ?: ''}"></span>
+
+
 
     <!-- S4 Organismo Control -->
     <span class="overlay-field" data-cal-id="s4_org" style="left:109mm; top:168.5mm; font-size:7.5pt;"
@@ -189,9 +181,13 @@
     <span class="overlay-field" data-cal-id="s4_ref" style="left:39.5mm; top:172mm; font-size:7.5pt;"
           th:text="${form['referenciaCertificado'] ?: ''}"></span>
 
-    <!-- S4 Fecha de Certificado -->
-    <span class="overlay-field" data-cal-id="s4_fecha" style="left:125mm; top:205mm; font-size:7.5pt;"
-          th:text="${form['fechaCertificado'] ?: ''}"></span>
+    <!-- S4 Fecha de Certificado Separada -->
+    <span class="overlay-field" style="left:120mm; top:205mm; font-size:7.5pt;"
+          th:text="${form['fechaCertificadoDia'] ?: ''}"></span>
+    <span class="overlay-field" style="left:131mm; top:205mm; font-size:7.5pt;"
+          th:text="${form['fechaCertificadoMes'] ?: ''}"></span>
+    <span class="overlay-field" style="left:141mm; top:205mm; font-size:7.5pt;"
+          th:text="${form['fechaCertificadoAnio'] ?: ''}"></span>
 
     <!-- S4 Director de Obra (Condicionado a llevaProyecto) -->
     <th:block th:if="${form['llevaProyecto'] == true or form['llevaProyecto'] == 'true'}">
@@ -207,7 +203,11 @@
 
     <!-- Firma del Instalador (Puesta más arriba) -->
     <img th:if="${firmaBase64 != null and !firmaBase64.isEmpty()}" th:src="${firmaBase64}"
-         style="position: absolute; left: 145mm; top: 180mm; width: 40mm; height: auto; mix-blend-mode: multiply;" />
+         style="position: absolute; left: 145mm; top: 215mm; width: 32mm; height: auto; mix-blend-mode: multiply;" />
+
+    <!-- Firma de Eduardo -->
+    <img th:if="${firmaEduardoBase64 != null}" th:src="${firmaEduardoBase64}"
+         style="position: absolute; left: 45mm; top: 215mm; width: 32mm; height: auto; mix-blend-mode: multiply;" />
 
     <!-- Firma Lugar -->
     <span class="overlay-field" data-cal-id="s4_lugar" style="left:39mm; top:209mm; font-size:7.5pt;"

@@ -160,13 +160,13 @@ public class LegalizacionController {
     @Operation(summary = "Certificado de Adecuación")
     @GetMapping("/certificado-adecuacion/{id}")
     public ResponseEntity<byte[]> generateCertificadoAdecuacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoAdecuacion", "7.- Certificado de Adecuacion al RD 1699-2011", "certificado-adecuacion", null);
+        return processDocumentResponse(id, "CertificadoAdecuacion", "7.- Certificado de Adecuación al RD 1699-2011", "certificado-adecuacion", null);
     }
 
     @Operation(summary = "DOACFV")
     @GetMapping("/doacfv/{id}")
     public ResponseEntity<byte[]> generateDoacfv(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Direccion de Obra", "doacfv", formData -> {
+        return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Dirección de Obra", "doacfv", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;
@@ -176,7 +176,7 @@ public class LegalizacionController {
     @Operation(summary = "Declaración Responsable Dirección de Obra")
     @GetMapping("/declaracion-responsable-do/{id}")
     public ResponseEntity<byte[]> generateDeclaracionResponsableDo(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "3.a.- Declaracion Responsable DO", "declaracion-responsable-do", formData -> {
+        return processDocumentResponse(id, "legalizacion/DeclaracionResponsableDo", "3.a.- Declaración Responsable DO", "declaracion-responsable-do", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-direccion-obra.jpg");
             extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
@@ -188,7 +188,7 @@ public class LegalizacionController {
     @Operation(summary = "DR Técnico Competente")
     @GetMapping("/dr-tecnico-competente/{id}")
     public ResponseEntity<byte[]> generateDrTecnicoCompetente(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/DrTecnicoCompetente", "1.1.a.- DR Tecnico Competente", "dr-tecnico-competente", formData -> {
+        return processDocumentResponse(id, "legalizacion/DrTecnicoCompetente", "1.1.a.- DR Técnico Competente", "dr-tecnico-competente", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/declaracion-tecnico-competente.jpg");
             extraImages.put("fondoUrl", "data:image/jpeg;base64," + base64);
@@ -200,7 +200,7 @@ public class LegalizacionController {
     @Operation(summary = "Certificado de Dirección de Obra")
     @GetMapping("/certificado-direccion-obra/{id}")
     public ResponseEntity<byte[]> generateCertificadoDireccionObra(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Direccion de Obra", "doacfv", formData -> {
+        return processDocumentResponse(id, "legalizacion/Doacfv", "3.- Certificado de Dirección de Obra", "doacfv", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;
@@ -210,7 +210,7 @@ public class LegalizacionController {
     @Operation(summary = "CIE Válido Extremadura")
     @GetMapping("/cie-valido-extremadura/{id}")
     public ResponseEntity<byte[]> generateCieValidoExtremadura(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/CieValidoExtremadura", "CIE Valido Extremadura", "cie-valido-extremadura", formData -> {
+        return processDocumentResponse(id, "legalizacion/CieValidoExtremadura", "CIE Válido Extremadura", "cie-valido-extremadura", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             for (int i = 1; i <= 4; i++) {
                 String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie-extremadura-p" + i + ".jpg");
@@ -224,7 +224,7 @@ public class LegalizacionController {
     @Operation(summary = "Memoria Técnica de Diseño - Baja Tensión")
     @GetMapping("/mtd-baja-tension/{id}")
     public ResponseEntity<byte[]> generateMtdBajaTension(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/MtdBajaTension", "MTD Baja Tension", "mtd-baja-tension", formData -> {
+        return processDocumentResponse(id, "legalizacion/MtdBajaTension", "MTD Baja Tensión", "mtd-baja-tension", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             for (int i = 1; i <= 8; i++) {
                 String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/mtd-extremadura-p" + i + ".jpg");
@@ -274,6 +274,7 @@ public class LegalizacionController {
             data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
         }
         data.put("firmaSolayMrivasBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.png"));
+        data.put("firmaEduardoBase64", "data:image/jpeg;base64," + jsonUtils.getResourceAsBase64("static/logos/firma-eduardo-sin-sello.jpeg"));
 
         if (extraImages != null) {
             data.putAll(extraImages);

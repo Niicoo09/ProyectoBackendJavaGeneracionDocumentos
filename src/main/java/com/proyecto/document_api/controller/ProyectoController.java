@@ -125,7 +125,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("Estudio de Gestion de Residuos_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .filename("Estudio de Gestión de Residuos_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
@@ -175,7 +175,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("13.- Calculo PEM.pdf")
+                .filename("13.- Cálculo PEM.pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
@@ -225,7 +225,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("Anexo I - Calculos_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .filename("Anexo I - Cálculos_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
@@ -250,7 +250,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("Anexo IV - Estudio Basico SYS_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .filename("Anexo IV - Estudio Básico SYS_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
@@ -275,7 +275,7 @@ public class ProyectoController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDisposition(ContentDisposition.attachment()
-                .filename("Anexo VI - Fichas Tecnicas_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
+                .filename("Anexo VI - Fichas Técnicas_" + (doc.getNombre() != null ? doc.getNombre() : "Proyecto") + ".pdf")
                 .build());
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }

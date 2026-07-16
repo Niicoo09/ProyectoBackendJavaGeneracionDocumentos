@@ -74,7 +74,7 @@ public class DocumentController {
     @Operation(summary = "Certificado de Adecuación", description = "Genera el certificado de adecuación oficial.")
     @GetMapping("/adecuacion/{id}")
     public ResponseEntity<byte[]> generateAdecuacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoAdecuacion", "7.- Certificado de Adecuacion al RD 1699-2011", "CertificadoAdecuacion",
+        return processDocumentResponse(id, "CertificadoAdecuacion", "7.- Certificado de Adecuación al RD 1699-2011", "CertificadoAdecuacion",
                 null);
     }
 
@@ -84,7 +84,7 @@ public class DocumentController {
     @Operation(summary = "Autorización de Representación")
     @GetMapping("/autorizacion-representacion/{id}")
     public ResponseEntity<byte[]> generateAutorizacionRepresentacion(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "1.- Autorizacion de representacion",
+        return processDocumentResponse(id, "administrativos/AutorizacionRepresentacion", "1.- Autorización de representación",
                 "autorizacion-representacion", formData -> {
                     Map<String, String> extraImages = new HashMap<>();
                     String base64 = jsonUtils
@@ -237,7 +237,7 @@ public class DocumentController {
     @Operation(summary = "Certificado Pérgola Aporticada")
     @GetMapping({ "/pergola-aporticada/{id}", "/pergola/{id}" })
     public ResponseEntity<byte[]> generatePergolaAporticada(@PathVariable UUID id) {
-        return processDocumentResponse(id, "CertificadoPergolaAporticada", "7.- Certificado de solidez (pergola aporticada)",
+        return processDocumentResponse(id, "CertificadoPergolaAporticada", "7.- Certificado de solidez (pérgola aporticada)",
                 "CertificadoPergolaAporticada", null);
     }
 
@@ -257,7 +257,7 @@ public class DocumentController {
     @Operation(summary = "Declaración No Generación RCDs")
     @GetMapping({ "/no-generacion-rcds/{id}", "/no-generacion-residuos/{id}" })
     public ResponseEntity<byte[]> generateNoGeneracionRcds(@PathVariable UUID id) {
-        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "8.- Declaracion responsable de no generacion de RCDs",
+        return processDocumentResponse(id, "administrativos/DeclaracionNoGeneracionRcds", "8.- Declaración responsable de no generación de RCDs",
                 "DeclaracionNoGeneracionRcds", null);
     }
 
@@ -281,7 +281,7 @@ public class DocumentController {
     @Operation(summary = "Planos de Situación y Cubierta")
     @GetMapping("/planos/{id}")
     public ResponseEntity<byte[]> generatePlanos(@PathVariable UUID id) {
-        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "12.- Planos de Situacion, Emplazamiento y Cubierta",
+        return processDocumentResponse(id, "PlanosSituacionEmplazamientoCubierta", "12.- Planos de Situación, Emplazamiento y Cubierta",
                 "PlanosSituacionEmplazamientoCubierta", formData -> {
                     Map<String, String> images = new HashMap<>();
                     for (int i = 1; i <= 5; i++) {
@@ -361,7 +361,7 @@ public class DocumentController {
     @Operation(summary = "Última Página Informativa")
     @GetMapping("/documento-ultima-pagina/{id}")
     public ResponseEntity<byte[]> generateUltimaPagina(@PathVariable UUID id) {
-        return processDocumentResponse(id, "DocumentoUltimaPagina", "13.- Otras informaciones utiles", "documento-ultima-pagina", null);
+        return processDocumentResponse(id, "DocumentoUltimaPagina", "13.- Otras informaciones útiles", "documento-ultima-pagina", null);
     }
 
     /**
