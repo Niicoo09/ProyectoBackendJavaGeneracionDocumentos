@@ -891,9 +891,13 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
         
         // Mapeos adicionales por si acaso
+        String dia = getString(form, "dia");
+        String mes = getString(form, "mes");
+        String anio = getString(form, "anio");
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
+        enriched.put("fechaElaboracionTexto", formatElaboracionFecha(dia, mes, anio));
     }
 
     private void applyDeclaracionTecnicoCompetente(Map<String, Object> enriched, Map<String, Object> form) {
@@ -925,9 +929,13 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "provinciaSelect2", "provinciaEmplazamiento");
 
         // Mapeos de fecha
+        String dia = getString(form, "dia");
+        String mes = getString(form, "mes");
+        String anio = getString(form, "anio");
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
+        enriched.put("fechaElaboracionTexto", formatElaboracionFecha(dia, mes, anio));
     }
 
     private void applyDocumentoUltimaPagina(Map<String, Object> enriched, Map<String, Object> form) {
@@ -1738,5 +1746,20 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         enriched.put("dia", dia);
         enriched.put("mes", mes);
         enriched.put("anio", anio);
+    }
+
+    private String formatElaboracionFecha(String dia, String mes, String anio) {
+        if (dia.isEmpty() || mes.isEmpty() || anio.isEmpty()) {
+            return "";
+        }
+        String mesNombre = mes;
+        if (mes.matches("\\d+")) {
+            int mesInt = Integer.parseInt(mes);
+            String[] meses = {"", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+            if (mesInt >= 1 && mesInt <= 12) {
+                mesNombre = meses[mesInt];
+            }
+        }
+        return dia + " de " + mesNombre + " de " + anio;
     }
 }
