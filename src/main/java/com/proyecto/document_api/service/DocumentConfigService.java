@@ -1088,6 +1088,23 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "longitudSalidaInversorRed", "g_inversorRedLongitud");
         applyMapping(enriched, form, "materialSalidaInversorRed", "g_inversorRedSeccion");
 
+        // Mapeos MTD Extremadura Pagina 3
+        applyMapping(enriched, form, "empresaDistribuidora", "ext_empresaDistribuidora");
+        applyMapping(enriched, form, "fase", "e2_tipoConexionRed1");
+        applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
+        applyMapping(enriched, form, "potenciaInstaladaPrevista", "e2_potenciaNominalInversores");
+        applyMapping(enriched, form, "sistemaInstalacionDI", "sistemaInstalacionDI");
+        applyMapping(enriched, form, "conductorDI", "conductorDI");
+        applyMapping(enriched, form, "seccionFase", "seccionFase");
+        applyMapping(enriched, form, "aislamientoDI", "aislamientoDI");
+        applyMapping(enriched, form, "intensidadFusiblesCGP", "intensidadFusiblesCGP");
+        applyMapping(enriched, form, "intensidadNominal", "intensidadNominal");
+        applyMapping(enriched, form, "poderCorteIG", "poderCorteIG");
+        applyMapping(enriched, form, "tipoContador", "tipoContador");
+        applyMapping(enriched, form, "sensibilidadDiferencial", "sensibilidadDiferencial");
+        applyMapping(enriched, form, "tomasTierra", "tomasTierra");
+        applyMapping(enriched, form, "conductoresTierra", "conductoresTierra");
+
         // --- fieldMapping: Sección H y I ---
         applyMapping(enriched, form, "esquemaUnifilar", "h_esquemaUnifilar");
         applyMapping(enriched, form, "planoEmplazamiento", "otros_imagenPlanoEmplazamiento");

@@ -1,14 +1,106 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <!--/*
   FRAGMENTO: MTD Baja Tension Extremadura - Pagina 3
   Variables disponibles: form, fondoStyle, firmaBase64
-  TODO: Tu companiero anadira las variables especificas de esta pagina
 */-->
 <div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
 
-    <!-- Pendiente de completar - Variables Pagina 3 -->
+    <!-- Distribuidora -->
+    <span class="overlay-field" data-cal-id="m3_dist" style="left:35.5mm; top:106mm; font-size:7.5pt;"
+          th:text="${form['empresaDistribuidora'] ?: ''}"></span>
+
+    <!-- Punto Conexión -->
+    <span class="overlay-field" data-cal-id="m3_pt_con" style="left:124.5mm; top:109.5mm; font-size:7.5pt;">RDD</span>
+
+    <!-- Intensidad Cortocircuito -->
+    <span class="overlay-field" data-cal-id="m3_icc" style="left:155.5mm; top:109mm; font-size:7.5pt;">1</span>
+
+    <!-- [X] Suministro Monofásico -->
+    <span class="overlay-marker" data-cal-id="m3_sum_mono" th:if="${form['fase'] == 'Monofásica' or form['fase'] == 'Monofasica' or form['tensionSuministro'] == '230'}" style="left:35mm; top:119mm;">X</span>
+
+    <!-- [X] Suministro Trifásico -->
+    <span class="overlay-marker" data-cal-id="m3_sum_tri" th:if="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' or form['tensionSuministro'] == '400'}" style="left:54mm; top:119mm;">X</span>
+
+    <!-- Tensión Suministro (V) -->
+    <span class="overlay-field" data-cal-id="m3_sum_volt" style="left:103mm; top:118mm; font-size:7.5pt;"
+          th:text="${form['tensionSuministro'] ?: ''}"></span>
+
+    <!-- Potencia Instalada (kW) -->
+    <span class="overlay-field" data-cal-id="m3_sum_pot" style="left:174mm; top:118.5mm; font-size:7.5pt;"
+          th:text="${form['potenciaInstaladaPrevista'] ?: ''}"></span>
+
+    <!-- DI Tipo Instalación -->
+    <span class="overlay-field" data-cal-id="m3_di_tipo" style="left:12.5mm; top:166mm; font-size:7.5pt;"
+          th:text="${form['sistemaInstalacionDI'] ?: ''}"></span>
+
+    <!-- DI Conductor -->
+    <span class="overlay-field" data-cal-id="m3_di_cond" style="left:99.5mm; top:165.5mm; font-size:7.5pt;"
+          th:text="${form['conductorDI'] ?: ''}"></span>
+
+    <!-- DI Tensión asignada -->
+    <span class="overlay-field" data-cal-id="m3_di_tens" style="left:117.5mm; top:165.5mm; font-size:7.5pt;"
+          th:text="${form['tensionNominalInversor'] ?: '230'}"></span>
+
+    <!-- DI Sección -->
+    <span class="overlay-field" data-cal-id="m3_di_secc" style="left:138mm; top:166mm; font-size:7.5pt;"
+          th:text="${form['seccionFase'] ?: ''}"></span>
+
+    <!-- DI Aislamiento -->
+    <span class="overlay-field" data-cal-id="m3_di_aisl" style="left:163mm; top:166mm; font-size:7.5pt;"
+          th:text="${form['aislamientoDI'] ?: 'XLPE'}"></span>
+
+    <!-- DI Fusible -->
+    <span class="overlay-field" data-cal-id="m3_di_fus" style="left:183.5mm; top:166mm; font-size:7.5pt;"
+          th:text="${form['intensidadFusiblesCGP'] ?: ''}"></span>
+
+    <!-- [X] Cont. Individual -->
+    <span class="overlay-marker" data-cal-id="m3_cont_ind" th:if="${form['tipoContador'] == 'Individual' or form['tipoContador'] == null or form['tipoContador'] == ''}" style="left:27mm; top:176mm;">X</span>
+
+    <!-- [X] Cont. Un Lugar -->
+    <span class="overlay-marker" data-cal-id="m3_cont_con1" th:if="${form['tipoContador'] == 'Concentrada'}" style="left:51mm; top:176mm;">X</span>
+
+    <!-- [X] Cont. Varios Lugares -->
+    <span class="overlay-marker" data-cal-id="m3_cont_conv" th:if="${form['tipoContador'] == 'Concentrada Varios'}" style="left:87mm; top:175.5mm;">X</span>
+
+    <!-- Cont. Interruptor Corte -->
+    <span class="overlay-field" data-cal-id="m3_cont_corte" style="left:93.5mm; top:212.5mm; font-size:7.5pt;"
+          th:text="${form['intensidadNominal'] ?: ''}"></span>
+
+    <!-- CGP Interruptor Corte -->
+    <span class="overlay-field" data-cal-id="m3_cg_corte" style="left:85mm; top:213.5mm; font-size:7.5pt;"
+          th:text="${form['intensidadNominal'] ?: ''}"></span>
+
+    <!-- CGP Poder Corte -->
+    <span class="overlay-field" data-cal-id="m3_cg_pc" style="left:77mm; top:213mm; font-size:7.5pt;"
+          th:text="${form['poderCorteIG'] ?: ''}"></span>
+
+    <!-- Protección Sobretensiones -->
+    <span class="overlay-field" data-cal-id="m3_prot_sobre" style="left:110mm; top:185mm; font-size:7.5pt;">I.A.</span>
+
+    <!-- Sobretensiones Categoría -->
+    <span class="overlay-field" data-cal-id="m3_prot_cat" style="left:189mm; top:185mm; font-size:7.5pt;">I.V.</span>
+
+    <!-- [X] Dif. 30mA -->
+    <span class="overlay-marker" data-cal-id="m3_dif_30" th:if="${form['sensibilidadDiferencial'] == '30' or form['sensibilidadDiferencial'] == null}" style="left:51mm; top:197mm;">X</span>
+
+    <!-- [X] Dif. 300mA -->
+    <span class="overlay-marker" data-cal-id="m3_dif_300" th:if="${form['sensibilidadDiferencial'] == '300'}" style="left:60.5mm; top:197mm;">X</span>
+
+    <!-- [X] Sobretens. Aut. -->
+    <span class="overlay-marker" data-cal-id="m3_sob_auto" style="left:110.5mm; top:195.5mm;">X</span>
+
+    <!-- Tomas de Tierra -->
+    <span class="overlay-field" data-cal-id="m3_tierra_tomas" style="left:13mm; top:214mm; font-size:7.5pt;"
+          th:text="${form['tomasTierra'] ?: 'Pica de cobre'}"></span>
+
+    <!-- Conductores Tierra -->
+    <span class="overlay-field" data-cal-id="m3_tierra_cond" style="left:113.5mm; top:214mm; font-size:7.5pt;"
+          th:text="${form['conductoresTierra'] ?: ''}"></span>
+
+    <!-- Resistencia Calculada -->
+    <span class="overlay-field" data-cal-id="m3_tierra_res" style="left:169.5mm; top:214mm; font-size:7.5pt;">3000</span>
 
 </div>
 </body>
