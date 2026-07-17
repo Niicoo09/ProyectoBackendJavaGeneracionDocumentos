@@ -64,18 +64,6 @@
     <!-- [X] Cont. Varios Lugares -->
     <span class="overlay-marker" data-cal-id="m3_cont_conv" th:if="${form['tipoContador'] == 'Concentrada Varios'}" style="left:87mm; top:175.5mm;">X</span>
 
-    <!-- Cont. Interruptor Corte -->
-    <span class="overlay-field" data-cal-id="m3_cont_corte" style="left:93.5mm; top:212.5mm; font-size:7.5pt;"
-          th:text="${form['intensidadNominal'] ?: ''}"></span>
-
-    <!-- CGP Interruptor Corte -->
-    <span class="overlay-field" data-cal-id="m3_cg_corte" style="left:85mm; top:213.5mm; font-size:7.5pt;"
-          th:text="${form['intensidadNominal'] ?: ''}"></span>
-
-    <!-- CGP Poder Corte -->
-    <span class="overlay-field" data-cal-id="m3_cg_pc" style="left:77mm; top:213mm; font-size:7.5pt;"
-          th:text="${form['poderCorteIG'] ?: ''}"></span>
-
     <!-- Protección Sobretensiones -->
     <span class="overlay-field" data-cal-id="m3_prot_sobre" style="left:110mm; top:185mm; font-size:7.5pt;">I.A.</span>
 

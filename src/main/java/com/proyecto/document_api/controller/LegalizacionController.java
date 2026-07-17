@@ -230,7 +230,8 @@ public class LegalizacionController {
                 String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/mtd-extremadura-p" + i + ".jpg");
                 extraImages.put("fondoStyle" + i, "background-image: url('data:image/jpeg;base64," + base64 + "');");
             }
-            loadSignatureIntoExtraImages(extraImages, formData);
+            mapDynamicImageWithFallback(extraImages, formData, "esquemaUnifilarBase64", "h_esquemaUnifilar", "esquemaUnifilar");
+            mapDynamicImageWithFallback(extraImages, formData, "planoEmplazamientoBase64", "otros_imagenPlanoEmplazamiento", "planoEmplazamiento");
             return extraImages;
         });
     }

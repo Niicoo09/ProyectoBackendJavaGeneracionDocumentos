@@ -1,14 +1,44 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <!--/*
   FRAGMENTO: MTD Baja Tension Extremadura - Pagina 7
   Variables disponibles: form, fondoStyle, firmaBase64
-  TODO: Tu companiero anadira las variables especificas de esta pagina
 */-->
 <div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
 
-    <!-- Pendiente de completar - Variables Pagina 7 -->
+    <!-- Firma Provincia -->
+    <span class="overlay-field" data-cal-id="m7_firma_prov" style="left:70mm; top:245.5mm; font-size:7.5pt;"
+          th:text="${form['provincia'] ?: ''}"></span>
+
+    <!-- Firma Día -->
+    <span class="overlay-field" data-cal-id="m7_firma_dia" style="left:100.5mm; top:245mm; font-size:7.5pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+
+    <!-- Firma Mes (Traducción directa en plantilla para evitar dependencia de reinicio del backend) -->
+    <span class="overlay-field" data-cal-id="m7_firma_mes" style="left:110.5mm; top:245mm; font-size:7.5pt;"
+          th:text="${form['mes'] == '01' or form['mes'] == '1' ? 'enero' : 
+                    form['mes'] == '02' or form['mes'] == '2' ? 'febrero' : 
+                    form['mes'] == '03' or form['mes'] == '3' ? 'marzo' : 
+                    form['mes'] == '04' or form['mes'] == '4' ? 'abril' : 
+                    form['mes'] == '05' or form['mes'] == '5' ? 'mayo' : 
+                    form['mes'] == '06' or form['mes'] == '6' ? 'junio' : 
+                    form['mes'] == '07' or form['mes'] == '7' ? 'julio' : 
+                    form['mes'] == '08' or form['mes'] == '8' ? 'agosto' : 
+                    form['mes'] == '09' or form['mes'] == '9' ? 'septiembre' : 
+                    form['mes'] == '10' ? 'octubre' : 
+                    form['mes'] == '11' ? 'noviembre' : 
+                    form['mes'] == '12' ? 'diciembre' : (form['mes'] ?: '')}"></span>
+
+    <!-- Firma Año -->
+    <span class="overlay-field" data-cal-id="m7_firma_anio" style="left:123mm; top:245mm; font-size:7.5pt;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+    <!-- Firma Imagen (Eduardo Rivera Cabezas con sello de Solay) - Subida ligeramente -->
+    <div class="overlay-field" data-cal-id="m7_firma_img" style="left:99mm; top:256mm; width:45mm; height:18mm;">
+        <img th:if="${firmaBase64 != null}" th:src="${firmaBase64}"
+             style="width:100%; height:100%; object-fit:contain;" />
+    </div>
 
 </div>
 </body>

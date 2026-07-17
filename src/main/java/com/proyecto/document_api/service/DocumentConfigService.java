@@ -909,6 +909,17 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
+        
+        String mesNombre = mes;
+        if (mes != null && mes.matches("\\d+")) {
+            int mesInt = Integer.parseInt(mes);
+            String[] meses = {"", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+            if (mesInt >= 1 && mesInt <= 12) {
+                mesNombre = meses[mesInt];
+            }
+        }
+        enriched.put("mesNombre", mesNombre);
+        
         enriched.put("fechaElaboracionTexto", formatElaboracionFecha(dia, mes, anio));
     }
 
@@ -999,6 +1010,9 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "telefonoMovil", "telefono");
         applyMapping(enriched, form, "correoElectronico", "correoElectronicoEmplazamiento");
         applyMapping(enriched, form, "piso", "planta");
+        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        applyMapping(enriched, form, "numero", "numero");
+        applyMapping(enriched, form, "numeroBaterias", "numeroBaterias");
 
         // --- fieldMapping: Sección E2.1 Conexión a la Red ---
         applyMapping(enriched, form, "potenciaNominalInversores", "e2_potenciaNominalInversores");
@@ -1104,6 +1118,39 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "sensibilidadDiferencial", "sensibilidadDiferencial");
         applyMapping(enriched, form, "tomasTierra", "tomasTierra");
         applyMapping(enriched, form, "conductoresTierra", "conductoresTierra");
+
+        // Cálculos para la tabla de la página 5 de MTD
+        String potInstStr = getString(form, "e2_potenciaNominalInversores");
+        double potInstKw = 0.0;
+        try {
+            potInstKw = Double.parseDouble(potInstStr.replace(",", "."));
+        } catch (Exception e) {}
+        
+        double potInstW = potInstKw * 1000.0;
+        enriched.put("potenciaDI_W", String.format(java.util.Locale.of("es", "ES"), "%.0f", potInstW));
+        
+        String conexion = getString(form, "e2_tipoConexionRed1");
+        boolean isTrifasica = conexion.equalsIgnoreCase("Trifásica") || conexion.equalsIgnoreCase("Trifasica");
+        double intensidad = 0.0;
+        if (potInstW > 0) {
+            if (isTrifasica) {
+                intensidad = potInstW / (Math.sqrt(3) * 400.0);
+            } else {
+                intensidad = potInstW / 230.0;
+            }
+        }
+        enriched.put("intensidadDI_A", String.format(java.util.Locale.of("es", "ES"), "%.2f", intensidad));
+        
+        String seccionStr = getString(form, "seccionFase");
+        double seccionVal = 10.0; // default
+        try {
+            seccionVal = Double.parseDouble(seccionStr.replace(",", "."));
+        } catch (Exception e) {}
+        double densidad = 0.0;
+        if (seccionVal > 0) {
+            densidad = intensidad / seccionVal;
+        }
+        enriched.put("densidadDI", String.format(java.util.Locale.of("es", "ES"), "%.2f", densidad));
 
         // --- fieldMapping: Sección H y I ---
         applyMapping(enriched, form, "esquemaUnifilar", "h_esquemaUnifilar");
