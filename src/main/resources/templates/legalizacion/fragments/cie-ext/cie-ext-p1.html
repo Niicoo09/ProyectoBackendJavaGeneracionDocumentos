@@ -85,6 +85,10 @@
     <span class="overlay-field" data-cal-id="s3_pot_adm" style="left:180.5mm; top:67.5mm; font-size:7.5pt;"
           th:text="${form['potenciaMaximaAdmisible'] ?: form['e2_potenciaNominalInversores'] ?: form['potenciaACInversor'] ?: ''}"></span>
 
+    <!-- S3 DI Potencia máxima admisible (kW) (En recuadro de Derivación Individual) -->
+    <span class="overlay-field" data-cal-id="s3_di_pot_adm" style="left:114.5mm; top:99mm; font-size:7.5pt;"
+          th:text="${form['potenciaMaximaAdmisible'] ?: form['e2_potenciaNominalInversores'] ?: form['potenciaACInversor'] ?: ''}"></span>
+
     <!-- S3 [X] Red Pública -->
     <span class="overlay-marker" data-cal-id="s3_red_pub" style="left:26.5mm; top:72mm;">X</span>
 
@@ -205,9 +209,7 @@
     <img th:if="${firmaBase64 != null and !firmaBase64.isEmpty()}" th:src="${firmaBase64}"
          style="position: absolute; left: 145mm; top: 215mm; width: 32mm; height: auto; mix-blend-mode: multiply;" />
 
-    <!-- Firma de Eduardo -->
-    <img th:if="${firmaEduardoBase64 != null}" th:src="${firmaEduardoBase64}"
-         style="position: absolute; left: 45mm; top: 215mm; width: 32mm; height: auto; mix-blend-mode: multiply;" />
+
 
     <!-- Firma Lugar -->
     <span class="overlay-field" data-cal-id="s4_lugar" style="left:39mm; top:209mm; font-size:7.5pt;"

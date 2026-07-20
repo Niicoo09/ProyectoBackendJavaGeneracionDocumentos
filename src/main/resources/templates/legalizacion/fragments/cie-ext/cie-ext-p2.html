@@ -89,10 +89,10 @@
           th:text="${form['tensionNominalInversor'] ?: '230'}"></span>
 
     <!-- 3.1 [X] Inversor Total: Monofásico -->
-    <span class="overlay-marker" data-cal-id="p2_inv_mono_total" th:if="${form['tipoConexionInversor'] == 'Monofasico' or form['tipoConexionInversor'] == null}" style="left:163mm; top:92.5mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_inv_mono_total" th:if="${form['tipoConexionInversor'] == null or #strings.contains(#strings.toLowerCase(form['tipoConexionInversor']), 'mono')}" style="left:163mm; top:92.5mm;">X</span>
 
     <!-- 3.1 [X] Inversor Total: Trifásico -->
-    <span class="overlay-marker" data-cal-id="p2_inv_tri_total" th:if="${form['tipoConexionInversor'] == 'Trifasico'}" style="left:184.5mm; top:92.5mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_inv_tri_total" th:if="${form['tipoConexionInversor'] != null and #strings.contains(#strings.toLowerCase(form['tipoConexionInversor']), 'tri')}" style="left:184.5mm; top:92.5mm;">X</span>
 
     <!-- 3.1 Inversor Fabricante y Modelo -->
     <span class="overlay-field" data-cal-id="p2_inv_fab" style="left:26.5mm; top:97mm; font-size:7.5pt;"
@@ -113,10 +113,10 @@
           th:text="${form['tensionNominalInversor'] ?: '230'}"></span>
 
     <!-- 3.1 [X] Inversor Unitario: Monofásico -->
-    <span class="overlay-marker" data-cal-id="p2_inv_mono_unit" th:if="${form['tipoConexionInversor'] == 'Monofasico' or form['tipoConexionInversor'] == null}" style="left:162.5mm; top:103mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_inv_mono_unit" th:if="${form['tipoConexionInversor'] == null or #strings.contains(#strings.toLowerCase(form['tipoConexionInversor']), 'mono')}" style="left:162.5mm; top:103mm;">X</span>
 
     <!-- 3.1 [X] Inversor Unitario: Trifásico -->
-    <span class="overlay-marker" data-cal-id="p2_inv_tri_unit" th:if="${form['tipoConexionInversor'] == 'Trifasico'}" style="left:184mm; top:103mm;">X</span>
+    <span class="overlay-marker" data-cal-id="p2_inv_tri_unit" th:if="${form['tipoConexionInversor'] != null and #strings.contains(#strings.toLowerCase(form['tipoConexionInversor']), 'tri')}" style="left:184mm; top:103mm;">X</span>
 
     <!-- 4.1 Baterías - Número de elementos -->
     <span class="overlay-field" data-cal-id="p2_bat_num" style="left:48mm; top:181.5mm; font-size:7.5pt;"

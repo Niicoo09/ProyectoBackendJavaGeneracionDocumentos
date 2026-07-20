@@ -764,6 +764,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Mapeo de fase para checkboxes con fallbacks
         applyMappingWithFallback(enriched, form, "fase", "e2_tipoConexionRed1", "fase");
         applyMapping(enriched, form, "tipoConexionRed", "e2_tipoConexionRed1");
+        applyMappingWithFallback(enriched, form, "tipoConexionInversor", "e2_tipoConexionRed", "tipo_suministro", "fase");
         
         // Tipo de instalación (Generación Fotovoltaica Interconectada o Generación Fotovoltaica Aislada)
         boolean esAislada = false;

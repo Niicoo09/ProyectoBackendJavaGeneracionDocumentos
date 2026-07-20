@@ -16,4 +16,8 @@
     <span class="overlay-field" data-cal-id="p4_anio" style="left:138.5mm; top:199.5mm; font-size:7.5pt;"
           th:text="${form['anio'] ?: ''}"></span>
 
+    <!-- Firma del Instalador con sello en la página 4 -->
+    <img th:if="${firmaBase64 != null and !firmaBase64.isEmpty()}" th:src="${firmaBase64}"
+         style="position: absolute; left: 118mm; top: 210mm; width: 35mm; height: auto; mix-blend-mode: multiply;" />
+
 </div>

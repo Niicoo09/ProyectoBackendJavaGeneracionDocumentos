@@ -27,7 +27,24 @@
     <span class="overlay-marker" data-cal-id="p3_un_400" th:if="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' or form['tensionNominalInversor'] == '400' or form['tensionSuministro'] == '400'}" style="left:55mm; top:58mm;">X</span>
 
     <!-- 5.1.1 Intensidad de cortocircuito (kA) -->
-    <span class="overlay-field" data-cal-id="p3_ika" style="left:136mm; top:57mm; font-size:7.5pt;"
-          th:text="${form['1'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="p3_ika" style="left:136mm; top:57mm; font-size:7.5pt;">1</span>
+
+    <!-- 5.2 Fila 1 - Tabla Conductores -->
+    <!-- Tipo de canalización (Bajo tubo) -->
+    <span class="overlay-field" data-cal-id="p3_cond_tubo" style="left:46mm; top:104mm; font-size:7.5pt;">Bajo tubo</span>
+
+    <!-- Conductor (CU) -->
+    <span class="overlay-field" data-cal-id="p3_cond_mat" style="left:81mm; top:104mm; font-size:7.5pt;">CU</span>
+
+    <!-- Sección (mm²) (Dinámica) -->
+    <span class="overlay-field" data-cal-id="p3_cond_secc" style="left:110mm; top:104mm; font-size:7.5pt;"
+          th:text="${form['seccionFase'] ?: form['e2_seccionConductorRed'] ?: ''}"></span>
+
+    <!-- Material de aislamiento (XLPE) -->
+    <span class="overlay-field" data-cal-id="p3_cond_aisl" style="left:140mm; top:104mm; font-size:7.5pt;">XLPE</span>
+
+    <!-- Tensión (V) (Dinámica) -->
+    <span class="overlay-field" data-cal-id="p3_cond_tens" style="left:178mm; top:104mm; font-size:7.5pt;"
+          th:text="${form['tensionNominalInversor'] ?: form['tensionSuministro'] ?: '230'}"></span>
 
 </div>
