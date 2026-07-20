@@ -777,6 +777,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             enriched.put("tipoInstalacion", "Generación Fotovoltaica Interconectada");
         }
         
+        // Actuación: Nueva, Ampliación, Modificación
+        applyMappingWithFallback(enriched, form, "actuacionInstalacion", "instalacion", "tipoActuacion");
+        putIfAbsent(enriched, "actuacionInstalacion", "nueva");
+
         // Tensión de suministro
         applyMapping(enriched, form, "tensionSuministro", "e2_relacionTensionInversor");
         

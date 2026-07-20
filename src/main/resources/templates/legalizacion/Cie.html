@@ -163,13 +163,13 @@
 
         <!-- === TIPO INSTALACIÓN (Marcadores X) === -->
         <!-- Nueva instalación -->
-        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'nueva'}"
+        <span class="overlay-marker" th:if="${form['actuacionInstalacion'] != null and #strings.contains(#strings.toLowerCase(form['actuacionInstalacion']), 'nuev')}"
               style="left:36.55mm; top:107.7mm;">X</span>
         <!-- Ampliación -->
-        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'ampliacion'}"
+        <span class="overlay-marker" th:if="${form['actuacionInstalacion'] != null and #strings.contains(#strings.toLowerCase(form['actuacionInstalacion']), 'ampl')}"
               style="left:60.3mm; top:107.7mm;">X</span>
         <!-- Modificación -->
-        <span class="overlay-marker" th:if="${form['tipoInstalacion'] == 'modificacion' or (form['tipoInstalacion'] == null)}"
+        <span class="overlay-marker" th:if="${form['actuacionInstalacion'] == null or #strings.contains(#strings.toLowerCase(form['actuacionInstalacion']), 'modif') or (!#strings.contains(#strings.toLowerCase(form['actuacionInstalacion']), 'nuev') and !#strings.contains(#strings.toLowerCase(form['actuacionInstalacion']), 'ampl'))}"
               style="left:86.5mm; top:107.7mm;">X</span>
 
         <!-- === CARACTERÍSTICAS === -->
