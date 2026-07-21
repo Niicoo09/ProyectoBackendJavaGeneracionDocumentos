@@ -27,10 +27,11 @@ public class DocumentConfigService {
     private static final String TECNICO_NUMERO_COLEGIADO = "4654";
     private static final String TECNICO_COLEGIO = "Colegio Oficial de Ingenieros Industriales de Andalucía Occidental";
     private static final String TECNICO_COLEGIO_CORTO = "4654 COIIAOC";
-    private static final String TECNICO_DOMICILIO = "Calle Ebro";
-    private static final String TECNICO_NUMERO = "35";
-    private static final String TECNICO_LOCALIDAD = "Sevilla";
-    private static final String TECNICO_CP = "41.012";
+    private static final String TECNICO_DOMICILIO = "Calle El Peñón";
+    private static final String TECNICO_NUMERO = "5";
+    private static final String TECNICO_LOCALIDAD = "Tomares";
+    private static final String TECNICO_CP = "41940";
+    private static final String TECNICO_EMAIL = "msuarez@solay.es";
     private static final String TECNICO_TELEFONO = "629 118 196";
     private static final String EMPRESA_NUMERO_EMPRESA = "41045500";
 
@@ -626,6 +627,12 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         putIfAbsent(enriched, "tecnico", TECNICO_NOMBRE);
         putIfAbsent(enriched, "nifTecnico", TECNICO_NIF);
+        putIfAbsent(enriched, "domicilioTecnico", TECNICO_DOMICILIO + ", " + TECNICO_NUMERO);
+        putIfAbsent(enriched, "localidadTecnico", TECNICO_LOCALIDAD);
+        putIfAbsent(enriched, "provinciaTecnico", "Sevilla");
+        putIfAbsent(enriched, "cpTecnico", TECNICO_CP);
+        putIfAbsent(enriched, "telefonoTecnico", TECNICO_TELEFONO);
+        putIfAbsent(enriched, "emailTecnico", TECNICO_EMAIL);
     }
 
     private void applyAutorizacionComunicacion(Map<String, Object> enriched, Map<String, Object> form) {
@@ -726,7 +733,21 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "bloque", "bloque");
         applyMapping(enriched, form, "portal", "portal");
         applyMapping(enriched, form, "escalera", "escalera");
-        applyMapping(enriched, form, "piso", "planta");
+        // --- fieldMapping: Sección formateada con un decimal y coma ---
+        String seccionRaw = getString(form, "seccionFase");
+        if (seccionRaw.isEmpty()) seccionRaw = getString(form, "seccion");
+        if (!seccionRaw.isEmpty()) {
+            try {
+                double val = Double.parseDouble(seccionRaw.replace(',', '.'));
+                seccionRaw = String.format(java.util.Locale.GERMAN, "%.1f", val);
+            } catch (Exception e) {
+                // Dejar valor original si no es numérico
+            }
+        } else {
+            seccionRaw = "6,0";
+        }
+        enriched.put("seccionFase", seccionRaw);
+        enriched.put("conductoresTierra", seccionRaw);
         applyMapping(enriched, form, "puerta", "puerta");
         applyMapping(enriched, form, "codigoPostalEmplazamiento", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
@@ -741,14 +762,33 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Potencia admisible (kW) -> Potencia del inversor
         applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
 
-        // Sección de conductores de Tierra -> lo mismo que seccion (mm2) (seccionFase)
-        applyMapping(enriched, form, "conductoresTierra", "seccionFase");
+        // Sección de conductores de Tierra -> lo mismo que seccion (mm2) (seccionFase) con formato decimal coma
+        String seccionRaw = getString(form, "seccionFase");
+        if (seccionRaw.isEmpty()) seccionRaw = getString(form, "seccion");
+        if (!seccionRaw.isEmpty()) {
+            try {
+                double val = Double.parseDouble(seccionRaw.replace(',', '.'));
+                seccionRaw = String.format(java.util.Locale.GERMAN, "%.1f", val);
+            } catch (Exception e) {
+                // Dejar valor original si no es parseable
+            }
+        }
+        if (seccionRaw.isEmpty()) seccionRaw = "6,0";
+        enriched.put("seccionFase", seccionRaw);
+        enriched.put("conductoresTierra", seccionRaw);
 
-        // Vaciar Caja General de Protección (CGP)
+        // Vaciar / N/A en Caja General de Protección (CGP) / In Fusibles
         enriched.put("cajasGeneralesProteccion", "");
         enriched.put("intensidadBasesCGP", "");
-        enriched.put("intensidadFusiblesCGP", "");
+        enriched.put("intensidadFusiblesCGP", "N/A");
         enriched.put("poderCorteFusibles", "");
+
+        // General de Protección - Intensidad nominal y Poder de corte
+        applyMappingWithFallback(enriched, form, "intensidadNominalPIA", "e2_intensidadNominalPIA", "intensidadGeneral", "intensidadPIA");
+        putIfAbsent(enriched, "intensidadNominalPIA", "16");
+        
+        applyMappingWithFallback(enriched, form, "poderCortePIA", "e2_poderCorteInterruptor", "poderCorteInterruptor", "poderCortePIA");
+        putIfAbsent(enriched, "poderCortePIA", "6");
 
         // Poder de corte del IG
         applyMappingWithFallback(enriched, form, "poderCorteIG", "e2_poderCorteInterruptor", "poderCorteInterruptor");
@@ -766,20 +806,25 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "tipoConexionRed", "e2_tipoConexionRed1");
         applyMappingWithFallback(enriched, form, "tipoConexionInversor", "e2_tipoConexionRed", "tipo_suministro", "fase");
         
-        // Tipo de instalación (Generación Fotovoltaica Interconectada o Generación Fotovoltaica Aislada)
+        
+        // Actuación: Nueva, Ampliación, Modificación
+        applyMappingWithFallback(enriched, form, "actuacionInstalacion", "instalacion", "tipoActuacion");
+        
+        // Tipo de instalación (Instalación fotovoltaica aislada o Instalación fotovoltaica interconectada)
         boolean esAislada = false;
         Object aisladaVal = form.get("esInstalacionAislada");
         if (aisladaVal != null) {
             esAislada = aisladaVal.toString().equalsIgnoreCase("true");
         }
         if (esAislada) {
-            enriched.put("tipoInstalacion", "Generación Fotovoltaica Aislada");
+            enriched.put("tipoInstalacion", "Instalación fotovoltaica aislada");
         } else {
-            enriched.put("tipoInstalacion", "Generación Fotovoltaica Interconectada");
+            enriched.put("tipoInstalacion", "Instalación fotovoltaica interconectada");
         }
         
-        // Actuación: Nueva, Ampliación, Modificación
-        applyMappingWithFallback(enriched, form, "actuacionInstalacion", "instalacion", "tipoActuacion");
+        putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
+        putIfAbsent(enriched, "superficie", "100");
+        putIfAbsent(enriched, "ocupacion", "1");
         putIfAbsent(enriched, "actuacionInstalacion", "nueva");
 
         // Tensión de suministro
@@ -1003,6 +1048,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         String domicilio = buildDireccionCompleta(form);
         putIfAbsent(enriched, "domicilio", domicilio);
         putIfAbsent(enriched, "direccionCompleta", domicilio);
+        enriched.put("emplazamientoCalle", domicilio);
+        enriched.put("emplazamientoCompleto", domicilio);
 
         // --- fieldMapping: mapeos simples de campos DB → nombre plantilla ---
         String nifLimpio = cleanDni(getString(form, "nifCif"));
@@ -1014,8 +1061,17 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "telefono", "telefono");
         applyMapping(enriched, form, "telefonoMovil", "telefono");
         applyMapping(enriched, form, "correoElectronico", "correoElectronicoEmplazamiento");
-        applyMapping(enriched, form, "piso", "planta");
-        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        // --- fieldMapping: Tipo de Instalación formateado ---
+        boolean esAisladaMTD = false;
+        Object aisladaValMTD = form.get("esInstalacionAislada");
+        if (aisladaValMTD != null) {
+            esAisladaMTD = aisladaValMTD.toString().equalsIgnoreCase("true");
+        }
+        if (esAisladaMTD) {
+            enriched.put("tipoInstalacion", "Instalación fotovoltaica aislada");
+        } else {
+            enriched.put("tipoInstalacion", "Instalación fotovoltaica interconectada");
+        }
         applyMapping(enriched, form, "numero", "numero");
         applyMapping(enriched, form, "numeroBaterias", "numeroBaterias");
 
