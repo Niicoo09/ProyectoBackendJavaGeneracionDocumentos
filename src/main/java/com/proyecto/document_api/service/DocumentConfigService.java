@@ -762,21 +762,6 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Potencia admisible (kW) -> Potencia del inversor
         applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
 
-        // Sección de conductores de Tierra -> lo mismo que seccion (mm2) (seccionFase) con formato decimal coma
-        String seccionRaw = getString(form, "seccionFase");
-        if (seccionRaw.isEmpty()) seccionRaw = getString(form, "seccion");
-        if (!seccionRaw.isEmpty()) {
-            try {
-                double val = Double.parseDouble(seccionRaw.replace(',', '.'));
-                seccionRaw = String.format(java.util.Locale.GERMAN, "%.1f", val);
-            } catch (Exception e) {
-                // Dejar valor original si no es parseable
-            }
-        }
-        if (seccionRaw.isEmpty()) seccionRaw = "6,0";
-        enriched.put("seccionFase", seccionRaw);
-        enriched.put("conductoresTierra", seccionRaw);
-
         // Vaciar / N/A en Caja General de Protección (CGP) / In Fusibles
         enriched.put("cajasGeneralesProteccion", "");
         enriched.put("intensidadBasesCGP", "");
