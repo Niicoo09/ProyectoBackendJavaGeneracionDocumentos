@@ -8,8 +8,8 @@
           th:text="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' ? '400' : '230'}"></span>
     <span class="overlay-field" style="left:42.0mm; top:48.8mm; width:14mm; text-align:center; font-size:6pt;" 
           th:text="${form['potenciaTabla_W'] ?: '10000'}"></span>
-    <span class="overlay-field" style="left:55.5mm; top:48.8mm; width:10mm; text-align:center; font-size:6pt;">0,85</span>
-    <span class="overlay-field" style="left:65.5mm; top:48.8mm; width:14mm; text-align:center; font-size:6pt;" 
+    <span class="overlay-field" style="left:52.5mm; top:48.8mm; width:10mm; text-align:center; font-size:6pt;">0,85</span>
+    <span class="overlay-field" style="left:61.5mm; top:48.8mm; width:14mm; text-align:center; font-size:6pt;" 
           th:text="${form['potenciaCalculoTabla_W'] ?: '8500'}"></span>
     <span class="overlay-field" style="left:81.5mm; top:48.8mm; width:10mm; text-align:center; font-size:6pt;">2</span>
     <span class="overlay-field" style="left:90.5mm; top:48.8mm; width:13mm; text-align:center; font-size:6pt;">45</span>
@@ -21,7 +21,8 @@
     <span class="overlay-field" style="left:146.0mm; top:48.8mm; width:22mm; text-align:center; font-size:6pt;">Empotrada</span>
     <span class="overlay-field" style="left:182.0mm; top:48.8mm; width:10mm; text-align:center; font-size:6pt;" 
           th:text="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' ? '25' : '40'}"></span>
-    <span class="overlay-field" style="left:193.0mm; top:48.8mm; width:9mm; text-align:center; font-size:6pt;">30</span>
+    <span class="overlay-field" style="left:193.0mm; top:48.8mm; width:9mm; text-align:center; font-size:6pt;" 
+          th:text="${form['diferencialTabla'] ?: '30'}"></span>
 
 
     <!-- FILA 2: D.I. -->
@@ -35,17 +36,16 @@
     <span class="overlay-field" style="left:52.5mm; top:54.8mm; width:10mm; text-align:center; font-size:6pt;">0,85</span>
     <span class="overlay-field" style="left:61.5mm; top:54.8mm; width:14mm; text-align:center; font-size:6pt;" 
           th:text="${form['potenciaCalculoTabla_W'] ?: '6800'}"></span>
-    <span class="overlay-field" style="left:81.5mm; top:54.8mm; width:10mm; text-align:center; font-size:6pt;">10</span>
+    <span class="overlay-field" style="left:81.5mm; top:54.8mm; width:10mm; text-align:center; font-size:6pt;">2</span>
     <span class="overlay-field" style="left:90.5mm; top:54.8mm; width:13mm; text-align:center; font-size:6pt;">45</span>
     <span class="overlay-field" style="left:101.5mm; top:54.8mm; width:19mm; text-align:center; font-size:6pt;">10 mm² Cu</span>
-    <span class="overlay-field" style="left:121.0mm; top:54.8mm; width:8mm; text-align:center; font-size:6pt;">0,5</span>
-    <span class="overlay-field" style="left:130.5mm; top:54.8mm; width:9mm; text-align:center; font-size:6pt;">1,5</span>
-    <span class="overlay-field" style="left:139.5mm; top:54.8mm; width:13mm; text-align:center; font-size:6pt;" 
-          th:text="${form['densidadDI'] ?: ''}"></span>
+    <span class="overlay-field" style="left:121.0mm; top:54.8mm; width:8mm; text-align:center; font-size:6pt;">2</span>
+    <span class="overlay-field" style="left:130.5mm; top:54.8mm; width:9mm; text-align:center; font-size:6pt;">4</span>
+    <span class="overlay-field" style="left:139.5mm; top:54.8mm; width:13mm; text-align:center; font-size:6pt;">4,5</span>
     <span class="overlay-field" style="left:146.0mm; top:54.8mm; width:22mm; text-align:center; font-size:6.0pt; white-space: normal; line-height: 1.1;" 
           th:text="${form['sistemaInstalacionDI'] ?: 'Bajo tubo'}"></span>
     <span class="overlay-field" style="left:182.0mm; top:54.8mm; width:10mm; text-align:center; font-size:6pt;" 
-          th:text="${form['intensidadNominal'] ?: ''}"></span>
+          th:text="${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' ? '25' : '40'}"></span>
     <span class="overlay-field" style="left:193.0mm; top:54.8mm; width:9mm; text-align:center; font-size:6pt;" 
           th:text="${form['diferencialTabla'] ?: '30'}"></span>
 

@@ -1,5 +1,8 @@
 <div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
 
+    <!-- Texto descriptivo en el croquis superior -->
+    <span class="overlay-field" style="left:15mm; top:40mm; font-size:10pt; font-family: Arial, sans-serif; font-weight: bold; color: #333333;">Adjuntamos planos</span>
+
     <!-- Firma Provincia -->
     <span class="overlay-field" data-cal-id="m7_firma_prov" style="left:70mm; top:245.5mm; font-size:7.5pt;"
           th:text="${form['provincia'] ?: ''}"></span>
