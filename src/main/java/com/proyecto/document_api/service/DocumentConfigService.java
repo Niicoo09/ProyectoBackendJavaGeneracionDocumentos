@@ -1295,6 +1295,17 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "provinciaProfesional", "Sevilla");
         putIfAbsent(enriched, "ciudadFirma", "Jerez de la Frontera");
 
+        // Fallbacks específicos para Extremadura (S4)
+        putIfAbsent(enriched, "instaladorNombre", TECNICO_NOMBRE);
+        putIfAbsent(enriched, "nifInstalador", TECNICO_NIF);
+
+        // Asegurar formato de la dirección completa en el emplazamiento
+        String domicilioEmpl = buildDireccionCompleta(form);
+        enriched.put("emplazamientoCompleto", domicilioEmpl);
+
+        // Mapear partes de la fecha de firma
+        enrichDateParts(enriched, form);
+
         // fieldMapping: ciudadFirma puede venir de la BD
         applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
     }

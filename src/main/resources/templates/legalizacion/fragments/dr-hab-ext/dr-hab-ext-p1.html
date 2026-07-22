@@ -1,0 +1,63 @@
+<div th:fragment="content" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- Descripción Trabajo Profesional -->
+    <span class="overlay-field white-mask" data-cal-id="dr_desc_trabajo" style="left:13.5mm; top:121.2mm; font-size:7.5pt; width:182mm; height:5mm; display:inline-block; line-height:1.2; padding-left: 2px;"
+          th:text="${form['descripcionTrabajoProfesional'] ?: 'INSTALACIÓN FOTOVOLTAICA PARA AUTOCONSUMO EN BAJA TENSIÓN'}"></span>
+
+    <!-- Nombre/Razón Social Titular -->
+    <span class="overlay-field" data-cal-id="dr_titular" style="left:55mm; top:138.5mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- Emplazamiento Completo -->
+    <span class="overlay-field" data-cal-id="dr_empl_completo" style="left:36mm; top:148.5mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoCompleto'] ?: form['direccionCompleta'] ?: ''}"></span>
+
+    <!-- Emplazamiento Tipo Vía -->
+    <span class="overlay-field" data-cal-id="dr_tipo_via" style="left:13mm; top:149mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoTipoVia'] ?: form['tipoVia'] ?: 'Calle'}"></span>
+
+    <!-- Emplazamiento Nombre Vía -->
+    <span class="overlay-field" data-cal-id="dr_nombre_via" style="left:75.5mm; top:156mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoNombreVia'] ?: form['nombreVia'] ?: ''}"></span>
+
+    <!-- Emplazamiento Tipo Núm -->
+    <span class="overlay-field" data-cal-id="dr_tipo_num" style="left:144.5mm; top:149.2mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoTipoNum'] ?: 'Nº'}"></span>
+
+    <!-- Emplazamiento Número -->
+    <span class="overlay-field" data-cal-id="dr_numero" style="left:161mm; top:149mm; font-size:7.5pt;"
+          th:text="${form['numero'] ?: ''}"></span>
+
+    <!-- Emplazamiento Municipio -->
+    <span class="overlay-field" data-cal-id="dr_municipio" style="left:13mm; top:163mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: form['localidad'] ?: ''}"></span>
+
+    <!-- [X] Provincia Badajoz -->
+    <span class="overlay-marker" data-cal-id="dr_prov_badajoz" th:if="${form['esBadajoz'] == true or form['provinciaEmplazamiento'] == 'Badajoz' or form['provincia'] == 'Badajoz'}" style="left:89.5mm; top:162.2mm; font-size: 7.5pt;">X</span>
+
+    <!-- [X] Provincia Cáceres -->
+    <span class="overlay-marker" data-cal-id="dr_prov_caceres" th:if="${form['esCaceres'] == true or form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres' or form['provincia'] == 'Cáceres' or form['provincia'] == 'Caceres'}" style="left:107.5mm; top:162.2mm; font-size: 7.5pt;">X</span>
+
+    <!-- [X] No Se Opone a Consulta -->
+    <span class="overlay-marker" data-cal-id="dr_no_opone" style="left:10mm; top:179.5mm;">X</span>
+
+    <!-- Firma Lugar -->
+    <span class="overlay-field" data-cal-id="dr_firma_lugar" style="left:38.5mm; top:233.8mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: form['lugar'] ?: 'Sevilla'}"></span>
+
+    <!-- Firma Día -->
+    <span class="overlay-field" data-cal-id="dr_firma_dia" style="left:100.5mm; top:233.8mm; font-size:7.5pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+
+    <!-- Firma Mes -->
+    <span class="overlay-field" data-cal-id="dr_firma_mes" style="left:119mm; top:233.8mm; font-size:7.5pt;"
+          th:text="${form['mes'] ?: ''}"></span>
+
+    <!-- Firma Año -->
+    <span class="overlay-field" data-cal-id="dr_firma_anio" style="left:161mm; top:234.3mm; font-size:7.5pt;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+    <!-- Firma Nombre Técnico -->
+    <span class="overlay-field" data-cal-id="dr_firma_nombre" style="left:65.5mm; top:239.2mm; font-size:7.5pt;">EDUARDO RIVERA CABEZAS</span>
+
+</div>

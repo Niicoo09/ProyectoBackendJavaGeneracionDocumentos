@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Declaración Responsable de Habilitación Profesional Extremadura</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: white;
+        }
+        .pagina-documento {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            page-break-after: always;
+            background-size: cover;
+            background-repeat: no-repeat;
+            box-sizing: border-box;
+        }
+        .pagina-documento:last-of-type {
+            page-break-after: avoid;
+        }
+        .overlay-field {
+            position: absolute;
+            color: #1a1a1a;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .overlay-marker {
+            position: absolute;
+            color: #000000;
+            font-family: Arial, sans-serif;
+            font-size: 8pt;
+            font-weight: bold;
+        }
+        .white-mask {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1 -->
+    <div th:replace="~{legalizacion/fragments/dr-hab-ext/dr-hab-ext-p1 :: content}"></div>
+
+</body>
+</html>
