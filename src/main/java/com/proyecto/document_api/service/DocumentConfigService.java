@@ -1156,37 +1156,28 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "tomasTierra", "tomasTierra");
         applyMapping(enriched, form, "conductoresTierra", "conductoresTierra");
 
-        // Cálculos para la tabla de la página 5 de MTD
-        String potInstStr = getString(form, "e2_potenciaNominalInversores");
-        double potInstKw = 0.0;
-        try {
-            potInstKw = Double.parseDouble(potInstStr.replace(",", "."));
-        } catch (Exception e) {}
-        
-        double potInstW = potInstKw * 1000.0;
-        enriched.put("potenciaDI_W", String.format(java.util.Locale.of("es", "ES"), "%.0f", potInstW));
-        
-        String conexion = getString(form, "e2_tipoConexionRed1");
-        boolean isTrifasica = conexion.equalsIgnoreCase("Trifásica") || conexion.equalsIgnoreCase("Trifasica");
-        double intensidad = 0.0;
-        if (potInstW > 0) {
-            if (isTrifasica) {
-                intensidad = potInstW / (Math.sqrt(3) * 400.0);
-            } else {
-                intensidad = potInstW / 230.0;
-            }
+        // Cálculos para la tabla de la página 5 de MTD (potenciaTabla y diferencialTabla)
+        String potTablaStr = getString(form, "potenciaTabla");
+        double potTablaVal = 8000.0; // default
+        if (!potTablaStr.isEmpty()) {
+            try {
+                // Elimina decimales y puntos/comas si el usuario escribió un número entero con formato
+                String cleanPot = potTablaStr.replaceAll("\\.0+$", "").replaceAll(",0+$", "").replaceAll("[^0-9]", "");
+                if (!cleanPot.isEmpty()) {
+                    potTablaVal = Double.parseDouble(cleanPot);
+                }
+            } catch (Exception e) {}
         }
-        enriched.put("intensidadDI_A", String.format(java.util.Locale.of("es", "ES"), "%.2f", intensidad));
         
-        String seccionStr = getString(form, "seccionFase");
-        double seccionVal = 10.0; // default
-        try {
-            seccionVal = Double.parseDouble(seccionStr.replace(",", "."));
-        } catch (Exception e) {}
-        double densidad = 0.0;
-        if (seccionVal > 0) {
-            densidad = intensidad / seccionVal;
-        }
+        enriched.put("potenciaTabla_W", String.format(java.util.Locale.US, "%.0f", potTablaVal));
+        enriched.put("potenciaCalculoTabla_W", String.format(java.util.Locale.US, "%.0f", potTablaVal * 0.85));
+        
+        applyMapping(enriched, form, "diferencialTabla", "diferencialTabla");
+        putIfAbsent(enriched, "diferencialTabla", "30");
+
+        // Cálculos de Densidad en base a la potencia de la tabla e intensidad fija de 45A
+        double seccionVal = 10.0;
+        double densidad = 45.0 / seccionVal;
         enriched.put("densidadDI", String.format(java.util.Locale.of("es", "ES"), "%.2f", densidad));
 
         // --- fieldMapping: Sección H y I ---
