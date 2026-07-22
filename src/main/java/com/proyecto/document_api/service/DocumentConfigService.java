@@ -172,10 +172,12 @@ public class DocumentConfigService {
             case "declaracion-habilitacion-profesional":
             case "habilitacion-profesional":
             case "DeclaracionHabilitacionProfesional":
-            case "dr-habilitacion-profesional-ext":
             case "dr-habilitacion-profesional":
-            case "DeclaracionHabilitacionProfesionalExtremadura":
                 applyDeclaracionHabilitacion(enriched, formData);
+                break;
+            case "dr-habilitacion-profesional-ext":
+            case "DeclaracionHabilitacionProfesionalExtremadura":
+                applyDeclaracionHabilitacionExtremadura(enriched, formData);
                 break;
             case "AnexoPlanos":
             case "planos":
@@ -1024,7 +1026,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         String domicilio = buildDireccionCompleta(form);
         putIfAbsent(enriched, "domicilio", domicilio);
         putIfAbsent(enriched, "direccionCompleta", domicilio);
-        enriched.put("emplazamientoCalle", domicilio);
+        applyMapping(enriched, form, "emplazamientoCalle", "emplazamientoCalle");
+        if (!enriched.containsKey("emplazamientoCalle") || enriched.get("emplazamientoCalle").toString().isEmpty()) {
+            enriched.put("emplazamientoCalle", domicilio);
+        }
         enriched.put("emplazamientoCompleto", domicilio);
 
         // --- fieldMapping: mapeos simples de campos DB → nombre plantilla ---
@@ -1275,6 +1280,22 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
     // DECLARACIÓN DE HABILITACIÓN PROFESIONAL
     // =========================================================================
     private void applyDeclaracionHabilitacion(Map<String, Object> enriched, Map<String, Object> form) {
+        putIfAbsent(enriched, "nombreProfesional", TECNICO_NOMBRE);
+        putIfAbsent(enriched, "nifProfesional", TECNICO_NIF);
+        putIfAbsent(enriched, "profesionTitulo", "Ingeniero Industrial");
+        putIfAbsent(enriched, "numeroColegiado", TECNICO_NUMERO_COLEGIADO);
+        putIfAbsent(enriched, "nombreColegio", TECNICO_COLEGIO);
+        putIfAbsent(enriched, "domicilioProfesional", "Calle El Peñón 5");
+        putIfAbsent(enriched, "codigoPostalProfesional", "41940");
+        putIfAbsent(enriched, "localidadProfesional", "Tomares");
+        putIfAbsent(enriched, "provinciaProfesional", "Sevilla");
+        putIfAbsent(enriched, "ciudadFirma", "Jerez de la Frontera");
+
+        // fieldMapping: ciudadFirma puede venir de la BD
+        applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
+    }
+
+    private void applyDeclaracionHabilitacionExtremadura(Map<String, Object> enriched, Map<String, Object> form) {
         putIfAbsent(enriched, "nombreProfesional", TECNICO_NOMBRE);
         putIfAbsent(enriched, "nifProfesional", TECNICO_NIF);
         putIfAbsent(enriched, "profesionTitulo", "Ingeniero Industrial");
