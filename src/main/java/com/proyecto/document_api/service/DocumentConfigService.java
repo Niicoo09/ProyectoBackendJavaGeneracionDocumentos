@@ -172,6 +172,9 @@ public class DocumentConfigService {
             case "declaracion-habilitacion-profesional":
             case "habilitacion-profesional":
             case "DeclaracionHabilitacionProfesional":
+            case "dr-habilitacion-profesional-ext":
+            case "dr-habilitacion-profesional":
+            case "DeclaracionHabilitacionProfesionalExtremadura":
                 applyDeclaracionHabilitacion(enriched, formData);
                 break;
             case "AnexoPlanos":
@@ -733,21 +736,9 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "bloque", "bloque");
         applyMapping(enriched, form, "portal", "portal");
         applyMapping(enriched, form, "escalera", "escalera");
-        // --- fieldMapping: Sección formateada con un decimal y coma ---
-        String seccionRaw = getString(form, "seccionFase");
-        if (seccionRaw.isEmpty()) seccionRaw = getString(form, "seccion");
-        if (!seccionRaw.isEmpty()) {
-            try {
-                double val = Double.parseDouble(seccionRaw.replace(',', '.'));
-                seccionRaw = String.format(java.util.Locale.GERMAN, "%.1f", val);
-            } catch (Exception e) {
-                // Dejar valor original si no es numérico
-            }
-        } else {
-            seccionRaw = "6,0";
-        }
-        enriched.put("seccionFase", seccionRaw);
-        enriched.put("conductoresTierra", seccionRaw);
+        applyMapping(enriched, form, "piso", "planta");
+        applyMapping(enriched, form, "seccionFase", "seccionFase");
+        applyMapping(enriched, form, "conductoresTierra", "seccionFase");
         applyMapping(enriched, form, "puerta", "puerta");
         applyMapping(enriched, form, "codigoPostalEmplazamiento", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
@@ -762,10 +753,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         // Potencia admisible (kW) -> Potencia del inversor
         applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
 
-        // Vaciar / N/A en Caja General de Protección (CGP) / In Fusibles
+        // Vaciar Caja General de Protección (CGP)
         enriched.put("cajasGeneralesProteccion", "");
         enriched.put("intensidadBasesCGP", "");
-        enriched.put("intensidadFusiblesCGP", "N/A");
+        enriched.put("intensidadFusiblesCGP", "");
         enriched.put("poderCorteFusibles", "");
 
         // General de Protección - Intensidad nominal y Poder de corte
