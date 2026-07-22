@@ -210,12 +210,24 @@ public class LegalizacionController {
     @Operation(summary = "CIE Válido Extremadura")
     @GetMapping("/cie-valido-extremadura/{id}")
     public ResponseEntity<byte[]> generateCieValidoExtremadura(@PathVariable UUID id) {
-        return processDocumentResponse(id, "legalizacion/CieValidoExtremadura", "CIE Válido Extremadura", "cie-valido-extremadura", formData -> {
+        return processDocumentResponse(id, "legalizacion/CieValidoExtremadura", "CIE Valido Extremadura", "cie-valido-extremadura", formData -> {
             Map<String, String> extraImages = new HashMap<>();
             for (int i = 1; i <= 4; i++) {
                 String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/cie-extremadura-p" + i + ".jpg");
                 extraImages.put("fondoStyle" + i, "background-image: url('data:image/jpeg;base64," + base64 + "');");
             }
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
+    @Operation(summary = "DR Habilitación Profesional Extremadura")
+    @GetMapping({"/dr-habilitacion-profesional-ext/{id}", "/dr-habilitacion-profesional/{id}"})
+    public ResponseEntity<byte[]> generateDrHabilitacionProfesionalExtremadura(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/DeclaracionHabilitacionProfesionalExtremadura", "DR Habilitacion Profesional Extremadura", "dr-habilitacion-profesional-ext", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64 = jsonUtils.getResourceAsBase64("static/images/legalizacion/dr-habilitacion-profesional-ext-p1.jpg");
+            extraImages.put("fondoStyle", "background-image: url('data:image/jpeg;base64," + base64 + "');");
             loadSignatureIntoExtraImages(extraImages, formData);
             return extraImages;
         });

@@ -1,7 +1,7 @@
 <div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
 
     <!-- Distribuidora -->
-    <span class="overlay-field" data-cal-id="m3_dist" style="left:37.5mm; top:105mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="m3_dist" style="left:12mm; top:109mm; font-size:7.5pt;"
           th:text="${form['empresaDistribuidora'] ?: ''}"></span>
 
     <!-- Punto Conexión -->
@@ -25,8 +25,7 @@
           th:text="${form['potenciaInstaladaPrevista'] ?: ''}"></span>
 
     <!-- DI Tipo Instalación -->
-    <span class="overlay-field" data-cal-id="m3_di_tipo" style="left:12.5mm; top:166mm; font-size:7.5pt;"
-          th:text="${form['tipoInstalacion'] ?: 'Instalación fotovoltaica para autoconsumo'}"></span>
+    <span class="overlay-field" data-cal-id="m3_di_tipo" style="left:12.5mm; top:166mm; font-size:7.5pt;">Instalación fotovoltaica para autoconsumo</span>
 
     <!-- DI Conductor -->
     <span class="overlay-field" data-cal-id="m3_di_cond" style="left:99.5mm; top:165.5mm; font-size:7.5pt;"
@@ -44,8 +43,7 @@
     <span class="overlay-field" data-cal-id="m3_di_aisl" style="left:163mm; top:166mm; font-size:7.5pt;"
           th:text="${form['aislamientoDI'] ?: 'XLPE'}"></span>
 
-    <!-- DI Fusible -->
-    <span class="overlay-field" data-cal-id="m3_di_fus" style="left:183.5mm; top:166mm; font-size:7.5pt;">N/A</span>
+
 
     <!-- [X] Cont. Individual -->
     <span class="overlay-marker" data-cal-id="m3_cont_ind" th:if="${form['tipoContador'] == 'Individual' or form['tipoContador'] == null or form['tipoContador'] == ''}" style="left:27mm; top:176mm;">X</span>
@@ -58,11 +56,11 @@
 
     <!-- Protección General In (A) -->
     <span class="overlay-field" data-cal-id="m3_prot_in" style="left:42.5mm; top:186mm; font-size:7.5pt;"
-          th:text="${form['intensidadNominalPIA'] ?: '16'}"></span>
+          th:text="${form['intensidadNominalPIA'] ?: form['intensidadNominal'] ?: '16'}"></span>
 
     <!-- Protección Poder Corte (kA) -->
     <span class="overlay-field" data-cal-id="m3_prot_pdc" style="left:81.5mm; top:186mm; font-size:7.5pt;"
-          th:text="${form['poderCortePIA'] ?: '6'}"></span>
+          th:text="${form['poderCortePIA'] ?: form['poderCorteIG'] ?: '6'}"></span>
 
     <!-- Protección Sobretensiones -->
     <span class="overlay-field" data-cal-id="m3_prot_sobre" style="left:110mm; top:185mm; font-size:7.5pt;">I.A.</span>
@@ -80,8 +78,7 @@
     <span class="overlay-marker" data-cal-id="m3_sob_auto" style="left:110.5mm; top:195.5mm;">X</span>
 
     <!-- Tomas de Tierra -->
-    <span class="overlay-field" data-cal-id="m3_tierra_tomas" style="left:13mm; top:214mm; font-size:7.5pt;"
-          th:text="${form['tomasTierra'] ?: 'Pica de cobre'}"></span>
+    <span class="overlay-field" data-cal-id="m3_tierra_tomas" style="left:13mm; top:214mm; font-size:7.5pt;">Pica de acero</span>
 
     <!-- Conductores Tierra -->
     <span class="overlay-field" data-cal-id="m3_tierra_cond" style="left:113.5mm; top:214mm; font-size:7.5pt;"

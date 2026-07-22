@@ -71,9 +71,9 @@
     <span class="overlay-field" data-cal-id="m1_red_cp" style="left:162.5mm; top:111mm; font-size:7.5pt;"
           th:text="${form['cpTecnico'] ?: form['codigoPostalTecnico'] ?: '41940'}"></span>
 
-    <!-- S2 Redactor ID Empresa -->
-    <span class="overlay-field" data-cal-id="m1_red_id" style="left:12.5mm; top:118mm; font-size:7.5pt;"
-          th:text="${form['numeroInstaladorEmpresa'] ?: form['numeroCertificadoInstalador'] ?: '41045500'}"></span>
+    <!-- S2 Redactor Carné / Colegiado -->
+    <span class="overlay-field" data-cal-id="m1_red_num" style="left:13.5mm; top:119mm; font-size:7.5pt;"
+          th:text="${(form['numeroInstaladorEmpresa'] ?: '41045500') + ' / ' + (form['numeroColegiado'] ?: '4654')}"></span>
 
     <!-- S2 Redactor Titulación -->
     <span class="overlay-field" data-cal-id="m1_red_tit" style="left:81.5mm; top:118.5mm; font-size:7.5pt;"
@@ -95,14 +95,14 @@
     <span class="overlay-field" data-cal-id="m1_empl_cp" style="left:161.5mm; top:141mm; font-size:7.5pt;"
           th:text="${form['codigoPostalEmplazamiento'] ?: form['codigoPostal'] ?: ''}"></span>
 
-    <!-- S3 Emplazamiento Uso -->
+    <!-- S3 Uso al que se destina -->
     <span class="overlay-field" data-cal-id="m1_empl_uso" style="left:12.5mm; top:149mm; font-size:7.5pt;">Producción de energía eléctrica</span>
 
-    <!-- S3 Emplazamiento Superficie -->
+    <!-- S3 Superficie (m²) -->
     <span class="overlay-field" data-cal-id="m1_empl_sup" style="left:82mm; top:149mm; font-size:7.5pt;"
           th:text="${form['superficie'] ?: '100'}"></span>
 
-    <!-- S3 Emplazamiento Ocupantes -->
+    <!-- S3 Ocupación (Personas) -->
     <span class="overlay-field" data-cal-id="m1_empl_ocup" style="left:104.5mm; top:149mm; font-size:7.5pt;"
           th:text="${form['ocupacion'] ?: '1'}"></span>
 
