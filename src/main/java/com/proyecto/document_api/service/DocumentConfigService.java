@@ -1821,8 +1821,17 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             enriched.put(keyMarca, marca);
             enriched.put(keyModelo, modelo);
         } else {
-            enriched.put(keyMarca, trimmed);
-            enriched.put(keyModelo, "");
+            // Si no hay espacios, intentar dividir por el primer guion
+            int firstDash = trimmed.indexOf('-');
+            if (firstDash > 0) {
+                String marca = trimmed.substring(0, firstDash).trim();
+                String modelo = trimmed.substring(firstDash + 1).trim();
+                enriched.put(keyMarca, marca);
+                enriched.put(keyModelo, modelo);
+            } else {
+                enriched.put(keyMarca, trimmed);
+                enriched.put(keyModelo, "");
+            }
         }
     }
 
