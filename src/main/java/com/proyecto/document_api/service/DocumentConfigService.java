@@ -1320,6 +1320,31 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         // fieldMapping: ciudadFirma puede venir de la BD
         applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
+
+        // Limpiar el número y la puerta del nombre de la vía pública
+        String calle = getString(form, "emplazamientoNombreVia");
+        if (calle.isEmpty()) {
+            calle = getString(form, "nombreVia");
+        }
+        if (calle.isEmpty()) {
+            calle = getString(form, "emplazamientoCalle");
+        }
+        String numero = getString(form, "numero");
+        String puerta = getString(form, "puerta");
+        String calleLimpia = calle;
+        if (!calleLimpia.isEmpty()) {
+            if (puerta != null && !puerta.isEmpty()) {
+                calleLimpia = calleLimpia.replaceAll("(?i)\\b(puerta|pta|p)\\.?\\s*" + java.util.regex.Pattern.quote(puerta) + "\\b", "");
+                calleLimpia = calleLimpia.replaceAll("(?i)\\b(puerta|pta|p)\\.?\\s*0*" + java.util.regex.Pattern.quote(puerta) + "\\b", "");
+                calleLimpia = calleLimpia.replaceAll("(?i)\\b" + java.util.regex.Pattern.quote(puerta) + "\\b", "");
+            }
+            if (numero != null && !numero.isEmpty()) {
+                calleLimpia = calleLimpia.replaceAll("(?i)\\b(nº|num|numero|n)\\.?\\s*" + java.util.regex.Pattern.quote(numero) + "\\b", "");
+                calleLimpia = calleLimpia.replaceAll("(?i)\\b" + java.util.regex.Pattern.quote(numero) + "\\b", "");
+            }
+            calleLimpia = calleLimpia.replaceAll("\\s+", " ").trim();
+        }
+        enriched.put("emplazamientoNombreVia", calleLimpia);
     }
 
     // =========================================================================

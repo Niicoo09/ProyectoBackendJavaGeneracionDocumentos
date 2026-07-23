@@ -1,27 +1,32 @@
 <div th:fragment="content" class="pagina-documento" th:style="${fondoStyle}">
 
+    <!-- Correo Electrónico Técnico Sección 1 (Tapando erivera@solay.es) -->
+    <span class="overlay-field white-mask" data-cal-id="dr_tec_email" style="left:72mm; top:40mm; font-size:7.5pt; width:60mm; display:inline-block;">msuarez@solay.es</span>
+
+    <!-- Correo Electrónico Notificaciones Sección 2 (Tapando mvera@solay.es) -->
+    <span class="overlay-field white-mask" data-cal-id="dr_notif_email" style="left:40.5mm; top:98mm; font-size:7.5pt; width:80mm; display:inline-block;">msuarez@solay.es</span>
+
     <!-- Descripción Trabajo Profesional -->
-    <span class="overlay-field white-mask" data-cal-id="dr_desc_trabajo" style="left:13.5mm; top:121.2mm; font-size:7.5pt; width:182mm; height:5mm; display:inline-block; line-height:1.2; padding-left: 2px;"
+    <span class="overlay-field white-mask" data-cal-id="dr_desc_trabajo" style="left:13mm; top:121mm; font-size:7.5pt; width:180mm; display:inline-block;"
           th:text="${form['descripcionTrabajoProfesional'] ?: 'INSTALACIÓN FOTOVOLTAICA PARA AUTOCONSUMO EN BAJA TENSIÓN'}"></span>
 
     <!-- Nombre/Razón Social Titular -->
-    <span class="overlay-field" data-cal-id="dr_titular" style="left:55mm; top:138.5mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_titular" style="left:55.5mm; top:139mm; font-size:7.5pt;"
           th:text="${form['apellidosNombre'] ?: ''}"></span>
 
-    <!-- Emplazamiento Completo -->
-    <span class="overlay-field" data-cal-id="dr_empl_completo" style="left:36mm; top:148.5mm; font-size:7.5pt;"
-          th:text="${form['emplazamientoCompleto'] ?: form['direccionCompleta'] ?: ''}"></span>
-
-    <!-- Emplazamiento Tipo Vía -->
-    <span class="overlay-field" data-cal-id="dr_tipo_via" style="left:13mm; top:149mm; font-size:7.5pt;"
-          th:text="${form['emplazamientoTipoVia'] ?: form['tipoVia'] ?: 'Calle'}"></span>
-
-    <!-- Emplazamiento Nombre Vía -->
-    <span class="overlay-field" data-cal-id="dr_nombre_via" style="left:75.5mm; top:156mm; font-size:7.5pt;"
+    <!-- Emplazamiento Nombre Vía (Ubicado en la casilla 'Nombre vía pública' con el nombre limpio) -->
+    <span class="overlay-field" data-cal-id="dr_nombre_via" style="left:35.5mm; top:149mm; font-size:7.5pt;"
           th:text="${form['emplazamientoNombreVia'] ?: form['nombreVia'] ?: ''}"></span>
 
+    <!-- Emplazamiento Tipo Vía -->
+    <span class="overlay-field" data-cal-id="dr_tipo_via" style="left:12.5mm; top:149.5mm; font-size:7.5pt;"
+          th:text="${form['emplazamientoTipoVia'] ?: form['tipoVia'] ?: 'Calle'}"></span>
+
+    <!-- Emplazamiento Complemento Domicilio (Casilla 'Complemento domicilio' - Vacío) -->
+    <span class="overlay-field" data-cal-id="dr_empl_completo" style="left:75.5mm; top:156mm; font-size:7.5pt;"></span>
+
     <!-- Emplazamiento Tipo Núm -->
-    <span class="overlay-field" data-cal-id="dr_tipo_num" style="left:144.5mm; top:149.2mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_tipo_num" style="left:142mm; top:149mm; font-size:7.5pt;"
           th:text="${form['emplazamientoTipoNum'] ?: 'Nº'}"></span>
 
     <!-- Emplazamiento Número -->
@@ -32,32 +37,52 @@
     <span class="overlay-field" data-cal-id="dr_municipio" style="left:13mm; top:163mm; font-size:7.5pt;"
           th:text="${form['localidadEmplazamiento'] ?: form['localidad'] ?: ''}"></span>
 
-    <!-- [X] Provincia Badajoz -->
-    <span class="overlay-marker" data-cal-id="dr_prov_badajoz" th:if="${form['esBadajoz'] == true or form['provinciaEmplazamiento'] == 'Badajoz' or form['provincia'] == 'Badajoz'}" style="left:89.5mm; top:162.2mm; font-size: 7.5pt;">X</span>
+    <!-- Emplazamiento Bloque -->
+    <span class="overlay-field" data-cal-id="dr_bloque" style="left:13.5mm; top:156.5mm; font-size:7.5pt;"
+          th:text="${form['bloque'] ?: ''}"></span>
 
-    <!-- [X] Provincia Cáceres -->
-    <span class="overlay-marker" data-cal-id="dr_prov_caceres" th:if="${form['esCaceres'] == true or form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres' or form['provincia'] == 'Cáceres' or form['provincia'] == 'Caceres'}" style="left:107.5mm; top:162.2mm; font-size: 7.5pt;">X</span>
+    <!-- Emplazamiento Portal -->
+    <span class="overlay-field" data-cal-id="dr_portal" style="left:26.5mm; top:156mm; font-size:7.5pt;"
+          th:text="${form['portal'] ?: ''}"></span>
 
-    <!-- [X] No Se Opone a Consulta -->
-    <span class="overlay-marker" data-cal-id="dr_no_opone" style="left:10mm; top:179.5mm;">X</span>
+    <!-- Emplazamiento Escalera -->
+    <span class="overlay-field" data-cal-id="dr_escalera" style="left:38.5mm; top:155.5mm; font-size:7.5pt;"
+          th:text="${form['escalera'] ?: ''}"></span>
+
+    <!-- Emplazamiento Planta -->
+    <span class="overlay-field" data-cal-id="dr_planta" style="left:51.5mm; top:155.5mm; font-size:7.5pt;"
+          th:text="${form['planta'] ?: ''}"></span>
+
+    <!-- Emplazamiento Puerta -->
+    <span class="overlay-field" data-cal-id="dr_puerta" style="left:63.5mm; top:156mm; font-size:7.5pt;"
+          th:text="${form['puerta'] ?: ''}"></span>
+
+    <!-- [X] Provincia Badajoz (Un pelín más arriba y más pequeña) -->
+    <span class="overlay-marker" data-cal-id="dr_prov_badajoz" th:if="${form['esBadajoz'] == true or form['provinciaEmplazamiento'] == 'Badajoz' or form['provincia'] == 'Badajoz'}" style="left:90mm; top:162.2mm; font-size:6.5pt;">X</span>
+
+    <!-- [X] Provincia Cáceres (Alineada y más pequeña) -->
+    <span class="overlay-marker" data-cal-id="dr_prov_caceres" th:if="${form['esCaceres'] == true or form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres' or form['provincia'] == 'Cáceres' or form['provincia'] == 'Caceres'}" style="left:108mm; top:162.2mm; font-size:6.5pt;">X</span>
+
+    <!-- [X] No Se Opone a Consulta (Ajustada a la izquierda y hacia arriba) -->
+    <span class="overlay-marker" data-cal-id="dr_no_opone" style="left:10.5mm; top:180.4mm; font-size:6.5pt;">X</span>
 
     <!-- Firma Lugar -->
-    <span class="overlay-field" data-cal-id="dr_firma_lugar" style="left:38.5mm; top:233.8mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_firma_lugar" style="left:38.5mm; top:234mm; font-size:7.5pt;"
           th:text="${form['localidad'] ?: form['lugar'] ?: 'Sevilla'}"></span>
 
     <!-- Firma Día -->
-    <span class="overlay-field" data-cal-id="dr_firma_dia" style="left:100.5mm; top:233.8mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_firma_dia" style="left:100.5mm; top:233.5mm; font-size:7.5pt;"
           th:text="${form['dia'] ?: ''}"></span>
 
     <!-- Firma Mes -->
-    <span class="overlay-field" data-cal-id="dr_firma_mes" style="left:119mm; top:233.8mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_firma_mes" style="left:117.5mm; top:233.5mm; font-size:7.5pt;"
           th:text="${form['mes'] ?: ''}"></span>
 
     <!-- Firma Año -->
-    <span class="overlay-field" data-cal-id="dr_firma_anio" style="left:161mm; top:234.3mm; font-size:7.5pt;"
+    <span class="overlay-field" data-cal-id="dr_firma_anio" style="left:161.5mm; top:233.5mm; font-size:7.5pt;"
           th:text="${form['anio'] ?: ''}"></span>
 
     <!-- Firma Nombre Técnico -->
-    <span class="overlay-field" data-cal-id="dr_firma_nombre" style="left:65.5mm; top:239.2mm; font-size:7.5pt;">EDUARDO RIVERA CABEZAS</span>
+    <span class="overlay-field" data-cal-id="dr_firma_nombre" style="left:65.5mm; top:238mm; font-size:7.5pt;">EDUARDO RIVERA CABEZAS</span>
 
 </div>
