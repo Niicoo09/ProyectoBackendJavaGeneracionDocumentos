@@ -750,10 +750,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         enriched.put("nifInstalador", cleanDni("28.818.007-L"));
         
         // Potencia del Inversor para "Derivación individual - Potencia prevista"
-        applyMappingWithFallback(enriched, form, "potenciaContratada", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
+        applyMappingWithFallback(enriched, form, "potenciaContratada", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
         
         // Potencia admisible (kW) -> Potencia del inversor
-        applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
+        applyMappingWithFallback(enriched, form, "potenciaMaximaAdmisible", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor", "potenciaACInversor", "potenciaInstalacion");
 
         // Vaciar Caja General de Protección (CGP)
         enriched.put("cajasGeneralesProteccion", "");
@@ -801,7 +801,6 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         }
         
         putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
-        putIfAbsent(enriched, "superficie", "100");
         putIfAbsent(enriched, "ocupacion", "1");
         putIfAbsent(enriched, "actuacionInstalacion", "nueva");
 
@@ -876,7 +875,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         String rawInversor = getString(form, "e2_marcaModeloInversor");
         splitMarcaModelo(enriched, rawInversor, "marcaInversor", "modeloInversor");
         applyMapping(enriched, form, "marcaModeloInversor", "e2_marcaModeloInversor");
-        applyMapping(enriched, form, "potenciaACInversor", "e2_potenciaNominalInversor");
+        applyMappingWithFallback(enriched, form, "potenciaACInversor", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor");
         applyMapping(enriched, form, "tensionNominalInversor", "e2_relacionTensionInversor");
         applyMapping(enriched, form, "tipoConexionInversor", "e2_tipoConexionRed1");
 
