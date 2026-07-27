@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Datos de la Instalación - Extremadura</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+            line-height: 1.5;
+            background-color: white;
+            font-size: 10pt;
+        }
+        .header {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5mm;
+            margin-bottom: 8mm;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 18pt;
+            color: #0056b3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        .header p {
+            font-size: 9pt;
+            color: #666;
+            margin: 1mm 0 0 0;
+        }
+        .section {
+            margin-bottom: 6mm;
+        }
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #0056b3;
+            background-color: #f0f7ff;
+            padding: 1.5mm 3mm;
+            border-left: 4px solid #0056b3;
+            margin-bottom: 3mm;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2mm;
+        }
+        td {
+            padding: 2mm 3mm;
+            vertical-align: top;
+            border-bottom: 1px solid #eaeaea;
+        }
+        td.label {
+            font-weight: bold;
+            color: #555;
+            width: 45%;
+        }
+        td.value {
+            color: #111;
+        }
+        .image-container {
+            text-align: center;
+            margin-top: 3mm;
+            margin-bottom: 5mm;
+            page-break-inside: avoid;
+        }
+        .image-container p {
+            font-weight: bold;
+            color: #555;
+            text-align: left;
+            margin-bottom: 2mm;
+        }
+        .image-frame {
+            border: 1px solid #ccc;
+            padding: 2px;
+            background-color: #fafafa;
+            max-width: 100%;
+            height: auto;
+            max-height: 80mm;
+            object-fit: contain;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1 -->
+    <div class="header">
+        <h1>Datos de la Instalación y Facturación</h1>
+        <p>Tramitación de Autoconsumo de Extremadura</p>
+    </div>
+
+    <!-- SECCIÓN 1: DATOS DE FACTURACIÓN -->
+    <div class="section">
+        <div class="section-title">Datos para Facturar</div>
+        <table>
+            <tr>
+                <td class="label">Empresa / Razón Social:</td>
+                <td class="value" th:text="${form['facturarEmpresa']}">Solay Ingenieros, S.L.</td>
+            </tr>
+            <tr>
+                <td class="label">CIF:</td>
+                <td class="value" th:text="${form['facturarCif']}">B-09848912</td>
+            </tr>
+            <tr>
+                <td class="label">Dirección de Facturación:</td>
+                <td class="value" th:text="${form['facturarDireccion']}">Calle Ebro 35, Sevilla. C.P: 41012</td>
+            </tr>
+            <tr>
+                <td class="label">Número de IND:</td>
+                <td class="value" th:text="${form['facturarInd']}">41045500</td>
+            </tr>
+            <tr>
+                <td class="label">Documentación adjunta:</td>
+                <td class="value">Proyecto y CIE</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- SECCIÓN 2: DATOS DEL TITULAR Y EMPLAZAMIENTO -->
+    <div class="section">
+        <div class="section-title">Datos del Titular y Emplazamiento</div>
+        <table>
+            <tr>
+                <td class="label">Número de CAU:</td>
+                <td class="value" th:text="${form['numeroCau'] ?: '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Nombre del Titular:</td>
+                <td class="value" th:text="${form['nombreTitular']}"></td>
+            </tr>
+            <tr>
+                <td class="label">DNI del Titular / CIF:</td>
+                <td class="value" th:text="${form['nifCifTitular']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Teléfono Titular:</td>
+                <td class="value" th:text="${form['telefonoTitular']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Email Titular:</td>
+                <td class="value" th:text="${form['emailTitular']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Emplazamiento de la Instalación:</td>
+                <td class="value" th:text="${form['emplazamientoInstalacion']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Coordenadas de la Instalación:</td>
+                <td class="value" th:text="${form['coordenadasInstalacion'] ?: '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Referencia Catastral:</td>
+                <td class="value" th:text="${form['referenciaCatastral']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Tipo de Instalación:</td>
+                <td class="value" th:text="${form['tipoInstalacionFija']}">FOTOVOLTAICA</td>
+            </tr>
+            <tr>
+                <td class="label">Empresa Instaladora:</td>
+                <td class="value" th:text="${form['empresaInstaladoraFija']}">SOLAY INGENIEROS, S.L. B-09848912</td>
+            </tr>
+            <tr>
+                <td class="label">Instalador Autorizado:</td>
+                <td class="value" th:text="${form['instaladorAutorizadoFijo']}">EDUARDO RIVERA CABEZAS 28.818.007-L</td>
+            </tr>
+            <tr>
+                <td class="label">Datos del Titular de Suministro:</td>
+                <td class="value" th:text="${form['titularSuministroFijo']}">IGUAL</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- PÁGINA 2 -->
+    <div class="header">
+        <h1>Características Técnicas y Gráficas</h1>
+        <p>Tramitación de Autoconsumo de Extremadura</p>
+    </div>
+
+    <!-- SECCIÓN 3: CARACTERÍSTICAS TÉCNICAS -->
+    <div class="section">
+        <div class="section-title">Detalles Técnicos</div>
+        <table>
+            <tr>
+                <td class="label">Con Excedentes:</td>
+                <td class="value" th:text="${form['conExcedentes'] ?: '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Suelo Urbano:</td>
+                <td class="value" th:text="${form['sueloUrbano'] ?: '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Informe Ambiental:</td>
+                <td class="value" th:text="${form['informeAmbientalFijo']}">NO</td>
+            </tr>
+            <tr>
+                <td class="label">Tensión de Generación:</td>
+                <td class="value" th:text="${form['tensionGeneracion'] != null ? form['tensionGeneracion'] + ' V' : '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Potencia Instalada de Inversor:</td>
+                <td class="value" th:text="${form['potenciaInversor'] != null ? form['potenciaInversor'] + ' kW' : '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">¿Conectada en Red interior?:</td>
+                <td class="value" th:text="${form['redInterior'] ?: '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">CUPS:</td>
+                <td class="value" th:text="${form['cups']}"></td>
+            </tr>
+            <tr>
+                <td class="label">Tipo CUPS, Consumo:</td>
+                <td class="value" th:text="${form['tipoCupsConsumoFijo']}">Autoconsumo</td>
+            </tr>
+            <tr>
+                <td class="label">Tensión del punto frontera:</td>
+                <td class="value" th:text="${form['tensionFrontera'] != null ? form['tensionFrontera'] + ' V' : '-'}"></td>
+            </tr>
+            <tr>
+                <td class="label">Distribuidora:</td>
+                <td class="value" th:text="${form['distribuidora']}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- SECCIÓN 4: EQUIPOS -->
+    <div class="section">
+        <div class="section-title">Especificaciones de los Equipos</div>
+        <table>
+            <tr>
+                <td class="label">Paneles (Marca, Modelo, Número, Wp):</td>
+                <td class="value">
+                    <span th:text="${form['marcaModeloModulo'] ?: ''}"></span>. 
+                    <span th:text="${form['totalModulos'] != null ? form['totalModulos'] + ' paneles' : ''}"></span>. 
+                    <span th:text="${form['potenciaPicoModulo'] != null ? form['potenciaPicoModulo'] + ' Wp' : ''}"></span>
+                    <span th:text="${form['potenciaPicoTotal'] != null ? '(' + form['potenciaPicoTotal'] + ' Wp total)' : ''}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Inversor (Marca, Modelo, Número, kW):</td>
+                <td class="value">
+                    <span th:text="${form['marcaModeloInversor'] ?: ''}"></span>. 
+                    <span th:text="${form['numeroInversores'] != null ? form['numeroInversores'] + ' inversores' : ''}"></span>. 
+                    <span th:text="${form['potenciaACInversor'] != null ? form['potenciaACInversor'] + ' kW' : ''}"></span>
+                    <span th:text="${form['potenciaACTotal'] != null ? '(' + form['potenciaACTotal'] + ' kW total)' : ''}"></span>
+                </td>
+            </tr>
+            <tr th:if="${form['numeroBaterias'] != null and form['numeroBaterias'] != '' and form['numeroBaterias'] != '0'}">
+                <td class="label">Baterías (Marca, Modelo, Número, Capacidad):</td>
+                <td class="value">
+                    <span th:text="${form['marcaModeloBateria'] ?: ''}"></span>. 
+                    <span th:text="${form['numeroBaterias'] + ' baterías'}"></span>. 
+                    <span th:text="${form['capacidadNominalBateria'] != null ? form['capacidadNominalBateria'] + ' Ah' : ''}"></span>
+                    <span th:text="${form['energiaTotalBateria'] != null ? '(' + form['energiaTotalBateria'] + ' kWh total)' : ''}"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- SECCIÓN 5: DOCUMENTOS GRÁFICOS -->
+    <div class="section" th:if="${imagenPotenciaContratada != null}">
+        <div class="section-title">Potencia Contratada</div>
+        <div class="image-container">
+            <img class="image-frame" th:src="${imagenPotenciaContratada}" alt="Potencia Contratada" />
+        </div>
+    </div>
+
+    <div class="section" th:if="${imagenImplantacionPaneles != null}">
+        <div class="section-title">Implantación de Paneles</div>
+        <div class="image-container">
+            <img class="image-frame" th:src="${imagenImplantacionPaneles}" alt="Implantación de Paneles" />
+        </div>
+    </div>
+
+</body>
+</html>

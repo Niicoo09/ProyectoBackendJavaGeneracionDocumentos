@@ -246,6 +246,10 @@ public class DocumentConfigService {
             case "AutorizacionAsinet":
                 applyAutorizacionAsinet(enriched, formData);
                 break;
+            case "datos-instalacion-extremadura":
+            case "DatosInstalacionExtremadura":
+                applyDatosInstalacionExtremadura(enriched, formData);
+                break;
 
             case "Memoria":
             case "memoria":
@@ -1984,5 +1988,70 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         // Nombre del firmante
         applyMapping(enriched, form, "apellidosNombre", "nombrePresentador");
+    }
+
+    private void applyDatosInstalacionExtremadura(Map<String, Object> enriched, Map<String, Object> form) {
+        // Datos Fijos
+        enriched.put("facturarEmpresa", "Solay Ingenieros, S.L.");
+        enriched.put("facturarCif", "B-09848912");
+        enriched.put("facturarDireccion", "Calle Ebro 35, Sevilla. C.P: 41012");
+        enriched.put("facturarInd", "41045500");
+        enriched.put("tipoInstalacionFija", "FOTOVOLTAICA");
+        enriched.put("empresaInstaladoraFija", "SOLAY INGENIEROS, S.L. B-09848912");
+        enriched.put("instaladorAutorizadoFijo", "EDUARDO RIVERA CABEZAS 28.818.007-L");
+        enriched.put("titularSuministroFijo", "IGUAL");
+        enriched.put("informeAmbientalFijo", "NO");
+        enriched.put("tipoCupsConsumoFijo", "Autoconsumo");
+
+        // Datos Dinámicos
+        applyMapping(enriched, form, "numeroCau", "numeroCau");
+        applyMapping(enriched, form, "nombreTitular", "nombreInteresado");
+        putIfAbsent(enriched, "nombreTitular", getString(form, "nombre"));
+        putIfAbsent(enriched, "nombreTitular", getString(form, "apellidosNombre"));
+
+        applyMapping(enriched, form, "nifCifTitular", "nifCifInteresado");
+        putIfAbsent(enriched, "nifCifTitular", getString(form, "nifCif"));
+
+        applyMapping(enriched, form, "telefonoTitular", "telefonoInteresado");
+        putIfAbsent(enriched, "telefonoTitular", getString(form, "telefono"));
+
+        applyMapping(enriched, form, "emailTitular", "correoElectronicoEmplazamiento");
+        putIfAbsent(enriched, "emailTitular", getString(form, "email_presentador"));
+        putIfAbsent(enriched, "emailTitular", getString(form, "emailInteresado"));
+        putIfAbsent(enriched, "emailTitular", getString(form, "email"));
+        
+        String direccion = buildDireccionCompleta(form);
+        enriched.put("emplazamientoInstalacion", direccion);
+        
+        applyMapping(enriched, form, "coordenadasInstalacion", "coordenadasInstalacion");
+        applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
+
+        // Características Técnicas
+        applyMapping(enriched, form, "conExcedentes", "conExcedentes");
+        applyMapping(enriched, form, "sueloUrbano", "sueloUrbano");
+        applyMapping(enriched, form, "tensionGeneracion", "tensionGeneracion");
+        applyMapping(enriched, form, "potenciaInversor", "potenciaACInversor");
+        applyMapping(enriched, form, "redInterior", "redInterior");
+        applyMapping(enriched, form, "cups", "ext_cups");
+        applyMapping(enriched, form, "tensionFrontera", "tensionFrontera");
+        applyMapping(enriched, form, "distribuidora", "distribuidora");
+
+        // Datos de Paneles
+        applyMapping(enriched, form, "marcaModeloModulo", "marcaModeloModulo");
+        applyMapping(enriched, form, "totalModulos", "totalModulos");
+        applyMapping(enriched, form, "potenciaPicoModulo", "potenciaPicoModulo");
+        applyMapping(enriched, form, "potenciaPicoTotal", "potenciaPicoTotal");
+
+        // Datos de Inversor
+        applyMapping(enriched, form, "marcaModeloInversor", "marcaModeloInversor");
+        applyMapping(enriched, form, "numeroInversores", "numeroInversores");
+        applyMapping(enriched, form, "potenciaACInversor", "potenciaACInversor");
+        applyMapping(enriched, form, "potenciaACTotal", "potenciaACTotal");
+
+        // Datos de Batería
+        applyMapping(enriched, form, "marcaModeloBateria", "marcaModeloBateria");
+        applyMapping(enriched, form, "numeroBaterias", "numeroBaterias");
+        applyMapping(enriched, form, "capacidadNominalBateria", "capacidadNominalBateria");
+        applyMapping(enriched, form, "energiaTotalBateria", "energiaTotalBateria");
     }
 }

@@ -262,6 +262,18 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "Datos Instalación Extremadura (Papel en Blanco)")
+    @GetMapping("/datos-instalacion-extremadura/{id}")
+    public ResponseEntity<byte[]> generateDatosInstalacionExtremadura(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/DatosInstalacionExtremadura", "Datos de la Instalación Extremadura", "datos-instalacion-extremadura", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            // Mapeamos las imágenes cargadas dinámicamente en el formulario
+            mapDynamicImageWithFallback(extraImages, formData, "imagenPotenciaContratada", "imagenPotenciaContratada");
+            mapDynamicImageWithFallback(extraImages, formData, "imagenImplantacionPaneles", "imagenImplantacionPaneles");
+            return extraImages;
+        });
+    }
+
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================
