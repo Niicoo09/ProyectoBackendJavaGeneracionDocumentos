@@ -248,6 +248,20 @@ public class LegalizacionController {
         });
     }
 
+    @Operation(summary = "Autorización ASINET de Extremadura")
+    @GetMapping("/autorizacion-asinet/{id}")
+    public ResponseEntity<byte[]> generateAutorizacionAsinet(@PathVariable UUID id) {
+        return processDocumentResponse(id, "legalizacion/AutorizacionAsinet", "Autorización ASINET Extremadura", "autorizacion-asinet", formData -> {
+            Map<String, String> extraImages = new HashMap<>();
+            String base64P1 = jsonUtils.getResourceAsBase64("static/images/legalizacion/autorizacion-asinet-p1.jpg");
+            String base64P2 = jsonUtils.getResourceAsBase64("static/images/legalizacion/autorizacion-asinet-p2.jpg");
+            extraImages.put("fondoStyle1", "background-image: url('data:image/jpeg;base64," + base64P1 + "');");
+            extraImages.put("fondoStyle2", "background-image: url('data:image/jpeg;base64," + base64P2 + "');");
+            loadSignatureIntoExtraImages(extraImages, formData);
+            return extraImages;
+        });
+    }
+
     // =========================================================================
     // LÓGICA INTERNA
     // =========================================================================
@@ -283,7 +297,7 @@ public class LegalizacionController {
         data.put("name", doc.getNombre() != null ? doc.getNombre() : "Cliente");
         
         data.put("logoBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/logo-solay.png"));
-        if (!"anexo-iii".equals(configId)) {
+        if (!"anexo-iii".equals(configId) && !"autorizacion-asinet".equals(configId)) {
             data.put("firmaBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay.png"));
         }
         data.put("firmaSolayMrivasBase64", "data:image/png;base64," + jsonUtils.getResourceAsBase64("static/firma-solay-mrivas.png"));

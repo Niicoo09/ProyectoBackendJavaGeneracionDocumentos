@@ -242,6 +242,10 @@ public class DocumentConfigService {
             case "autorizacion-facturacion":
                 applyAutorizacionFacturacion(enriched, formData);
                 break;
+            case "autorizacion-asinet":
+            case "AutorizacionAsinet":
+                applyAutorizacionAsinet(enriched, formData);
+                break;
 
             case "Memoria":
             case "memoria":
@@ -718,7 +722,9 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
     }
 
     private void applyCie(Map<String, Object> enriched, Map<String, Object> form) {
-        // Datos del Titular
+        // Datos del interesado (apartado 1)
+        applyMapping(enriched, form, "primerApellido", "primerApellido");
+        applyMapping(enriched, form, "segundoApellido", "segundoApellido");
         applyMapping(enriched, form, "apellidosNombre", "apellidosNombre");
         enriched.put("nifCif", cleanDni(getString(form, "nifCif")));
         
@@ -1930,5 +1936,53 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             }
         }
         return dia + " de " + mesNombre + " de " + anio;
+    }
+
+    private void applyAutorizacionAsinet(Map<String, Object> enriched, Map<String, Object> form) {
+        // Mapear campos del Interesado con los nombres exactos de la plantilla
+        applyMapping(enriched, form, "primerApellido", "apellido1Interesado");
+        applyMapping(enriched, form, "segundoApellido", "apellido2Interesado");
+        applyMapping(enriched, form, "apellidosNombre", "nombreInteresado");
+        applyMapping(enriched, form, "nifCif", "nifCifInteresado");
+
+        // Domicilio detallado del Interesado
+        applyMapping(enriched, form, "tipoVia", "tipoViaInteresado");
+        applyMapping(enriched, form, "nombreVia", "calleInteresado");
+        applyMapping(enriched, form, "tipoNumero", "tipoNumeroInteresado");
+        applyMapping(enriched, form, "numero", "numeroInteresado");
+        applyMapping(enriched, form, "calNum", "calNumeroInteresado");
+        applyMapping(enriched, form, "bloque", "bloqueInteresado");
+        applyMapping(enriched, form, "portal", "portalInteresado");
+        applyMapping(enriched, form, "escalera", "escaleraInteresado");
+        applyMapping(enriched, form, "planta", "plantaInteresado");
+        applyMapping(enriched, form, "puerta", "puertaInteresado");
+
+        // Localización del Interesado
+        applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaInteresado");
+        applyMapping(enriched, form, "localidadEmplazamiento", "localidadInteresado");
+        applyMapping(enriched, form, "codigoPostal", "codigoPostalInteresado");
+        putIfAbsent(enriched, "pais", "España");
+
+        // Contactos del Interesado
+        applyMapping(enriched, form, "telefono", "telefonoInteresado");
+        applyMapping(enriched, form, "movil", "movilInteresado");
+        applyMapping(enriched, form, "email", "emailInteresado");
+
+        // Datos del Emplazamiento y Actividad (Apartado 6)
+        applyMapping(enriched, form, "esInstalacionAislada", "esInstalacionAislada");
+        
+        String direccionCompleta = buildDireccionCompleta(form);
+        enriched.put("direccionCompleta", direccionCompleta);
+
+        applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
+        applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaEmplazamiento");
+        applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
+
+        // Datos de la firma
+        applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
+        enrichDateParts(enriched, form);
+
+        // Nombre del firmante
+        applyMapping(enriched, form, "apellidosNombre", "nombrePresentador");
     }
 }

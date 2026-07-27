@@ -1,0 +1,91 @@
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- Primer Apellido -->
+    <span class="overlay-field" data-cal-id="asi_interesado_apellido1" style="left:48mm; top:60.5mm; font-size:7.5pt;"
+          th:text="${form['primerApellido'] ?: ''}"></span>
+
+    <!-- Segundo Apellido -->
+    <span class="overlay-field" data-cal-id="asi_interesado_apellido2" style="left:99.5mm; top:60.5mm; font-size:7.5pt;"
+          th:text="${form['segundoApellido'] ?: ''}"></span>
+
+    <!-- Nombre / Razón Social -->
+    <span class="overlay-field" data-cal-id="asi_interesado_nombre" style="left:152mm; top:59.5mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+    <!-- NIF/CIF -->
+    <span class="overlay-field" data-cal-id="asi_interesado_nif" style="left:14mm; top:60mm; font-size:7.5pt;"
+          th:text="${form['nifCif'] ?: ''}"></span>
+
+    <!-- Tipo Vía -->
+    <span class="overlay-field" data-cal-id="asi_tipo_via" style="left:13.5mm; top:73mm; font-size:7.5pt;"
+          th:text="${form['tipoVia'] ?: ''}"></span>
+
+    <!-- Nombre Vía Pública -->
+    <span class="overlay-field" data-cal-id="asi_nombre_via" style="left:36.5mm; top:73mm; font-size:7.5pt;"
+          th:text="${form['nombreVia'] ?: ''}"></span>
+
+    <!-- Tipo Núm. -->
+    <span class="overlay-field" data-cal-id="asi_tipo_num" style="left:144mm; top:73mm; font-size:7.5pt;"
+          th:text="${form['tipoNumero'] ?: ''}"></span>
+
+    <!-- Número -->
+    <span class="overlay-field" data-cal-id="asi_numero" style="left:161.5mm; top:73.5mm; font-size:7.5pt;"
+          th:text="${form['numero'] ?: ''}"></span>
+
+    <!-- Cal. Núm. -->
+    <span class="overlay-field" data-cal-id="asi_cal_num" style="left:183.5mm; top:73.5mm; font-size:7.5pt;"
+          th:text="${form['calNum'] ?: ''}"></span>
+
+    <!-- Bloq. -->
+    <span class="overlay-field" data-cal-id="asi_bloque" style="left:13mm; top:82mm; font-size:7.5pt;"
+          th:text="${form['bloque'] ?: ''}"></span>
+
+    <!-- Portal -->
+    <span class="overlay-field" data-cal-id="asi_portal" style="left:27.5mm; top:82mm; font-size:7.5pt;"
+          th:text="${form['portal'] ?: ''}"></span>
+
+    <!-- Esc. -->
+    <span class="overlay-field" data-cal-id="asi_escalera" style="left:38.5mm; top:82mm; font-size:7.5pt;"
+          th:text="${form['escalera'] ?: ''}"></span>
+
+    <!-- Planta -->
+    <span class="overlay-field" data-cal-id="asi_planta" style="left:51.5mm; top:81.5mm; font-size:7.5pt;"
+          th:text="${form['planta'] ?: ''}"></span>
+
+    <!-- Pta. -->
+    <span class="overlay-field" data-cal-id="asi_puerta" style="left:64mm; top:82.5mm; font-size:7.5pt;"
+          th:text="${form['puerta'] ?: ''}"></span>
+
+    <!-- Provincia -->
+    <span class="overlay-field" data-cal-id="asi_interesado_provincia" style="left:134mm; top:82mm; font-size:7.5pt;"
+          th:text="${form['provinciaEmplazamiento'] ?: ''}"></span>
+
+    <!-- Municipio -->
+    <span class="overlay-field" data-cal-id="asi_interesado_municipio" style="left:14mm; top:91mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- Localidad (si distinta municipio) -->
+    <span class="overlay-field" data-cal-id="asi_interesado_localidad" style="left:89.5mm; top:91mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- Código Postal -->
+    <span class="overlay-field" data-cal-id="asi_codigo_postal" style="left:136.5mm; top:91mm; font-size:7.5pt;"
+          th:text="${form['codigoPostal'] ?: ''}"></span>
+
+    <!-- País -->
+    <span class="overlay-field" data-cal-id="asi_pais" style="left:157mm; top:91mm; font-size:7.5pt;"
+          th:text="${form['pais'] ?: ''}"></span>
+
+    <!-- Teléfono fijo 1 -->
+    <span class="overlay-field" data-cal-id="asi_tel_fijo1" style="left:68mm; top:99.5mm; font-size:7.5pt;"
+          th:text="${form['telefono'] ?: ''}"></span>
+
+    <!-- Móvil -->
+    <span class="overlay-field" data-cal-id="asi_movil" style="left:80mm; top:80mm; font-size:7.5pt;"
+          th:text="${form['movil'] ?: ''}"></span>
+
+    <!-- Correo electrónico -->
+    <span class="overlay-field" data-cal-id="asi_interesado_email" style="left:129.5mm; top:100mm; font-size:7.5pt;"
+          th:text="${form['email'] ?: ''}"></span>
+
+</div>

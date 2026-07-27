@@ -1,0 +1,51 @@
+<div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
+
+    <!-- [X] Autoconsumo (no aislado) -->
+    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == null or form['esInstalacionAislada'] == false or form['esInstalacionAislada'] == 'false'}" style="left:-9mm; top:82.5mm;">X</span>
+
+    <!-- [X] Autoconsumo Aislado -->
+    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:-13mm; top:81mm;">X</span>
+
+    <!-- Actividad o Uso Principal -->
+    <span class="overlay-field white-mask" data-cal-id="asi_actividad_uso" style="left:12.5mm; top:103.5mm; font-size:7.5pt; width:190mm; display:inline-block;"
+          th:text="${form['esInstalacionAislada'] ?: ''}"></span>
+
+    <!-- Ubicación Vivienda -->
+    <span class="overlay-field" data-cal-id="asi_ubicacion_vivienda" style="left:14.5mm; top:112mm; font-size:7.5pt;"
+          th:text="${form['direccionCompleta'] ?: ''}"></span>
+
+    <!-- Municipio -->
+    <span class="overlay-field" data-cal-id="asi_municipio" style="left:46mm; top:125.5mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- Localidad -->
+    <span class="overlay-field" data-cal-id="asi_localidad" style="left:102mm; top:117mm; font-size:7.5pt;"
+          th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
+
+    <!-- [X] Provincia Badajoz -->
+    <span class="overlay-marker" th:if="${form['provinciaEmplazamiento'] == 'Badajoz' or form['provincia'] == 'Badajoz'}" style="left:169.5mm; top:118.5mm;">X</span>
+
+    <!-- [X] Provincia Cáceres -->
+    <span class="overlay-marker" th:if="${form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres' or form['provincia'] == 'Cáceres' or form['provincia'] == 'Caceres'}" style="left:185mm; top:118mm;">X</span>
+
+    <!-- Localidad Firma -->
+    <span class="overlay-field" data-cal-id="asi_firma_localidad" style="left:25.5mm; top:117mm; font-size:7.5pt;"
+          th:text="${form['localidad'] ?: ''}"></span>
+
+    <!-- Día Firma -->
+    <span class="overlay-field" data-cal-id="asi_firma_dia" style="left:110.5mm; top:125.5mm; font-size:7.5pt;"
+          th:text="${form['dia'] ?: ''}"></span>
+
+    <!-- Mes Firma -->
+    <span class="overlay-field" data-cal-id="asi_firma_mes" style="left:125mm; top:125.5mm; font-size:7.5pt;"
+          th:text="${form['mes'] ?: ''}"></span>
+
+    <!-- Año Firma -->
+    <span class="overlay-field white-mask" data-cal-id="asi_firma_anio" style="left:161.5mm; top:125.5mm; font-size:7.5pt; width:10mm; display:inline-block;"
+          th:text="${form['anio'] ?: ''}"></span>
+
+    <!-- Nombre Firmante -->
+    <span class="overlay-field" data-cal-id="asi_firma_nombre" style="left:57.5mm; top:129.5mm; font-size:7.5pt;"
+          th:text="${form['apellidosNombre'] ?: ''}"></span>
+
+</div>
