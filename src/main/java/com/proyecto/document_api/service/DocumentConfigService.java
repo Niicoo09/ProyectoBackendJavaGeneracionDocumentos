@@ -102,7 +102,7 @@ public class DocumentConfigService {
             case "CertificadoChapasGrecadasCoplanaria":
             case "CertificadoParamentoVertical":
             case "CertificadoPergolaAporticada":
-                applyCertificadoSolidez(enriched, formData);
+                applyCertificadoSolidez(enriched, formData, baseTemplateName);
                 break;
 
             // --- ACEPTACIONES ---
@@ -1359,7 +1359,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
     // =========================================================================
     // CERTIFICADOS DE SOLIDEZ Y SEGURIDAD
     // =========================================================================
-    private void applyCertificadoSolidez(Map<String, Object> enriched, Map<String, Object> form) {
+    private void applyCertificadoSolidez(Map<String, Object> enriched, Map<String, Object> form, String baseTemplateName) {
         String direccion = buildDireccionCompleta(form);
         putIfAbsent(enriched, "direccion", direccion);
         putIfAbsent(enriched, "direccionCompleta", direccion);
@@ -1370,7 +1370,83 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
-        applyMapping(enriched, form, "numModulos", "e2_totalModulos");
+
+        // Resolver módulos para la disposición específica de esta plantilla
+        String numModulos = getString(form, "e2_totalModulos");
+        Object tieneSegundaObj = form.get("tieneSegundaDisposicion");
+        if (tieneSegundaObj == null) tieneSegundaObj = form.get("pse_tieneSegundaDisposicion");
+
+        boolean tieneSegunda = false;
+        if (tieneSegundaObj instanceof Boolean) {
+            tieneSegunda = (Boolean) tieneSegundaObj;
+        } else if (tieneSegundaObj != null) {
+            String tsStr = tieneSegundaObj.toString();
+            tieneSegunda = "true".equalsIgnoreCase(tsStr) || "si".equalsIgnoreCase(tsStr) || "1".equals(tsStr);
+        }
+
+        if (tieneSegunda) {
+            String disp1 = getString(form, "disposicionModulos");
+            if (disp1.isEmpty()) disp1 = getString(form, "pse_disposicionModulos");
+
+            String disp2 = getString(form, "disposicionModulos2");
+            if (disp2.isEmpty()) disp2 = getString(form, "pse_disposicionModulos2");
+
+            String num1 = getString(form, "numModulosDisposicion1");
+            if (num1.isEmpty()) num1 = getString(form, "pse_numModulosDisposicion1");
+
+            String num2 = getString(form, "numModulosDisposicion2");
+            if (num2.isEmpty()) num2 = getString(form, "pse_numModulosDisposicion2");
+
+            // Mapear plantilla a su tipo de disposición correspondiente
+            String dispEsperada = "";
+            switch (baseTemplateName) {
+                case "certificado-coplanar-teja":
+                case "CertificadoCoplanarTeja":
+                    dispEsperada = "Cubierta Teja - Coplanar";
+                    break;
+                case "certificado-aporticada-teja":
+                case "aporticado-teja":
+                case "CertificadoAporticadaTeja":
+                    dispEsperada = "Cubierta Teja - Aporticada";
+                    break;
+                case "certificado-cubierta-plan-aaporticada":
+                case "CertificadoCubiertaPlanaAporticada":
+                    dispEsperada = "Cubierta Plana";
+                    break;
+                case "certificado-chapas-grecadas-aporticada":
+                case "chapas-grecadas":
+                case "CertificadoChapasGrecadasAporticadas":
+                    dispEsperada = "Chapa Grecada - Aporticada";
+                    break;
+                case "certificado-chapas-grecadas-coplanaria":
+                case "chapas-grecadas-coplanaria":
+                case "CertificadoChapasGrecadasCoplanaria":
+                    dispEsperada = "Chapa Grecada - Coplanar";
+                    break;
+                case "certificado-paramento-vertical":
+                case "paramento-vertical":
+                case "CertificadoParamentoVertical":
+                    dispEsperada = "Paramento Vertical";
+                    break;
+                case "certificado-pergola-aporticada":
+                case "pergola-aporticada":
+                case "CertificadoPergolaAporticada":
+                    dispEsperada = "Pérgola";
+                    break;
+            }
+
+            if (!dispEsperada.isEmpty()) {
+                if (dispEsperada.equalsIgnoreCase(disp1)) {
+                    numModulos = num1;
+                } else if (dispEsperada.equalsIgnoreCase(disp2)) {
+                    numModulos = num2;
+                }
+            }
+        }
+
+        enriched.put("numModulos", numModulos);
+        form.put("e2_totalModulos", numModulos);
+        enriched.put("e2_totalModulos", numModulos);
         applyMapping(enriched, form, "potencia", "e2_potenciaPicoModulo");
         applyMapping(enriched, form, "marcaModelo", "e2_marcaModeloModulo");
         applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
@@ -1386,8 +1462,12 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
-        String direccion = buildDireccionCompleta(form);
-        putIfAbsent(enriched, "direccion", direccion);
+        // Obtenemos solo la calle de emplazamiento (sin número ni puerta redundantes) para evitar duplicidad con el campo número
+        String calleSimple = getString(form, "emplazamientoCalle");
+        if (calleSimple.isEmpty()) {
+            calleSimple = buildDireccionCompleta(form);
+        }
+        enriched.put("direccion", calleSimple);
 
         applyMapping(enriched, form, "numero", "numero");
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
@@ -1400,15 +1480,38 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "potenciaModulos", "e2_potenciaPicoModulo");
         applyMapping(enriched, form, "potenciaPicoGenerador", "e2_potenciaPicoGenerador");
         String disp1 = getString(form, "disposicionModulos");
+        if (disp1.isEmpty()) disp1 = getString(form, "pse_disposicionModulos");
+
         String disp2 = getString(form, "disposicionModulos2");
+        if (disp2.isEmpty()) disp2 = getString(form, "pse_disposicionModulos2");
+
         String num1 = getString(form, "numModulosDisposicion1");
+        if (num1.isEmpty()) num1 = getString(form, "pse_numModulosDisposicion1");
+
         String num2 = getString(form, "numModulosDisposicion2");
-        boolean tieneSegunda = "true".equalsIgnoreCase(getString(form, "tieneSegundaDisposicion"));
-        if (tieneSegunda && !disp2.isEmpty()) {
-            enriched.put("disposicionModulos", num1 + " mod. en " + disp1 + " y " + num2 + " mod. en " + disp2);
-        } else {
-            enriched.put("disposicionModulos", disp1);
+        if (num2.isEmpty()) num2 = getString(form, "pse_numModulosDisposicion2");
+
+        Object tieneSegundaObj = form.get("tieneSegundaDisposicion");
+        if (tieneSegundaObj == null) tieneSegundaObj = form.get("pse_tieneSegundaDisposicion");
+
+        boolean tieneSegunda = false;
+        if (tieneSegundaObj instanceof Boolean) {
+            tieneSegunda = (Boolean) tieneSegundaObj;
+        } else if (tieneSegundaObj != null) {
+            String tsStr = tieneSegundaObj.toString();
+            tieneSegunda = "true".equalsIgnoreCase(tsStr) || "si".equalsIgnoreCase(tsStr) || "1".equals(tsStr);
         }
+
+        String valorFinal = disp1;
+        if (tieneSegunda && !disp2.isEmpty()) {
+            valorFinal = num1 + " mod. en " + disp1 + " y " + num2 + " mod. en " + disp2;
+        }
+
+        form.put("disposicionModulos", valorFinal);
+        enriched.put("disposicionModulos", valorFinal);
+        form.put("pse_disposicionModulos", valorFinal);
+        enriched.put("pse_disposicionModulos", valorFinal);
+
         applyMapping(enriched, form, "tipoInstalacion", "tipoInstalacionRecarga");
 
         // Variables de cabecera y descriptivas (Defaults de Vue)
