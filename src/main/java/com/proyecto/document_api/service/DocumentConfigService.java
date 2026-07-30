@@ -1401,9 +1401,11 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "potenciaPicoGenerador", "e2_potenciaPicoGenerador");
         String disp1 = getString(form, "disposicionModulos");
         String disp2 = getString(form, "disposicionModulos2");
+        String num1 = getString(form, "numModulosDisposicion1");
+        String num2 = getString(form, "numModulosDisposicion2");
         boolean tieneSegunda = "true".equalsIgnoreCase(getString(form, "tieneSegundaDisposicion"));
         if (tieneSegunda && !disp2.isEmpty()) {
-            enriched.put("disposicionModulos", disp1 + " y " + disp2);
+            enriched.put("disposicionModulos", num1 + " mod. en " + disp1 + " y " + num2 + " mod. en " + disp2);
         } else {
             enriched.put("disposicionModulos", disp1);
         }
