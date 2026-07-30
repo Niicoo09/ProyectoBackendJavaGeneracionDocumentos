@@ -205,7 +205,7 @@ public class DocumentConfigService {
             case "adecuacion":
             case "certificado-adecuacion":
             case "CertificadoAdecuacion":
-                applyCertificadoAdecuacion(enriched, formData);
+                applyCertificadoAdecuacion(enriched, formData, baseTemplateName);
                 break;
             case "cie":
             case "cie-valido-extremadura":
@@ -718,8 +718,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "anio", "anioAceptacion");
     }
 
-    private void applyCertificadoAdecuacion(Map<String, Object> enriched, Map<String, Object> form) {
-        applyCertificadoSolidez(enriched, form);
+    private void applyCertificadoAdecuacion(Map<String, Object> enriched, Map<String, Object> form, String baseTemplateName) {
+        applyCertificadoSolidez(enriched, form, baseTemplateName);
         applyMapping(enriched, form, "expediente", "expedienteEco");
         putIfAbsent(enriched, "usoDestino", "Producción de energía eléctrica");
         applyMapping(enriched, form, "usoDestino", "usoDestino");
