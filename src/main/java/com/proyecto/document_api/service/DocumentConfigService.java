@@ -1399,7 +1399,14 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "totalModulos", "e2_totalModulos");
         applyMapping(enriched, form, "potenciaModulos", "e2_potenciaPicoModulo");
         applyMapping(enriched, form, "potenciaPicoGenerador", "e2_potenciaPicoGenerador");
-        applyMapping(enriched, form, "disposicionModulos", "orientacionGenerador");
+        String disp1 = getString(form, "disposicionModulos");
+        String disp2 = getString(form, "disposicionModulos2");
+        boolean tieneSegunda = "true".equalsIgnoreCase(getString(form, "tieneSegundaDisposicion"));
+        if (tieneSegunda && !disp2.isEmpty()) {
+            enriched.put("disposicionModulos", disp1 + " y " + disp2);
+        } else {
+            enriched.put("disposicionModulos", disp1);
+        }
         applyMapping(enriched, form, "tipoInstalacion", "tipoInstalacionRecarga");
 
         // Variables de cabecera y descriptivas (Defaults de Vue)
