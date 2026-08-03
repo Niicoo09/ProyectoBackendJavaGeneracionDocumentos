@@ -1462,14 +1462,42 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "promotor", "apellidosNombre");
         enriched.put("nif", cleanDni(getString(form, "nifCif")));
 
-        // Obtenemos solo la calle de emplazamiento (sin número ni puerta redundantes) para evitar duplicidad con el campo número
+        // Obtenemos solo la calle de emplazamiento para las páginas de planos
         String calleSimple = getString(form, "emplazamientoCalle");
-        if (calleSimple.isEmpty()) {
-            calleSimple = buildDireccionCompleta(form);
-        }
+        if (calleSimple.isEmpty()) calleSimple = getString(form, "pse_direccion");
         enriched.put("direccion", calleSimple);
 
-        applyMapping(enriched, form, "numero", "numero");
+        // Construimos la dirección completa para la tabla de datos de la página 1
+        // Siempre calculada desde los campos base (ignorando el campo direccionCompleta de la BD)
+        StringBuilder sbDir = new StringBuilder();
+        if (!calleSimple.isEmpty()) sbDir.append(calleSimple);
+        String numDirComp = getString(form, "numero");
+        if (!numDirComp.isEmpty()) { if (sbDir.length() > 0) sbDir.append(" "); sbDir.append(numDirComp); }
+        String bloqueDir = getString(form, "bloque");
+        if (!bloqueDir.isEmpty()) sbDir.append(" Bloque ").append(bloqueDir);
+        String escaleraDir = getString(form, "escalera");
+        if (!escaleraDir.isEmpty()) sbDir.append(" Escalera ").append(escaleraDir);
+        String plantaDir = getString(form, "planta");
+        if (!plantaDir.isEmpty()) sbDir.append(" Planta ").append(plantaDir);
+        String puertaDir = getString(form, "puerta");
+        if (!puertaDir.isEmpty()) sbDir.append(" Puerta ").append(puertaDir);
+        enriched.put("direccionCompleta", sbDir.toString().trim());
+
+        // Construimos el número compuesto (Número, Bloque, Escalera, Planta, Puerta)
+        String numeroRaw = getString(form, "numero");
+        String bloque = getString(form, "bloque");
+        String escalera = getString(form, "escalera");
+        String planta = getString(form, "planta");
+        String puerta = getString(form, "puerta");
+        
+        StringBuilder numSb = new StringBuilder(numeroRaw);
+        if (!bloque.isEmpty()) numSb.append(" Bl. ").append(bloque);
+        if (!escalera.isEmpty()) numSb.append(" Esc. ").append(escalera);
+        if (!planta.isEmpty()) numSb.append(" Pl. ").append(planta);
+        if (!puerta.isEmpty()) numSb.append(" Pta. ").append(puerta);
+        
+        enriched.put("numero", numSb.toString().trim());
+
         applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
         applyMapping(enriched, form, "codigoPostal", "codigoPostalEmplazamiento");
         applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
@@ -1610,7 +1638,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
      */
     private String buildDireccionCompleta(Map<String, Object> form) {
         StringBuilder sb = new StringBuilder();
-        appendIfNotEmpty(sb, getString(form, "emplazamientoCalle"));
+        // Intentar calle de emplazamiento, si está vacío probar con 'direccion' genérico
+        String calle = getString(form, "emplazamientoCalle");
+        if (calle.isEmpty()) calle = getString(form, "direccion");
+        appendIfNotEmpty(sb, calle);
         appendIfNotEmpty(sb, getString(form, "numero"));
         String bloque = getString(form, "bloque");
         if (!bloque.isEmpty())
