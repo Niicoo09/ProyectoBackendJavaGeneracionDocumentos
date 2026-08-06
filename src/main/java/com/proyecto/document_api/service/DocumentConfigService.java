@@ -957,7 +957,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         }
         enriched.put("mesNombre", mesNombre);
         
-        enriched.put("fechaElaboracionTexto", formatElaboracionFecha(dia, mes, anio));
+        enriched.put("fechaElaboracionTexto", getFechaElaboracionTexto(form));
     }
 
     private void applyDeclaracionTecnicoCompetente(Map<String, Object> enriched, Map<String, Object> form) {
@@ -995,7 +995,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "dia", "dia");
         applyMapping(enriched, form, "mes", "mes");
         applyMapping(enriched, form, "anio", "anio");
-        enriched.put("fechaElaboracionTexto", formatElaboracionFecha(dia, mes, anio));
+        enriched.put("fechaElaboracionTexto", getFechaElaboracionTexto(form));
     }
 
     private void applyDocumentoUltimaPagina(Map<String, Object> enriched, Map<String, Object> form) {
@@ -2083,6 +2083,52 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             }
         }
         return dia + " de " + mesNombre + " de " + anio;
+    }
+
+    private String getFechaElaboracionTexto(Map<String, Object> form) {
+        String fechaElaboracion = getString(form, "fechaElaboracion");
+        String dia = "";
+        String mes = "";
+        String anio = "";
+        if (fechaElaboracion != null && !fechaElaboracion.isEmpty()) {
+            if (fechaElaboracion.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                String[] parts = fechaElaboracion.split("-");
+                dia = parts[2];
+                mes = parts[1];
+                anio = parts[0];
+            } else if (fechaElaboracion.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                String[] parts = fechaElaboracion.split("/");
+                dia = parts[0];
+                mes = parts[1];
+                anio = parts[2];
+            }
+        }
+        
+        if (dia.isEmpty() || mes.isEmpty() || anio.isEmpty()) {
+            dia = getString(form, "dia");
+            mes = getString(form, "mes");
+            anio = getString(form, "anio");
+            
+            if (dia != null && (dia.contains("-") || dia.contains("/"))) {
+                String f = dia;
+                dia = "";
+                mes = "";
+                anio = "";
+                if (f.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    String[] parts = f.split("-");
+                    dia = parts[2];
+                    mes = parts[1];
+                    anio = parts[0];
+                } else if (f.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                    String[] parts = f.split("/");
+                    dia = parts[0];
+                    mes = parts[1];
+                    anio = parts[2];
+                }
+            }
+        }
+        
+        return formatElaboracionFecha(dia != null ? dia : "", mes != null ? mes : "", anio != null ? anio : "");
     }
 
     private void applyAutorizacionAsinet(Map<String, Object> enriched, Map<String, Object> form) {
