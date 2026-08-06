@@ -654,12 +654,24 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         applyMapping(enriched, form, "expediente", "expedienteEco");
 
-        // Datos del Representante (solo si existe)
-        String rep = getString(form, "representante");
-        if (rep != null && !rep.trim().isEmpty()) {
-            applyMapping(enriched, form, "nombreRepresentante", "representante");
-            enriched.put("dniRepresentante", cleanDni(getString(form, "dniRepresentante")));
-            applyMapping(enriched, form, "calidad", "representanteCargo");
+        // Datos del Representante (mapeo ultra-robusto con fallbacks)
+        applyMappingWithFallback(enriched, form, "nombreRepresentante", 
+            "nombreRepresentanteEntidad", "representante", "nombreRepresentante", "representanteLegal", 
+            "apellidosNombreRepresentante", "apellidosNombreRepresentanteLegal"
+        );
+        
+        String repName = getString(enriched, "nombreRepresentante");
+        if (!repName.isEmpty()) {
+            String dniRep = getString(form, "dniRepresentanteEntidad");
+            if (dniRep.isEmpty()) dniRep = getString(form, "dniRepresentante");
+            if (dniRep.isEmpty()) dniRep = getString(form, "nifRepresentante");
+            if (dniRep.isEmpty()) dniRep = getString(form, "dniNieRepresentante");
+            if (dniRep.isEmpty()) dniRep = getString(form, "dniRepresentanteLegal");
+            enriched.put("dniRepresentante", cleanDni(dniRep));
+
+            applyMappingWithFallback(enriched, form, "calidad", 
+                "representanteCargo", "calidad", "calidadRepresentante", "cargoRepresentante"
+            );
             putIfAbsent(enriched, "calidad", "Representante de la sociedad");
         } else {
             enriched.put("nombreRepresentante", "");
@@ -929,7 +941,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
         putIfAbsent(enriched, "fraseFija1", "Dirección técnica de instalación fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Certificado de direccion de obra de instalacion de equipos");
+        putIfAbsent(enriched, "fraseFija2", "Certificado de dirección de obra de instalación de equipos");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos
@@ -976,8 +988,8 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         putIfAbsent(enriched, "universidadFijo", "Universidad de Sevilla");
         putIfAbsent(enriched, "colegioFijo", "COIIAOC");
         putIfAbsent(enriched, "numeroColegiadoFijo", "4654");
-        putIfAbsent(enriched, "fraseFija1", "Elaboracion de proyecto electrico de instalacion solar fotovoltaica de ");
-        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecuccion de instalacion solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija1", "Elaboración de proyecto eléctrico de instalación solar fotovoltaica de ");
+        putIfAbsent(enriched, "fraseFija2", "Proyecto de ejecución de instalación solar fotovoltaica de ");
         putIfAbsent(enriched, "nombreFirma", "Eduardo Rivera Cabezas");
 
         // Mapeos Dinámicos

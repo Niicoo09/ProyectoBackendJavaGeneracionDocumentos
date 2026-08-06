@@ -123,10 +123,7 @@
         <div class="overlay-field" style="left: 145mm; top: 199mm; width: 20mm; height: 6mm; font-size: 10pt; text-align: center;"
              th:text="${form['anio'] ?: ''}"></div>
 
-        <!-- Firma -->
-        <div class="overlay-field" style="left: 80mm; top: 208mm; width: 100mm; height: 15mm;">
-            <img class="firma-img" th:if="${firmaBase64 != null and !firmaBase64.isEmpty()}" th:src="${firmaBase64}" />
-        </div>
+
         
         <div class="overlay-field" style="left: 80mm; top: 224mm; width: 65mm; height: 15mm; font-size: 10pt; text-align: center;"
              th:text="${form['nombreFirma'] ?: ''}"></div>
