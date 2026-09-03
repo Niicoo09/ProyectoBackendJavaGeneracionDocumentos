@@ -1083,8 +1083,26 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         // --- fieldMapping: Sección E2.2 Módulo Fotovoltaico ---
         applyMapping(enriched, form, "tecnologiaCelulaModulo", "e2_tecnologiaCelulaModulo");
-        applyMapping(enriched, form, "marcaModeloModulo", "e2_marcaModeloModulo");
-        applyMapping(enriched, form, "potenciaPicoModulo", "e2_potenciaPicoModulo");
+        boolean tieneSegundaMarca = Boolean.TRUE.equals(form.get("tieneSegundaMarcaModulo"))
+                || "true".equalsIgnoreCase(String.valueOf(form.get("tieneSegundaMarcaModulo")));
+        String marca1 = getString(form, "e2_marcaModeloModulo");
+        String pot1 = getString(form, "e2_potenciaPicoModulo");
+        if (tieneSegundaMarca) {
+            String marca2 = getString(form, "e2_marcaModeloModulo2");
+            String pot2 = getString(form, "e2_potenciaPicoModulo2");
+            String tot1 = getString(form, "e2_totalModulos1");
+            String tot2 = getString(form, "e2_totalModulos2");
+
+            String desc1 = (tot1.isEmpty() ? "" : tot1 + " paneles ") + marca1;
+            String desc2 = (tot2.isEmpty() ? "" : tot2 + " paneles ") + marca2;
+            String marcaModeloCombinado = (desc1.trim().isEmpty() ? "" : desc1) + (desc2.trim().isEmpty() ? "" : " / " + desc2);
+            String potenciaPicoCombinada = (pot1.isEmpty() ? "" : pot1) + (pot2.isEmpty() ? "" : " / " + pot2);
+            enriched.put("marcaModeloModulo", marcaModeloCombinado);
+            enriched.put("potenciaPicoModulo", potenciaPicoCombinada);
+        } else {
+            enriched.put("marcaModeloModulo", marca1);
+            enriched.put("potenciaPicoModulo", pot1);
+        }
         applyMapping(enriched, form, "toncModulo", "e2_toncModulo");
 
         // --- fieldMapping: Sección E2.3 Generador ---
