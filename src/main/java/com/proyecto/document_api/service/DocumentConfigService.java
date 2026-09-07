@@ -2162,51 +2162,123 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
     }
 
     private void applyAutorizacionAsinet(Map<String, Object> enriched, Map<String, Object> form) {
-        // Mapear campos del Interesado con los nombres exactos de la plantilla
-        applyMapping(enriched, form, "primerApellido", "apellido1Interesado");
-        applyMapping(enriched, form, "segundoApellido", "apellido2Interesado");
-        applyMapping(enriched, form, "apellidosNombre", "nombreInteresado");
-        applyMapping(enriched, form, "nifCif", "nifCifInteresado");
+        // 1. Apellidos y Nombre separado para la P1 (Casillas: Primer apellido, Segundo apellido, Nombre)
+        applyMappingWithFallback(enriched, form, "primerApellido", "apellido1Interesado", "primerApellido", "apellido1");
+        applyMappingWithFallback(enriched, form, "segundoApellido", "apellido2Interesado", "segundoApellido", "apellido2");
+        
+        String nombreSolo = getString(form, "nombreInteresado");
+        if (nombreSolo.isEmpty()) nombreSolo = getString(form, "nombre_presentador");
+        if (nombreSolo.isEmpty()) nombreSolo = getString(form, "nombre");
+        // Si apellidosNombre tiene comas o texto completo, extraer la parte del nombre
+        if (nombreSolo.isEmpty() && form.containsKey("apellidosNombre")) {
+            String raw = getString(form, "apellidosNombre");
+            if (raw.contains(",")) {
+                nombreSolo = raw.split(",")[1].trim();
+            }
+        }
+        enriched.put("nombreSolo", nombreSolo);
 
-        // Domicilio detallado del Interesado
-        applyMapping(enriched, form, "tipoVia", "tipoViaInteresado");
-        applyMapping(enriched, form, "nombreVia", "calleInteresado");
-        applyMapping(enriched, form, "tipoNumero", "tipoNumeroInteresado");
-        applyMapping(enriched, form, "numero", "numeroInteresado");
-        applyMapping(enriched, form, "calNum", "calNumeroInteresado");
-        applyMapping(enriched, form, "bloque", "bloqueInteresado");
-        applyMapping(enriched, form, "portal", "portalInteresado");
-        applyMapping(enriched, form, "escalera", "escaleraInteresado");
-        applyMapping(enriched, form, "planta", "plantaInteresado");
-        applyMapping(enriched, form, "puerta", "puertaInteresado");
+        // Nombre completo para la firma final de la P2
+        String nombreCompleto = resolveNombreCompletoInteresado(form);
+        enriched.put("apellidosNombre", !nombreCompleto.isEmpty() ? nombreCompleto : nombreSolo);
 
-        // Localización del Interesado
-        applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaInteresado");
-        applyMapping(enriched, form, "localidadEmplazamiento", "localidadInteresado");
-        applyMapping(enriched, form, "codigoPostal", "codigoPostalInteresado");
+        applyMappingWithFallback(enriched, form, "nifCif", "nifCifInteresado", "nifCif", "nif");
+
+        // 2. Domicilio Detallado
+        String rawTipoVia = getString(form, "tipoViaInteresado");
+        if (rawTipoVia.isEmpty()) rawTipoVia = getString(form, "tipo_via_presentador");
+        if (rawTipoVia.isEmpty()) rawTipoVia = getString(form, "emplazamientoTipoVia");
+        if (rawTipoVia.isEmpty()) rawTipoVia = getString(form, "tipo_via");
+        
+        // Mapeo normalizado de Tipo de Vía (CL -> Calle, AV -> Avenida, etc.)
+        String tipoViaNormalizado = normalizeTipoVia(rawTipoVia);
+        enriched.put("tipoVia", tipoViaNormalizado);
+
+        String rawNombreVia = getString(form, "calleInteresado");
+        if (rawNombreVia.isEmpty()) rawNombreVia = getString(form, "nombre_via_presentador");
+        if (rawNombreVia.isEmpty()) rawNombreVia = getString(form, "emplazamientoCalle");
+        if (rawNombreVia.isEmpty()) rawNombreVia = getString(form, "direccion");
+        
+        // Limpiar prefijos redundantes ("Calle Puente" -> "Puente")
+        String nombreViaLimpio = cleanNombreViaPrefix(rawNombreVia);
+        enriched.put("nombreVia", nombreViaLimpio);
+
+        applyMappingWithFallback(enriched, form, "tipoNumero", "tipoNumeroInteresado", "tipoNumeracion");
+        applyMappingWithFallback(enriched, form, "numero", "numeroInteresado", "numero_presentador", "numero");
+        applyMappingWithFallback(enriched, form, "calNum", "calNumeroInteresado", "calificador");
+        applyMappingWithFallback(enriched, form, "bloque", "bloqueInteresado", "bloque");
+        applyMappingWithFallback(enriched, form, "portal", "portalInteresado", "portal");
+        applyMappingWithFallback(enriched, form, "escalera", "escaleraInteresado", "escalera");
+        applyMappingWithFallback(enriched, form, "planta", "plantaInteresado", "piso_presentador", "planta");
+        applyMappingWithFallback(enriched, form, "puerta", "puertaInteresado", "puerta_presentador", "puerta");
+
+        // 3. Localización y Contacto
+        applyMappingWithFallback(enriched, form, "provinciaEmplazamiento", "provinciaInteresado", "provincia_presentador", "provinciaEmplazamiento", "provincia");
+        applyMappingWithFallback(enriched, form, "localidadEmplazamiento", "localidadInteresado", "poblacion_presentador", "localidadEmplazamiento", "localidad");
+        applyMappingWithFallback(enriched, form, "codigoPostal", "codigoPostalInteresado", "cp_presentador", "codigoPostalEmplazamiento", "codigoPostal");
         putIfAbsent(enriched, "pais", "España");
 
-        // Contactos del Interesado
-        applyMapping(enriched, form, "telefono", "telefonoInteresado");
-        applyMapping(enriched, form, "movil", "movilInteresado");
-        applyMapping(enriched, form, "email", "emailInteresado");
+        applyMappingWithFallback(enriched, form, "telefono", "telefonoInteresado", "telefono_presentador", "telefono");
+        applyMappingWithFallback(enriched, form, "movil", "movilInteresado", "telefono_presentador", "telefono");
+        applyMappingWithFallback(enriched, form, "email", "emailInteresado", "correoElectronicoEmplazamiento", "email");
 
-        // Datos del Emplazamiento y Actividad (Apartado 6)
+        // 4. Datos de Emplazamiento, Actividad y Firma
         applyMapping(enriched, form, "esInstalacionAislada", "esInstalacionAislada");
         
         String direccionCompleta = buildDireccionCompleta(form);
         enriched.put("direccionCompleta", direccionCompleta);
 
-        applyMapping(enriched, form, "localidadEmplazamiento", "localidadEmplazamiento");
-        applyMapping(enriched, form, "provinciaEmplazamiento", "provinciaEmplazamiento");
-        applyMapping(enriched, form, "provincia", "provinciaEmplazamiento");
-
-        // Datos de la firma
-        applyMapping(enriched, form, "localidad", "localidadEmplazamiento");
+        applyMappingWithFallback(enriched, form, "provincia", "provincia_presentador", "provinciaEmplazamiento", "provincia");
+        applyMappingWithFallback(enriched, form, "localidad", "poblacion_presentador", "localidadEmplazamiento", "localidad");
+        
         enrichDateParts(enriched, form);
 
-        // Nombre del firmante
-        applyMapping(enriched, form, "apellidosNombre", "nombrePresentador");
+        // Firmante de la P2
+        String presentador = getString(form, "nombrePresentador");
+        if (!presentador.isEmpty()) {
+            enriched.put("apellidosNombre", presentador);
+        }
+    }
+
+    private String normalizeTipoVia(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return "Calle";
+        String val = raw.trim().toUpperCase();
+        switch (val) {
+            case "CL": case "C/": case "CALLE": return "Calle";
+            case "AV": case "AVDA": case "AVENIDA": return "Avenida";
+            case "PZ": case "PZA": case "PLAZA": return "Plaza";
+            case "PS": case "PSO": case "PASEO": return "Paseo";
+            case "CM": case "CTRA": case "CARRETERA": case "CAMINO": return "Camino";
+            case "URB": case "URBANIZACION": return "Urbanización";
+            default: return raw.trim();
+        }
+    }
+
+    private String cleanNombreViaPrefix(String raw) {
+        if (raw == null || raw.trim().isEmpty()) return "";
+        String trimmed = raw.trim();
+        return trimmed.replaceAll("(?i)^(calle|avenida|avda|plaza|pza|paseo|camino|carretera)\\s+", "").trim();
+    }
+
+    private String resolveNombreCompletoInteresado(Map<String, Object> form) {
+        String base = getString(form, "apellidosNombre");
+        if (!base.isEmpty()) return base;
+        
+        String pA = getString(form, "apellido1Interesado");
+        if (pA.isEmpty()) pA = getString(form, "primerApellido");
+        if (pA.isEmpty()) pA = getString(form, "apellido1_presentador");
+
+        String sA = getString(form, "apellido2Interesado");
+        if (sA.isEmpty()) sA = getString(form, "segundoApellido");
+        if (sA.isEmpty()) sA = getString(form, "apellido2_presentador");
+
+        String nom = getString(form, "nombreInteresado");
+        if (nom.isEmpty()) nom = getString(form, "nombre_presentador");
+
+        if (!pA.isEmpty() || !sA.isEmpty() || !nom.isEmpty()) {
+            return (pA + " " + sA + " " + nom).replaceAll("\\s+", " ").trim();
+        }
+        return "";
     }
 
     private void applyDatosInstalacionExtremadura(Map<String, Object> enriched, Map<String, Object> form) {

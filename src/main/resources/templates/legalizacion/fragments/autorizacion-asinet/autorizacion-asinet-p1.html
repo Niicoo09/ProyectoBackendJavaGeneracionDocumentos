@@ -10,7 +10,7 @@
 
     <!-- Nombre / Razón Social -->
     <span class="overlay-field" data-cal-id="asi_interesado_nombre" style="left:152mm; top:59.5mm; font-size:7.5pt;"
-          th:text="${form['apellidosNombre'] ?: ''}"></span>
+          th:text="${form['nombreSolo'] ?: ''}"></span>
 
     <!-- NIF/CIF -->
     <span class="overlay-field" data-cal-id="asi_interesado_nif" style="left:14mm; top:60mm; font-size:7.5pt;"
@@ -77,12 +77,12 @@
           th:text="${form['pais'] ?: ''}"></span>
 
     <!-- Teléfono fijo 1 -->
-    <span class="overlay-field" data-cal-id="asi_tel_fijo1" style="left:68mm; top:99.5mm; font-size:7.5pt;"
-          th:text="${form['telefono'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="asi_tel_fijo1" style="left:14mm; top:99.5mm; font-size:7.5pt;"
+          th:text="${form['telefonoFijo'] ?: ''}"></span>
 
     <!-- Móvil -->
-    <span class="overlay-field" data-cal-id="asi_movil" style="left:80mm; top:80mm; font-size:7.5pt;"
-          th:text="${form['movil'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="asi_movil" style="left:80mm; top:99.5mm; font-size:7.5pt;"
+          th:text="${form['movil'] ?: form['telefono'] ?: ''}"></span>
 
     <!-- Correo electrónico -->
     <span class="overlay-field" data-cal-id="asi_interesado_email" style="left:129.5mm; top:100mm; font-size:7.5pt;"

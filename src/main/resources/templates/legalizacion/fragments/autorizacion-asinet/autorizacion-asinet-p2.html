@@ -1,14 +1,14 @@
 <div th:fragment="content(fondoStyle)" class="pagina-documento" th:style="${fondoStyle}">
 
     <!-- [X] Autoconsumo (no aislado) -->
-    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == null or form['esInstalacionAislada'] == false or form['esInstalacionAislada'] == 'false'}" style="left:-9mm; top:82.5mm;">X</span>
+    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == null or form['esInstalacionAislada'] == false or form['esInstalacionAislada'] == 'false'}" style="left:12mm; top:82.5mm;">X</span>
 
     <!-- [X] Autoconsumo Aislado -->
-    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:-13mm; top:81mm;">X</span>
+    <span class="overlay-marker" th:if="${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}" style="left:12mm; top:88mm;">X</span>
 
     <!-- Actividad o Uso Principal -->
-    <span class="overlay-field white-mask" data-cal-id="asi_actividad_uso" style="left:12.5mm; top:103.5mm; font-size:7.5pt; width:190mm; display:inline-block;"
-          th:text="${form['esInstalacionAislada'] ?: ''}"></span>
+    <span class="overlay-field" data-cal-id="asi_actividad_uso" style="left:14.5mm; top:103.5mm; font-size:7.5pt;"
+          th:text="${form['usoAlQueSeDestina'] ?: 'Autoconsumo doméstico'}"></span>
 
     <!-- Ubicación Vivienda -->
     <span class="overlay-field" data-cal-id="asi_ubicacion_vivienda" style="left:14.5mm; top:112mm; font-size:7.5pt;"
