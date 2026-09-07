@@ -1466,10 +1466,10 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             }
 
             if (!dispEsperada.isEmpty()) {
-                if (dispEsperada.equalsIgnoreCase(disp1)) {
-                    numModulos = num1;
-                } else if (dispEsperada.equalsIgnoreCase(disp2)) {
-                    numModulos = num2;
+                if (isMatchingDisposicion(disp1, baseTemplateName, dispEsperada)) {
+                    if (!num1.isEmpty()) numModulos = num1;
+                } else if (isMatchingDisposicion(disp2, baseTemplateName, dispEsperada)) {
+                    if (!num2.isEmpty()) numModulos = num2;
                 }
             }
         }
@@ -1481,7 +1481,55 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "marcaModelo", "e2_marcaModeloModulo");
         applyMapping(enriched, form, "ciudadFirma", "localidadEmplazamiento");
         applyMapping(enriched, form, "foto1", "otros_foto1");
-        applyMapping(enriched, form, "foto2", "otros_foto2");
+    }
+
+    private String cleanDisposicionString(String raw) {
+        if (raw == null) return "";
+        String cleaned = raw.trim();
+        cleaned = cleaned.replaceAll("(?i)^Ej\\s*:\\s*", "");
+        cleaned = cleaned.replaceAll("(?i)^Ej\\.\\s*", "");
+        return cleaned.trim();
+    }
+
+    private boolean isMatchingDisposicion(String rawDisp, String baseTemplateName, String dispEsperada) {
+        if (rawDisp == null || rawDisp.trim().isEmpty()) return false;
+        String disp = cleanDisposicionString(rawDisp).toLowerCase();
+        String expected = dispEsperada.toLowerCase();
+
+        if (disp.equals(expected) || disp.contains(expected) || expected.contains(disp)) {
+            return true;
+        }
+
+        switch (baseTemplateName) {
+            case "certificado-coplanar-teja":
+            case "CertificadoCoplanarTeja":
+                return disp.contains("coplanar") && (disp.contains("teja") || !disp.contains("chapa"));
+            case "certificado-aporticada-teja":
+            case "aporticado-teja":
+            case "CertificadoAporticadaTeja":
+                return disp.contains("aporticad") && (disp.contains("teja") || (!disp.contains("chapa") && !disp.contains("plana") && !disp.contains("pergola")));
+            case "certificado-cubierta-plan-aaporticada":
+            case "CertificadoCubiertaPlanaAporticada":
+                return disp.contains("plana");
+            case "certificado-chapas-grecadas-aporticada":
+            case "chapas-grecadas":
+            case "CertificadoChapasGrecadasAporticadas":
+                return disp.contains("chapa") && disp.contains("aporticad");
+            case "certificado-chapas-grecadas-coplanaria":
+            case "chapas-grecadas-coplanaria":
+            case "CertificadoChapasGrecadasCoplanaria":
+                return disp.contains("chapa") && disp.contains("coplanar");
+            case "certificado-paramento-vertical":
+            case "paramento-vertical":
+            case "CertificadoParamentoVertical":
+                return disp.contains("paramento") || disp.contains("vertical");
+            case "certificado-pergola-aporticada":
+            case "pergola-aporticada":
+            case "CertificadoPergolaAporticada":
+                return disp.contains("pérgola") || disp.contains("pergola");
+            default:
+                return false;
+        }
     }
 
     // =========================================================================
