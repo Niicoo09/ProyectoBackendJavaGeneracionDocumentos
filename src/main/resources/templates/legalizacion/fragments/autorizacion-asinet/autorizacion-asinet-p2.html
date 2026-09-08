@@ -23,10 +23,10 @@
           th:text="${form['localidadEmplazamiento'] ?: ''}"></span>
 
     <!-- [X] Provincia Badajoz -->
-    <span class="overlay-marker" th:if="${form['provinciaEmplazamiento'] == 'Badajoz' or form['provincia'] == 'Badajoz'}" style="left:169.5mm; top:118.5mm;">X</span>
+    <span class="overlay-marker" th:if="${form['esBadajoz'] == true or form['provinciaEmplazamiento'] == 'Badajoz'}" style="left:169.5mm; top:118.5mm;">X</span>
 
     <!-- [X] Provincia Cáceres -->
-    <span class="overlay-marker" th:if="${form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres' or form['provincia'] == 'Cáceres' or form['provincia'] == 'Caceres'}" style="left:185mm; top:118mm;">X</span>
+    <span class="overlay-marker" th:if="${form['esCaceres'] == true or form['provinciaEmplazamiento'] == 'Cáceres' or form['provinciaEmplazamiento'] == 'Caceres'}" style="left:185mm; top:118mm;">X</span>
 
     <!-- Localidad Firma -->
     <span class="overlay-field" data-cal-id="asi_firma_localidad" style="left:25.5mm; top:117mm; font-size:7.5pt;"

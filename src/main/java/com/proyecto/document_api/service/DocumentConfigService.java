@@ -1384,6 +1384,15 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
             calleLimpia = calleLimpia.replaceAll("\\s+", " ").trim();
         }
         enriched.put("emplazamientoNombreVia", calleLimpia);
+
+        // Provincias de Extremadura para casillas X
+        String provEmpl = getString(form, "provinciaEmplazamiento");
+        boolean isBadajoz = "Badajoz".equalsIgnoreCase(provEmpl);
+        boolean isCaceres = "Cáceres".equalsIgnoreCase(provEmpl) || "Caceres".equalsIgnoreCase(provEmpl);
+        enriched.put("esBadajoz", isBadajoz);
+        form.put("esBadajoz", isBadajoz);
+        enriched.put("esCaceres", isCaceres);
+        form.put("esCaceres", isCaceres);
     }
 
     // =========================================================================
@@ -2366,31 +2375,109 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
         applyMapping(enriched, form, "referenciaCatastral", "referenciaCatastral");
 
         // Características Técnicas
-        applyMapping(enriched, form, "conExcedentes", "conExcedentes");
-        applyMapping(enriched, form, "sueloUrbano", "sueloUrbano");
-        applyMapping(enriched, form, "tensionGeneracion", "tensionGeneracion");
-        applyMapping(enriched, form, "potenciaInversor", "potenciaACInversor");
-        applyMapping(enriched, form, "redInterior", "redInterior");
-        applyMapping(enriched, form, "cups", "ext_cups");
-        applyMapping(enriched, form, "tensionFrontera", "tensionFrontera");
-        applyMapping(enriched, form, "distribuidora", "distribuidora");
+        String conExc = getString(form, "conExcedentes");
+        if (conExc.isEmpty()) {
+            String mod = getString(form, "modalidadAutoconsumo");
+            if (mod.isEmpty()) mod = getString(form, "modalidad");
+            if (!mod.isEmpty()) {
+                if (mod.toLowerCase().contains("con") || mod.contains("2")) {
+                    conExc = "SÍ";
+                } else if (mod.toLowerCase().contains("sin") || mod.contains("1")) {
+                    conExc = "NO";
+                } else {
+                    conExc = mod;
+                }
+            }
+        }
+        if (!conExc.isEmpty()) {
+            enriched.put("conExcedentes", conExc);
+        } else {
+            applyMappingWithFallback(enriched, form, "conExcedentes", "conExcedentes", "modalidadAutoconsumo", "modalidad");
+        }
+
+        applyMappingWithFallback(enriched, form, "sueloUrbano", "sueloUrbano", "clasificacionSuelo", "tipoSuelo");
+        applyMappingWithFallback(enriched, form, "tensionGeneracion", "tensionGeneracion", "e2_relacionTensionInversor", "tensionSuministro", "tensionNominalInversor", "tension");
+        
+        applyMappingWithFallback(enriched, form, "potenciaInversor", "potenciaInversor", "potenciaACInversor", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor", "potenciaNominalInversores", "potenciaInstaladaPrevista", "potenciaInstalacion");
+
+        String redInt = getString(form, "redInterior");
+        if (redInt.isEmpty()) {
+            Object ais = form.get("esInstalacionAislada");
+            if (ais != null) {
+                boolean isAislada = "true".equalsIgnoreCase(ais.toString()) || Boolean.TRUE.equals(ais);
+                redInt = isAislada ? "NO" : "SÍ";
+            } else {
+                redInt = "SÍ";
+            }
+        }
+        enriched.put("redInterior", redInt);
+
+        applyMappingWithFallback(enriched, form, "cups", "cups", "ext_cups", "numeroCups", "cup");
+        applyMappingWithFallback(enriched, form, "tensionFrontera", "tensionFrontera", "tensionSuministro", "e2_relacionTensionInversor", "tensionGeneracion");
+        applyMappingWithFallback(enriched, form, "distribuidora", "distribuidora", "empresaDistribuidora", "distribuidoraElectrica");
 
         // Datos de Paneles
-        applyMapping(enriched, form, "marcaModeloModulo", "marcaModeloModulo");
-        applyMapping(enriched, form, "totalModulos", "totalModulos");
-        applyMapping(enriched, form, "potenciaPicoModulo", "potenciaPicoModulo");
-        applyMapping(enriched, form, "potenciaPicoTotal", "potenciaPicoTotal");
+        String mmMod = getString(form, "marcaModeloModulo");
+        if (mmMod.isEmpty()) mmMod = getString(form, "e2_marcaModeloModulo");
+        if (mmMod.isEmpty()) {
+            String m = getString(form, "marcaModulo");
+            if (m.isEmpty()) m = getString(form, "e2_marcaModulo");
+            String mod = getString(form, "modeloModulo");
+            if (mod.isEmpty()) mod = getString(form, "e2_modeloModulo");
+            if (!m.isEmpty() || !mod.isEmpty()) {
+                mmMod = (m + " " + mod).trim();
+            }
+        }
+        if (!mmMod.isEmpty()) enriched.put("marcaModeloModulo", mmMod);
+
+        applyMappingWithFallback(enriched, form, "totalModulos", "totalModulos", "e2_totalModulos");
+        applyMappingWithFallback(enriched, form, "potenciaPicoModulo", "potenciaPicoModulo", "e2_potenciaPicoModulo");
+        applyMappingWithFallback(enriched, form, "potenciaPicoTotal", "potenciaPicoTotal", "e2_potenciaPicoGenerador");
 
         // Datos de Inversor
-        applyMapping(enriched, form, "marcaModeloInversor", "marcaModeloInversor");
-        applyMapping(enriched, form, "numeroInversores", "numeroInversores");
-        applyMapping(enriched, form, "potenciaACInversor", "potenciaACInversor");
-        applyMapping(enriched, form, "potenciaACTotal", "potenciaACTotal");
+        String mmInv = getString(form, "marcaModeloInversor");
+        if (mmInv.isEmpty()) mmInv = getString(form, "e2_marcaModeloInversor");
+        if (mmInv.isEmpty()) {
+            String m = getString(form, "marcaInversor");
+            if (m.isEmpty()) m = getString(form, "e2_marcaInversor");
+            String mod = getString(form, "modeloInversor");
+            if (mod.isEmpty()) mod = getString(form, "e2_modeloInversor");
+            if (!m.isEmpty() || !mod.isEmpty()) {
+                mmInv = (m + " " + mod).trim();
+            }
+        }
+        if (!mmInv.isEmpty()) enriched.put("marcaModeloInversor", mmInv);
+
+        String numInv = getString(form, "numeroInversores");
+        if (numInv.isEmpty()) numInv = getString(form, "e2_numeroInversores");
+        if (numInv.isEmpty()) numInv = getString(form, "e2_numeroInversor");
+        if (numInv.isEmpty() && (!mmInv.isEmpty() || getString(enriched, "potenciaInversor").length() > 0)) {
+            numInv = "1";
+        }
+        if (!numInv.isEmpty()) enriched.put("numeroInversores", numInv);
+
+        applyMappingWithFallback(enriched, form, "potenciaACInversor", "potenciaACInversor", "potenciaInversor", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor", "potenciaNominalInversores", "potenciaInstaladaPrevista");
+        applyMappingWithFallback(enriched, form, "potenciaACTotal", "potenciaACTotal", "potenciaACInversor", "potenciaInversor", "e2_potenciaNominalInversores", "e2_potenciaNominalInversor");
 
         // Datos de Batería
-        applyMapping(enriched, form, "marcaModeloBateria", "marcaModeloBateria");
-        applyMapping(enriched, form, "numeroBaterias", "numeroBaterias");
-        applyMapping(enriched, form, "capacidadNominalBateria", "capacidadNominalBateria");
-        applyMapping(enriched, form, "energiaTotalBateria", "energiaTotalBateria");
+        String mmBat = getString(form, "marcaModeloBateria");
+        if (mmBat.isEmpty()) mmBat = getString(form, "e2_marcaModeloBateria");
+        if (mmBat.isEmpty()) mmBat = getString(form, "e2_marcaModelo");
+        if (mmBat.isEmpty()) mmBat = getString(form, "e2_marcaModeloBaterias");
+        if (mmBat.isEmpty()) {
+            String m = getString(form, "marcaBateria");
+            if (m.isEmpty()) m = getString(form, "e2_marcaBateria");
+            String mod = getString(form, "modeloBateria");
+            if (mod.isEmpty()) mod = getString(form, "e2_modeloBateria");
+            if (mod.isEmpty()) mod = getString(form, "e2_modelo");
+            if (!m.isEmpty() || !mod.isEmpty()) {
+                mmBat = (m + " " + mod).trim();
+            }
+        }
+        if (!mmBat.isEmpty()) enriched.put("marcaModeloBateria", mmBat);
+
+        applyMappingWithFallback(enriched, form, "numeroBaterias", "numeroBaterias", "e2_numeroBaterias", "e2_numeroBateria", "e2_numeroDeBaterias");
+        applyMappingWithFallback(enriched, form, "capacidadNominalBateria", "capacidadNominalBateria", "e2_capacidadNominalBateria", "e2_capacidadNominal", "capacidadBateria", "capacidadNominal");
+        applyMappingWithFallback(enriched, form, "energiaTotalBateria", "energiaTotalBateria", "e2_energiaTotalBateria", "e2_energiaTotal", "capacidadTotalBateria");
     }
 }

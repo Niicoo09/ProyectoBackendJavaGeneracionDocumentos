@@ -206,11 +206,11 @@
             </tr>
             <tr>
                 <td class="label">Tensión de Generación:</td>
-                <td class="value" th:text="${form['tensionGeneracion'] != null ? form['tensionGeneracion'] + ' V' : '-'}"></td>
+                <td class="value" th:text="${form['tensionGeneracion'] != null and form['tensionGeneracion'] != '' ? ( #strings.endsWith(#strings.toLowerCase(form['tensionGeneracion']), 'v') ? form['tensionGeneracion'] : form['tensionGeneracion'] + ' V') : '-'}"></td>
             </tr>
             <tr>
                 <td class="label">Potencia Instalada de Inversor:</td>
-                <td class="value" th:text="${form['potenciaInversor'] != null ? form['potenciaInversor'] + ' kW' : '-'}"></td>
+                <td class="value" th:text="${form['potenciaInversor'] != null and form['potenciaInversor'] != '' ? ( #strings.endsWith(#strings.toLowerCase(form['potenciaInversor']), 'kw') ? form['potenciaInversor'] : form['potenciaInversor'] + ' kW') : '-'}"></td>
             </tr>
             <tr>
                 <td class="label">¿Conectada en Red interior?:</td>
@@ -218,7 +218,7 @@
             </tr>
             <tr>
                 <td class="label">CUPS:</td>
-                <td class="value" th:text="${form['cups']}"></td>
+                <td class="value" th:text="${form['cups'] ?: '-'}"></td>
             </tr>
             <tr>
                 <td class="label">Tipo CUPS, Consumo:</td>
@@ -226,7 +226,7 @@
             </tr>
             <tr>
                 <td class="label">Tensión del punto frontera:</td>
-                <td class="value" th:text="${form['tensionFrontera'] != null ? form['tensionFrontera'] + ' V' : '-'}"></td>
+                <td class="value" th:text="${form['tensionFrontera'] != null and form['tensionFrontera'] != '' ? ( #strings.endsWith(#strings.toLowerCase(form['tensionFrontera']), 'v') ? form['tensionFrontera'] : form['tensionFrontera'] + ' V') : '-'}"></td>
             </tr>
             <tr>
                 <td class="label">Distribuidora:</td>
@@ -242,28 +242,19 @@
             <tr>
                 <td class="label">Paneles (Marca, Modelo, Número, Wp):</td>
                 <td class="value">
-                    <span th:text="${form['marcaModeloModulo'] ?: ''}"></span>. 
-                    <span th:text="${form['totalModulos'] != null ? form['totalModulos'] + ' paneles' : ''}"></span>. 
-                    <span th:text="${form['potenciaPicoModulo'] != null ? form['potenciaPicoModulo'] + ' Wp' : ''}"></span>
-                    <span th:text="${form['potenciaPicoTotal'] != null ? '(' + form['potenciaPicoTotal'] + ' Wp total)' : ''}"></span>
+                    <span th:text="${form['marcaModeloModulo'] != null and form['marcaModeloModulo'] != '' ? form['marcaModeloModulo'] + '. ' : ''}"></span><span th:text="${form['totalModulos'] != null and form['totalModulos'] != '' ? form['totalModulos'] + ' paneles. ' : ''}"></span><span th:text="${form['potenciaPicoModulo'] != null and form['potenciaPicoModulo'] != '' ? form['potenciaPicoModulo'] + ' Wp' : ''}"></span><span th:text="${form['potenciaPicoTotal'] != null and form['potenciaPicoTotal'] != '' ? ' (' + form['potenciaPicoTotal'] + ' Wp total)' : ''}"></span>
                 </td>
             </tr>
             <tr>
                 <td class="label">Inversor (Marca, Modelo, Número, kW):</td>
                 <td class="value">
-                    <span th:text="${form['marcaModeloInversor'] ?: ''}"></span>. 
-                    <span th:text="${form['numeroInversores'] != null ? form['numeroInversores'] + ' inversores' : ''}"></span>. 
-                    <span th:text="${form['potenciaACInversor'] != null ? form['potenciaACInversor'] + ' kW' : ''}"></span>
-                    <span th:text="${form['potenciaACTotal'] != null ? '(' + form['potenciaACTotal'] + ' kW total)' : ''}"></span>
+                    <span th:text="${form['marcaModeloInversor'] != null and form['marcaModeloInversor'] != '' ? form['marcaModeloInversor'] + '. ' : ''}"></span><span th:text="${form['numeroInversores'] != null and form['numeroInversores'] != '' ? form['numeroInversores'] + ' inversor(es). ' : ''}"></span><span th:text="${form['potenciaACInversor'] != null and form['potenciaACInversor'] != '' ? form['potenciaACInversor'] + ' kW' : ''}"></span><span th:text="${form['potenciaACTotal'] != null and form['potenciaACTotal'] != '' ? ' (' + form['potenciaACTotal'] + ' kW total)' : ''}"></span>
                 </td>
             </tr>
-            <tr th:if="${form['numeroBaterias'] != null and form['numeroBaterias'] != '' and form['numeroBaterias'] != '0'}">
+            <tr th:if="${(form['marcaModeloBateria'] != null and form['marcaModeloBateria'] != '') or (form['numeroBaterias'] != null and form['numeroBaterias'] != '' and form['numeroBaterias'] != '0')}">
                 <td class="label">Baterías (Marca, Modelo, Número, Capacidad):</td>
                 <td class="value">
-                    <span th:text="${form['marcaModeloBateria'] ?: ''}"></span>. 
-                    <span th:text="${form['numeroBaterias'] + ' baterías'}"></span>. 
-                    <span th:text="${form['capacidadNominalBateria'] != null ? form['capacidadNominalBateria'] + ' Ah' : ''}"></span>
-                    <span th:text="${form['energiaTotalBateria'] != null ? '(' + form['energiaTotalBateria'] + ' kWh total)' : ''}"></span>
+                    <span th:text="${form['marcaModeloBateria'] != null and form['marcaModeloBateria'] != '' ? form['marcaModeloBateria'] + '. ' : ''}"></span><span th:text="${form['numeroBaterias'] != null and form['numeroBaterias'] != '' ? form['numeroBaterias'] + ' batería(s). ' : ''}"></span><span th:text="${form['capacidadNominalBateria'] != null and form['capacidadNominalBateria'] != '' ? form['capacidadNominalBateria'] + ' Ah' : ''}"></span><span th:text="${form['energiaTotalBateria'] != null and form['energiaTotalBateria'] != '' ? ' (' + form['energiaTotalBateria'] + ' kWh total)' : ''}"></span>
                 </td>
             </tr>
         </table>
