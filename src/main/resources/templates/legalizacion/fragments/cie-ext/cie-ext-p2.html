@@ -124,7 +124,7 @@
 
     <!-- 4.1 Baterías - Capacidad total (Ah) -->
     <span class="overlay-field" data-cal-id="p2_bat_cap_total" style="left:96mm; top:181mm; font-size:7.5pt;"
-          th:text="${form['capacidadNominalBateria'] ?: ''}"></span>
+          th:text="${form['capacidadTotalBateria'] ?: form['capacidadNominalBateria'] ?: ''}"></span>
 
     <!-- 4.1 Baterías - Tipo (química) -->
     <span class="overlay-field" data-cal-id="p2_bat_tipo" style="left:124.5mm; top:181.5mm; font-size:7.5pt;"

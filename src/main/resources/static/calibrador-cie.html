@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calibrador Universal de Plantillas - Tramidocs</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #0f172a; font-family: 'Inter', system-ui, -apple-system, sans-serif; display: flex; color: #f8fafc; height: 100vh; overflow: hidden; }
+        
+        #editor-panel {
+            width: 340px;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        
+        #editor-panel h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #334155; padding-bottom: 8px; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .selector-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .selector-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .selector-group select {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        select optgroup {
+            background: #1e293b;
+            color: #38bdf8;
+            font-weight: bold;
+            font-style: normal;
+            font-size: 11px;
+            padding: 4px;
+        }
+
+        select option {
+            background: #0f172a;
+            color: #f8fafc;
+            font-weight: normal;
+            font-size: 12px;
+            padding: 4px;
+        }
+
+        .page-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .page-selector button {
+            padding: 6px 10px;
+            background: #334155;
+            border: none;
+            color: #f8fafc;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .page-selector button.active {
+            background: #0284c7;
+            box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+        }
+
+        .field-group { margin-bottom: 12px; display: flex; flex-direction: column; background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; }
+        .field-group label { font-size: 10px; font-weight: 600; margin-bottom: 6px; color: #38bdf8; }
+        .controls { display: flex; gap: 4px; align-items: center; }
+        .controls input {
+            background: #1e293b; border: 1px solid #334155; color: #f8fafc;
+            padding: 4px; font-size: 11px; width: 55px; border-radius: 4px; text-align: center;
+        }
+        .controls button {
+            background: #0284c7; border: none; color: #fff; width: 24px; height: 24px;
+            border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .controls button:hover { background: #0369a1; }
+
+        #workspace { flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 25px; background: #0f172a; }
+        
+        #page-container {
+            width: 210mm;
+            height: 297mm;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            background-color: #fff;
+        }
+
+        .overlay-field {
+            position: absolute;
+            color: #ea580c;
+            font-family: Arial, sans-serif;
+            font-size: 7.5pt;
+            font-weight: normal;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            outline: 1px dashed rgba(234, 88, 12, 0.5);
+            padding: 0 0.5mm;
+            background: rgba(254, 243, 199, 0.7);
+            user-select: none;
+        }
+        .overlay-field:hover, .overlay-field.active {
+            outline-color: #dc2626;
+            background: rgba(254, 226, 226, 0.9);
+            color: #991b1b;
+            z-index: 100;
+        }
+
+        .overlay-marker {
+            position: absolute;
+            font-size: 6pt;
+            font-weight: bold;
+            color: #dc2626;
+            font-family: Arial, sans-serif;
+            transform: translate(-50%, -50%);
+            outline: 1px dashed rgba(220, 38, 38, 0.5);
+            cursor: pointer;
+            user-select: none;
+        }
+        .overlay-marker:hover, .overlay-marker.active {
+            outline-color: #0284c7;
+            z-index: 100;
+        }
+
+        #export-btn {
+            background: #16a34a; border: none; color: #fff; padding: 12px; margin-top: 15px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; text-transform: uppercase;
+            letter-spacing: 0.5px; transition: background 0.2s; width: 100%;
+        }
+        #export-btn:hover { background: #15803d; }
+
+        #save-btn {
+            background: #0e7490; border: none; color: #fff; padding: 12px; margin-top: 8px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; text-transform: uppercase;
+            letter-spacing: 0.5px; transition: background 0.2s; width: 100%;
+        }
+        #save-btn:hover { background: #0891b2; }
+        #save-btn:disabled { background: #334155; cursor: not-allowed; opacity: 0.6; }
+
+        #save-status {
+            margin-top: 6px; font-size: 11px; font-weight: 600; min-height: 18px;
+            text-align: center; border-radius: 4px; padding: 4px 6px;
+            transition: all 0.3s;
+        }
+        
+        #code-output {
+            margin-top: 15px; width: 100%; height: 380px !important; min-height: 300px !important; background: #020617; color: #22c55e;
+            font-family: monospace; font-size: 11px; border: 1px solid #334155; padding: 10px;
+            resize: vertical; border-radius: 6px; outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="editor-panel">
+        <div class="selector-group">
+            <label>Plantilla Activa</label>
+            <select id="template-selector" onchange="switchTemplate(this.value)">
+                <optgroup label="Extremadura">
+                    <option value="cie-ext">CIE Extremadura</option>
+                    <option value="mtd-ext">MTD Extremadura</option>
+                </optgroup>
+                <optgroup label="Legalización">
+                    <option value="cie-nac">CIE Nacional</option>
+                    <option value="dr-do">Declaración Resp. Dirección Obra</option>
+                    <option value="dr-tecnico">Declaración Resp. Técnico Competente</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <h3>Páginas</h3>
+        <div class="page-selector" id="pages-container">
+            <!-- Cargado dinámicamente -->
+        </div>
+        
+        <p style="font-size: 10px; margin-bottom: 12px; color: #94a3b8; line-height: 1.4;">
+            Haz clic en un campo sobre el papel para activarlo. Puedes arrastrarlo libremente o ajustarlo de 0.5mm en 0.5mm.
+        </p>
+        
+        <button id="export-btn">Copiar Fragmento Thymeleaf</button>
+        <button id="save-btn">&#128190; Guardar en Plantilla</button>
+        <div id="save-status"></div>
+        <textarea id="code-output" readonly placeholder="El código Thymeleaf aparecerá aquí..."></textarea>
+
+        <div id="fields-controls-container" style="margin-top: 15px;">
+            <!-- Rellenado dinámicamente -->
+        </div>
+    </div>
+
+    <div id="workspace">
+        <div id="page-container">
+            <!-- Rellenado dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = "cie-ext";
+        let currentPage = 1;
+        let activeField = null;
+
+        // Estructuras de todas las variables por plantilla y página
+        const templatesData = {
+            "cie-ext": {
+                name: "CIE Extremadura",
+                imagePrefix: "cie-extremadura-p",
+                totalPages: 4,
+                width: "210mm",
+                height: "297mm",
+                bgSize: "100% 100%",
+                fields: {
+                    1: [
+                        { id: "s1_nombre", label: "S1 Nombre/Razón Social (Titular)", x: 36.5, y: 18, text: "Conexión Solar 19, S.L.", isMarker: false, bind: "${form['apellidosNombre'] ?: ''}" },
+                        { id: "s1_nif", label: "S1 NIF/NIE (Titular)", x: 174.5, y: 19.5, text: "B24972507", isMarker: false, bind: "${form['nifCif'] ?: ''}" },
+                        { id: "s1_dom", label: "S1 Domicilio (Titular)", x: 21.5, y: 22.5, text: "La Palma del Condado", isMarker: false, bind: "${form['domicilio'] ?: ''}" },
+                        { id: "s1_cp", label: "S1 Código Postal (Titular)", x: 186.5, y: 22.5, text: "21700", isMarker: false, bind: "${form['codigoPostal'] ?: ''}" },
+                        { id: "s1_loc", label: "S1 Localidad (Titular)", x: 20, y: 25.5, text: "La Palma del Condado", isMarker: false, bind: "${form['localidad'] ?: ''}" },
+                        { id: "s1_prov", label: "S1 Provincia (Titular)", x: 78.5, y: 25.5, text: "Huelva", isMarker: false, bind: "${form['provincia'] ?: ''}" },
+                        { id: "s1_email", label: "S1 Email (Titular)", x: 120, y: 25.5, text: "admin@conexionsolar.com", isMarker: false, bind: "${form['correoElectronico'] ?: ''}" },
+                        { id: "s1_tel", label: "S1 Teléfono (Titular)", x: 182.5, y: 25.5, text: "653990101", isMarker: false, bind: "${form['telefono'] ?: ''}" },
+                        
+                        { id: "s2_nueva", label: "S2 [X] Nueva Instalación", x: 37, y: 33, text: "X", isMarker: true, bind: "" },
+                        { id: "s2_id", label: "S2 Nº Identificación", x: 173.5, y: 31.5, text: "653990101", isMarker: false, bind: "${form['numeroIdentificacion'] ?: ''}" },
+                        { id: "s2_empl", label: "S2 Calle/Plaza Emplazamiento", x: 27, y: 35, text: "Calle Río Dulce, s/n", isMarker: false, bind: "${form['emplazamientoCompleto'] ?: ''}" },
+                        { id: "s2_loc", label: "S2 Localidad Emplazamiento", x: 160, y: 36.5, text: "La Palma del Condado", isMarker: false, bind: "${form['localidadEmplazamiento'] ?: ''}" },
+                        { id: "s2_badajoz", label: "S2 [X] Provincia: Badajoz", x: 28.5, y: 41, text: "X", isMarker: true, bind: "th:if=\"${form['esBadajoz'] == true or form['esBadajoz'] == 'true'}\"" },
+                        { id: "s2_caceres", label: "S2 [X] Provincia: Cáceres", x: 44.5, y: 40.5, text: "X", isMarker: true, bind: "th:if=\"${form['esCaceres'] == true or form['esCaceres'] == 'true'}\"" },
+                        { id: "s2_uso", label: "S2 Uso destinado", x: 84.5, y: 38.5, text: "Produccion de Energia Electrica", isMarker: false, bind: "${form['usoDestino'] ?: ''}" },
+                        { id: "s2_sup", label: "S2 Superficie (m²)", x: 23, y: 57, text: "0", isMarker: false, bind: "${form['superficie'] ?: ''}" },
+                        { id: "s2_ocup", label: "S2 Ocupación (Personas)", x: 58, y: 57, text: "0", isMarker: false, bind: "${form['ocupacion'] ?: ''}" },
+                        { id: "s2_tipo", label: "S2 Tipo de Instalación", x: 94.5, y: 42.5, text: "Generación Fotovoltaica Interconectada", isMarker: false, bind: "${form['tipoInstalacion'] ?: ''}" },
+                        
+                        { id: "s3_un", label: "S3 Tensión Un (V)", x: 19, y: 67, text: "220/380", isMarker: false, bind: "${form['tensionSuministro'] ?: ''}" },
+                        { id: "s3_pot_inst", label: "S3 Potencia instalada (kW)", x: 108, y: 66.5, text: "15", isMarker: false, bind: "${form['potenciaInstaladaPrevista'] ?: ''}" },
+                        { id: "s3_pot_max", label: "S3 Potencia máx contratar (kW)", x: 143.5, y: 66.5, text: "15", isMarker: false, bind: "${form['potenciaMaximaContratar'] ?: ''}" },
+                        { id: "s3_pot_adm", label: "S3 Potencia admisible (kW)", x: 114, y: 99, text: "15", isMarker: false, bind: "${form['potenciaMaximaAdmisible'] ?: ''}" },
+                        { id: "s3_red_pub", label: "S3 [X] Red Pública", x: 26.5, y: 72, text: "X", isMarker: true, bind: "" },
+                        { id: "s3_aislada", label: "S3 [X] Aislada", x: 135.5, y: 76, text: "X", isMarker: true, bind: "th:if=\"${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}\"" },
+                        { id: "s3_inter", label: "S3 [X] Interconectada", x: 176, y: 76, text: "X", isMarker: true, bind: "th:if=\"${form['esInstalacionInterconectada'] == true or form['esInstalacionInterconectada'] == 'true' or (form['esInstalacionAislada'] != true and form['esInstalacionAislada'] != 'true')}\"" },
+                        
+                        { id: "s3_cgp", label: "S3 CGP", x: 42, y: 81, text: "", isMarker: false, bind: "${form['cajasGeneralesProteccion'] ?: ''}" },
+                        { id: "s3_di_sist", label: "S3 DI Sistema", x: 114, y: 84.5, text: "Bajo Tubo", isMarker: false, bind: "${form['sistemaInstalacionDI'] ?: ''}" },
+                        { id: "s3_di_cond", label: "S3 DI Conductor", x: 114.5, y: 87, text: "Cobre", isMarker: false, bind: "${form['conductorDI'] ?: ''}" },
+                        { id: "s3_di_secc", label: "S3 DI Sección (mm²)", x: 114, y: 91.5, text: "10", isMarker: false, bind: "${form['seccionFase'] ?: ''}" },
+                        { id: "s3_di_aisl", label: "S3 DI Aislamiento", x: 118.5, y: 95.5, text: "XLPE", isMarker: false, bind: "${form['aislamientoDI'] ?: 'XLPE'}" },
+                        
+                        { id: "s3_cgp_bases", label: "S3 CGP Bases (A)", x: 50.5, y: 84.5, text: "", isMarker: false, bind: "${form['intensidadBasesCGP'] ?: ''}" },
+                        { id: "s3_cgp_fus", label: "S3 CGP Fusibles (A)", x: 50.5, y: 88.5, text: "", isMarker: false, bind: "${form['intensidadFusiblesCGP'] ?: ''}" },
+                        { id: "s3_cgp_corte", label: "S3 CGP Poder corte (kA)", x: 50.5, y: 91.5, text: "", isMarker: false, bind: "${form['poderCorteFusibles'] ?: ''}" },
+                        
+                        { id: "s3_ig_in", label: "S3 IG Corte IN (A)", x: 115, y: 112, text: "25", isMarker: false, bind: "${form['intensidadNominal'] ?: ''}" },
+                        { id: "s3_ig_corte", label: "S3 IG Poder corte (kA)", x: 146, y: 155, text: "6", isMarker: false, bind: "${form['poderCorteIG'] ?: ''}" },
+                        { id: "s3_prot_tipo", label: "S3 Tipo de Protección (Sobretensiones)", x: 26.5, y: 112, text: "I.A.", isMarker: false, bind: "${form['tipoProteccionSobretensiones'] ?: 'I.A.'}" },
+                        { id: "s3_prot_cat", label: "S3 Categorías de Sobretensiones", x: 60.5, y: 112, text: "I.V.", isMarker: false, bind: "${form['categoriaSobretensiones'] ?: 'I.V.'}" },
+                        { id: "s3_dif_30", label: "S3 [X] Dif 30mA", x: 159.5, y: 99.5, text: "X", isMarker: true, bind: "th:if=\"${form['sensibilidadDiferencial'] == '30' or form['sensibilidadDiferencial'] == null}\"" },
+                        { id: "s3_dif_300", label: "S3 [X] Dif 300mA", x: 181, y: 100, text: "X", isMarker: true, bind: "th:if=\"${form['sensibilidadDiferencial'] == '300'}\"" },
+                        
+                        { id: "s3_cont_ind", label: "S3 Prot contactos", x: 9, y: 122.5, text: "Diferencial", isMarker: false, bind: "" },
+                        { id: "s3_tierra", label: "S3 Conductores Tierra", x: 82, y: 122.5, text: "Cobre 16mm²", isMarker: false, bind: "${form['conductoresTierra'] ?: ''}" },
+                        { id: "s3_res_tierra", label: "S3 Resistencia Tierra", x: 136.5, y: 123, text: "20", isMarker: false, bind: "" },
+                        { id: "s3_res_aisl", label: "S3 Resistencia Aislamiento", x: 170.5, y: 123, text: "3000", isMarker: false, bind: "" },
+
+                        { id: "s4_emp", label: "S4 Empresa", x: 46.5, y: 227, text: "SOLAY INGENIEROS, S.L.", isMarker: false, bind: "" },
+                        { id: "s4_cif", label: "S4 Empresa CIF", x: 94.5, y: 244.5, text: "B09848912", isMarker: false, bind: "" },
+                        { id: "s4_id_emp", label: "S4 Empresa Nº ID", x: 77, y: 245, text: "41045500", isMarker: false, bind: "" },
+                        { id: "s4_inst", label: "S4 Instalador Autorizado", x: 61, y: 161.5, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "${form['instaladorNombre'] ?: ''}" },
+                        { id: "s4_hab", label: "S4 Habilitación Profesional", x: 48, y: 195, text: "INGENIERO INDUSTRIAL", isMarker: false, bind: "" },
+                        { id: "s4_nif_inst", label: "S4 NIF Instalador", x: 101.5, y: 228.5, text: "28.818.007-L", isMarker: false, bind: "${form['nifInstalador'] ?: ''}" },
+                        { id: "s4_org", label: "S4 Organismo Control", x: 109, y: 168.5, text: "OCA", isMarker: false, bind: "${form['organismoControl'] ?: ''}" },
+                        { id: "s4_ref", label: "S4 Nº Certificado", x: 39.5, y: 172, text: "REF-2026", isMarker: false, bind: "${form['referenciaCertificado'] ?: ''}" },
+                        { id: "s4_fecha", label: "S4 Fecha de Certificado", x: 124.5, y: 204.5, text: "09/07/2026", isMarker: false, bind: "${form['fechaCertificado'] ?: ''}" },
+                        
+                        { id: "s4_lugar", label: "Firma Lugar", x: 39.5, y: 208.5, text: "Sevilla", isMarker: false, bind: "${form['localidad'] ?: ''}" },
+                        { id: "s4_dia", label: "Firma Día", x: 101, y: 208.5, text: "09", isMarker: false, bind: "${form['dia'] ?: ''}" },
+                        { id: "s4_mes", label: "Firma Mes", x: 122, y: 209, text: "Julio", isMarker: false, bind: "${form['mes'] ?: ''}" },
+                        { id: "s4_anio", label: "Firma Año", x: 160.5, y: 209, text: "2026", isMarker: false, bind: "${form['anio'] ?: ''}" }
+                    ],
+                    2: [
+                        { id: "p2_act_nueva", label: "1.1 [X] Actuación: Nueva instalación", x: 28, y: 32.5, text: "X", isMarker: true, bind: "" },
+                        { id: "p2_act_amp", label: "1.1 [X] Actuación: Ampliación", x: 56.5, y: 33, text: "X", isMarker: true, bind: "" },
+                        { id: "p2_act_mod", label: "1.1 [X] Actuación: Modificación", x: 80.5, y: 33, text: "X", isMarker: true, bind: "" },
+                        { id: "p2_n_id", label: "1.1 Nº identificación instalación", x: 172.5, y: 31, text: "653990101", isMarker: false, bind: "${form['numeroIdentificacion'] ?: ''}" },
+                        { id: "p2_utm_x", label: "1.1 Coordenada UTM X (ETRS 89)", x: 100.5, y: 35.5, text: "237218,38", isMarker: false, bind: "${form['coordenadaX'] ?: ''}" },
+                        { id: "p2_utm_y", label: "1.1 Coordenada UTM Y (ETRS 89)", x: 161.5, y: 36, text: "4311330,81", isMarker: false, bind: "${form['coordenadaY'] ?: ''}" },
+                        { id: "p2_huso_29", label: "1.1 [X] Huso UTM: 29", x: 54, y: 37, text: "X", isMarker: true, bind: "th:if=\"${form['coordenadaHuso'] == '29' or form['coordenadaHuso'] == 29}\"" },
+                        { id: "p2_huso_30", label: "1.1 [X] Huso UTM: 30", x: 63.5, y: 37, text: "X", isMarker: true, bind: "th:if=\"${form['coordenadaHuso'] == '30' or form['coordenadaHuso'] == 30 or form['coordenadaHuso'] == null}\"" },
+                        { id: "p2_gen_aislada", label: "2.1 [X] Clasif: Aislada", x: 106.5, y: 46, text: "X", isMarker: true, bind: "th:if=\"${form['esInstalacionAislada'] == true or form['esInstalacionAislada'] == 'true'}\"" },
+                        { id: "p2_gen_int", label: "2.1 [X] Clasif: Interconectada red int.", x: 156.5, y: 46, text: "X", isMarker: true, bind: "th:if=\"${form['esInstalacionAislada'] != true and form['esInstalacionAislada'] != 'true'}\"" },
+                        { id: "p2_gen_aut1", label: "2.1 [X] Modalidad: Autoconsumo Tipo 1", x: 47, y: 51, text: "X", isMarker: true, bind: "th:if=\"${form['modalidadAutoconsumo'] == 'Tipo 1' or form['modalidadAutoconsumo'] == 'sin-excedentes' or form['modalidadAutoconsumo'] == 'sin_excedentes'}\"" },
+                        { id: "p2_gen_aut2", label: "2.1 [X] Modalidad: Autoconsumo Tipo 2", x: 77, y: 51, text: "X", isMarker: true, bind: "th:if=\"${form['modalidadAutoconsumo'] == 'Tipo 2' or form['modalidadAutoconsumo'] == 'con-excedentes' or form['modalidadAutoconsumo'] == 'con_excedentes' or form['modalidadAutoconsumo'] == null}\"" },
+                        { id: "p2_gen_pot", label: "2.1 Potencia instalada (kW)", x: 34.5, y: 54.5, text: "15", isMarker: false, bind: "${form['potenciaInstaladaPrevista'] ?: ''}" },
+                        { id: "p2_gen_fv", label: "2.1 [X] Tec. Gen: Fotovoltaica", x: 51, y: 62, text: "X", isMarker: true, bind: "" },
+                        
+                        { id: "p2_pan_num", label: "3.1 Nº paneles fotovoltaicos", x: 41, y: 72.5, text: "10", isMarker: false, bind: "${form['totalModulos'] ?: ''}" },
+                        { id: "p2_pan_pot_pico", label: "3.1 Potencia pico total (kWp)", x: 89.5, y: 73, text: "6.50", isMarker: false, bind: "${form['potenciaPicoGenerador'] ?: ''}" },
+                        { id: "p2_pan_mono", label: "3.1 [X] Tipo Panel: Monocristalino", x: 125, y: 75, text: "X", isMarker: true, bind: "th:if=\"${form['tecnologiaCelulaModulo'] == 'Monocristalino' or form['tecnologiaCelulaModulo'] == null}\"" },
+                        { id: "p2_pan_poly", label: "3.1 [X] Tipo Panel: Policristalino", x: 155.5, y: 75, text: "X", isMarker: true, bind: "th:if=\"${form['tecnologiaCelulaModulo'] == 'Policristalino'}\"" },
+                        { id: "p2_pan_cubierta", label: "3.1 [X] Implantación: Cubierta", x: 46, y: 79, text: "X", isMarker: true, bind: "" },
+                        { id: "p2_pan_fija", label: "3.1 [X] Seguimiento: Fija", x: 153, y: 79.5, text: "X", isMarker: true, bind: "" },
+                        { id: "p2_pan_fab", label: "3.1 Panel Fabricante y Modelo", x: 29.5, y: 82.5, text: "AIKO G650-MCH72Mw", isMarker: false, bind: "${form['marcaModeloModulo'] ?: ''}" },
+                        { id: "p2_pan_pot_unit", label: "3.1 Panel Potencia unitaria (Wp)", x: 180, y: 82, text: "650", isMarker: false, bind: "${form['potenciaPicoModulo'] ?: ''}" },
+                        
+                        { id: "p2_inv_num", label: "3.1 Inversores - Número total", x: 38.5, y: 90.5, text: "1", isMarker: false, bind: "${form['totalInversores'] ?: ''}" },
+                        { id: "p2_inv_pot_total", label: "3.1 Inversores - Pot. nominal total (kW)", x: 86, y: 90.5, text: "8", isMarker: false, bind: "${form['potenciaACInversor'] ?: ''}" },
+                        { id: "p2_inv_un_total", label: "3.1 Inversores - Tension salida total Un(V)", x: 140, y: 91, text: "230", isMarker: false, bind: "${form['tensionNominalInversor'] ?: '230'}" },
+                        { id: "p2_inv_mono_total", label: "3.1 [X] Inversor Total: Monofásico", x: 163, y: 92.5, text: "X", isMarker: true, bind: "th:if=\"${form['tipoConexionInversor'] == 'Monofasico' or form['tipoConexionInversor'] == null}\"" },
+                        { id: "p2_inv_tri_total", label: "3.1 [X] Inversor Total: Trifásico", x: 184.5, y: 92.5, text: "X", isMarker: true, bind: "th:if=\"${form['tipoConexionInversor'] == 'Trifasico'}\"" },
+                        { id: "p2_inv_fab", label: "3.1 Inversor Fabricante y Modelo", x: 26, y: 95.5, text: "DEYE SUN-8-SG05LP1-EU-AM2-P", isMarker: false, bind: "${form['marcaModeloInversor'] ?: ''}" },
+                        { id: "p2_inv_pot_unit", label: "3.1 Inversor Potencia unitaria (kW)", x: 183.5, y: 95.5, text: "8", isMarker: false, bind: "${form['potenciaACInversor'] ?: ''}" },
+                        { id: "p2_inv_in", label: "3.1 Inversor Corriente salida In(A)", x: 45, y: 100.5, text: "40", isMarker: false, bind: "${form['corrienteSalidaInversor'] ?: ''}" },
+                        { id: "p2_inv_un_unit", label: "3.1 Inversor Tension salida unitaria Un(V)", x: 141, y: 100.5, text: "230", isMarker: false, bind: "${form['tensionNominalInversor'] ?: '230'}" },
+                        { id: "p2_inv_mono_unit", label: "3.1 [X] Inversor Unitario: Monofásico", x: 162.5, y: 103, text: "X", isMarker: true, bind: "th:if=\"${form['tipoConexionInversor'] == 'Monofasico' or form['tipoConexionInversor'] == null}\"" },
+                        { id: "p2_inv_tri_unit", label: "3.1 [X] Inversor Unitario: Trifásico", x: 184, y: 103, text: "X", isMarker: true, bind: "th:if=\"${form['tipoConexionInversor'] == 'Trifasico'}\"" },
+                        
+                        { id: "p2_bat_num", label: "4.1 Baterías - Número de elementos", x: 47.5, y: 180.5, text: "2", isMarker: false, bind: "${form['numeroBaterias'] ?: ''}" },
+                        { id: "p2_bat_cap_total", label: "4.1 Baterías - Capacidad total (Ah)", x: 95, y: 180.5, text: "200", isMarker: false, bind: "${form['capacidadNominalBateria'] ?: ''}" },
+                        { id: "p2_bat_tipo", label: "4.1 Baterías - Tipo (química)", x: 124.5, y: 180, text: "LIFEPO4", isMarker: false, bind: "${form['tipoBateria'] ?: ''}" },
+                        { id: "p2_bat_fab", label: "4.1 Baterías Fabricante y Modelo", x: 36, y: 185, text: "DEYE SE-G5.1 PRO-B", isMarker: false, bind: "${form['marcaModeloBateria'] ?: ''}" },
+                        { id: "p2_bat_cap_unit", label: "4.1 Batería Capacidad unitaria (Ah)", x: 58, y: 190, text: "100", isMarker: false, bind: "${form['capacidadNominalBateria'] ?: ''}" },
+                        { id: "p2_bat_tension_unit", label: "4.1 Batería Tensión unitaria (V)", x: 109.5, y: 190, text: "51.2", isMarker: false, bind: "${form['tensionNominalBateria'] ?: ''}" },
+                        { id: "p2_bat_tension_total", label: "4.1 Batería Tensión salida total (V)", x: 174.5, y: 189.5, text: "102.4", isMarker: false, bind: "${form['tensionSalidaTotalBateria'] ?: ''}" }
+                    ],
+                    3: [
+                        { id: "p3_dist", label: "5.1.1 Empresa distribuidora", x: 36.5, y: 41.5, text: "IBERDROLA DISTRIBUCION ELECTRICA, S.A.", isMarker: false, bind: "${form['empresaDistribuidora'] ?: ''}" },
+                        { id: "p3_cups", label: "5.1.1 Código unificado punto suministro (CUPS)", x: 155, y: 40.5, text: "ES0021000001886334KD0F", isMarker: false, bind: "${form['cups'] ?: ''}" },
+                        { id: "p3_tit_sum", label: "5.1.1 Titular del punto de suministro", x: 47.5, y: 46, text: "FELICIDAD VALSERA GARCIA", isMarker: false, bind: "${form['apellidosNombre'] ?: ''}" },
+                        { id: "p3_pot_sum", label: "5.1.1 Potencia contratada (kW)", x: 177.5, y: 45.5, text: "8", isMarker: false, bind: "${form['potenciaContratada'] ?: ''}" },
+                        { id: "p3_tit_gen", label: "5.1.1 Titular de la instalación de generation", x: 93, y: 51, text: "FELICIDAD VALSERA GARCIA", isMarker: false, bind: "${form['apellidosNombre'] ?: ''}" },
+                        { id: "p3_un_230", label: "5.1.1 [X] Tensión nominal: 230", x: 36, y: 55, text: "X", isMarker: true, bind: "th:if=\"${form['fase'] == 'Monofásica' or form['fase'] == 'Monofasica' or form['tensionNominalInversor'] == '230' or form['tensionSuministro'] == '230'}\"" },
+                        { id: "p3_un_400", label: "5.1.1 [X] Tensión nominal: 3x230/400", x: 50.5, y: 55, text: "X", isMarker: true, bind: "th:if=\"${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica' or form['tensionNominalInversor'] == '400' or form['tensionSuministro'] == '400'}\"" },
+                        { id: "p3_ika", label: "5.1.1 Intensidad de cortocircuito (kA)", x: 139, y: 55, text: "1", isMarker: false, bind: "1" }
+                    ],
+                    4: [
+                        { id: "p4_lugar", label: "P4 Firma Lugar", x: 27, y: 221, text: "Sevilla", isMarker: false, bind: "${form['localidad'] ?: form['lugar'] ?: ''}" },
+                        { id: "p4_dia", label: "P4 Firma Día", x: 69, y: 221, text: "09", isMarker: false, bind: "${form['dia'] ?: ''}" },
+                        { id: "p4_mes", label: "P4 Firma Mes", x: 77, y: 221, text: "Julio", isMarker: false, bind: "${form['mes'] ?: ''}" },
+                        { id: "p4_anio", label: "P4 Firma Año", x: 107, y: 221, text: "2026", isMarker: false, bind: "${form['anio'] ?: ''}" }
+                    ]
+                }
+            },
+            "mtd-ext": {
+                name: "MTD Extremadura",
+                imagePrefix: "mtd-extremadura-p",
+                totalPages: 8,
+                width: "210mm",
+                height: "297mm",
+                bgSize: "100% 100%",
+                fields: {
+                    1: [
+                        { id: "m1_exp", label: "Expediente", x: 160, y: 52, text: "REF-2026", isMarker: false, bind: "${form['numeroExpediente'] ?: ''}" },
+                        { id: "m1_nombre", label: "S1 Titular Nombre/Razón Social", x: 42, y: 62, text: "Conexión Solar 19, S.L.", isMarker: false, bind: "${form['apellidosNombre'] ?: ''}" },
+                        { id: "m1_nif", label: "S1 Titular NIF/CIF", x: 157, y: 62, text: "B24972507", isMarker: false, bind: "${form['nifCif'] ?: ''}" },
+                        { id: "m1_dom", label: "S1 Titular Domicilio", x: 23, y: 68, text: "La Palma del Condado", isMarker: false, bind: "${form['domicilio'] ?: ''}" },
+                        { id: "m1_cp", label: "S1 Titular Código Postal", x: 157, y: 68, text: "21700", isMarker: false, bind: "${form['codigoPostal'] ?: ''}" },
+                        { id: "m1_loc", label: "S1 Titular Localidad", x: 23, y: 74, text: "La Palma del Condado", isMarker: false, bind: "${form['localidad'] ?: ''}" },
+                        { id: "m1_prov", label: "S1 Titular Provincia", x: 83, y: 74, text: "Huelva", isMarker: false, bind: "${form['provincia'] ?: ''}" },
+                        { id: "m1_email", label: "S1 Titular Email", x: 130, y: 74, text: "admin@conexionsolar.com", isMarker: false, bind: "${form['correoElectronico'] ?: ''}" },
+                        { id: "m1_tel", label: "S1 Titular Teléfono", x: 180, y: 74, text: "653990101", isMarker: false, bind: "${form['telefono'] ?: ''}" },
+                        
+                        { id: "m1_red_hab", label: "S2 Redactor [X] Habilitación", x: 63, y: 95, text: "X", isMarker: true, bind: "" },
+                        { id: "m1_red_nom", label: "S2 Redactor Nombre", x: 40, y: 101, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "" },
+                        { id: "m1_red_nif", label: "S2 Redactor NIF", x: 170, y: 101, text: "28.818.007-L", isMarker: false, bind: "" },
+                        { id: "m1_red_id", label: "S2 Redactor ID Empresa", x: 55, y: 119, text: "41045500", isMarker: false, bind: "" },
+                        { id: "m1_red_tit", label: "S2 Redactor Titulación", x: 130, y: 119, text: "INGENIERO INDUSTRIAL", isMarker: false, bind: "" },
+                        
+                        { id: "m1_empl_calle", label: "S3 Emplazamiento Calle", x: 30, y: 132, text: "Calle Río Dulce, s/n", isMarker: false, bind: "${form['emplazamientoCalle'] ?: ''}" },
+                        { id: "m1_empl_loc", label: "S3 Emplazamiento Localidad", x: 23, y: 138, text: "La Palma del Condado", isMarker: false, bind: "${form['localidadEmplazamiento'] ?: ''}" },
+                        { id: "m1_empl_prov", label: "S3 Emplazamiento Provincia", x: 100, y: 138, text: "Huelva", isMarker: false, bind: "${form['provinciaEmplazamiento'] ?: ''}" },
+                        { id: "m1_empl_cp", label: "S3 Emplazamiento CP", x: 163, y: 138, text: "21700", isMarker: false, bind: "${form['codigoPostalEmplazamiento'] ?: ''}" },
+                        { id: "m1_empl_uso", label: "S3 Emplazamiento Uso", x: 40, y: 144, text: "Produccion de Energia Electrica", isMarker: false, bind: "${form['usoDestino'] ?: ''}" },
+                        { id: "m1_empl_sup", label: "S3 Emplazamiento Superficie", x: 98, y: 144, text: "0", isMarker: false, bind: "${form['superficie'] ?: ''}" },
+                        { id: "m1_empl_ocup", label: "S3 Emplazamiento Ocupantes", x: 124, y: 144, text: "0", isMarker: false, bind: "${form['ocupacion'] ?: ''}" },
+                        { id: "m1_empl_tipo", label: "S3 Emplazamiento Tipo Inst.", x: 150, y: 144, text: "Autoconsumo fotovoltaico", isMarker: false, bind: "${form['tipoInstalacion'] ?: ''}" },
+                        { id: "m1_empl_nueva", label: "S3 [X] Nueva Instalación", x: 18, y: 154, text: "X", isMarker: true, bind: "" }
+                    ],
+                    2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: []
+                }
+            },
+            "cie-nac": {
+                name: "CIE Nacional",
+                imagePrefix: "cie-nacional-p",
+                totalPages: 1,
+                width: "200mm",
+                height: "287mm",
+                bgSize: "110% 100%",
+                fields: {
+                    1: [
+                        { id: "cn_reg", label: "Registro Instalación", x: 84.3, y: 31.5, text: "REG-12345", isMarker: false, bind: "${form['registro_instalacion'] ?: form['numeroRegistro'] ?: ''}" },
+                        { id: "cn_anio", label: "Terminación Anual", x: 131, y: 31, text: "26", isMarker: false, bind: "${form['terminacioAnual'] ?: form['anio'] ?: ''}" },
+                        { id: "cn_exp", label: "Nº Expediente", x: 13, y: 31, text: "EXP-2026", isMarker: false, bind: "${form['registro'] ?: form['numeroExpediente'] ?: ''}" },
+                        
+                        { id: "cn_tit_nom", label: "Titular Nombre/Razón Social", x: 13, y: 64, text: "Conexión Solar 19, S.L.", isMarker: false, bind: "${form['apellidosNombre'] ?: ''}" },
+                        { id: "cn_tit_nif", label: "Titular NIF/CIF", x: 140, y: 64, text: "B24972507", isMarker: false, bind: "${form['nifCif'] ?: ''}" },
+                        { id: "cn_tit_dom", label: "Titular Domicilio", x: 13, y: 71, text: "La Palma del Condado", isMarker: false, bind: "${form['domicilio'] ?: ''}" },
+                        { id: "cn_tit_cp", label: "Titular Código Postal", x: 139, y: 71, text: "21700", isMarker: false, bind: "${form['codigoPostal'] ?: ''}" },
+                        { id: "cn_tit_loc", label: "Titular Localidad", x: 13, y: 78, text: "La Palma del Condado", isMarker: false, bind: "${form['localidad'] ?: ''}" },
+                        { id: "cn_tit_prov", label: "Titular Provincia", x: 83, y: 78, text: "Huelva", isMarker: false, bind: "${form['provincia'] ?: ''}" },
+                        { id: "cn_tit_email", label: "Titular Email", x: 102, y: 78, text: "admin@conexionsolar.com", isMarker: false, bind: "${form['correoElectronico'] ?: ''}" },
+                        { id: "cn_tit_tel", label: "Titular Teléfono", x: 153, y: 78, text: "653990101", isMarker: false, bind: "${form['telefono'] ?: ''}" },
+                        
+                        { id: "cn_empl_calle", label: "Emplazamiento Calle", x: 13, y: 89, text: "Calle Río Dulce", isMarker: false, bind: "${form['emplazamientoCalle'] ?: ''}" },
+                        { id: "cn_empl_num", label: "Emplazamiento Número", x: 117, y: 89, text: "s/n", isMarker: false, bind: "${form['numero'] ?: ''}" },
+                        { id: "cn_empl_blo", label: "Emplazamiento Bloque", x: 130, y: 89, text: "", isMarker: false, bind: "${form['bloque'] ?: ''}" },
+                        { id: "cn_empl_por", label: "Emplazamiento Portal", x: 142, y: 89, text: "", isMarker: false, bind: "${form['portal'] ?: ''}" },
+                        { id: "cn_empl_esc", label: "Emplazamiento Escalera", x: 154, y: 89, text: "", isMarker: false, bind: "${form['escalera'] ?: ''}" },
+                        { id: "cn_empl_piso", label: "Emplazamiento Piso", x: 167, y: 89, text: "", isMarker: false, bind: "${form['piso'] ?: ''}" },
+                        { id: "cn_empl_pue", label: "Emplazamiento Puerta", x: 179, y: 89, text: "", isMarker: false, bind: "${form['puerta'] ?: ''}" },
+                        { id: "cn_empl_loc", label: "Emplazamiento Localidad", x: 13, y: 95, text: "La Palma del Condado", isMarker: false, bind: "${form['localidadEmplazamiento'] ?: ''}" },
+                        { id: "cn_empl_prov", label: "Emplazamiento Provincia", x: 95, y: 95, text: "Huelva", isMarker: false, bind: "${form['provinciaEmplazamiento'] ?: ''}" },
+                        { id: "cn_empl_cp", label: "Emplazamiento Código Postal", x: 155, y: 95, text: "21700", isMarker: false, bind: "${form['codigoPostalEmplazamiento'] ?: ''}" },
+                        
+                        { id: "cn_uso", label: "Uso destinado", x: 91, y: 101, text: "Produccion de Energia Electrica", isMarker: false, bind: "${form['usoDestino'] ?: ''}" },
+                        { id: "cn_sup", label: "Superficie (m²)", x: 179, y: 101, text: "0", isMarker: false, bind: "${form['superficie'] ?: ''}" },
+                        { id: "cn_cups", label: "Código CUPS", x: 109, y: 106, text: "ES0000000000000000XX", isMarker: false, bind: "${form['cups'] ?: ''}" },
+                        
+                        { id: "cn_nueva", label: "[X] Tipo Inst: Nueva", x: 36.55, y: 107.7, text: "X", isMarker: true, bind: "th:if=\"${form['tipoInstalacion'] == 'nueva'}\"" },
+                        { id: "cn_amp", label: "[X] Tipo Inst: Ampliación", x: 60.3, y: 107.7, text: "X", isMarker: true, bind: "th:if=\"${form['tipoInstalacion'] == 'ampliacion'}\"" },
+                        { id: "cn_mod", label: "[X] Tipo Inst: Modificación", x: 86.5, y: 107.7, text: "X", isMarker: true, bind: "th:if=\"${form['tipoInstalacion'] == 'modificacion' or (form['tipoInstalacion'] == null)}\"" },
+                        
+                        { id: "cn_pot", label: "Potencia Contratada (kW)", x: 60, y: 143, text: "15", isMarker: false, bind: "${form['potenciaContratada'] ?: ''}" },
+                        { id: "cn_mono", label: "[X] Corriente: Monofásica", x: 39.7, y: 152.6, text: "X", isMarker: true, bind: "th:if=\"${form['fase'] == 'Monofásica' or form['fase'] == 'Monofasica'}\"" },
+                        { id: "cn_tri", label: "[X] Corriente: Trifásica", x: 60, y: 152.6, text: "X", isMarker: true, bind: "th:if=\"${form['fase'] == 'Trifásica' or form['fase'] == 'Trifasica'}\"" },
+                        
+                        { id: "cn_un", label: "Tensión Un (V)", x: 75, y: 155, text: "220/380", isMarker: false, bind: "${form['tensionSuministro'] ?: ''}" },
+                        { id: "cn_secc", label: "Sección Fase (mm²)", x: 155.5, y: 156, text: "10", isMarker: false, bind: "${form['seccionFase'] ?: ''}" },
+                        { id: "cn_dist", label: "Emp. Distribuidora", x: 35, y: 161, text: "Endesa", isMarker: false, bind: "${form['empresaDistribuidora'] ?: ''}" },
+                        
+                        { id: "cn_ig", label: "IG Corte IN (A)", x: 11, y: 172, text: "25", isMarker: false, bind: "${form['intensidadNominal'] ?: ''}" },
+                        { id: "cn_dif", label: "Diferencial Sensibilidad (mA)", x: 50, y: 172, text: "30", isMarker: false, bind: "${form['sensibilidadDiferencial'] ?: ''}" },
+                        { id: "cn_tierra", label: "Resistencia Tierra (Ω)", x: 40, y: 179, text: "20", isMarker: false, bind: "${form['resistenciaTierra'] ?: ''}" },
+                        
+                        { id: "cn_dir", label: "Director de Obra", x: 11, y: 190, text: "", isMarker: false, bind: "${form['directorDeObra'] ?: ''}" },
+                        { id: "cn_tit", label: "Titulación DO", x: 101, y: 190, text: "", isMarker: false, bind: "${form['titulacion'] ?: ''}" },
+                        { id: "cn_col", label: "Colegio Oficial DO", x: 138, y: 190, text: "", isMarker: false, bind: "${form['colegioOficial'] ?: ''}" },
+                        { id: "cn_ncol", label: "Nº Colegiado DO", x: 174, y: 190, text: "", isMarker: false, bind: "${form['numeroColegiado'] ?: ''}" },
+                        
+                        { id: "cn_oca", label: "Organismo de Control", x: 11, y: 197, text: "", isMarker: false, bind: "${form['organismoControl'] ?: ''}" },
+                        { id: "cn_oca_num", label: "Nº Notificación OCA", x: 89, y: 197, text: "", isMarker: false, bind: "${form['numeroNotificacion'] ?: ''}" },
+                        { id: "cn_oca_fecha", label: "Fecha Inspección OCA", x: 126, y: 197, text: "", isMarker: false, bind: "${form['referenciaFechaInspeccion'] ?: ''}" },
+                        
+                        { id: "cn_obs", label: "Observaciones", x: 11, y: 220, text: "Instalación ejecutada según normativa.", isMarker: false, bind: "${form['observaciones'] ?: ''}" },
+                        
+                        { id: "cn_dia", label: "Firma Día", x: 100, y: 232, text: "09", isMarker: false, bind: "${form['dia'] ?: ''}" },
+                        { id: "cn_mes", label: "Firma Mes", x: 120, y: 232, text: "Julio", isMarker: false, bind: "${form['mes'] ?: ''}" },
+                        { id: "cn_anio", label: "Firma Año", x: 160, y: 232, text: "2026", isMarker: false, bind: "${form['anio'] ?: ''}" }
+                    ]
+                }
+            },
+            "dr-do": {
+                name: "Declaración Responsable Dirección Obra",
+                imagePrefix: "declaracion-responsable-do-p",
+                totalPages: 1,
+                width: "200mm",
+                height: "287mm",
+                bgSize: "100% 100%",
+                fields: {
+                    1: [
+                        { id: "dd_red_nom", label: "Redactor Nombre", x: 25, y: 64, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "${form['nombreApellidosEduardoFijo'] ?: ''}" },
+                        { id: "dd_red_nif", label: "Redactor NIF", x: 156, y: 64, text: "28.818.007-L", isMarker: false, bind: "${form['nifEduardoFijo'] ?: ''}" },
+                        { id: "dd_red_via", label: "Redactor Tipo Vía", x: 25, y: 75.5, text: "Calle", isMarker: false, bind: "${form['tipoViaFijo'] ?: ''}" },
+                        { id: "dd_red_nom_via", label: "Redactor Vía", x: 59, y: 75.5, text: "Asunción", isMarker: false, bind: "${form['nombreViaFijo'] ?: ''}" },
+                        { id: "dd_red_num", label: "Redactor Número", x: 50, y: 83, text: "45", isMarker: false, bind: "${form['numeroViaFijo'] ?: ''}" },
+                        { id: "dd_red_pais", label: "Redactor País", x: 25, y: 91, text: "España", isMarker: false, bind: "${form['paisFijo'] ?: ''}" },
+                        { id: "dd_red_prov", label: "Redactor Provincia", x: 59, y: 91, text: "Sevilla", isMarker: false, bind: "${form['provinciaFijo'] ?: ''}" },
+                        { id: "dd_red_mun", label: "Redactor Municipio", x: 110, y: 91, text: "Sevilla", isMarker: false, bind: "${form['municipioFijo'] ?: ''}" },
+                        { id: "dd_red_cp", label: "Redactor Código Postal", x: 177.5, y: 91, text: "41011", isMarker: false, bind: "${form['codigoPostalFijo'] ?: ''}" },
+                        
+                        { id: "dd_tit", label: "Redactor Titulación", x: 25, y: 100, text: "Ingeniero Industrial", isMarker: false, bind: "${form['titulacionFijo'] ?: ''}" },
+                        { id: "dd_esp", label: "Redactor Especialidad", x: 129, y: 100, text: "Baja Tensión", isMarker: false, bind: "${form['especialidadFijo'] ?: ''}" },
+                        { id: "dd_univ", label: "Redactor Universidad", x: 25, y: 108, text: "Universidad de Sevilla", isMarker: false, bind: "${form['universidadFijo'] ?: ''}" },
+                        { id: "dd_col", label: "Colegio Profesional", x: 25, y: 116, text: "Colegio Oficial de Ingenieros de Sevilla", isMarker: false, bind: "${form['colegioFijo'] ?: ''}" },
+                        { id: "dd_col_num", label: "Nº Colegiado", x: 160, y: 116, text: "12345", isMarker: false, bind: "${form['numeroColegiadoFijo'] ?: ''}" },
+                        
+                        { id: "dd_prop", label: "Propietario / Razón Social", x: 50, y: 109.5, text: "SOLAY INGENIEROS, S.L.", isMarker: false, bind: "${form['razonSocial'] ?: ''}" },
+                        { id: "dd_frase1", label: "Trabajo Profesional", x: 60, y: 135, text: "Instalación Solar Fotovoltaica de autoconsumo", isMarker: false, bind: "${form['fraseFija1'] ?: ''}" },
+                        { id: "dd_pot", label: "Potencia Trabajo", x: 126.5, y: 135, text: "15 kW", isMarker: false, bind: "${form['potenciaFrase1'] ?: ''}" },
+                        
+                        { id: "dd_prov_sup", label: "Provincia Cabecera", x: 140, y: 20.5, text: "Sevilla", isMarker: false, bind: "${form['provinciaSelect1'] ?: ''}" },
+                        { id: "dd_firma_prov", label: "Firma Provincia", x: 58, y: 199, text: "Sevilla", isMarker: false, bind: "${form['provincia'] ?: ''}" },
+                        { id: "dd_firma_dia", label: "Firma Día", x: 103, y: 199, text: "09", isMarker: false, bind: "${form['dia'] ?: ''}" },
+                        { id: "dd_firma_mes", label: "Firma Mes", x: 118, y: 199, text: "Julio", isMarker: false, bind: "${form['mes'] ?: ''}" },
+                        { id: "dd_firma_anio", label: "Firma Año", x: 145, y: 199, text: "2026", isMarker: false, bind: "${form['anio'] ?: ''}" },
+                        
+                        { id: "dd_firma_nom", label: "Nombre Firmante", x: 80, y: 224, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "${form['nombreFirma'] ?: ''}" },
+                        { id: "dd_prov_inf", label: "Provincia Pie", x: 171, y: 232, text: "Sevilla", isMarker: false, bind: "${form['provinciaSelect2'] ?: ''}" }
+                    ]
+                }
+            },
+            "dr-tecnico": {
+                name: "Declaración Responsable Técnico Competente",
+                imagePrefix: "declaracion-tecnico-competente-p",
+                totalPages: 1,
+                width: "200mm",
+                height: "287mm",
+                bgSize: "100% 100%",
+                fields: {
+                    1: [
+                        { id: "dt_red_nom", label: "Técnico Nombre", x: 25, y: 64, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "${form['nombreApellidosEduardoFijo'] ?: ''}" },
+                        { id: "dt_red_nif", label: "Técnico NIF", x: 156, y: 64, text: "28.818.007-L", isMarker: false, bind: "${form['nifEduardoFijo'] ?: ''}" },
+                        { id: "dt_red_via", label: "Técnico Tipo Vía", x: 25, y: 75.5, text: "Calle", isMarker: false, bind: "${form['tipoViaFijo'] ?: ''}" },
+                        { id: "dt_red_nom_via", label: "Técnico Vía", x: 59, y: 75.5, text: "Asunción", isMarker: false, bind: "${form['nombreViaFijo'] ?: ''}" },
+                        { id: "dt_red_num", label: "Técnico Número", x: 50, y: 83, text: "45", isMarker: false, bind: "${form['numeroViaFijo'] ?: ''}" },
+                        { id: "dt_red_pais", label: "Técnico País", x: 25, y: 91, text: "España", isMarker: false, bind: "${form['paisFijo'] ?: ''}" },
+                        { id: "dt_red_prov", label: "Técnico Provincia", x: 59, y: 91, text: "Sevilla", isMarker: false, bind: "${form['provinciaFijo'] ?: ''}" },
+                        { id: "dt_red_mun", label: "Técnico Municipio", x: 110, y: 91, text: "Sevilla", isMarker: false, bind: "${form['municipioFijo'] ?: ''}" },
+                        { id: "dt_red_cp", label: "Técnico Código Postal", x: 177.5, y: 91, text: "41011", isMarker: false, bind: "${form['codigoPostalFijo'] ?: ''}" },
+                        
+                        { id: "dt_tit", label: "Técnico Titulación", x: 25, y: 100, text: "Ingeniero Industrial", isMarker: false, bind: "${form['titulacionFijo'] ?: ''}" },
+                        { id: "dt_esp", label: "Técnico Especialidad", x: 129, y: 100, text: "Baja Tensión", isMarker: false, bind: "${form['especialidadFijo'] ?: ''}" },
+                        { id: "dt_univ", label: "Técnico Universidad", x: 25, y: 108, text: "Universidad de Sevilla", isMarker: false, bind: "${form['universidadFijo'] ?: ''}" },
+                        { id: "dt_col", label: "Colegio Profesional", x: 25, y: 116, text: "Colegio Oficial de Ingenieros de Sevilla", isMarker: false, bind: "${form['colegioFijo'] ?: ''}" },
+                        { id: "dt_col_num", label: "Nº Colegiado", x: 160, y: 116, text: "12345", isMarker: false, bind: "${form['numeroColegiadoFijo'] ?: ''}" },
+                        
+                        { id: "dt_frase1", label: "Trabajo Profesional", x: 30, y: 136, text: "Instalación Solar Fotovoltaica de autoconsumo", isMarker: false, bind: "${form['fraseFija1'] ?: ''}" },
+                        { id: "dt_pot1", label: "Potencia Trabajo", x: 118, y: 136, text: "15 kW", isMarker: false, bind: "${form['potenciaFrase1'] ?: ''}" },
+                        { id: "dt_frase2", label: "Reglamentación", x: 30, y: 149, text: "Instalación de baja tensión", isMarker: false, bind: "${form['fraseFija2'] ?: ''}" },
+                        { id: "dt_pot2", label: "Potencia Adicional", x: 109, y: 149, text: "15 kW", isMarker: false, bind: "${form['potenciaFrase2'] ?: ''}" },
+                        { id: "dt_prop", label: "Propietario / Razón Social", x: 159, y: 149.3, text: "SOLAY INGENIEROS, S.L.", isMarker: false, bind: "${form['razonSocial'] ?: ''}" },
+                        
+                        { id: "dt_prov_sup", label: "Provincia Cabecera", x: 140, y: 20.5, text: "Sevilla", isMarker: false, bind: "${form['provinciaSelect1'] ?: ''}" },
+                        { id: "dt_firma_prov", label: "Firma Provincia", x: 58, y: 199, text: "Sevilla", isMarker: false, bind: "${form['provincia'] ?: ''}" },
+                        { id: "dt_firma_dia", label: "Firma Día", x: 103, y: 199, text: "09", isMarker: false, bind: "${form['dia'] ?: ''}" },
+                        { id: "dt_firma_mes", label: "Firma Mes", x: 118, y: 199, text: "Julio", isMarker: false, bind: "${form['mes'] ?: ''}" },
+                        { id: "dt_firma_anio", label: "Firma Año", x: 145, y: 199, text: "2026", isMarker: false, bind: "${form['anio'] ?: ''}" },
+                        
+                        { id: "dt_firma_nom", label: "Nombre Firmante", x: 80, y: 224, text: "EDUARDO RIVERA CABEZAS", isMarker: false, bind: "${form['nombreFirma'] ?: ''}" },
+                        { id: "dt_prov_inf", label: "Provincia Pie", x: 171, y: 232, text: "Sevilla", isMarker: false, bind: "${form['provinciaSelect2'] ?: ''}" }
+                    ]
+                }
+            }
+        };
+
+        const container = document.getElementById('page-container');
+        const controlsContainer = document.getElementById('fields-controls-container');
+        const pagesContainer = document.getElementById('pages-container');
+
+        window.switchTemplate = function(templateId) {
+            currentTemplate = templateId;
+            currentPage = 1;
+            activeField = null;
+            
+            // Re-renderizar los botones de páginas
+            pagesContainer.innerHTML = '';
+            const tData = templatesData[templateId];
+            
+            // Aplicar tamaño del contenedor según plantilla para escala exacta
+            const pageContainerEl = document.getElementById('page-container');
+            pageContainerEl.style.width = tData.width || "210mm";
+            pageContainerEl.style.height = tData.height || "297mm";
+            pageContainerEl.style.backgroundSize = tData.bgSize || "100% 100%";
+
+            for (let i = 1; i <= tData.totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.id = `btn-page-${i}`;
+                btn.textContent = `Pág ${i}`;
+                btn.onclick = () => window.switchPage(i);
+                if (i === 1) btn.className = 'active';
+                pagesContainer.appendChild(btn);
+            }
+
+            window.switchPage(1);
+        };
+
+        function normalizeBind(bindStr) {
+            if (!bindStr) return "";
+            return bindStr.replace(/[\s'"`?:{}$]/g, "").replace("?:''", "").replace("?:\"\"", "");
+        }
+
+        function parseCoordinatesFromHtml(htmlContent) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            const spans = doc.querySelectorAll('span.overlay-field, span.overlay-marker');
+            
+            const currentFields = templatesData[currentTemplate].fields[currentPage] || [];
+            
+            spans.forEach(span => {
+                const style = span.getAttribute('style') || "";
+                const leftMatch = style.match(/left:\s*([\d.]+)\s*mm/i);
+                const topMatch = style.match(/top:\s*([\d.]+)\s*mm/i);
+                if (!leftMatch || !topMatch) return;
+                
+                const xVal = parseFloat(leftMatch[1]);
+                const yVal = parseFloat(topMatch[1]);
+                
+                // Intentar encontrar el bind en el HTML
+                let bindVal = "";
+                const thText = span.getAttribute('th:text');
+                const thIf = span.getAttribute('th:if');
+                
+                if (thText) {
+                    bindVal = thText;
+                } else if (thIf) {
+                    bindVal = thIf;
+                }
+                
+                const normBind = normalizeBind(bindVal);
+                
+                // Buscar coincidencia en campos locales
+                let matchedField = null;
+                if (normBind) {
+                    // Match por binding normalizado
+                    matchedField = currentFields.find(f => normalizeBind(f.bind) === normBind);
+                }
+                
+                if (matchedField) {
+                    matchedField.x = xVal;
+                    matchedField.y = yVal;
+                }
+            });
+        }
+
+        window.switchPage = async function(pageNumber) {
+            currentPage = pageNumber;
+            activeField = null;
+            
+            // Alternar clases activas de los botones de página
+            const tData = templatesData[currentTemplate];
+            for (let i = 1; i <= tData.totalPages; i++) {
+                const btn = document.getElementById(`btn-page-${i}`);
+                if (btn) btn.className = i === pageNumber ? 'active' : '';
+            }
+            
+            // Cambiar imagen de fondo
+            const bgImage = `/${tData.imagePrefix}${pageNumber}.jpg`;
+            document.getElementById('page-container').style.backgroundImage = `url('${bgImage}')`;
+            
+            // Cargar posiciones reales desde el archivo HTML de la plantilla en el backend
+            try {
+                const statusEl = document.getElementById('save-status');
+                statusEl.textContent = '⏳ Cargando posiciones desde plantilla...';
+                statusEl.style.color = '#38bdf8';
+                
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/doc-generator/calibrador/cargar?templateId=${currentTemplate}&page=${pageNumber}`, {
+                    headers: {
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.html) {
+                        parseCoordinatesFromHtml(data.html);
+                        statusEl.textContent = '✅ Posiciones cargadas de plantilla';
+                        statusEl.style.color = '#4ade80';
+                        setTimeout(() => { if (statusEl.textContent.includes('posiciones')) statusEl.textContent = ''; }, 2000);
+                    }
+                } else {
+                    statusEl.textContent = '⚠️ Usando coordenadas locales (sin archivo en backend)';
+                    statusEl.style.color = '#fbbf24';
+                }
+            } catch (err) {
+                console.error("Error al cargar coordenadas del backend:", err);
+                const statusEl = document.getElementById('save-status');
+                statusEl.textContent = '⚠️ Usando coordenadas locales (sin conexión)';
+                statusEl.style.color = '#fbbf24';
+            }
+            
+            renderWorkspace();
+        };
+
+        window.adjust = function(id, axis, val) {
+            const fields = templatesData[currentTemplate].fields[currentPage] || [];
+            const field = fields.find(f => f.id === id);
+            if (field) {
+                field[axis] = Math.round((field[axis] + val) * 2) / 2;
+                updateVisual(field);
+            }
+        };
+
+        window.inputChange = function(id, axis, val) {
+            const fields = templatesData[currentTemplate].fields[currentPage] || [];
+            const field = fields.find(f => f.id === id);
+            if (field) {
+                field[axis] = parseFloat(val) || 0;
+                updateVisual(field);
+            }
+        };
+
+        window.autoExport = function() {
+            let html = "";
+            const fields = templatesData[currentTemplate].fields[currentPage] || [];
+            fields.forEach(field => {
+                if (field.isMarker) {
+                    let thIf = field.bind ? ' ' + field.bind : '';
+                    html += `    <!-- ${field.label} -->\n`;
+                    html += `    <span class="overlay-marker"${thIf} style="left:${field.x}mm; top:${field.y}mm;">X</span>\n\n`;
+                } else {
+                    let thText = '';
+                    if (field.bind) {
+                        const match = field.bind.match(/\['([^']+)'\]/);
+                        if (match) {
+                            thText = `\n          th:text="\${form['${match[1]}'] ?: ''}"`;
+                        } else if (field.bind.startsWith('$') || field.bind.startsWith('th:')) {
+                            thText = `\n          th:text="${field.bind}"`;
+                        } else {
+                            thText = `\n          th:text="\${form['${field.bind}'] ?: ''}"`;
+                        }
+                    }
+                    if (field.bind && field.bind.includes('domicilio')) {
+                        thText = `\n          th:text="${field.bind}"`;
+                    } else if (field.bind && field.bind.includes('tensionNominalInversor')) {
+                        thText = `\n          th:text="\${form['tensionNominalInversor'] ?: '230'}"`;
+                    }
+                    let textNode = field.bind ? '' : field.text;
+                    html += `    <!-- ${field.label} -->\n`;
+                    html += `    <span class="overlay-field" style="left:${field.x}mm; top:${field.y}mm; font-size:7.5pt;"${thText}>${textNode}</span>\n\n`;
+                }
+            });
+            document.getElementById('code-output').value = html;
+        };
+
+        function renderWorkspace() {
+            container.innerHTML = '';
+            controlsContainer.innerHTML = '';
+            
+            const fields = templatesData[currentTemplate].fields[currentPage] || [];
+
+            fields.forEach(field => {
+                // Elemento visual
+                const el = document.createElement('div');
+                el.id = 'visual_' + field.id;
+                el.className = field.isMarker ? 'overlay-marker' : 'overlay-field';
+                el.textContent = field.text;
+                el.style.left = field.x + 'mm';
+                el.style.top = field.y + 'mm';
+                container.appendChild(el);
+
+                el.addEventListener('click', (e) => {
+                    selectField(field);
+                    e.stopPropagation();
+                });
+
+                // Drag & Drop
+                let isDragging = false;
+                let startX, startY;
+                let originalX, originalY;
+
+                el.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    selectField(field);
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    originalX = field.x;
+                    originalY = field.y;
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    const dx = (e.clientX - startX) / 3.7795;
+                    const dy = (e.clientY - startY) / 3.7795;
+                    
+                    field.x = Math.round((originalX + dx) * 2) / 2;
+                    field.y = Math.round((originalY + dy) * 2) / 2;
+                    
+                    updateVisual(field);
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+
+                // Controles en el Panel Lateral
+                const group = document.createElement('div');
+                group.className = 'field-group';
+                group.innerHTML = `
+                    <label>${field.label} (${field.id})</label>
+                    <div class="controls">
+                        <button onclick="window.adjust('${field.id}', 'x', -0.5)">◀</button>
+                        <input type="text" id="input_x_${field.id}" value="${field.x}" onchange="window.inputChange('${field.id}', 'x', this.value)">
+                        <button onclick="window.adjust('${field.id}', 'x', 0.5)">▶</button>
+                        <button onclick="window.adjust('${field.id}', 'y', -0.5)">▲</button>
+                        <input type="text" id="input_y_${field.id}" value="${field.y}" onchange="window.inputChange('${field.id}', 'y', this.value)">
+                        <button onclick="window.adjust('${field.id}', 'y', 0.5)">▼</button>
+                    </div>
+                `;
+                controlsContainer.appendChild(group);
+            });
+            
+            window.autoExport();
+        }
+
+        function selectField(field) {
+            if (activeField) {
+                const el = document.getElementById('visual_' + activeField.id);
+                if (el) el.classList.remove('active');
+            }
+            activeField = field;
+            const visualEl = document.getElementById('visual_' + field.id);
+            if (visualEl) visualEl.classList.add('active');
+        }
+
+        function updateVisual(field) {
+            const el = document.getElementById('visual_' + field.id);
+            if (el) {
+                el.style.left = field.x + 'mm';
+                el.style.top = field.y + 'mm';
+            }
+            
+            const ix = document.getElementById('input_x_' + field.id);
+            const iy = document.getElementById('input_y_' + field.id);
+            if (ix) ix.value = field.x;
+            if (iy) iy.value = field.y;
+            
+            window.autoExport();
+        }
+
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const codeOutput = document.getElementById('code-output');
+            codeOutput.select();
+            document.execCommand('copy');
+            const statusEl = document.getElementById('save-status');
+            statusEl.textContent = '✅ Código copiado al portapapeles';
+            statusEl.style.color = '#4ade80';
+            setTimeout(() => { statusEl.textContent = ''; }, 2500);
+        });
+
+        document.getElementById('save-btn').addEventListener('click', async () => {
+            const html = document.getElementById('code-output').value;
+            const statusEl = document.getElementById('save-status');
+            const saveBtn = document.getElementById('save-btn');
+
+            if (!html.trim()) {
+                statusEl.textContent = '⚠️ Primero pulsa "Copiar Fragmento Thymeleaf" para generar el código';
+                statusEl.style.color = '#fbbf24';
+                return;
+            }
+
+            if (!['cie-ext', 'mtd-ext'].includes(currentTemplate)) {
+                statusEl.textContent = '⚠️ Guardado solo disponible para CIE Ext y MTD Ext';
+                statusEl.style.color = '#fbbf24';
+                return;
+            }
+
+            saveBtn.disabled = true;
+            statusEl.textContent = '⏳ Guardando en servidor...';
+            statusEl.style.color = '#38bdf8';
+
+            try {
+                const backendUrl = '/api/doc-generator/calibrador/guardar';
+                const token = localStorage.getItem('token');
+                const response = await fetch(backendUrl, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    },
+                    body: JSON.stringify({
+                        templateId: currentTemplate,
+                        page: currentPage,
+                        html: html
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusEl.textContent = '✅ ' + data.message;
+                    statusEl.style.color = '#4ade80';
+                } else {
+                    statusEl.textContent = '❌ ' + (data.error || 'Error desconocido del servidor');
+                    statusEl.style.color = '#f87171';
+                }
+            } catch (err) {
+                statusEl.textContent = '❌ Sin conexión con el servidor Spring Boot';
+                statusEl.style.color = '#f87171';
+            } finally {
+                saveBtn.disabled = false;
+            }
+        });
+        
+        // Inicialización
+        window.switchTemplate("cie-ext");
+    </script>
+</body>
+</html>

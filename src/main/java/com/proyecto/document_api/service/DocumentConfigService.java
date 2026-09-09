@@ -2478,6 +2478,7 @@ applyMapping(enriched, form, "dia", "diaAceptacion");
 
         applyMappingWithFallback(enriched, form, "numeroBaterias", "numeroBaterias", "e2_numeroBaterias", "e2_numeroBateria", "e2_numeroDeBaterias");
         applyMappingWithFallback(enriched, form, "capacidadNominalBateria", "capacidadNominalBateria", "e2_capacidadNominalBateria", "e2_capacidadNominal", "capacidadBateria", "capacidadNominal");
+        applyMappingWithFallback(enriched, form, "capacidadTotalBateria", "capacidadTotalBateria", "e2_capacidadTotalBateria");
         applyMappingWithFallback(enriched, form, "energiaTotalBateria", "energiaTotalBateria", "e2_energiaTotalBateria", "e2_energiaTotal", "capacidadTotalBateria");
     }
 }
